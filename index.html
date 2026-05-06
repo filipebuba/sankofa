@@ -7,7 +7,16 @@
   <meta name="description" content="Jogo educativo de enigmas sobre a História Geral da África (UNESCO).">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
-  <meta name="theme-color" content="#0c0a06">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0c0a06" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f5efe0" media="(prefers-color-scheme: light)">
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sankofa">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Sankofa">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -23,6 +32,7 @@
   </script>
 </head>
 <body>
+  <button class="install-btn" id="install-btn" title="Instalar como app" aria-label="Instalar como app" style="display:none">⬇ Instalar</button>
   <button class="theme-toggle" id="theme-toggle" title="Modo claro/escuro" aria-label="Alternar tema">🌙</button>
   <button class="ambient-toggle" id="ambient-toggle" title="Tambor ambiente" aria-label="Ativar tambor ambiente">🥁</button>
   <button class="sound-toggle" id="sound-toggle" title="Som on/off" aria-label="Som on/off">🔊</button>
@@ -49,5 +59,28 @@
   <script>window.SANKOFA_LEAGUE_CONFIG = window.SANKOFA_LEAGUE_CONFIG || null;</script>
   <script src="src/league.js"></script>
   <script src="src/app.js"></script>
+
+  <script>
+    // Service Worker — só em produção (HTTPS) ou localhost
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/sw.js").catch(function () {});
+      });
+    }
+
+    // beforeinstallprompt — guarda evento, app pode disparar prompt depois
+    window.__sankofaInstall = null;
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      window.__sankofaInstall = e;
+      var btn = document.getElementById("install-btn");
+      if (btn) btn.style.display = "flex";
+    });
+    window.addEventListener("appinstalled", function () {
+      var btn = document.getElementById("install-btn");
+      if (btn) btn.style.display = "none";
+      window.__sankofaInstall = null;
+    });
+  </script>
 </body>
 </html>

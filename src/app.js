@@ -1091,6 +1091,27 @@
     var tb = document.getElementById("theme-toggle");
     if (tb) tb.addEventListener("click", function () { toggleTheme(); sfx("click"); });
 
+    var ib = document.getElementById("install-btn");
+    if (ib) ib.addEventListener("click", function () {
+      sfx("achievement");
+      if (window.__sankofaInstall) {
+        window.__sankofaInstall.prompt();
+        window.__sankofaInstall.userChoice.then(function () {
+          window.__sankofaInstall = null;
+          ib.style.display = "none";
+        });
+      }
+    });
+
+    // ?action= shortcuts (ícones do PWA)
+    try {
+      var params = new URLSearchParams(location.search);
+      var act = params.get("action");
+      if (act === "resume") setTimeout(function () { handleResume(); }, 200);
+      else if (act === "daily") setTimeout(function () { goTo("daily"); }, 200);
+      if (act) history.replaceState({}, "", location.pathname);
+    } catch (e) {}
+
     var sb = document.getElementById("sound-toggle");
     if (sb) sb.addEventListener("click", function () {
       S.soundOn = !S.soundOn;

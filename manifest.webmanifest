@@ -1,0 +1,32 @@
+{
+  "name": "Sankofa — Fragmentos da África",
+  "short_name": "Sankofa",
+  "description": "Jogo educativo de enigmas sobre a História Geral da África (UNESCO).",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0a06",
+  "theme_color": "#0c0a06",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["education", "games"],
+  "icons": [
+    { "src": "/assets/favicon.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/logo.png",    "sizes": "1024x1024", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Continuar Jornada",
+      "short_name": "Continuar",
+      "url": "/?action=resume",
+      "icons": [{ "src": "/assets/favicon.png", "sizes": "1024x1024" }]
+    },
+    {
+      "name": "Audiência Real",
+      "short_name": "Audiência",
+      "url": "/?action=daily",
+      "icons": [{ "src": "/assets/favicon.png", "sizes": "1024x1024" }]
+    }
+  ]
+}

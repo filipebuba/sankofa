@@ -415,6 +415,12 @@ input { font-family: var(--font-body); }
 .theme-toggle { position: fixed; top: 12px; right: 100px; z-index: 101; background: var(--surface2); border: 1px solid var(--surface3); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 1rem; cursor: pointer; transition: all .2s; }
 .theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
 
+.install-btn { position: fixed; top: 12px; right: 144px; z-index: 101; background: var(--gold); color: var(--bg); border: none; border-radius: 18px; height: 36px; padding: 0 14px; display: flex; align-items: center; gap: 4px; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .2s; box-shadow: 0 4px 14px var(--gold-dim); }
+.install-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px var(--gold-dim); }
+@media (max-width: 540px) {
+  .install-btn { right: 144px; padding: 0 10px; font-size: .76rem; }
+}
+
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 .question { font-size: 1.05rem; font-weight: 700; text-align: center; margin-bottom: 18px; color: var(--text); }
 .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
