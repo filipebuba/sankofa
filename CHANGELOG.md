@@ -4,6 +4,25 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-05-06
+
+### Corrigido
+
+- **Progressão**: Mundo 2 estava aberto desde o início; agora destrava
+  somente após Mundo 1 atingir 100% (15/15 enigmas resolvidos).
+- Helper `isWorldUnlocked(wid)` — Mundo 1 sempre disponível; demais
+  abrem quando o anterior fecha.
+- Map mostra dica "Conclua o Mundo N (X/Y)" em cards locked.
+- Toast 🗝️ "Mundo destravado" no momento da abertura.
+- Defesa em `open-world`, `open-enigma` e `continue-next` contra
+  acesso direto a mundos bloqueados.
+
+### Anterior (lançamento inicial)
+
+- Ícones PWA eram JPEG com extensão `.png`; re-encode real para
+  PNG + tamanhos 192 e 512 canônicos.
+- Word lock files `~$*.docx` removidos do tracking.
+
 ## [1.0.0] — 2026-05-06
 
 ### Lançamento inicial — MVP completo
