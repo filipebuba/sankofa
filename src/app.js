@@ -384,6 +384,7 @@
       '<p class="tagline">"Volte e busque. Não é errado voltar pelo que esqueceste."</p>' +
       ctaBlock +
       '<p style="font-size:.72rem;color:var(--text-muted);margin-top:4px;opacity:0;animation:fadeUp .6s ease 1.4s forwards">Baseado na História Geral da África — UNESCO</p>' +
+      '<p class="version-stamp">v' + (window.SANKOFA_VERSION || "0.0.0") + (window.SANKOFA_BUILD_DATE ? " · " + window.SANKOFA_BUILD_DATE : "") + '</p>' +
       '</div>';
   }
 
@@ -645,6 +646,7 @@
     html += '<button class="btn btn-outline btn-block" data-act="go-ach">Ver Conquistas</button>';
     html += '<button class="btn btn-outline btn-block" data-act="go-profiles" style="margin-top:8px">Liga Local (perfis)</button>';
     html += '<button class="btn btn-ghost btn-block" data-act="reset" style="margin-top:8px;font-size:.8rem;color:var(--text-muted)">Recomeçar do Zero</button>';
+    html += '<p class="version-stamp" style="text-align:center;margin-top:14px">Sankofa v' + (window.SANKOFA_VERSION || "?") + '</p>';
     return html;
   }
 

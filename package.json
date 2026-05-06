@@ -1,0 +1,34 @@
+{
+  "name": "sankofa",
+  "version": "1.0.0",
+  "description": "Jogo educativo de enigmas sobre a História Geral da África (UNESCO).",
+  "private": true,
+  "type": "module",
+  "homepage": "https://sankofa-eosin.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/filipebuba/sankofa.git"
+  },
+  "author": "Filipe Buba <nhadafilipe@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "education",
+    "game",
+    "history",
+    "africa",
+    "unesco",
+    "hga",
+    "pwa",
+    "afro",
+    "edtech"
+  ],
+  "scripts": {
+    "dev": "npx serve . -p 3000",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
+    "docx": "bash scripts/build-docx.sh",
+    "version:patch": "bash scripts/bump-version.sh patch",
+    "version:minor": "bash scripts/bump-version.sh minor",
+    "version:major": "bash scripts/bump-version.sh major"
+  }
+}
