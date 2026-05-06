@@ -95,6 +95,201 @@ window.SANKOFA_ENIGMAS = [
     source: "HGA UNESCO, Volume I"
   },
   {
+    id: "w1e6",
+    world: 1,
+    title: "O Anjo do Tchad",
+    intro: "Sete milhões de anos. Uma face que olha para nós do fundo do tempo.",
+    context: "Em 2001, no deserto do Djurab no Chade, paleontólogos liderados por Michel Brunet encontraram um crânio com cerca de <strong>7 milhões de anos</strong>. Apelidado de <em>Toumaï</em> (\"esperança de vida\" na língua dazaga), é considerado um dos mais antigos hominídeos conhecidos. Recoloca a história humana muito antes do Vale do Rift e fora dele.",
+    question: "Em que país foi descoberto o hominídeo mais antigo, Toumaï?",
+    options: ["Chade", "Etiópia", "Quénia", "Tanzânia"],
+    correct: 0,
+    explanation: "Toumaï (Sahelanthropus tchadensis) é o hominídeo mais antigo conhecido até hoje, encontrado no Chade. A descoberta forçou a ciência a expandir o mapa das origens humanas para além do leste africano.",
+    hints: [
+      "É um país centro-africano sem litoral.",
+      "Tem o lago de mesmo nome a sul.",
+      "Capital: N'Djamena."
+    ],
+    fragment: { pattern: "fp-toumai", name: "Toumaï" },
+    curiosity: "O nome <em>Toumaï</em> é dado, na cultura dazaga, a crianças nascidas pouco antes da estação seca — esperança em tempos difíceis.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e7",
+    world: 1,
+    title: "A Garganta da Pedra",
+    intro: "Pedra contra pedra. As primeiras ferramentas saíram daqui.",
+    context: "Em <strong>Olduvai</strong>, na Tanzânia, Mary e Louis Leakey escavaram durante décadas e revelaram a indústria lítica mais antiga do mundo: a Olduwaiana, com cerca de 1,8 milhão de anos. Lascadores de pedra que mudaram a história humana — antes da escrita, antes do fogo dominado, já moldávamos a matéria.",
+    question: "A que indústria lítica pertencem as ferramentas mais antigas de Olduvai?",
+    options: ["Olduwaiana", "Acheulense", "Mousteriense", "Magdaleniana"],
+    correct: 0,
+    explanation: "A indústria Olduwaiana é a mais antiga conhecida, com cerca de 1,8 a 2,5 milhões de anos. As ferramentas eram lascas brutas e seixos talhados, atribuídas ao Homo habilis e antecessores.",
+    hints: [
+      "O nome vem da própria garganta.",
+      "Pertence ao paleolítico inferior.",
+      "Antecede a indústria Acheulense."
+    ],
+    fragment: { pattern: "fp-olduvai", name: "Olduvai" },
+    curiosity: "Em 1978, em Laetoli (perto de Olduvai), Mary Leakey encontrou pegadas fossilizadas de hominídeos com 3,6 milhões de anos — andando lado a lado.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e8",
+    world: 1,
+    title: "A Caverna da Fronteira",
+    intro: "Adornos e ocre vermelho. Já éramos humanos. Já tínhamos arte.",
+    context: "Na <strong>Border Cave</strong>, na fronteira entre KwaZulu-Natal e Eswatini, foram encontrados esqueletos de Homo sapiens com mais de <strong>200.000 anos</strong>, contas de casca de ovo de avestruz e ocre vermelho usado como pigmento. Provas de simbolismo, ornamento corporal e ritual muito antes do que se imaginava.",
+    question: "Em que parte da África está localizada a Border Cave?",
+    options: ["Sul da África", "Norte da África", "Chifre da África", "África Ocidental"],
+    correct: 0,
+    explanation: "A Border Cave fica na fronteira entre a África do Sul (KwaZulu-Natal) e Eswatini. Os achados — Homo sapiens, ornamentos, ocre — provam comportamento simbólico no sul da África há mais de 200 mil anos.",
+    hints: [
+      "Fica entre a África do Sul e Eswatini.",
+      "Está numa região montanhosa do continente.",
+      "É no sul, longe do equador."
+    ],
+    fragment: { pattern: "fp-border", name: "Border Cave" },
+    curiosity: "Um pequeno bastão de cera de abelha encontrado na caverna é considerado o adesivo composto mais antigo do mundo — um dos primeiros artefatos químicos da humanidade.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e9",
+    world: 1,
+    title: "A Língua dos Cliques",
+    intro: "A boca estala. Sons que nenhum outro idioma do mundo guarda.",
+    context: "As línguas dos povos <strong>Khoisan</strong> — !Xun, ǂ'Amkoe, Nǁng, Khoekhoegowab — usam consoantes <strong>cliques</strong> únicas no mundo. Estudos genéticos e linguísticos sugerem que estes povos representam uma das ramificações mais antigas da humanidade, estabelecidos no sul da África há dezenas de milhares de anos.",
+    question: "Qual característica fonética distingue as línguas Khoisan?",
+    options: ["Cliques (consoantes não-pulmônicas)", "Tons em quatro alturas", "Vogais nasais", "Ausência de consoantes"],
+    correct: 0,
+    explanation: "As línguas Khoisan são as únicas no mundo a usar consoantes cliques como fonemas plenos. Algumas (zulu, xhosa) emprestaram cliques do contato com Khoisan ancestral.",
+    hints: [
+      "É um som feito sem ar dos pulmões.",
+      "Pode imitar um beijo, um trote ou um estalar de língua.",
+      "Em zulu, soa como o \"c\" estalado."
+    ],
+    fragment: { pattern: "fp-khoisan", name: "Cliques" },
+    curiosity: "O ǂ'Amkoe (Botsuana) é uma das línguas mais ameaçadas do mundo — restam dezenas de falantes nativos.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e10",
+    world: 1,
+    title: "A Saída",
+    intro: "Há 70 mil anos, alguém atravessou um estreito. O resto do mundo começou ali.",
+    context: "Estudos genéticos e arqueológicos mostram que populações de <strong>Homo sapiens</strong> saíram da África há cerca de 70.000 anos, atravessando o Estreito de Bab-el-Mandeb e o Sinai. Toda a diversidade humana fora da África descende dessas populações africanas. A genética chama-lhe <em>Out of Africa</em>.",
+    question: "De onde saíram as populações que povoaram o resto do mundo?",
+    options: ["África", "Ásia Central", "Europa", "Oceania"],
+    correct: 0,
+    explanation: "Todas as populações humanas fora da África descendem de migrações que partiram do continente africano há aproximadamente 70 mil anos. A diversidade genética dentro da África ainda hoje é maior do que no resto do mundo somado.",
+    hints: [
+      "É o continente onde nasceu a espécie humana.",
+      "Toda a humanidade veio daqui.",
+      "É onde o jogo te leva enigma após enigma."
+    ],
+    fragment: { pattern: "fp-exodus", name: "Saída" },
+    curiosity: "Geneticamente, dois !Kung do Botsuana podem ser mais distantes entre si do que um europeu e um chinês. A maior diversidade humana ainda está em África.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e11",
+    world: 1,
+    title: "O Barro de Ounjougou",
+    intro: "Antes do Egito. Antes da Mesopotâmia. Já cozíamos no fogo do Mali.",
+    context: "Em <strong>Ounjougou</strong>, no Mali, foram encontrados fragmentos de cerâmica datados de cerca de <strong>11.500 anos</strong> — entre as mais antigas do mundo, anteriores às do Crescente Fértil. Confirma a África como um centro independente de inovação tecnológica no Holoceno inicial.",
+    question: "Onde foi encontrada uma das cerâmicas mais antigas do mundo?",
+    options: ["Mali", "Mesopotâmia", "China", "Anatólia"],
+    correct: 0,
+    explanation: "Ounjougou, no planalto Dogon do Mali, contém cerâmicas com 11.500 anos. A descoberta provou que a invenção da cerâmica em África foi independente de outras regiões.",
+    hints: [
+      "É um país do Sahel ocidental.",
+      "Cidade famosa: Tombuctu.",
+      "O planalto Dogon fica neste país."
+    ],
+    fragment: { pattern: "fp-ceramica", name: "Cerâmica" },
+    curiosity: "Os Dogon ainda hoje fabricam cerâmica em Ounjougou usando técnicas que dialogam com tradições milenares.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e12",
+    world: 1,
+    title: "O Gado do Sahel",
+    intro: "Não vieram da Ásia. Domesticamos o nosso próprio gado.",
+    context: "Estudos arqueozoológicos e genéticos mostram que o gado africano — em especial o <strong>N'Dama</strong> e outras raças zebuínas — foi domesticado de forma <strong>independente</strong> no Sahel há cerca de 7.000 a 9.000 anos, possivelmente a partir do auroque norte-africano. Não dependeu da expansão do gado vindo do Oriente Médio.",
+    question: "O gado bovino africano foi domesticado:",
+    options: [
+      "De forma independente em África",
+      "Apenas trazido da Ásia",
+      "Apenas trazido da Europa",
+      "Não foi domesticado em África"
+    ],
+    correct: 0,
+    explanation: "A domesticação do gado em África foi um processo independente, anterior ou paralelo ao do Oriente Médio. O N'Dama, resistente à tripanossomíase, é um dos resultados desse longo processo.",
+    hints: [
+      "Foi um processo paralelo ao do Crescente Fértil.",
+      "O N'Dama resiste a doenças locais que matam outros bovinos.",
+      "Aconteceu há cerca de 7 a 9 mil anos."
+    ],
+    fragment: { pattern: "fp-gado", name: "N'Dama" },
+    curiosity: "Os Fulani, povo pastor que se espalhou do Senegal aos Camarões, mantêm uma relação ancestral com o gado — falar do boi é falar da família.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e13",
+    world: 1,
+    title: "Os Pintores de Drakensberg",
+    intro: "Eland em fuga. Caçadores em transe. A montanha guarda 4.000 anos de imagens.",
+    context: "Nas montanhas <strong>Drakensberg</strong> da África do Sul e Lesoto, povos San pintaram durante mais de 4.000 anos. Mais de 35.000 imagens documentam caça, êxtase xamânico, a figura sagrada do <em>eland</em> (antílope-cabra) e cosmologias complexas. É Património Mundial da UNESCO desde 2000.",
+    question: "Qual povo é o autor das pinturas rupestres de Drakensberg?",
+    options: ["San", "Zulu", "Xhosa", "Tswana"],
+    correct: 0,
+    explanation: "Os San (também chamados Bushmen, termo hoje considerado pejorativo) são os autores das pinturas. Suas tradições xamânicas e a centralidade do eland organizam a cosmologia das imagens.",
+    hints: [
+      "É um povo Khoisan caçador-coletor.",
+      "Vivem no sul de África há dezenas de milhares de anos.",
+      "Falam línguas com cliques."
+    ],
+    fragment: { pattern: "fp-san", name: "Pinturas San" },
+    curiosity: "Para os San, o eland não é apenas animal: é mediador entre mundos. Quando o xamã \"morre\" na dança de transe, é o eland que o leva para o outro lado.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e14",
+    world: 1,
+    title: "A Árvore das Línguas",
+    intro: "Mais de 1.500 línguas vivas. A maior diversidade linguística do planeta.",
+    context: "A África abriga quatro grandes famílias linguísticas: <strong>Níger-Congo</strong> (a maior família do mundo em número de línguas, c. 1.500), <strong>Afro-asiática</strong> (árabe, hauçá, somali, hebraico), <strong>Nilo-Saariana</strong> e <strong>Khoisan</strong>. É a região mais diversa linguisticamente do planeta.",
+    question: "Qual família linguística é a maior do mundo em número de línguas?",
+    options: ["Níger-Congo", "Indo-europeia", "Sino-tibetana", "Afro-asiática"],
+    correct: 0,
+    explanation: "A família Níger-Congo, com cerca de 1.500 línguas, é a maior do mundo. Inclui as línguas bantu (suaíli, zulu, quicongo) e centenas de outras faladas da Mauritânia ao Cabo.",
+    hints: [
+      "Inclui o suaíli, o zulu e o quicongo.",
+      "Cobre quase toda a África subsaariana.",
+      "É a família das línguas bantu."
+    ],
+    fragment: { pattern: "fp-linguas", name: "Línguas" },
+    curiosity: "Em África, é comum uma criança crescer falando 3 ou 4 línguas com fluência: a mãe, a do bairro, a da escola e a do mercado.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
+    id: "w1e15",
+    world: 1,
+    title: "Antes dos Faraós",
+    intro: "Antes do trono duplo, antes das pirâmides. Já havia rei no Alto Egito.",
+    context: "A cultura <strong>Naqada</strong> (c. 4.000–3.100 a.C.), no Alto Egito, é a base da civilização faraónica. Cerâmicas pintadas, paletas votivas e túmulos elaborados mostram uma sociedade hierarquizada já antes da unificação política. <strong>Narmer</strong>, primeiro faraó da história unificada, fechou esse período.",
+    question: "Qual cultura pré-dinástica deu origem ao Egito faraónico?",
+    options: ["Naqada", "Nok", "Kerma", "Meroé"],
+    correct: 0,
+    explanation: "Naqada (Alto Egito) precede e prepara a civilização faraónica. Sua paleta de Narmer, datada de c. 3.100 a.C., é tida como o documento histórico mais antigo da unificação.",
+    hints: [
+      "É uma cultura do Alto Egito, vale do Nilo.",
+      "Antecede a I Dinastia.",
+      "Termina com Narmer / Menes."
+    ],
+    fragment: { pattern: "fp-naqada", name: "Naqada" },
+    curiosity: "A Paleta de Narmer mostra o faraó com a coroa branca do Sul (Hedjet) e a coroa vermelha do Norte (Deshret) — o nascimento do Egito unificado em pedra.",
+    source: "HGA UNESCO, Volume I"
+  },
+  {
     id: "w2e1",
     world: 2,
     title: "A Terra Negra",

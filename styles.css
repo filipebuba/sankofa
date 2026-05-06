@@ -300,6 +300,18 @@ input { font-family: var(--font-body); }
 .fp-ferro { background: linear-gradient(45deg, #6a4a2a 0%, #8a6030 30%, #4a3018 100%); }
 .fp-bantu { background: linear-gradient(180deg, var(--green) 0%, #2a4a28 100%); }
 .fp-arte { background: linear-gradient(225deg, var(--indigo) 0%, #1a2a40 100%); }
+
+/* Mundo 1 — extras (Vol I) */
+.fp-toumai    { background: radial-gradient(circle at 50% 30%, #a88550 0%, #6a4a2a 60%, #2a1808 100%); }
+.fp-olduvai   { background: linear-gradient(135deg, #5a5040 0%, #3a3128 60%, #1a140a 100%); }
+.fp-border    { background: radial-gradient(circle at 40% 60%, #b85a3a 0%, #6a2818 60%, #2a1008 100%); }
+.fp-khoisan   { background: linear-gradient(160deg, #d9be62 0%, #8a6030 50%, #4a3018 100%); }
+.fp-exodus    { background: linear-gradient(180deg, #4a3580 0%, #2a4570 50%, #0c0a30 100%); }
+.fp-ceramica  { background: linear-gradient(45deg, #b85a3a 0%, #7a3520 50%, #2a1408 100%); }
+.fp-gado      { background: linear-gradient(160deg, #6a8530 0%, #4a6020 50%, #2a3a14 100%); }
+.fp-san       { background: radial-gradient(circle at 30% 30%, #d97a2a 0%, #8a3a14 60%, #2a1408 100%); }
+.fp-linguas   { background: conic-gradient(from 30deg at 50% 50%, #c9a84c, #b85a3a, #4a8a50, #2a4570, #c9a84c); }
+.fp-naqada    { background: linear-gradient(135deg, var(--gold) 0%, #8a6a20 40%, var(--indigo) 100%); }
 .fp-nilo { background-image: url('assets/frag_nilo.png'); background-size: cover; background-position: center; }
 .fp-arco { background-image: url('assets/frag_arco.png'); background-size: cover; background-position: center; }
 .fp-taharqa { background-image: url('assets/frag_taharqa.png'); background-size: cover; background-position: center; }
