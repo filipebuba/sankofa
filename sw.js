@@ -8,7 +8,7 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.0.0";
+const VERSION = "v1.0.1";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 
@@ -36,7 +36,9 @@ const APP_SHELL = [
   "/data/leagues.js",
 
   "/assets/favicon.png",
-  "/assets/logo.png"
+  "/assets/logo.png",
+  "/assets/icon-192.png",
+  "/assets/icon-512.png"
 ];
 
 // Imagens dos mundos pesam 8 MB combinados — são adicionadas por demanda.
