@@ -58,6 +58,22 @@ Quando trabalhar neste repo no Claude Code, três skills facilitam edições rec
 
 Detalhes em `.claude/skills/README.md`.
 
+## Documentação completa em Word
+
+Todos os docs reunidos num único `.docx` editável:
+
+```
+docs/Sankofa-Documentacao-Completa.docx
+```
+
+Para regenerar (precisa pandoc 2.0+):
+
+```bash
+bash scripts/build-docx.sh
+```
+
+Inclui: README, Conceito, Roadmap, Áudio, Liga, Monetização, Pitch Deck, Cartas, One-Pager.
+
 ## Deploy (Vercel)
 
 Site é estático puro — sem build step, sem dependências.

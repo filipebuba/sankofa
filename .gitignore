@@ -19,6 +19,7 @@ yarn-error.log*
 .vercel
 .next
 .cache
+dist/
 
 # Configs com segredos (Supabase URL+anon key)
 src/league-config.js
