@@ -1,15 +1,31 @@
 #!/bin/bash
 #
-# Sankofa — gera documentação completa em .docx (Microsoft Word 2007+)
-# usando pandoc. Reúne README + 8 docs em docs/ num único ficheiro.
+# Sankofa — gera documentação em .docx (Microsoft Word 2007+) usando pandoc.
+#
+# Saídas:
+#   word/00-README.docx ... word/08-One-Pager.docx (docs individuais)
+#   word/09-Documentacao-Completa.docx (volume único)
+#   docs/Sankofa-Documentacao-Completa.docx (cópia de referência)
 #
 # Requisitos: pandoc 2.0+
-# Saída: docs/Sankofa-Documentacao-Completa.docx
 #
 set -e
 cd "$(dirname "$0")/.."
 
-OUT=docs/Sankofa-Documentacao-Completa.docx
+mkdir -p word
+
+echo "Gerando docs individuais em word/ ..."
+pandoc README.md             -o word/00-README.docx              --from markdown --to docx --standalone
+pandoc docs/CONCEITO.md      -o word/01-Conceito.docx            --from markdown --to docx --standalone
+pandoc docs/ROADMAP.md       -o word/02-Roadmap.docx             --from markdown --to docx --standalone
+pandoc docs/AUDIO.md         -o word/03-Audio.docx               --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/LIGA.md          -o word/04-Liga.docx                --from markdown --to docx --standalone
+pandoc docs/MONETIZACAO.md   -o word/05-Monetizacao.docx         --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/PITCH-DECK.md    -o word/06-Pitch-Deck.docx          --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/CARTAS.md        -o word/07-Cartas.docx              --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/ONE-PAGER.md     -o word/08-One-Pager.docx           --from markdown --to docx --standalone
+
+echo "Gerando volume completo ..."
 TMP=$(mktemp -d)
 
 cat > "$TMP/cover.md" << 'COVER'
@@ -36,7 +52,6 @@ lang: pt-BR
 \newpage
 COVER
 
-# Concatena todos os docs com quebras de página e demove títulos H1 para H2
 {
   cat "$TMP/cover.md"
   echo -e "\n\\newpage\n# 1. README do projeto\n"
@@ -60,14 +75,16 @@ COVER
 } > "$TMP/all.md"
 
 pandoc "$TMP/all.md" \
-  -o "$OUT" \
-  --from markdown \
-  --to docx \
-  --toc \
-  --toc-depth=2 \
+  -o word/09-Documentacao-Completa.docx \
+  --from markdown --to docx \
+  --toc --toc-depth=2 \
   --standalone
+
+# Mantém cópia em docs/ como referência rápida
+cp word/09-Documentacao-Completa.docx docs/Sankofa-Documentacao-Completa.docx
 
 rm -rf "$TMP"
 
-echo "✓ Gerado: $OUT"
-ls -lh "$OUT"
+echo ""
+echo "✓ Pasta word/:"
+ls -lh word/
