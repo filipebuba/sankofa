@@ -32,3 +32,8 @@ src/league-config.js
 
 # Tabuleiro de testes locais
 test/
+
+# Microsoft Office lock files
+~$*.docx
+~$*.xlsx
+~$*.pptx
