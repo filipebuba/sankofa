@@ -81,6 +81,15 @@
     return out;
   }
 
+  // Mundo 1 sempre destravado. Demais: previous world 100% OR data.unlocked=true.
+  function isWorldUnlocked(wid) {
+    if (wid <= 1) return true;
+    var w = getWorld(wid);
+    if (w && w.unlocked) return true;
+    var prev = getWorldProgress(wid - 1);
+    return prev.total > 0 && prev.done === prev.total;
+  }
+
   // First unsolved enigma for a given world (in order, gated by predecessor solved).
   function nextInWorld(wid) {
     var we = worldEnigmas(wid);
@@ -96,10 +105,10 @@
   // Resume target across the whole game. Prefers lastWorldPlayed, then iterates unlocked worlds.
   function nextResume() {
     var order = [];
-    if (S.lastWorldPlayed) order.push(S.lastWorldPlayed);
+    if (S.lastWorldPlayed && isWorldUnlocked(S.lastWorldPlayed)) order.push(S.lastWorldPlayed);
     for (var i = 0; i < WORLDS.length; i++) {
       var w = WORLDS[i];
-      if (w.unlocked && order.indexOf(w.id) === -1) order.push(w.id);
+      if (isWorldUnlocked(w.id) && order.indexOf(w.id) === -1) order.push(w.id);
     }
     for (var j = 0; j < order.length; j++) {
       var n = nextInWorld(order[j]);
@@ -430,7 +439,8 @@
       var w = WORLDS[i];
       var p = getWorldProgress(w.id);
       var artStyle = w.art ? ' style="background-image:url(' + w.art + ')"' : "";
-      if (w.unlocked) {
+      var unlocked = isWorldUnlocked(w.id);
+      if (unlocked) {
         html += '<div class="world-card unlocked" data-act="open-world" data-w="' + w.id + '">' +
           '<div class="world-art"' + artStyle + '></div>' +
           '<div class="world-num">' + w.id + '</div>' +
@@ -439,12 +449,15 @@
           '<div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div>' +
           '<div style="font-size:.68rem;color:var(--text-muted);margin-top:3px">' + p.done + '/' + p.total + ' fragmentos</div></div></div>';
       } else {
-        html += '<div class="world-card locked">' +
+        var prevP = getWorldProgress(w.id - 1);
+        var hint = prevP.total ? "Conclua o Mundo " + (w.id - 1) + " (" + prevP.done + "/" + prevP.total + ")" : "Em breve";
+        html += '<div class="world-card locked" title="' + hint + '">' +
           '<div class="world-art"' + artStyle + '></div>' +
           '<span class="lock-icon">🔒</span>' +
           '<div class="world-num">' + w.id + '</div>' +
           '<div class="world-name">' + w.name + '</div>' +
-          '<div class="world-period">' + w.period + '</div></div>';
+          '<div class="world-period">' + w.period + '</div>' +
+          '<div style="margin-top:6px;font-size:.66rem;color:var(--text-muted);font-weight:600">' + hint + '</div></div>';
       }
     }
     html += '</div>';
@@ -817,6 +830,7 @@
       case "resume": handleResume(); break;
       case "continue-next":
         var nw = parseInt(el.getAttribute("data-w"), 10);
+        if (!isWorldUnlocked(nw)) { sfx("wrong"); showToast("🔒", "Mundo bloqueado", "Conclua o anterior primeiro."); break; }
         var nxt = nextInWorld(nw);
         if (nxt) { sfx("select"); enigmaLocked = false; S.lastWorldPlayed = nw; save(); goTo("enigma", { enigma: nxt.id }); }
         else { sfx("fragment"); goTo("mosaic", { world: nw }); }
@@ -827,12 +841,14 @@
       case "go-daily": sfx("dailyOpen"); goTo("daily"); break;
       case "open-world":
         var wId = parseInt(el.getAttribute("data-w"), 10);
+        if (!isWorldUnlocked(wId)) { sfx("wrong"); showToast("🔒", "Mundo bloqueado", "Conclua o Mundo " + (wId - 1) + " primeiro."); break; }
         sfx("navigate"); S.lastWorldPlayed = wId; save();
         goTo("world", { world: wId });
         break;
       case "open-enigma":
         var eId = el.getAttribute("data-e");
         var en2 = getEnigma(eId);
+        if (en2 && !isWorldUnlocked(en2.world)) { sfx("wrong"); showToast("🔒", "Bloqueado", "Mundo ainda não destravado."); break; }
         if (en2) { S.lastWorldPlayed = en2.world; save(); }
         sfx("select"); enigmaLocked = false;
         goTo("enigma", { enigma: eId });
@@ -1043,6 +1059,21 @@
       checkAchievements();
       checkLevelUp();
       checkTitleUp();
+
+      // Mundo desbloqueado se acabou de fechar o atual
+      if (newSolved) {
+        var wpAfter = getWorldProgress(e.world);
+        if (wpAfter.done === wpAfter.total && wpAfter.total > 0) {
+          var nextW = getWorld(e.world + 1);
+          if (nextW) {
+            sfx("achievement");
+            setTimeout(function () {
+              showToast("🗝️", "Mundo " + nextW.id + " destravado!", nextW.name);
+            }, 600);
+          }
+        }
+      }
+
       save();
 
       // Sync to global league (opt-in, fire-and-forget)
