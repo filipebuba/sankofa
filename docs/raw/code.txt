@@ -1,0 +1,27 @@
+
+---
+
+## Sobre Este Documento
+
+Criei um documento com **23 secções** que cobre todos os aspectos do projeto, desde os fundamentos teóricos até a estrutura de dados dos enigmas. Alguns pontos que quero destacar:
+
+**O que torna este documento forte para a UNESCO:**
+- Enquadra o projeto diretamente na HGA e na Recomendação REA 2019
+- Apresenta métricas concretas de impacto
+- Mostra sustentabilidade a longo prazo
+- Tem rigor acadêmico (referências completas)
+- Tem coração (a história da tua filha e da motivação pessoal)
+
+**O que destaca a tua posição:**
+- Formação dupla (Humanas + Computação)
+- Vínculo com UNILAB
+- Capacidade técnica para construir o protótipo
+- Perspectiva de quem vive o problema (Brasil, afrodescendência)
+
+**Sobre o sistema de ranking e conquistas:**
+- 10 níveis de jogador com títulos africanos (de "Aprendiz" a "Herdeiro de Sankofa")
+- 4 categorias de conquistas (progressão, conhecimento, habilidade, social)
+- Desafios diários, semanais e mensais
+- Anti-punitivismo: errar nunca é castigado
+
+**Próximo passo:** Envia este documento à tua professora. Quando tiveres feedback dela, posso ajudar a ajustar. Depois disso, partimos para o protótipo.

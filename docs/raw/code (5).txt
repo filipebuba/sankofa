@@ -1,0 +1,28 @@
+┌─────────────────────────────────┐
+│ ← Voltar ao Mapa                │
+│                                 │
+│         Mundo 1 · Vol. I        │
+│           Origens               │
+│      Pré-história – séc. I      │
+│                                 │
+│      ██████████░░░░ 40%         │
+│       2/5 fragmentos · 40%      │
+│                                 │
+│ ┌─────────────────────────────┐ │
+│ │ (✓) O Berço          +100  │ │
+│ │      Fragmento recolhido    │ │
+│ ├─────────────────────────────┤ │
+│ │ (2) O Deserto que Foi Jard. │ │
+│ │      Disponível             │ │
+│ ├─────────────────────────────┤ │
+│ │ (🔒) Os Tecelões do Fogo   │ │
+│ │      Resolve o anterior     │ │
+│ ├─────────────────────────────┤ │
+│ │ (🔒) A Grande Caminhada    │ │
+│ │      Resolve o anterior     │ │
+│ ├─────────────────────────────┤ │
+│ │ (🔒) A Arte nas Pedras     │ │
+│ │      Resolve o anterior     │ │
+│ └─────────────────────────────┘ │
+│                                 │
+└─────────────────────────────────┘

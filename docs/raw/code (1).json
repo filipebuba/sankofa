@@ -1,0 +1,13 @@
+{
+  "id": "ach_first_step",
+  "name": "Primeiro Passo",
+  "description": "Resolva o seu primeiro enigma",
+  "icon": "achievements/first_step.svg",
+  "condition": {
+    "type": "enigma_solved",
+    "count": 1
+  },
+  "points": 50,
+  "rarity": "common",
+  "category": "progression"
+}

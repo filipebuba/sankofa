@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Sankofa — Fragmentos da África</title>
+  <meta name="description" content="Jogo educativo de enigmas sobre a História Geral da África (UNESCO).">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <meta name="theme-color" content="#0c0a06">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    (function () {
+      var t = localStorage.getItem("sankofa_theme");
+      if (t !== "light" && t !== "dark") {
+        t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+      }
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
+</head>
+<body>
+  <button class="theme-toggle" id="theme-toggle" title="Modo claro/escuro" aria-label="Alternar tema">🌙</button>
+  <button class="ambient-toggle" id="ambient-toggle" title="Tambor ambiente" aria-label="Ativar tambor ambiente">🥁</button>
+  <button class="sound-toggle" id="sound-toggle" title="Som on/off" aria-label="Som on/off">🔊</button>
+
+  <main id="app" aria-live="polite"></main>
+  <div id="toast-container" aria-live="polite"></div>
+
+  <script src="data/worlds.js"></script>
+  <script src="data/enigmas.js"></script>
+  <script src="data/levels.js"></script>
+  <script src="data/achievements.js"></script>
+  <script src="data/titles.js"></script>
+  <script src="data/houses.js"></script>
+  <script src="data/suditos.js"></script>
+  <script src="data/festivals.js"></script>
+  <script src="data/genealogy.js"></script>
+  <script src="data/leagues.js"></script>
+  <script src="src/audio.js"></script>
+  <script src="src/profiles.js"></script>
+  <script src="src/royalty.js"></script>
+  <!-- Liga global: src/league-config.js (gitignored) injeta SUPABASE_URL+anonKey.
+       Sem ele, a Liga online fica oculta e a Liga local continua a funcionar. -->
+  <script src="src/league-config.js" onerror="this.remove()"></script>
+  <script>window.SANKOFA_LEAGUE_CONFIG = window.SANKOFA_LEAGUE_CONFIG || null;</script>
+  <script src="src/league.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+┌─────────────────────────────────┐
+│ ← Mundo 1                       │
+│                                 │
+│    Enigma 2 · Mundo 1           │
+│                                 │
+│     O Deserto que Foi Jardim    │
+│                                 │
+│  "Lagos onde hoje há areia.     │
+│   Girafas onde hoje há silêncio.│
+│   Um mundo perdido sob a        │
+│   poeira."                      │
+│                                 │
+│  ┌─────────────────────────┐    │
+│  │ 📖 Fechar contexto     │    │
+│  └─────────────────────────┘    │
+│  ┌─────────────────────────────┐│
+│  │ Há cerca de 8.000 anos, o   ││
+│  │ maior deserto quente do     ││
+│  │ mundo era verde. Rios, lagos,││
+│  │ rebanhos de gado, hipopóta- ││
+│  │ mos. Pinturas rupestres nas ││
+│  │ suas montanhas mostram nada-││
+│  │ dores a mergulhar em águas  ││
+│  │ que hoje não existem.       ││
+│  └─────────────────────────────┘│
+│                                 │
+│       Que deserto é este?       │
+│                                 │
+│  ┌──────────────────────────┐   │
+│  │ A  Deserto do Saara      │   │
+│  └──────────────────────────┘   │
+│  ...                            │
+└─────────────────────────────────┘

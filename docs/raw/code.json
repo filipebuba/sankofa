@@ -1,0 +1,19 @@
+{
+  "id": "story_w1",
+  "world": 1,
+  "title": "O Primeiro Fogo",
+  "epigraph": {
+    "text": "Até que as leões tenham os seus próprios historiadores, as histórias de caça continuarão a glorificar o caçador.",
+    "author": "Provérbio igbo"
+  },
+  "content": "...",
+  "word_count": 2000,
+  "historical_note": "Baseado nos capítulos 1-3 do Volume I da História Geral da África da UNESCO.",
+  "reflection_questions": [
+    "O que significa dizer que a África é o 'berço da humanidade'?",
+    "Como as primeiras sociedades africanas organizavam a sua vida?",
+    "Que semelhanças e diferenças existem entre as primeiras sociedades africanas e as de outros continentes?"
+  ],
+  "keywords": ["hominídeos", "Vale do Rift", "revolução neolítica", "ferro"],
+  "unlock_condition": "Completar o Mundo 1: Origens"
+}
