@@ -6,8 +6,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Uma cicatriz na terra. 3,2 milhões de anos. O primeiro passo da humanidade.",
     context: "No leste da África, um vale enorme corta a paisagem. É aqui que os cientistas encontraram os fósseis mais antigos da humanidade. Um esqueleto com apenas 1,1 metro de altura — apelidado de <strong>Lucy</strong> — já caminhava sobre duas pernas há mais de 3 milhões de anos.",
     question: "Que lugar é este?",
-    options: ["Vale do Rift", "Rio Nilo", "Monte Kilimanjaro", "Lago Vitória"],
-    correct: 0,
+    options: ["Monte Kilimanjaro", "Vale do Rift"],
+    correct: 1,
     explanation: "O Grande Vale do Rift, no leste da África, é o berço da humanidade. Os fósseis de Lucy foram descobertos em 1974 na Etiópia. O nome veio porque os cientistas ouviam \"Lucy in the Sky with Diamonds\" dos Beatles naquela noite.",
     hints: [
       "É uma enorme cicatriz geográfica no leste do continente.",
@@ -25,7 +25,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Lagos onde hoje há areia. Girafas onde hoje há silêncio. Um mundo perdido sob a poeira.",
     context: "Há cerca de 8.000 anos, o maior deserto quente do mundo era verde. Rios, lagos, rebanhos, hipopótamos. Pinturas rupestres nas suas montanhas mostram nadadores a mergulhar em águas que hoje não existem. O ciclo repete-se a cada 20.000 anos.",
     question: "Que deserto é este?",
-    options: ["Deserto do Saara", "Deserto de Kalahari", "Deserto do Namibe", "Deserto da Arábia"],
+    options: ["Deserto do Saara", "Deserto da Arábia"],
     correct: 0,
     explanation: "O Saara passou por um período de \"Saara Verde\" (11.000–5.000 anos atrás). As pinturas de Tassili n'Ajjer, na Argélia, mostram esse mundo perdido. O ciclo é causado por mudanças na inclinação do eixo da Terra.",
     hints: [
@@ -44,8 +44,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Fogo e pedra. Os fornos mais antigos da África subsaariana. 2.000 anos de chama.",
     context: "Na região dos Grandes Lagos Africanos, os ancestrais transformavam minério em metal. Os fornos de <strong>Cyamudongo</strong>, no Ruanda, datam de há 2.000 anos. Alguns arqueólogos acreditam que esta metalurgia se desenvolveu de forma independente, sem influência externa.",
     question: "Que metal era produzido nestes fornos?",
-    options: ["Ferro", "Ouro", "Cobre", "Bronze"],
-    correct: 0,
+    options: ["Cobre", "Ferro"],
+    correct: 1,
     explanation: "A metalurgia do ferro na África Central é uma das mais antigas do mundo. Os fornos de Cyamudongo (Ruanda) demonstram conhecimento técnico sofisticado — controlavam temperatura, fluxo de ar e composição do minério.",
     hints: [
       "É o metal mais comum em ferramentas e armas.",
@@ -63,8 +63,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Das florestas ao oceano. Ferro, milho e uma língua. 300 milhões de vozes hoje.",
     context: "Há 5.000 anos, partiram das florestas entre a Nigéria e os Camarões. Levaram consigo o ferro, a agricultura e as suas línguas. Ao longo de milénios, espalharam-se por quase todo o continente. As suas línguas — quicongo, quimbundo, suaíli, zulu — são hoje faladas por um terço de todos os africanos.",
     question: "Quem são estes povos?",
-    options: ["Os Bantu", "Os Khoisan", "Os Tuaregues", "Os Nilotas"],
-    correct: 0,
+    options: ["Os Khoisan", "Os Bantu"],
+    correct: 1,
     explanation: "A expansão Bantu é um dos maiores movimentos migratórios da história humana. Começou há cerca de 5.000 anos e transformou a demografia, a língua e a cultura de quase todo o continente.",
     hints: [
       "O nome significa \"pessoas\" na sua língua.",
@@ -82,8 +82,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "15.000 desenhos numa montanha de areia. Nadadores, pastores, hipopótamos. Um mundo que já não existe.",
     context: "No coração do Saara, um planalto esconde mais de 15.000 pinturas e gravuras. Mostram um mundo verde: nadadores, pastores, caçadores de hipopótamos. Tudo onde hoje só há areia. É <strong>Património Mundial da UNESCO</strong> desde 1982.",
     question: "Em que país estão estas pinturas?",
-    options: ["Argélia", "Egito", "Líbia", "Marrocos"],
-    correct: 0,
+    options: ["Egito", "Argélia"],
+    correct: 1,
     explanation: "Tassili n'Ajjer, no sudeste da Argélia, é um dos mais importantes registos da vida pré-histórica em África. As pinturas datam de 8.000 a 1.500 anos atrás.",
     hints: [
       "Fica no norte de África, no coração do deserto.",
@@ -101,7 +101,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Sete milhões de anos. Uma face que olha para nós do fundo do tempo.",
     context: "Em 2001, no deserto do Djurab no Chade, paleontólogos liderados por Michel Brunet encontraram um crânio com cerca de <strong>7 milhões de anos</strong>. Apelidado de <em>Toumaï</em> (\"esperança de vida\" na língua dazaga), é considerado um dos mais antigos hominídeos conhecidos. Recoloca a história humana muito antes do Vale do Rift e fora dele.",
     question: "Em que país foi descoberto o hominídeo mais antigo, Toumaï?",
-    options: ["Chade", "Etiópia", "Quénia", "Tanzânia"],
+    options: ["Chade", "Quénia"],
     correct: 0,
     explanation: "Toumaï (Sahelanthropus tchadensis) é o hominídeo mais antigo conhecido até hoje, encontrado no Chade. A descoberta forçou a ciência a expandir o mapa das origens humanas para além do leste africano.",
     hints: [
@@ -120,8 +120,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Pedra contra pedra. As primeiras ferramentas saíram daqui.",
     context: "Em <strong>Olduvai</strong>, na Tanzânia, Mary e Louis Leakey escavaram durante décadas e revelaram a indústria lítica mais antiga do mundo: a Olduwaiana, com cerca de 1,8 milhão de anos. Lascadores de pedra que mudaram a história humana — antes da escrita, antes do fogo dominado, já moldávamos a matéria.",
     question: "A que indústria lítica pertencem as ferramentas mais antigas de Olduvai?",
-    options: ["Olduwaiana", "Acheulense", "Mousteriense", "Magdaleniana"],
-    correct: 0,
+    options: ["Mousteriense", "Olduwaiana"],
+    correct: 1,
     explanation: "A indústria Olduwaiana é a mais antiga conhecida, com cerca de 1,8 a 2,5 milhões de anos. As ferramentas eram lascas brutas e seixos talhados, atribuídas ao Homo habilis e antecessores.",
     hints: [
       "O nome vem da própria garganta.",
@@ -139,7 +139,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Adornos e ocre vermelho. Já éramos humanos. Já tínhamos arte.",
     context: "Na <strong>Border Cave</strong>, na fronteira entre KwaZulu-Natal e Eswatini, foram encontrados esqueletos de Homo sapiens com mais de <strong>200.000 anos</strong>, contas de casca de ovo de avestruz e ocre vermelho usado como pigmento. Provas de simbolismo, ornamento corporal e ritual muito antes do que se imaginava.",
     question: "Em que parte da África está localizada a Border Cave?",
-    options: ["Sul da África", "Norte da África", "Chifre da África", "África Ocidental"],
+    options: ["Sul da África", "Chifre da África"],
     correct: 0,
     explanation: "A Border Cave fica na fronteira entre a África do Sul (KwaZulu-Natal) e Eswatini. Os achados — Homo sapiens, ornamentos, ocre — provam comportamento simbólico no sul da África há mais de 200 mil anos.",
     hints: [
@@ -158,8 +158,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "A boca estala. Sons que nenhum outro idioma do mundo guarda.",
     context: "As línguas dos povos <strong>Khoisan</strong> — !Xun, ǂ'Amkoe, Nǁng, Khoekhoegowab — usam consoantes <strong>cliques</strong> únicas no mundo. Estudos genéticos e linguísticos sugerem que estes povos representam uma das ramificações mais antigas da humanidade, estabelecidos no sul da África há dezenas de milhares de anos.",
     question: "Qual característica fonética distingue as línguas Khoisan?",
-    options: ["Cliques (consoantes não-pulmônicas)", "Tons em quatro alturas", "Vogais nasais", "Ausência de consoantes"],
-    correct: 0,
+    options: ["Tons em quatro alturas", "Cliques (consoantes não-pulmônicas)"],
+    correct: 1,
     explanation: "As línguas Khoisan são as únicas no mundo a usar consoantes cliques como fonemas plenos. Algumas (zulu, xhosa) emprestaram cliques do contato com Khoisan ancestral.",
     hints: [
       "É um som feito sem ar dos pulmões.",
@@ -177,7 +177,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Há 70 mil anos, alguém atravessou um estreito. O resto do mundo começou ali.",
     context: "Estudos genéticos e arqueológicos mostram que populações de <strong>Homo sapiens</strong> saíram da África há cerca de 70.000 anos, atravessando o Estreito de Bab-el-Mandeb e o Sinai. Toda a diversidade humana fora da África descende dessas populações africanas. A genética chama-lhe <em>Out of Africa</em>.",
     question: "De onde saíram as populações que povoaram o resto do mundo?",
-    options: ["África", "Ásia Central", "Europa", "Oceania"],
+    options: ["África", "Europa"],
     correct: 0,
     explanation: "Todas as populações humanas fora da África descendem de migrações que partiram do continente africano há aproximadamente 70 mil anos. A diversidade genética dentro da África ainda hoje é maior do que no resto do mundo somado.",
     hints: [
@@ -196,8 +196,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Antes do Egito. Antes da Mesopotâmia. Já cozíamos no fogo do Mali.",
     context: "Em <strong>Ounjougou</strong>, no Mali, foram encontrados fragmentos de cerâmica datados de cerca de <strong>11.500 anos</strong> — entre as mais antigas do mundo, anteriores às do Crescente Fértil. Confirma a África como um centro independente de inovação tecnológica no Holoceno inicial.",
     question: "Onde foi encontrada uma das cerâmicas mais antigas do mundo?",
-    options: ["Mali", "Mesopotâmia", "China", "Anatólia"],
-    correct: 0,
+    options: ["Anatólia", "Mali"],
+    correct: 1,
     explanation: "Ounjougou, no planalto Dogon do Mali, contém cerâmicas com 11.500 anos. A descoberta provou que a invenção da cerâmica em África foi independente de outras regiões.",
     hints: [
       "É um país do Sahel ocidental.",
@@ -216,12 +216,10 @@ window.SANKOFA_ENIGMAS = [
     context: "Estudos arqueozoológicos e genéticos mostram que o gado africano — em especial o <strong>N'Dama</strong> e outras raças zebuínas — foi domesticado de forma <strong>independente</strong> no Sahel há cerca de 7.000 a 9.000 anos, possivelmente a partir do auroque norte-africano. Não dependeu da expansão do gado vindo do Oriente Médio.",
     question: "O gado bovino africano foi domesticado:",
     options: [
-      "De forma independente em África",
-      "Apenas trazido da Ásia",
-      "Apenas trazido da Europa",
-      "Não foi domesticado em África"
+      "Não foi domesticado em África",
+      "De forma independente em África"
     ],
-    correct: 0,
+    correct: 1,
     explanation: "A domesticação do gado em África foi um processo independente, anterior ou paralelo ao do Oriente Médio. O N'Dama, resistente à tripanossomíase, é um dos resultados desse longo processo.",
     hints: [
       "Foi um processo paralelo ao do Crescente Fértil.",
@@ -239,8 +237,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Eland em fuga. Caçadores em transe. A montanha guarda 4.000 anos de imagens.",
     context: "Nas montanhas <strong>Drakensberg</strong> da África do Sul e Lesoto, povos San pintaram durante mais de 4.000 anos. Mais de 35.000 imagens documentam caça, êxtase xamânico, a figura sagrada do <em>eland</em> (antílope-cabra) e cosmologias complexas. É Património Mundial da UNESCO desde 2000.",
     question: "Qual povo é o autor das pinturas rupestres de Drakensberg?",
-    options: ["San", "Zulu", "Xhosa", "Tswana"],
-    correct: 0,
+    options: ["Tswana", "San"],
+    correct: 1,
     explanation: "Os San (também chamados Bushmen, termo hoje considerado pejorativo) são os autores das pinturas. Suas tradições xamânicas e a centralidade do eland organizam a cosmologia das imagens.",
     hints: [
       "É um povo Khoisan caçador-coletor.",
@@ -258,7 +256,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Mais de 1.500 línguas vivas. A maior diversidade linguística do planeta.",
     context: "A África abriga quatro grandes famílias linguísticas: <strong>Níger-Congo</strong> (a maior família do mundo em número de línguas, c. 1.500), <strong>Afro-asiática</strong> (árabe, hauçá, somali, hebraico), <strong>Nilo-Saariana</strong> e <strong>Khoisan</strong>. É a região mais diversa linguisticamente do planeta.",
     question: "Qual família linguística é a maior do mundo em número de línguas?",
-    options: ["Níger-Congo", "Indo-europeia", "Sino-tibetana", "Afro-asiática"],
+    options: ["Níger-Congo", "Indo-europeia"],
     correct: 0,
     explanation: "A família Níger-Congo, com cerca de 1.500 línguas, é a maior do mundo. Inclui as línguas bantu (suaíli, zulu, quicongo) e centenas de outras faladas da Mauritânia ao Cabo.",
     hints: [
@@ -277,7 +275,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Antes do trono duplo, antes das pirâmides. Já havia rei no Alto Egito.",
     context: "A cultura <strong>Naqada</strong> (c. 4.000–3.100 a.C.), no Alto Egito, é a base da civilização faraónica. Cerâmicas pintadas, paletas votivas e túmulos elaborados mostram uma sociedade hierarquizada já antes da unificação política. <strong>Narmer</strong>, primeiro faraó da história unificada, fechou esse período.",
     question: "Qual cultura pré-dinástica deu origem ao Egito faraónico?",
-    options: ["Naqada", "Nok", "Kerma", "Meroé"],
+    options: ["Naqada", "Meroé"],
     correct: 0,
     explanation: "Naqada (Alto Egito) precede e prepara a civilização faraónica. Sua paleta de Narmer, datada de c. 3.100 a.C., é tida como o documento histórico mais antigo da unificação.",
     hints: [
@@ -296,8 +294,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Onde o deserto encontra a vida. Um dom das águas, não dos deuses.",
     context: "Os antigos egípcios chamavam à sua terra <strong>Kemet</strong>, que significa \"a Terra Negra\". O nome não se referia ao povo, mas sim ao solo escuro e fértil depositado pelo Rio Nilo a cada inundação anual, em oposição a <em>Deshret</em>, a \"terra vermelha\" do deserto estéril.",
     question: "O que permitiu o surgimento da civilização de Kemet no meio do deserto?",
-    options: ["Odisseia de navegadores", "A Inundação do Nilo", "O comércio de sal", "A mineração de ouro"],
-    correct: 1,
+    options: ["Odisseia de navegadores", "A mineração de ouro", "A Inundação do Nilo"],
+    correct: 2,
     explanation: "A inundação anual do Rio Nilo depositava sedimentos vulcânicos ricos nas suas margens. Sem este ciclo natural, a agricultura, e portanto a própria civilização egípcia, não poderia ter existido. Heródoto chamou ao Egito \"um dom do Nilo\".",
     hints: [
       "É um fenómeno natural relacionado com água.",
@@ -315,8 +313,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Antes dos faraós, existiam os reis guerreiros do sul. O arco era a sua arma, o ouro a sua riqueza.",
     context: "A sul do Egito ficava o Reino de <strong>Cuxe</strong>, centrado na capital de Kerma. Eram arqueiros tão exímios que os egípcios chamavam à sua terra <em>Ta-Seti</em> (A Terra do Arco). Muito antes da Grécia ou de Roma existirem, Kerma construía cidades complexas e controlava o comércio de ouro africano.",
     question: "Como os antigos egípcios chamavam a região de Cuxe?",
-    options: ["Terra do Arco", "Punt", "Coração do Mundo", "Terra do Ouro"],
-    correct: 0,
+    options: ["Coração do Mundo", "Punt", "Terra do Arco"],
+    correct: 2,
     explanation: "Ta-Seti (Terra do Arco) era o nome egípcio para a Baixa Núbia (parte de Cuxe). Os guerreiros núbios eram arqueiros lendários e frequentemente serviam como mercenários de elite no exército egípcio.",
     hints: [
       "É o nome de uma arma de longo alcance.",
@@ -334,8 +332,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Eles marcharam do sul para unificar as duas terras. Protegeram os templos antigos quando o Egito estava em colapso.",
     context: "No século VIII a.C., o Egito estava fragmentado. Piye, rei de Cuxe, conquistou o Egito e fundou a <strong>25ª Dinastia</strong>, conhecida como a dinastia dos Faraós Negros. Eles não destruíram o Egito; pelo contrário, restauraram antigas tradições egípcias, reconstruíram templos e defenderam o império contra os temíveis Assírios.",
     question: "Qual faraó núbio salvou Jerusalém do exército Assírio, sendo mencionado até na Bíblia?",
-    options: ["Ramsés II", "Taharqa", "Tutancâmon", "Amenhotep"],
-    correct: 1,
+    options: ["Amenhotep", "Tutancâmon", "Taharqa"],
+    correct: 2,
     explanation: "O Rei Taharqa marchou com o seu exército para defender os seus aliados em Jerusalém contra o imperador assírio Senaqueribe, um evento registado na Bíblia (como 'Tiraca'). O seu reinado marcou um renascimento cultural massivo no Egito e na Núbia.",
     hints: [
       "O seu nome começa com a letra 'T'.",
@@ -353,7 +351,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Mais pirâmides que o Egito inteiro. Fornos ardentes e fumo negro na capital do sul.",
     context: "Após serem expulsos do Egito pelos Assírios, os núbios mudaram a sua capital para o sul, para <strong>Meroé</strong>. Lá construíram mais de 200 pirâmides para os seus reis e rainhas. Além disso, tornaram-se o grande polo metalúrgico de África, com dezenas de fornos de fundição de ferro.",
     question: "O que diferencia as pirâmides de Meroé das de Gizé (Egito)?",
-    options: ["São feitas de ouro puro", "São subterrâneas", "São mais íngremes e pontiagudas", "Não têm túmulos"],
+    options: ["Não têm túmulos", "São feitas de ouro puro", "São mais íngremes e pontiagudas"],
     correct: 2,
     explanation: "As pirâmides de Meroé são caracteristicamente mais pequenas e com uma inclinação muito mais acentuada (íngreme) do que as pirâmides egípcias. Eram usadas como capelas funerárias acima da câmara mortuária subterrânea real.",
     hints: [
@@ -372,7 +370,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Sinais esculpidos na pedra. Uma língua falada por reis e rainhas, mas que até hoje guarda os seus segredos.",
     context: "O povo de Meroé não usava apenas hieróglifos egípcios; inventaram o seu próprio alfabeto, conhecido como <strong>Escrita Meroítica</strong>. É a segunda mais antiga escrita de África e possui um sistema alfabético, não apenas pictográfico. Conseguimos ler os sons, mas ainda não compreendemos totalmente a gramática e o significado das palavras.",
     question: "O que torna a escrita meroítica única entre as escritas da região naquela época?",
-    options: ["Usava apenas números", "Baseava-se em sons alfabéticos", "Era lida da direita para a esquerda", "Era escrita apenas em papiro"],
+    options: ["Era lida da direita para a esquerda", "Baseava-se em sons alfabéticos", "Era escrita apenas em papiro"],
     correct: 1,
     explanation: "Ao contrário dos hieróglifos egípcios originais que usavam milhares de símbolos para palavras e ideias, o Meroítico tinha um sistema mais simples e avançado de 23 sinais fonéticos (alfabeto) que representavam os sons.",
     hints: [
@@ -391,7 +389,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Mães, sacerdotisas e generais guerreiras. Roma aprendeu a temê-las, e a história apagou as suas coroas.",
     context: "Em Meroé, as mulheres governavam com poder absoluto. As rainhas reinantes eram chamadas de <strong>Kandake</strong>. A mais famosa, Amanirenas, liderou pessoalmente um exército contra as legiões de Roma. Ela perdeu um olho na batalha, mas forçou o poderoso imperador Augusto a assinar um tratado de paz que favorecia os Núbios.",
     question: "Qual era o título dado às poderosas rainhas-guerreiras do Reino de Cuxe?",
-    options: ["Faraó", "Cleópatra", "Kandake", "Makeda"],
+    options: ["Faraó", "Cleópatra", "Kandake"],
     correct: 2,
     explanation: "Kandake (ou Candace) era o título das rainhas mães e monarcas do reino de Cuxe. Elas lideravam exércitos, construíam templos e possuíam um estatuto que rivalizava ou superava os reis masculinos em Meroé.",
     hints: [
@@ -410,8 +408,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Nas montanhas da Etiópia, um império rico ergueu monumentos que perfuravam os céus.",
     context: "Nos primeiros séculos d.C., o <strong>Império de Axum</strong> ascendeu nas terras altas da atual Etiópia e Eritreia. O império controlava o estreito que liga o Mar Vermelho ao Oceano Índico. Cunhavam as suas próprias moedas de ouro e erguíam estelas (obeliscos) de granito monolítico pesando centenas de toneladas.",
     question: "Segundo o profeta persa Mani (séc. III d.C.), Axum era uma das quatro maiores potências do mundo. Quais eram as outras três?",
-    options: ["Grécia, Egito e Índia", "Roma, Pérsia e China", "Cartago, Mali e Zimbábue", "Incas, Maias e Astecas"],
-    correct: 1,
+    options: ["Roma, Pérsia e China", "Incas, Maias e Astecas", "Cartago, Mali e Zimbábue"],
+    correct: 0,
     explanation: "Mani escreveu que as quatro grandes potências mundiais do seu tempo eram o Império Romano, a Pérsia (Império Sassânida), a China e Axum. Isso atesta a vasta riqueza e a formidável influência naval e comercial que o império africano de Axum detinha na antiguidade tardia.",
     hints: [
       "São grandes impérios na Europa e Ásia.",
@@ -429,7 +427,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "O vento mudava a rotação dos reinos. No chifre de África, o Rei abraçou uma nova fé antes do fim.",
     context: "O Rei Ezana, soberano de Axum, converteu-se ao Cristianismo no início do século IV d.C. — quase ao mesmo tempo que o Império Romano. Ezana substituiu o símbolo do disco solar nas suas moedas pelo símbolo da cruz cristã. Axum tornou-se um dos primeiros estados cristãos do mundo, uma tradição que a Etiópia mantém viva há 1.700 anos.",
     question: "Qual destas foi a principal razão da queda comercial do Império de Axum séculos depois?",
-    options: ["Secas extremas e pragas", "Conquista pelos romanos", "A expansão árabe controlando o Mar Vermelho", "Guerras civis intermináveis"],
+    options: ["Secas extremas e pragas", "Guerras civis intermináveis", "A expansão árabe controlando o Mar Vermelho"],
     correct: 2,
     explanation: "A expansão do Islão a partir do século VII alterou fundamentalmente as rotas de comércio no Mar Vermelho. O controlo árabe dos portos cortou Axum das rotas marítimas vitais para o Império Bizantino e Índia, forçando o império a isolar-se nas terras altas e levando ao seu declínio económico.",
     hints: [
@@ -452,8 +450,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Sessenta mil pessoas. Doze mil camelos. Cairo lembrou por doze anos.",
     context: "Em 1324, <strong>Mansa Musa</strong>, imperador do Mali, partiu de Niani em direção a Meca acompanhado de 60.000 pessoas e 12.000 camelos carregando ouro. Distribuiu tanto ouro pelo caminho — sobretudo no Cairo — que o preço do metal desvalorizou por mais de uma década. Cronistas árabes descreveram a peregrinação por séculos.",
     question: "Quem foi o imperador do Mali que devastou economicamente o Cairo em 1324?",
-    options: ["Mansa Musa", "Sundiata Keita", "Askia Muhammad", "Ibn Battuta"],
-    correct: 0,
+    options: ["Askia Muhammad", "Ibn Battuta", "Mansa Musa"],
+    correct: 2,
     explanation: "Mansa Musa governou o Mali entre 1312 e 1337. Sua peregrinação a Meca tornou o Mali conhecido em todo o mundo islâmico e europeu. Foi nos mapas de Cresques (1375) que o Mali apareceu pela primeira vez na cartografia ocidental.",
     hints: [
       "Imperador do Mali no século XIV.",
@@ -471,8 +469,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Nasceu sem caminhar. Aos sete anos, ergueu o ferro. Aos vinte, fundou um império.",
     context: "<strong>Sundiata Keita</strong> (c. 1217-1255) nasceu com uma deficiência física e foi rejeitado como herdeiro. Reconquistou o trono ao derrotar o feiticeiro-rei Sumanguru Kanté na <strong>batalha de Kirina (1235)</strong>, fundando o Império do Mali. A <em>Carta de Manden</em> (também conhecida como Kurukan Fuga) é considerada uma das primeiras declarações de direitos humanos da história.",
     question: "Em que batalha Sundiata Keita derrotou Sumanguru e fundou o Mali?",
-    options: ["Kirina", "Tabkin Kwotto", "Toumba", "Tondibi"],
-    correct: 0,
+    options: ["Toumba", "Tabkin Kwotto", "Kirina"],
+    correct: 2,
     explanation: "A batalha de Kirina, em 1235, é o evento fundador do Mali. A <em>Epopeia de Sundiata</em>, transmitida oralmente por griôs durante séculos antes de ser escrita, narra essa história — Sundiata Keita é considerado a versão histórica do herói clássico mandinga.",
     hints: [
       "Aconteceu na atual região do Mali.",
@@ -490,8 +488,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Setecentos mil manuscritos. Estudantes vinham do Cairo, Marraquexe, Granada — todos pediam aula.",
     context: "<strong>Tombuctu</strong>, no atual Mali, abrigava no século XV três grandes universidades: <em>Sankoré</em>, <em>Djinguereber</em> e <em>Sidi Yahia</em>. Suas bibliotecas reuniam mais de <strong>700.000 manuscritos</strong> em árabe, idiomas africanos e até hebraico. Astronomia, medicina, matemática, direito islâmico — Tombuctu era polo intelectual global, anterior a Yale, Oxford e Sorbonne.",
     question: "Quantos manuscritos abrigavam as bibliotecas de Tombuctu no auge do século XV?",
-    options: ["Mais de 700.000", "Cerca de 5.000", "Aproximadamente 50.000", "Apenas algumas dezenas"],
-    correct: 0,
+    options: ["Aproximadamente 50.000", "Mais de 700.000", "Cerca de 5.000"],
+    correct: 1,
     explanation: "Estimativas conservadoras falam em mais de 700 mil manuscritos. Em 2012, durante a guerra civil, mais de 350 mil foram resgatados secretamente por bibliotecários que os esconderam em casas particulares e levaram a Bamako.",
     hints: [
       "Mais de meio milhão.",
@@ -509,7 +507,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Onde o Mali enfraqueceu, o Songhai cresceu. E o novo imperador veio com lei e exército.",
     context: "Após o declínio do Mali, o <strong>Império Songhai</strong> emergiu como maior potência da África Ocidental sob <strong>Askia Muhammad I</strong> (1493-1528). Reorganizou o império em províncias administrativas, padronizou pesos e medidas, expandiu Tombuctu como centro intelectual e fez também sua peregrinação a Meca em 1497.",
     question: "Que imperador organizou o Songhai como maior estado africano de seu tempo?",
-    options: ["Askia Muhammad I", "Sonni Ali Ber", "Mansa Suleyman", "Mai Idris Alooma"],
+    options: ["Askia Muhammad I", "Sonni Ali Ber", "Mansa Suleyman"],
     correct: 0,
     explanation: "Askia Muhammad (também escrito Askia Mohamed) tomou o poder em 1493 derrotando os filhos de Sonni Ali. Sua reforma administrativa e fiscal fez do Songhai um modelo de organização política africana até a invasão marroquina em 1591.",
     hints: [
@@ -529,12 +527,11 @@ window.SANKOFA_ENIGMAS = [
     context: "No comércio transaariano, o <strong>sal</strong> do oásis de <em>Taghaza</em> (Saara) era trocado pelo <strong>ouro</strong> dos campos de Bambuk e Bure (atual Senegal/Mali) — frequentemente <strong>peso por peso</strong>. Caravanas de mais de 1.000 camelos atravessavam o deserto. Ibn Battuta registou isso em 1352.",
     question: "Por que o sal era tão valorizado nas rotas transaarianas?",
     options: [
+      "Era difícil de transportar mais que ouro",
       "Era escasso ao sul do Saara e essencial para conservar alimentos",
-      "Era usado como moeda exclusiva do Cairo",
-      "Tinha valor religioso no Islão",
-      "Era difícil de transportar mais que ouro"
+      "Era usado como moeda exclusiva do Cairo"
     ],
-    correct: 0,
+    correct: 1,
     explanation: "O sul do Saara não tem reservas de sal acessíveis. Em zonas tropicais úmidas, o sal era essencial para preservar carne e peixe e para a saúde humana. Por isso, ao sul, custava o que ouro custava ao norte.",
     hints: [
       "Tem a ver com escassez geográfica.",
@@ -552,8 +549,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Conheceu três continentes. Mas escolheu o Mali para ficar mais tempo.",
     context: "<strong>Ibn Battuta</strong> (1304-1369) foi o maior viajante medieval — atravessou 120.000 km, mais que Marco Polo. Em 1352-1353 visitou o Mali sob Mansa Suleyman e descreveu detalhadamente Niani, Tombuctu e a justiça mandinga. Sua <em>Rihla</em> é fonte primária essencial para a história do Mali.",
     question: "Que viajante muçulmano descreveu o Mali em 1352?",
-    options: ["Ibn Battuta", "Marco Polo", "Al-Idrisi", "Ibn Khaldun"],
-    correct: 0,
+    options: ["Al-Idrisi", "Ibn Battuta", "Marco Polo"],
+    correct: 1,
     explanation: "Ibn Battuta nasceu em Tânger (Marrocos) e viajou por todo o mundo islâmico durante 30 anos. Sua passagem pelo Mali é única — descreveu mulheres com autoridade política, justiça pública impecável e segurança nas rotas.",
     hints: [
       "Marroquino do século XIV.",
@@ -571,8 +568,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Foi exilado em Marraquexe. Voltou pra escrever ainda mais que antes.",
     context: "<strong>Ahmed Baba al-Massufi</strong> (1556-1627), de Tombuctu, foi um dos maiores juristas do mundo islâmico. Escreveu mais de 50 obras. Após a invasão marroquina (1591), foi exilado em Marraquexe por 14 anos, onde continuou ensinando. Voltou para Tombuctu em 1608 e escreveu até a morte.",
     question: "Que sábio de Tombuctu foi exilado em Marraquexe e produziu mais de 50 obras?",
-    options: ["Ahmed Baba", "Mahmud Ka'ti", "Abd al-Rahman al-Sa'di", "Al-Hajj Salim Suwari"],
-    correct: 0,
+    options: ["Al-Hajj Salim Suwari", "Ahmed Baba", "Abd al-Rahman al-Sa'di"],
+    correct: 1,
     explanation: "Ahmed Baba é o nome mais celebrado da intelectualidade malinesa. O Instituto Ahmed Baba em Tombuctu é hoje um dos principais centros de preservação de manuscritos africanos.",
     hints: [
       "Sábio de Tombuctu do século XVI-XVII.",
@@ -590,7 +587,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Antes de Sundiata, outro reino dominou o ouro do Sahel.",
     context: "O <strong>Império de Gana</strong> (séc. IV-XIII), que não corresponde ao atual país de Gana mas ficava na região do Mali/Mauritânia/Senegal, foi descrito por al-Bakri em 1067 como \"o reino mais rico do mundo em ouro\". Sua capital era <em>Kumbi Saleh</em>. Foi sucedido pelo Mali no século XIII.",
     question: "Como se chamava a capital do Império de Gana?",
-    options: ["Kumbi Saleh", "Tombuctu", "Niani", "Gao"],
+    options: ["Kumbi Saleh", "Tombuctu", "Niani"],
     correct: 0,
     explanation: "Kumbi Saleh, na atual Mauritânia, foi capital de Gana até por volta de 1240. Tinha cidade dupla — uma muçulmana e outra animista — separadas por 10 km. As ruínas ainda existem e foram parcialmente escavadas.",
     hints: [
@@ -613,8 +610,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Ilha de pedra. Sultão com moeda própria. Vasco da Gama destruiu em 1505.",
     context: "<strong>Kilwa Kisiwani</strong> (atual Tanzânia) foi a mais rica das cidades-estado suaíli. Cunhava sua própria moeda em ouro com nome do Sultão Al-Hassan ibn Suleiman. No século XIV, Ibn Battuta a visitou e a descreveu como \"uma das mais belas cidades do mundo\". Hoje, Patrimônio Mundial da UNESCO.",
     question: "Que cidade-estado suaíli cunhava sua própria moeda em ouro?",
-    options: ["Kilwa Kisiwani", "Mogadíscio", "Mombasa", "Sofala"],
-    correct: 0,
+    options: ["Sofala", "Mombasa", "Kilwa Kisiwani", "Mogadíscio"],
+    correct: 2,
     explanation: "Kilwa controlava o comércio de ouro de Sofala (Moçambique atual) e de marfim. Suas ruínas — incluindo o Grande Palácio de Husuni Kubwa e a Grande Mesquita — são as mais bem preservadas da costa suaíli.",
     hints: [
       "Está na atual Tanzânia, em uma ilha.",
@@ -633,12 +630,12 @@ window.SANKOFA_ENIGMAS = [
     context: "<strong>Grande Zimbabwe</strong> (séc. XI-XV) é a maior estrutura pré-colonial da África subsaariana. Construída sem argamassa, com pedras encaixadas com precisão milimétrica. Cobria 7,22 km² e abrigava cerca de 18.000 pessoas. Os europeus do século XIX se recusaram a aceitar autoria africana — Cecil Rhodes mandou apagar do mapa.",
     question: "Como foi construído o Grande Zimbabwe?",
     options: [
-      "Pedras encaixadas sem argamassa",
-      "Tijolos de barro queimados ao sol",
       "Madeira e palha entrelaçadas",
-      "Blocos de pedra ligados com cimento"
+      "Pedras encaixadas sem argamassa",
+      "Blocos de pedra ligados com cimento",
+      "Tijolos de barro queimados ao sol"
     ],
-    correct: 0,
+    correct: 1,
     explanation: "A técnica de empilhamento sem argamassa exige cálculo angular e seleção precisa de cada pedra. O sítio resistiu a 700 anos sem manutenção significativa.",
     hints: [
       "Sem cimento, sem argamassa.",
@@ -656,8 +653,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Bantu de raiz. Árabe de tempero. Persa de ondas. Hoje 200 milhões falam.",
     context: "O <strong>suaíli</strong> (kiswahili) é uma língua bantu com forte influência árabe (cerca de 30% do vocabulário) e empréstimos persas, malaios e portugueses. Nasceu na costa leste a partir do contacto comercial intenso entre o século VII e XV. Hoje é língua oficial da Tanzânia, Quênia, Uganda e Ruanda.",
     question: "A que família linguística pertence o suaíli em sua origem?",
-    options: ["Bantu (Níger-Congo)", "Afro-asiática (Semita)", "Nilo-Saariana", "Malaio-Polinésia"],
-    correct: 0,
+    options: ["Nilo-Saariana", "Afro-asiática (Semita)", "Malaio-Polinésia", "Bantu (Níger-Congo)"],
+    correct: 3,
     explanation: "A gramática e o léxico básico do suaíli são bantu. A romantização ocidental do suaíli como \"língua árabe\" é equivocada — é uma língua africana que absorveu vocabulário árabe.",
     hints: [
       "Mesma família do quicongo, zulu e quimbundo.",
@@ -675,8 +672,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Cravo, canela, gengibre. O sultão lembra do tempo em que era Pérsia.",
     context: "<strong>Zanzibar</strong> (Tanzânia) tornou-se o maior centro de produção de cravo-da-índia do mundo no século XIX, sob domínio do <em>Sultanato de Omã</em>, que mudou sua capital de Mascate para Stone Town em 1840. A ilha era também grande entreposto de marfim e, infelizmente, último grande mercado de escravos da costa leste africana.",
     question: "Que império árabe transferiu sua capital para Zanzibar em 1840?",
-    options: ["Omã", "Iêmen", "Otomano", "Hadramaute"],
-    correct: 0,
+    options: ["Hadramaute", "Omã", "Iêmen", "Otomano"],
+    correct: 1,
     explanation: "Sayyid Said de Omã transferiu a capital de Mascate para Zanzibar atraído pela riqueza do comércio de cravo, marfim e escravos. O Sultanato de Zanzibar perdurou até 1964, quando uma revolução o derrubou.",
     hints: [
       "Reino árabe da Península Arábica.",
@@ -694,8 +691,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Onde o Zambeze encontra o oceano, o ouro do Monomotapa virava porcelana chinesa.",
     context: "<strong>Sofala</strong> (atual Moçambique) foi o porto-chave do escoamento do <strong>ouro do Reino do Monomotapa</strong> (interior do Zimbabwe) para a costa suaíli. Trocavam ouro por porcelana chinesa, vidro persa e tecidos indianos — encontrados nas escavações arqueológicas do Grande Zimbabwe.",
     question: "Que reino do interior fornecia ouro para o porto de Sofala?",
-    options: ["Monomotapa (Mwene Mutapa)", "Mali", "Songhai", "Kongo"],
-    correct: 0,
+    options: ["Kongo", "Songhai", "Monomotapa (Mwene Mutapa)", "Mali"],
+    correct: 2,
     explanation: "O Reino do Monomotapa (mais corretamente: Mwene Mutapa) sucedeu o Grande Zimbabwe a partir do século XV e dominou as terras altas entre Zambeze e Limpopo. Os portugueses interferiram nele a partir de 1530 e enfraqueceram-no.",
     hints: [
       "Reino do interior — não da costa.",
@@ -713,8 +710,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Seis meses para um lado. Seis meses pro outro. Toda economia obedecia ao céu.",
     context: "O comércio do Oceano Índico dependia das <strong>monções</strong>: vento de nordeste de novembro a março trazia navios da Índia/Arábia para a costa africana; vento de sudoeste de abril a outubro os levava de volta. Esse calendário definia preços, casamentos, cidades inteiras durante 1.500 anos.",
     question: "Que fenômeno climático regulava o comércio entre África Oriental e Ásia?",
-    options: ["Monções", "Furacões", "El Niño", "Ventos alísios"],
-    correct: 0,
+    options: ["Ventos alísios", "El Niño", "Monções", "Furacões"],
+    correct: 2,
     explanation: "As monções do Oceano Índico criavam um sistema previsível de navegação que permitiu intenso comércio antes da era europeia. A palavra \"monção\" vem do árabe <em>mawsim</em>, \"estação\".",
     hints: [
       "Vento que muda de direção sazonalmente.",
@@ -733,12 +730,12 @@ window.SANKOFA_ENIGMAS = [
     context: "<strong>Madagáscar</strong> foi povoada em duas ondas: malaios austronésios chegaram pelo Índico há cerca de 2.000 anos; bantos do leste africano chegaram pelo canal de Moçambique. Os <em>Merina</em> formaram um reino unificador no século XIX — Reino de Madagáscar — que resistiu a europeus até 1896.",
     question: "Madagáscar foi povoada por duas correntes principais — quais?",
     options: [
+      "Egípcios e Etíopes",
       "Austronésios (Indonésia/Malásia) e Bantos (África Oriental)",
-      "Árabes e Persas",
       "Indianos e Chineses",
-      "Egípcios e Etíopes"
+      "Árabes e Persas"
     ],
-    correct: 0,
+    correct: 1,
     explanation: "Estudos genéticos e linguísticos confirmam dupla origem. O <em>malgaxe</em>, língua oficial, é austronésio (família do bahasa indonésio), mas o léxico tem fortes empréstimos bantu, árabes e franceses.",
     hints: [
       "Uma corrente veio do Sudeste Asiático.",
@@ -757,12 +754,12 @@ window.SANKOFA_ENIGMAS = [
     context: "Em 1502 e 1505, esquadras portuguesas — sob Vasco da Gama e Francisco de Almeida — bombardearam e saquearam <strong>Kilwa, Mombasa e Mogadíscio</strong>. Em poucas décadas, todo o sistema mercantil suaíli foi destruído. Os portugueses construíram fortalezas (Fortaleza de Jesus em Mombasa) e impuseram tributos. A costa nunca recuperou plenamente.",
     question: "Que dois portugueses destruíram a costa suaíli no início do século XVI?",
     options: [
-      "Vasco da Gama e Francisco de Almeida",
       "Pedro Álvares Cabral e Bartolomeu Dias",
-      "Afonso de Albuquerque e Duarte Pacheco",
-      "Pero Vaz de Caminha e Tristão da Cunha"
+      "Pero Vaz de Caminha e Tristão da Cunha",
+      "Vasco da Gama e Francisco de Almeida",
+      "Afonso de Albuquerque e Duarte Pacheco"
     ],
-    correct: 0,
+    correct: 2,
     explanation: "A política portuguesa era \"mare clausum\": fechar o mar a outros povos. A destruição comercial da costa suaíli abriu caminho para o monopólio português no Índico durante o século XVI.",
     hints: [
       "Vasco da Gama foi o primeiro europeu a chegar à Índia.",
@@ -784,8 +781,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Cabeças de bronze com rostos individualizados. Cada peça era um livro de história.",
     context: "O <strong>Reino do Benin</strong> (atual Nigéria), distinto de Benim moderno, produziu uma das maiores tradições escultóricas em metal do mundo: os <em>Bronzes do Benin</em> — placas e cabeças funcionando como arquivos visuais dos Obas (reis). Em 1897, soldados britânicos saquearam mais de 4.000 peças. Devolução só começou em 2022.",
     question: "Onde ficava o Reino do Benin (dos famosos bronzes)?",
-    options: ["Sul da Nigéria", "República do Benim", "Togo", "Gana"],
-    correct: 0,
+    options: ["Gana", "Sul da Nigéria", "Togo", "República do Benim"],
+    correct: 1,
     explanation: "O Reino do Benin (Edo) ficava na região onde hoje é Benin City, no estado de Edo, sul da Nigéria. Não tem relação direta com a República do Benim (antigo Daomé). A confusão de nomes é europeia.",
     hints: [
       "País mais populoso da África.",
@@ -803,8 +800,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Quando os portugueses chegaram, encontraram embaixadores. Com cartas, latim e protocolo.",
     context: "O <strong>Reino do Kongo</strong> (séc. XIV-1914) foi um dos primeiros estados africanos a estabelecer relações diplomáticas com a Europa. <strong>Afonso I (Mvemba a Nzinga)</strong>, rei do Kongo (1509-1542), escreveu mais de <strong>20 cartas</strong> aos reis de Portugal e ao Papa, denunciando o tráfico negreiro. Algumas cartas estão preservadas nos arquivos do Vaticano.",
     question: "Que rei do Kongo denunciou o tráfico negreiro em cartas a Portugal e ao Vaticano?",
-    options: ["Afonso I (Mvemba a Nzinga)", "Lukeni lua Nimi", "Dom João Bemoim", "Henrique do Kongo"],
-    correct: 0,
+    options: ["Dom João Bemoim", "Lukeni lua Nimi", "Henrique do Kongo", "Afonso I (Mvemba a Nzinga)"],
+    correct: 3,
     explanation: "Afonso I converteu-se ao cristianismo e usou o letramento ocidental para defender seu reino. Em 1526, escreveu ao rei João III: \"... cada dia os mercadores tomam nossos parentes e filhos da terra... a corrupção e a depravação são tais que nosso reino fica completamente despovoado.\"",
     hints: [
       "Convertido ao cristianismo.",
@@ -822,8 +819,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Antes do Benin, antes de Oyo, foi aqui que o povo iorubá começou.",
     context: "<strong>Ifé</strong> (Nigéria) é considerada a cidade-mãe do povo iorubá e centro religioso do continente. Suas <em>cabeças de Ifé</em> (séc. XII-XIV), em terracota e bronze, foram aclamadas pelos europeus como \"obra-prima de naturalismo igual aos gregos clássicos\" — quando descobertas em 1910 deixaram a antropologia eurocêntrica em crise.",
     question: "Que cidade é considerada o centro religioso e mítico do povo iorubá?",
-    options: ["Ifé", "Oyo", "Benin", "Ogun"],
-    correct: 0,
+    options: ["Ogun", "Benin", "Ifé", "Oyo"],
+    correct: 2,
     explanation: "Em iorubá, Ifé é onde Olodumare criou o mundo e onde Oduduwa é sepultado. Toda dinastia iorubá traça linhagem a partir de Ifé. As cabeças de terracota mostram realismo extraordinário, anterior em séculos ao Renascimento europeu.",
     hints: [
       "Cidade-berço da civilização iorubá.",
@@ -841,7 +838,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Quando os homens hesitaram, ela liderou a guerra contra o Império Britânico.",
     context: "<strong>Yaa Asantewaa</strong> (1840-1921), rainha-mãe do Edweso (Asante, atual Gana), liderou a <em>Guerra do Trono Dourado</em> (1900) contra os britânicos. Disse aos chefes: \"Se vocês, homens de Ashanti, não avançarem, então nós, mulheres, avançaremos. Lutaremos os britânicos. Lutaremos até a última de nós cair.\" Foi exilada e morreu nas Seychelles.",
     question: "Que rainha-mãe liderou os Asante contra os britânicos em 1900?",
-    options: ["Yaa Asantewaa", "Nana Akua", "Afia Pokou", "Akua Asabea"],
+    options: ["Yaa Asantewaa", "Afia Pokou", "Nana Akua", "Akua Asabea"],
     correct: 0,
     explanation: "A guerra começou quando o governador britânico Frederick Hodgson tentou sentar-se no Trono Dourado — símbolo sagrado da nação asante. A reação militar liderada por Yaa Asantewaa retardou a anexação por meses.",
     hints: [
@@ -860,8 +857,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Cavalaria de elite. Constituição de 7 reis. Domínio do golfo do Benin por dois séculos.",
     context: "O <strong>Império de Oyo</strong> (séc. XV-XIX) foi a maior potência política iorubá. Tinha cavalaria pesada, sistema constitucional onde o <strong>Conselho dos Sete (Oyo Mesi)</strong> podia destituir o <em>Alaafin</em> (rei). Dominou economicamente boa parte do golfo do Benin antes de implodir em guerras civis no início do século XIX.",
     question: "Que conselho podia depor o Alaafin no Império de Oyo?",
-    options: ["Oyo Mesi (Conselho dos Sete)", "Ogboni", "Egbé", "Bashorun"],
-    correct: 0,
+    options: ["Ogboni", "Egbé", "Oyo Mesi (Conselho dos Sete)", "Bashorun"],
+    correct: 2,
     explanation: "O Oyo Mesi era um sistema sofisticado de checks and balances. Se o conselho julgasse o Alaafin tirano ou ineficaz, podia enviar uma cabaça de papagaio — sinal de que o rei devia se suicidar. Funcionou como mecanismo institucional por séculos.",
     hints: [
       "Conselho de 7 anciãos.",
@@ -879,8 +876,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Centro de África. Ferro, cobre, marfim. Antes do Kongo, depois do Kongo.",
     context: "Os reinos <strong>Luba</strong> (séc. XV-XIX) e <strong>Lunda</strong> (séc. XVI-XIX), no Congo central, dominaram amplas regiões da África central. Os Lunda exportavam <strong>cobre</strong> da região de Katanga (Congo) — a moeda <em>cruzeta de Katanga</em> em forma de X foi padrão de troca por séculos.",
     question: "Que reino africano cunhou as famosas cruzetas de cobre em forma de X?",
-    options: ["Lunda", "Mali", "Songhai", "Kongo"],
-    correct: 0,
+    options: ["Songhai", "Mali", "Lunda", "Kongo"],
+    correct: 2,
     explanation: "As cruzetas de Katanga (handa, kanjira) foram usadas como moeda por toda a África central por mais de 400 anos. Variavam em tamanho — desde miniaturas a peças de 6 kg — e indicavam riqueza social.",
     hints: [
       "Não é Mali nem Songhai.",
@@ -898,7 +895,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Mandou um soldado se ajoelhar. Sentou nele. Negociou de igual.",
     context: "<strong>Nzinga (Njinga) Mbande</strong> (1583-1663), rainha de Ndongo e Matamba (atual Angola), resistiu ao colonialismo português por mais de 30 anos. Em 1622, durante negociação em Luanda, recusou-se a sentar no chão (cadeira só para o governador) — mandou um soldado seu ajoelhar e sentou nele. Negociou de igual para igual.",
     question: "Que rainha angolana negociou \"sentada em soldado\" com os portugueses em 1622?",
-    options: ["Nzinga Mbande", "Mwene Mutapa", "Kimpa Vita", "Yaa Asantewaa"],
+    options: ["Nzinga Mbande", "Yaa Asantewaa", "Kimpa Vita", "Mwene Mutapa"],
     correct: 0,
     explanation: "Nzinga foi negociadora hábil, conhecedora de português e de táticas militares. Lutou até os 80 anos, alternando entre alianças, guerras e diplomacia. Hoje é símbolo nacional de Angola.",
     hints: [
@@ -917,7 +914,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Disse que Jesus era do Kongo. Foi queimada com o filho nos braços.",
     context: "<strong>Beatriz Kimpa Vita</strong> (c. 1684-1706), profetisa do Kongo, fundou o <em>movimento antoniano</em> — proclamou que Jesus, Maria e os santos eram negros e africanos, e que o Kongo era a verdadeira Terra Santa. Foi queimada viva pela inquisição capuchinha em 1706, com seu filho recém-nascido nos braços, aos 22 anos.",
     question: "Que profetisa congolesa foi queimada por dizer que Jesus era do Kongo?",
-    options: ["Kimpa Vita", "Nzinga", "Anna Nzinga", "Mãe Aninha"],
+    options: ["Kimpa Vita", "Mãe Aninha", "Anna Nzinga", "Nzinga"],
     correct: 0,
     explanation: "O <em>antonianismo</em> foi um dos primeiros movimentos religiosos sincréticos da África pós-contacto. Kimpa Vita argumentava que o capítulo bíblico que diz que \"todos os povos virão a Jerusalém\" referia-se ao Kongo. Foi declarada herege e executada.",
     hints: [
@@ -959,7 +956,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Foi traído por dentro. Mas o nome dele cresceu depois da morte.",
     context: "<strong>Zumbi dos Palmares</strong> (1655-1695) foi o último líder do quilombo. Sobrinho de Ganga Zumba, recusou o tratado de paz com Pernambuco (1678). Foi morto por traição em emboscada em <strong>20 de novembro de 1695</strong>. Seu corpo foi decapitado e a cabeça exposta em Recife como aviso. A data é hoje feriado nacional — Dia da Consciência Negra.",
     question: "Em que data Zumbi dos Palmares foi morto?",
-    options: ["20 de novembro de 1695", "13 de maio de 1695", "7 de setembro de 1695", "1 de janeiro de 1696"],
+    options: ["20 de novembro de 1695", "1 de janeiro de 1696", "7 de setembro de 1695", "13 de maio de 1695"],
     correct: 0,
     explanation: "20 de novembro tornou-se o Dia da Consciência Negra (lei 12.519/2011) — alternativa simbólica ao 13 de maio, data da Lei Áurea, que muitos consideram passiva. Zumbi simboliza protagonismo negro e luta ativa.",
     hints: [
@@ -978,8 +975,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Não viraria escrava de novo. Pulou do penhasco com o filho.",
     context: "<strong>Dandara dos Palmares</strong> (?–1694), companheira de Zumbi e estrategista militar, lutou nas linhas de frente em todas as batalhas. Quando os bandeirantes invadiram em 1694, em vez de ser capturada, atirou-se de um penhasco com seu filho. Não há registro do seu rosto — apenas o nome em testamentos militares portugueses.",
     question: "Quem foi a estrategista militar e companheira de Zumbi nos Palmares?",
-    options: ["Dandara", "Aqualtune", "Carlota", "Tereza de Benguela"],
-    correct: 0,
+    options: ["Carlota", "Dandara", "Tereza de Benguela", "Aqualtune"],
+    correct: 1,
     explanation: "Dandara aparece em poucos documentos históricos — o que é típico de mulheres negras invisibilizadas nos arquivos. Mas relatos militares portugueses mencionam \"a mulher de Zumbi\" liderando contra-ataques. A reconstrução de sua figura é trabalho de historiadoras como Lélia Gonzalez e Sueli Carneiro.",
     hints: [
       "Companheira de Zumbi.",
@@ -997,8 +994,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Princesa do Kongo. Escravizada. Mas mãe de uma linhagem de guerreiros.",
     context: "<strong>Aqualtune</strong> (séc. XVII), princesa do Reino do Kongo, foi capturada após batalha e enviada escravizada para Pernambuco. Fugiu para Palmares, onde se tornou matriarca da linhagem real palmarina — mãe de Sabina (mãe de Zumbi) e antepassada direta de Ganga Zumba e de outros líderes quilombolas.",
     question: "Que princesa africana foi matriarca da linhagem real de Palmares?",
-    options: ["Aqualtune", "Anacaona", "Cleopatra Selene", "Yennenga"],
-    correct: 0,
+    options: ["Cleopatra Selene", "Yennenga", "Anacaona", "Aqualtune"],
+    correct: 3,
     explanation: "A figura de Aqualtune foi recuperada por historiadoras a partir do final do séc. XX. Funda Palmares como projeto político-real consciente — não \"refúgio improvisado\", mas continuidade de tradições políticas africanas no exílio diaspórico.",
     hints: [
       "Veio do Kongo.",
@@ -1016,8 +1013,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Único país do mundo nascido de revolução de escravizados. Único.",
     context: "A <strong>Revolução Haitiana</strong> (1791-1804), liderada por <strong>Toussaint Louverture</strong> (e após sua prisão, Jean-Jacques Dessalines), foi a única revolução de escravizados bem-sucedida da história. Derrotou três exércitos coloniais (espanhol, britânico e francês) e proclamou independência em 1º de janeiro de 1804. Napoleão perdeu mais soldados ali do que em Waterloo.",
     question: "Em que ano o Haiti tornou-se o primeiro país independente da diáspora africana?",
-    options: ["1804", "1789", "1822", "1888"],
-    correct: 0,
+    options: ["1888", "1789", "1822", "1804"],
+    correct: 3,
     explanation: "O Haiti foi o segundo país independente das Américas (depois dos EUA) e o primeiro da América Latina. A elite escravista mundial — incluindo o Brasil — boicotou economicamente o Haiti por mais de um século como punição.",
     hints: [
       "13 anos depois da Revolução Francesa.",
@@ -1035,8 +1032,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Vinte anos comandou um quilombo no Mato Grosso. Ninguém a deteve em vida.",
     context: "<strong>Tereza de Benguela</strong> (?–1770), líder do <em>Quilombo do Quariterê</em> (atual Mato Grosso), comandou por mais de 20 anos uma comunidade que reunia escravizados fugidos e indígenas. Após a morte do marido, assumiu liderança militar, política e econômica. Foi morta em ataque colonial em 1770. Em 2014, sua data de morte (25 de julho) virou Dia Nacional da Mulher Negra.",
     question: "Que líder quilombola comandou o Quariterê (Mato Grosso) por 20 anos?",
-    options: ["Tereza de Benguela", "Dandara", "Luiza Mahin", "Esperança Garcia"],
-    correct: 0,
+    options: ["Esperança Garcia", "Luiza Mahin", "Tereza de Benguela", "Dandara"],
+    correct: 2,
     explanation: "Tereza chegou a comandar mais de 100 negros e indígenas integrados em uma só comunidade. Tinha conselho deliberativo, cunhava moeda própria, mantinha relações comerciais com Cuiabá. Foi referência política sofisticada — não \"refúgio\".",
     hints: [
       "Quilombo no Mato Grosso.",
@@ -1054,8 +1051,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Antes da abolição cubana, em 1843, ela já liderava revolta com facão na mão.",
     context: "<strong>Carlota Lucumí</strong> (séc. XIX), africana de origem iorubá escravizada em Cuba, liderou em 1843 a <em>Rebelião do Engenho Triunvirato</em> em Matanzas. Coordenou ataque a 5 fazendas de cana e libertou centenas de pessoas. Foi capturada e executada — esquartejada e exposta. Em 1980, Cuba batizou \"Operação Carlota\" — a missão militar internacional em Angola.",
     question: "Em que país caribenho liderou rebelião Carlota Lucumí?",
-    options: ["Cuba", "Haiti", "Jamaica", "Porto Rico"],
-    correct: 0,
+    options: ["Haiti", "Cuba", "Jamaica", "Porto Rico"],
+    correct: 1,
     explanation: "Cuba teve uma das maiores populações afrodescendentes do Caribe e várias revoltas escravas. Carlota é uma das figuras-símbolo do movimento de resistência cubano e da memória pan-africana socialista.",
     hints: [
       "País caribenho onde se fala espanhol.",
@@ -1073,7 +1070,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Falava árabe. Escrevia. E organizou revolta islâmica em pleno 1835.",
     context: "<strong>Luiza Mahin</strong> (séc. XIX), líder afro-brasileira em Salvador, foi figura central da <em>Revolta dos Malês (1835)</em> — maior insurreição urbana de escravizados da história brasileira. Africanos islâmicos (sobretudo iorubás letrados em árabe) organizaram em segredo um levante. Foi sufocado em uma noite, mas inspirou medo na elite brasileira por décadas. Mãe do poeta Luiz Gama.",
     question: "Que revolta urbana de 1835 foi liderada por africanos muçulmanos em Salvador?",
-    options: ["Revolta dos Malês", "Sabinada", "Cabanagem", "Revolta da Vacina"],
+    options: ["Revolta dos Malês", "Revolta da Vacina", "Sabinada", "Cabanagem"],
     correct: 0,
     explanation: "\"Malê\" vem do iorubá <em>imale</em>, \"muçulmano\". Os malês usavam amuletos com versículos do Alcorão em árabe. A revolta começou no fim do Ramadã de 1835. A repressão foi brutal — execuções, deportações em massa, proibição de práticas religiosas africanas.",
     hints: [
@@ -1096,8 +1093,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Iemanjá virou Nossa Senhora. Oxalá virou Cristo. Mas a essência sobreviveu.",
     context: "O <strong>Candomblé</strong> nasceu no século XIX como resposta criativa de africanos escravizados para preservar suas religiões sob perseguição. Os orixás — divindades iorubás, fon e bantu — foram associados a santos católicos publicamente, mas mantiveram suas identidades nos terreiros. <strong>Mãe Aninha</strong> fundou o Ilê Axé Opô Afonjá em Salvador (1910), referência mundial.",
     question: "Quem fundou o Ilê Axé Opô Afonjá, terreiro-referência do Candomblé na Bahia?",
-    options: ["Mãe Aninha", "Mãe Stella de Oxóssi", "Mãe Beata de Yemonjá", "Mãe Menininha do Gantois"],
-    correct: 0,
+    options: ["Mãe Beata de Yemonjá", "Mãe Aninha", "Mãe Stella de Oxóssi", "Mãe Menininha do Gantois"],
+    correct: 1,
     explanation: "Mãe Aninha (Eugênia Anna dos Santos, 1869-1938) foi figura monumental. Seu terreiro abrigou intelectuais, artistas, políticos e entronizou o Candomblé como \"religião civilizada\" no debate público. Pierre Verger, Roger Bastide e Vinicius de Moraes a frequentaram.",
     hints: [
       "Mãe-de-santo do final do séc. XIX-início XX.",
@@ -1115,8 +1112,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Ginga, gingou, gingará. Pra capitão não saber que aquilo era guerra.",
     context: "A <strong>capoeira</strong> nasceu no Brasil colonial como técnica de combate disfarçada de dança ou jogo. <strong>Mestre Bimba</strong> (Manoel dos Reis Machado, 1900-1974) e <strong>Mestre Pastinha</strong> sistematizaram a capoeira regional e a angola no séc. XX. Em 1937, capoeira foi descriminalizada (era ilegal até então). Em 2014, virou Patrimônio Imaterial da Humanidade pela UNESCO.",
     question: "Quem fundou a capoeira regional moderna em Salvador na década de 1930?",
-    options: ["Mestre Bimba", "Mestre Pastinha", "Mestre João Pequeno", "Mestre Suassuna"],
-    correct: 0,
+    options: ["Mestre João Pequeno", "Mestre Pastinha", "Mestre Bimba", "Mestre Suassuna"],
+    correct: 2,
     explanation: "Mestre Bimba criou a regional sistematizando golpes e fundou a primeira academia de capoeira do mundo (Centro de Cultura Física Regional, 1932). Mestre Pastinha preservou a tradicional capoeira angola. Os dois são pilares do reconhecimento cultural moderno.",
     hints: [
       "Mestre baiano do séc. XX.",
@@ -1134,8 +1131,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Uma palavra bantu. Um ritmo bantu. Hoje é o som que define o Brasil.",
     context: "O <strong>samba</strong> tem raízes no <em>lundu</em> e na <em>umbigada</em> bantu (Angola/Kongo). A palavra \"samba\" é de origem quicongo, ligada à raiz <em>nsemba</em> (oração, invocação). O primeiro samba gravado foi <em>Pelo Telefone</em> (Donga, 1917), originário das casas de tias baianas no centro do Rio.",
     question: "De que origem africana é a palavra \"samba\"?",
-    options: ["Quicongo (bantu)", "Iorubá", "Hauçá", "Suaíli"],
-    correct: 0,
+    options: ["Hauçá", "Iorubá", "Quicongo (bantu)", "Suaíli"],
+    correct: 2,
     explanation: "A maioria das palavras afro-brasileiras de uso popular são bantu (quicongo, quimbundo, umbundo) — porque cerca de 50-60% dos escravizados trazidos ao Brasil veio de Angola/Kongo. Iorubá é mais marcante em vocabulário religioso (Candomblé Ketu).",
     hints: [
       "Mesma família do quimbundo de Angola.",
@@ -1155,9 +1152,9 @@ window.SANKOFA_ENIGMAS = [
     question: "Que função social, além da religiosa, os terreiros desempenharam?",
     options: [
       "Escola, hospital e centro econômico-comunitário",
-      "Apenas espaço religioso",
+      "Apenas espaço de revolta política",
       "Apenas espaço de festas",
-      "Apenas espaço de revolta política"
+      "Apenas espaço religioso"
     ],
     correct: 0,
     explanation: "Os terreiros funcionaram como instituições totais. Mãe Stella de Oxóssi (1925-2018), do Opô Afonjá, defendia: \"O terreiro é a maior universidade afrodescendente do mundo.\" Lá se aprendia desde matemática até botânica.",
@@ -1177,8 +1174,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Caçula, moleque, dengo, cafuné. Você fala africano todo dia.",
     context: "Mais de <strong>1.000 palavras</strong> do português brasileiro têm origem africana — sobretudo das línguas bantu (quicongo, quimbundo). Lista: <em>caçula</em>, <em>moleque</em>, <em>cafuné</em>, <em>dengo</em>, <em>banguela</em>, <em>cachimbo</em>, <em>fubá</em>, <em>quitute</em>, <em>marimbondo</em>, <em>quitanda</em>, <em>quilombo</em>, <em>samba</em>, <em>fofoca</em>, <em>pamonha</em>.",
     question: "De que família linguística vem a maioria dos africanismos do português brasileiro?",
-    options: ["Bantu (sobretudo quicongo e quimbundo)", "Iorubá", "Hauçá", "Mandinga"],
-    correct: 0,
+    options: ["Hauçá", "Bantu (sobretudo quicongo e quimbundo)", "Iorubá", "Mandinga"],
+    correct: 1,
     explanation: "Bantu predomina porque a maior parte dos africanos trazidos ao Brasil veio de regiões bantu (Angola, Kongo, Moçambique). Iorubá é forte na vocabulário religioso e culinário (vatapá, acarajé, axé).",
     hints: [
       "Mesma família do suaíli.",
@@ -1196,8 +1193,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Vatapá, acarajé, caruru, abará. Sabor que se manteve no exílio.",
     context: "A <strong>cozinha afro-brasileira</strong>, especialmente baiana, é descendente direta da culinária iorubá-fon, adaptada com ingredientes locais. <em>Vatapá</em>, <em>acarajé</em>, <em>caruru</em>, <em>abará</em>, <em>moqueca</em>, <em>mungunzá</em>, <em>quibebe</em> — todos têm origem ou forte influência africana. O acarajé (de <em>akará</em> + <em>iji</em>: \"bola de fogo\" em iorubá) é Patrimônio Imaterial Brasileiro desde 2004.",
     question: "Em que ano o acarajé foi reconhecido como Patrimônio Imaterial Brasileiro?",
-    options: ["2004", "1988", "2010", "2016"],
-    correct: 0,
+    options: ["2010", "1988", "2016", "2004"],
+    correct: 3,
     explanation: "O reconhecimento envolveu a Associação das Baianas de Acarajé. Foi processo de luta de gerações para que comida de rua negra entrasse na categoria de \"patrimônio\" — antes reservada a manifestações \"eruditas\".",
     hints: [
       "Início do século XXI.",
@@ -1215,8 +1212,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Roda no terreiro do quintal. Mensagens cifradas em ponto cantado.",
     context: "O <strong>jongo</strong> (também chamado <em>caxambu</em>) é dança e canto bantu praticado sobretudo no sudeste rural (Vale do Paraíba, RJ/SP/MG). Os \"pontos\" cantados são charadas com duplo sentido — usadas no passado para zombar do feitor sem ele perceber. Em 2005, virou Patrimônio Imaterial Brasileiro.",
     question: "Em que região do Brasil o jongo é mais tradicional?",
-    options: ["Vale do Paraíba (RJ/SP/MG)", "Recôncavo Baiano", "Pernambuco", "Maranhão"],
-    correct: 0,
+    options: ["Maranhão", "Recôncavo Baiano", "Pernambuco", "Vale do Paraíba (RJ/SP/MG)"],
+    correct: 3,
     explanation: "O Vale do Paraíba foi região cafeeira com grande concentração de escravizados bantu durante o século XIX. Comunidades quilombolas do interior preservam jongo até hoje — em Tamandaré, Pinheiral, São José do Barreiro, Carangola.",
     hints: [
       "Sudeste do Brasil.",
@@ -1234,8 +1231,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Era neto de africano. Tocou com Stravinsky. Inventou o que é Brasil em música.",
     context: "<strong>Pixinguinha</strong> (Alfredo da Rocha Vianna Filho, 1897-1973) é considerado o pai da música popular brasileira. Neto de africanos, flautista virtuose, fundiu maxixe, polca, samba e ritmos bantu para criar o <em>choro</em> moderno. Compôs <em>Carinhoso</em> em 1916. Excursionou pela Europa em 1922 — Stravinsky o elogiou.",
     question: "Que compositor brasileiro, neto de africanos, é considerado o \"pai\" da música popular brasileira?",
-    options: ["Pixinguinha", "Cartola", "Donga", "Noel Rosa"],
-    correct: 0,
+    options: ["Cartola", "Donga", "Pixinguinha", "Noel Rosa"],
+    correct: 2,
     explanation: "Pixinguinha tocou com Os Oito Batutas — primeira banda brasileira a fazer turnê internacional. Foi consultor musical de gerações inteiras. <em>Carinhoso</em> é uma das músicas mais executadas da história brasileira.",
     hints: [
       "Flautista virtuose.",
@@ -1257,8 +1254,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Catorze homens em Berlim. Um mapa em branco. Um continente partilhado.",
     context: "A <strong>Conferência de Berlim (1884-1885)</strong>, convocada por Bismarck, reuniu 14 nações europeias para regular a partilha colonial da África. Em 4 meses, dividiram o continente em retângulos artificiais — sem africanos presentes. Em 1900, 90% da África estava sob controle europeu. Apenas <strong>Etiópia e Libéria</strong> permaneceram independentes.",
     question: "Quais foram os únicos dois países africanos que escaparam do colonialismo direto?",
-    options: ["Etiópia e Libéria", "Egito e Marrocos", "Madagáscar e Lesoto", "Suazilândia e Botsuana"],
-    correct: 0,
+    options: ["Madagáscar e Lesoto", "Etiópia e Libéria", "Suazilândia e Botsuana", "Egito e Marrocos"],
+    correct: 1,
     explanation: "A Etiópia derrotou os italianos em <em>Adwa (1896)</em> — primeira vitória africana em larga escala contra colonialismo europeu. A Libéria foi fundada em 1847 por afrodescendentes americanos repatriados.",
     hints: [
       "Um derrotou Mussolini séculos depois.",
@@ -1276,8 +1273,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Disse: \"Não somos negros nem brancos. Somos congoleses.\"",
     context: "<strong>Patrice Lumumba</strong> (1925-1961) foi o primeiro primeiro-ministro do <em>Congo independente</em> (1960). Em discurso histórico no dia da independência, disse, contra protocolo: \"Sofremos a escravidão, sofremos a humilhação\" — chocando o rei belga Balduíno. Foi assassinado em 17 de janeiro de 1961 com participação da CIA, MI6 e governo belga. Tinha 35 anos.",
     question: "Que país tornou-se independente sob liderança de Patrice Lumumba?",
-    options: ["Congo (RDC)", "Camarões", "Costa do Marfim", "Senegal"],
-    correct: 0,
+    options: ["Senegal", "Camarões", "Congo (RDC)", "Costa do Marfim"],
+    correct: 2,
     explanation: "O Congo Belga (atual República Democrática do Congo) era a colônia mais brutal da África — 10 milhões mortos sob Leopoldo II entre 1885-1908. Lumumba foi morto porque queria nacionalizar minas de cobalto, urânio e diamante.",
     hints: [
       "Atual República Democrática do Congo.",
@@ -1295,7 +1292,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Engenheiro agrônomo. Revolucionário. Caiu antes de ver o seu país livre.",
     context: "<strong>Amílcar Cabral</strong> (1924-1973), engenheiro agrônomo cabo-verdiano, fundou o <em>PAIGC</em> e liderou a luta de libertação da Guiné-Bissau e Cabo Verde. Famosa frase: <em>\"A libertação da mente é a primeira libertação\"</em>. Foi <strong>assassinado em 20 de janeiro de 1973</strong>, em Conakry, por traição interna. A independência da Guiné veio 8 meses depois.",
     question: "Em que país Amílcar Cabral foi assassinado?",
-    options: ["Guiné (Conakry)", "Guiné-Bissau", "Cabo Verde", "Senegal"],
+    options: ["Guiné (Conakry)", "Cabo Verde", "Senegal", "Guiné-Bissau"],
     correct: 0,
     explanation: "A Guiné de Conakry (capital do país independente da Guiné desde 1958) abrigava o quartel-general do PAIGC. A traição veio de dentro — agentes infiltrados pelos serviços portugueses. Cabral tinha 49 anos.",
     hints: [
@@ -1314,8 +1311,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Foi o primeiro a dizer 'Africa Must Unite'. Antes do sonho continental.",
     context: "<strong>Kwame Nkrumah</strong> (1909-1972) liderou o Gana à independência em 1957 — primeiro país da África subsaariana a se libertar. Foi presidente fundador, defensor militante do <em>pan-africanismo</em> e principal idealizador da <strong>Organização da Unidade Africana (OUA, 1963)</strong>, antecessora da União Africana atual.",
     question: "Em que ano Gana se tornou independente — primeiro da África subsaariana?",
-    options: ["1957", "1960", "1965", "1975"],
-    correct: 0,
+    options: ["1965", "1975", "1960", "1957"],
+    correct: 3,
     explanation: "1957 marca o início da \"década das independências africanas\". Em 1960 — chamado \"Ano da África\" — 17 países conquistaram a independência. Nkrumah foi inspiração e referência para todos.",
     hints: [
       "Década de 1950.",
@@ -1333,8 +1330,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Poeta. Médico. Pediatra. E presidente que rompeu com o capital português.",
     context: "<strong>Agostinho Neto</strong> (1922-1979), médico angolano formado em Coimbra, fundou o <em>MPLA</em> e liderou a luta contra o colonialismo português. Tornou-se o primeiro presidente de Angola independente em 1975. Era também poeta de língua portuguesa — sua coletânea <em>Sagrada Esperança</em> é referência literária pan-africana.",
     question: "Que presidente angolano era também médico e poeta?",
-    options: ["Agostinho Neto", "José Eduardo dos Santos", "Lúcio Lara", "Mário Pinto de Andrade"],
-    correct: 0,
+    options: ["Mário Pinto de Andrade", "Agostinho Neto", "José Eduardo dos Santos", "Lúcio Lara"],
+    correct: 1,
     explanation: "Neto unia, raramente, formação universitária europeia rigorosa com inflexível compromisso anticolonial. Estudou em Lisboa, foi preso pelo PIDE, fugiu, comandou guerrilha, escreveu poesia. Morreu de câncer em 1979 — substituído por José Eduardo dos Santos.",
     hints: [
       "Médico de formação.",
@@ -1352,7 +1349,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Tinha 30 anos quando foi morto sob tortura. Mas suas ideias mudaram um país.",
     context: "<strong>Steve Biko</strong> (1946-1977), líder do movimento <em>Black Consciousness</em> na África do Sul do apartheid, foi morto sob tortura policial em <strong>12 de setembro de 1977</strong>. Tinha 30 anos. Sua morte virou catalisador internacional contra o apartheid. O filme <em>Cry Freedom</em> (1987) levou seu legado ao mundo.",
     question: "Em que país Steve Biko foi morto sob tortura policial em 1977?",
-    options: ["África do Sul", "Zimbabwe", "Quênia", "Angola"],
+    options: ["África do Sul", "Quênia", "Angola", "Zimbabwe"],
     correct: 0,
     explanation: "Biko foi torturado durante 4 dias em Port Elizabeth pela Polícia de Segurança. Morreu de hemorragia cerebral. A polícia tentou alegar suicídio — provas forenses, e jornalistas, derrotaram a versão oficial.",
     hints: [
@@ -1371,7 +1368,7 @@ window.SANKOFA_ENIGMAS = [
     intro: "Robben Island. Uma cela de dois metros. Saiu, perdoou, governou.",
     context: "<strong>Nelson Mandela</strong> (1918-2013) ficou <strong>27 anos preso</strong> pelo regime do apartheid sul-africano (1962-1990). Foi libertado em 11 de fevereiro de 1990. Tornou-se primeiro presidente negro da África do Sul em 1994, em eleições livres pela primeira vez. Ganhou Prêmio Nobel da Paz em 1993, junto com F.W. de Klerk.",
     question: "Quantos anos Mandela passou preso?",
-    options: ["27 anos", "20 anos", "33 anos", "15 anos"],
+    options: ["27 anos", "15 anos", "33 anos", "20 anos"],
     correct: 0,
     explanation: "Foi preso em 1962 por sabotagem. Cumpriu pena em Robben Island (18 anos), Pollsmoor (6 anos) e Victor Verster (3 anos). Recusou liberdade condicional condicionada à renúncia da luta armada — aceitou apenas liberdade incondicional.",
     hints: [
@@ -1390,8 +1387,8 @@ window.SANKOFA_ENIGMAS = [
     intro: "Não é palpite. É plano. A África que queremos — em curso.",
     context: "A <strong>Agenda 2063</strong> é o plano estratégico da <em>União Africana</em> (sucessora da OUA desde 2002), aprovado em 2015. Visa transformar a África em potência continental até 2063 (centenário da OUA). Tem 7 aspirações: prosperidade, integração, governança, paz, identidade cultural, povo participativo, parceria global. A <strong>AfCFTA</strong> (Área de Livre Comércio Continental Africana) entrou em vigor em 2021.",
     question: "Qual organização sucedeu a OUA em 2002 com sede em Adis Abeba?",
-    options: ["União Africana (UA)", "ONU", "CPLP", "BRICS"],
-    correct: 0,
+    options: ["ONU", "CPLP", "BRICS", "União Africana (UA)"],
+    correct: 3,
     explanation: "A União Africana foi fundada em julho de 2002, em Durban (África do Sul), substituindo a OUA. Tem 55 estados-membros, sede em Adis Abeba (Etiópia) e ambiciona moeda única, parlamento continental e alta-corte de justiça pan-africana.",
     hints: [
       "Sede em Adis Abeba.",
