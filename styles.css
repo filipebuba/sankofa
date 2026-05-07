@@ -519,3 +519,169 @@ input { font-family: var(--font-body); }
 @media (min-width: 768px) {
   #app { max-width: 620px; padding: 30px; }
 }
+
+/* ============================================================
+   Modal de Perfil (Fase 1 — Multiplayer/Social)
+   ============================================================ */
+
+.sk-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, .76);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  padding: 14px;
+  animation: skFadeIn 180ms var(--ease);
+}
+[data-theme="light"] .sk-modal-overlay { background: rgba(60, 50, 30, .58); }
+
+.sk-modal-overlay.sk-leaving { animation: skFadeOut 200ms var(--ease) forwards; }
+
+.sk-modal {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gold-dim);
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 460px;
+  max-height: calc(100vh - 28px);
+  overflow-y: auto;
+  padding: 22px 22px 18px;
+  animation: skSlideUp 240ms var(--ease);
+}
+[data-theme="light"] .sk-modal {
+  background: var(--surface);
+  border-color: rgba(160, 120, 32, .35);
+}
+
+.sk-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  margin: 0 0 4px;
+  color: var(--gold);
+}
+.sk-modal-sub {
+  font-size: .92rem;
+  color: var(--text-dim);
+  margin: 0 0 16px;
+  font-style: italic;
+}
+
+.sk-field { margin: 14px 0; }
+.sk-label {
+  display: block;
+  font-weight: 700;
+  font-size: .88rem;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.sk-input {
+  width: 100%;
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 160ms var(--ease);
+}
+.sk-input:focus { border-color: var(--gold); }
+.sk-hint {
+  font-size: .78rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.sk-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.sk-row-tight { margin-top: 6px; }
+.sk-actions {
+  margin-top: 18px;
+  justify-content: flex-end;
+}
+
+.sk-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.sk-pill {
+  background: var(--surface2);
+  color: var(--text-dim);
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-family: var(--font-body);
+  font-size: .85rem;
+  cursor: pointer;
+  transition: all 160ms var(--ease);
+}
+.sk-pill:hover { border-color: var(--gold); color: var(--text); }
+.sk-pill.active {
+  background: var(--gold);
+  color: var(--bg);
+  border-color: var(--gold);
+  font-weight: 700;
+}
+
+.sk-hga-slot { margin-top: 10px; }
+.hga-card {
+  background: linear-gradient(135deg, var(--surface2), var(--surface3));
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: .9rem;
+  animation: skFadeUp 240ms var(--ease);
+}
+.hga-card-head {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.hga-period {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: .78rem;
+  color: var(--text-dim);
+  margin-left: 6px;
+}
+.hga-desc { color: var(--text); line-height: 1.45; margin-bottom: 6px; }
+.hga-meta { font-size: .76rem; color: var(--text-dim); }
+
+.sk-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: .82rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  line-height: 1.4;
+}
+.sk-consent input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: var(--gold);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.sk-err {
+  color: var(--danger);
+  font-size: .85rem;
+  margin-top: 8px;
+  min-height: 1.2em;
+}
+
+@keyframes skFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes skFadeOut { to { opacity: 0; } }
+@keyframes skSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes skFadeUp  { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }

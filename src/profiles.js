@@ -68,14 +68,47 @@
   }
 
   function create(name) {
+    return createRich({ name: name });
+  }
+
+  function createRich(opts) {
+    opts = opts || {};
     var id = "p" + Date.now().toString(36);
     var idx = readIndex();
     idx.push({ id: id, createdAt: new Date().toISOString() });
     writeIndex(idx);
-    var freshState = { name: name || "Viajante" };
+    var freshState = {
+      name:     (opts.name || "Viajante").toString().trim().slice(0, 24),
+      hgaName:  opts.hgaName || null,
+      ageBand:  opts.ageBand || "skip",
+      tag:      opts.tag ? normalizeTag(opts.tag) : "",
+      house:    opts.house || null,
+      consent:  !!opts.consent,
+      createdAt: new Date().toISOString()
+    };
     localStorage.setItem(storageKeyFor(id), JSON.stringify(freshState));
     setActiveId(id);
     return id;
+  }
+
+  function normalizeTag(raw) {
+    if (!raw) return "";
+    var t = raw.toString()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9#-]/g, "")
+      .slice(0, 24);
+    if (t && t[0] !== "#") t = "#" + t;
+    return t;
+  }
+
+  function isFresh() {
+    ensureDefault();
+    var idx = readIndex();
+    if (idx.length !== 1) return false;
+    var s = readProfileState(idx[0].id);
+    return !s.consent;
   }
 
   function switchTo(id) {
@@ -105,6 +138,9 @@
   window.SankofaProfiles = {
     list: list,
     create: create,
+    createRich: createRich,
+    normalizeTag: normalizeTag,
+    isFresh: isFresh,
     switchTo: switchTo,
     delete: deleteProfile,
     activeId: activeId,
