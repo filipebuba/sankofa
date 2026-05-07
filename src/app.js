@@ -596,6 +596,7 @@
       var prev = (j === 0) || isSolved(we[j - 1].id);
       var av = !s && prev;
       var pts = S.attempts[e.id] === 1 ? 100 : (S.attempts[e.id] === 2 ? 50 : 25);
+      pts = Math.max(0, pts - (S.hintsUsed[e.id] || 0) * 10);
       html += '<div class="enigma-item"' + (av || s ? ' data-act="open-enigma" data-e="' + e.id + '"' : '') +
         ' style="' + (av || s ? '' : 'opacity:.5;cursor:default') + '">';
       html += '<div class="en-num ' + (s ? 'solved' : (av ? 'available' : 'locked')) + '">' + (s ? '✓' : (j + 1)) + '</div>';
