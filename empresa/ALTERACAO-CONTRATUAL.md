@@ -14,7 +14,7 @@ NIRE nº [ NÚMERO NIRE — buscar no contrato social atual ou em jucesponline.s
 
 ---
 
-**FILIPE BUBA**, [ nacionalidade — ex.: brasileiro ], [ estado civil — ex.: solteiro ], [ profissão — ex.: empresário ], portador da Cédula de Identidade RG nº [ NÚMERO RG ], inscrito no CPF/MF sob o nº [ NÚMERO CPF ], residente e domiciliado na Rua Silvio Barbini, nº 205, Apt. 32B, Conjunto Residencial José Bonifácio, CEP 08.250-650, São Paulo / SP;
+**FILIPE BUBA N'HADA**, [ nacionalidade — ex.: brasileiro ], [ estado civil — ex.: solteiro ], [ profissão — ex.: empresário ], portador da Cédula de Identidade RG nº [ NÚMERO RG ], inscrito no CPF/MF sob o nº [ NÚMERO CPF ], residente e domiciliado na Rua Silvio Barbini, nº 205, Apt. 32B, Conjunto Residencial José Bonifácio, CEP 08.250-650, São Paulo / SP;
 
 único sócio da sociedade empresária limitada unipessoal denominada **DATACENTER VISION LTDA**, com sede na Rua Silvio Barbini, nº 205, Apt. 32B, Conjunto Residencial José Bonifácio, CEP 08.250-650, São Paulo / SP, devidamente registrada na Junta Comercial do Estado de São Paulo sob o NIRE nº [ NIRE ], com CNPJ nº 62.823.295/0001-53, neste ato representado por si próprio;
 
@@ -79,7 +79,7 @@ E, por estar assim justo e contratado, o sócio único assina o presente instrum
 \
 
 ___________________________________________________
-**FILIPE BUBA**
+**FILIPE BUBA N'HADA**
 Sócio Único
 CPF: [ NÚMERO CPF ]
 

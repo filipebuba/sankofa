@@ -54,7 +54,7 @@ Cordialmente,
 
 **Filipe Buba**
 Egresso UNILAB · Ciências Humanas e Sociais
-nhadafilipe@gmail.com · +55 [DDD número]
+flifnhada@hotmail.com · +55 11 98483-7997
 
 ---
 
@@ -150,7 +150,7 @@ Coloco-me ao inteiro dispor.
 Cordialmente,
 
 **Filipe Buba**
-nhadafilipe@gmail.com · +55 [DDD número]
+flifnhada@hotmail.com · +55 11 98483-7997
 São Paulo / SP
 
 ---
@@ -236,7 +236,7 @@ Que tal uma demonstração de 15 minutos esta semana ou na próxima?
 Cordialmente,
 
 Filipe Buba
-nhadafilipe@gmail.com
+flifnhada@hotmail.com
 
 ---
 
@@ -373,7 +373,7 @@ Cordialmente,
 
 Filipe Buba
 UNILAB · CHS
-nhadafilipe@gmail.com
+flifnhada@hotmail.com
 
 ---
 

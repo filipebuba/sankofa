@@ -134,6 +134,22 @@ Localmente, copia `src/league-config.example.js` → `src/league-config.js` e pr
 - **Conteúdo textual e dados educacionais**: Creative Commons BY-SA 4.0.
 - **Imagens, sons sintetizados e ilustrações**: a definir conforme autoria; o motor de áudio é original e nasce livre.
 
+## Autor
+
+**Filipe Buba N'hada** (PCD)
+Engenheiro de Software · UNILAB · Impacta · XP Educação
+
+- 3 anos como Software Engineer no **Mercado Livre** (2022–2024)
+- Estágio de Análise de Dados na **Telefônica/Vivo** (2022)
+- Graduado em **Ciência da Computação** (Faculdade Impacta, 2024)
+- **Licenciatura em Ciências Sociais** (UNILAB, 2021)
+- **Bacharelado em Humanidades** (UNILAB, 2017)
+- Cursando Pós em **Ciência de Dados e IA** (XP Educação, prev. dez/2025)
+
+📧 flifnhada@hotmail.com · 📱 +55 11 98483-7997
+🔗 [linkedin.com/in/filipe-buba](https://www.linkedin.com/in/filipe-buba/)
+📂 Currículo completo: `empresa/CURRICULO.md`
+
 ## Todos os volumes da História Geral da África
 
 - [Volume I – Metodologia e pré-história da África](https://unesdoc.unesco.org/ark:/48223/pf0000190249)

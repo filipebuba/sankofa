@@ -459,6 +459,6 @@ SANKOFA! SANKOFA! SANKOFA!
 
 ### Contato para escolas
 
-E-mail: nhadafilipe@gmail.com — agendamento de oficina de regência (presencial SP, online resto Brasil).
+E-mail: flifnhada@hotmail.com — agendamento de oficina de regência (presencial SP, online resto Brasil).
 
 Tarifa: 1ª oficina **gratuita** se a escola compartilhar gravação ou foto da apresentação.

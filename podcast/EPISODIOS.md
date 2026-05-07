@@ -174,7 +174,7 @@ Volta voz over:
 
 > "(Falando informal, baixo) Esse episódio foi gravado num quarto pequeno em São Paulo, com cobertor na cabeça pra acústica. Edição minha. Trilha minha. Erro meu. Se ouviu até aqui — obrigado de coração.
 >
-> Se quer apoiar — apoia.se/sankofa. Se quer reclamar — nhadafilipe@gmail.com. Tudo aqui é direto comigo. Por enquanto."
+> Se quer apoiar — apoia.se/sankofa. Se quer reclamar — flifnhada@hotmail.com. Tudo aqui é direto comigo. Por enquanto."
 
 [Outro com kalimba]
 

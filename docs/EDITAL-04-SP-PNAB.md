@@ -11,7 +11,8 @@
 
 **Título:** Sankofa — Formação Antirracista e Internacionalização Lusófona pela História Geral da África
 
-**Proponente:** Filipe Buba (CNPJ MEI/SP — preencher número)
+**Proponente:** Filipe Buba N'hada — DATACENTER VISION LTDA · CNPJ 62.823.295/0001-53 · São Paulo / SP
+**Auto-declaração:** Pessoa com Deficiência (PCD) · Afrodescendente (PPI)
 **Domicílio fiscal:** São Paulo / SP
 **Linha do edital:** Formação **e** Internacionalização (combinada)
 **Valor solicitado:** R$ 1.000.000,00
@@ -222,8 +223,25 @@ Modelo "Formação Cascata 3:1":
 
 ## 8. Equipe e currículo resumido do proponente
 
-**Filipe Buba** — Coordenador geral
-- Graduação em **Ciências Humanas e Sociais** (UNILAB — Universidade da Integração Internacional da Lusofonia Afro-Brasileira)
+**Filipe Buba N'hada** — Coordenador geral · Pessoa com Deficiência (PCD)
+
+**Experiência profissional**:
+- **Software Engineer** · Mercado Livre · São Paulo · 2022–2024 (Node, React, Go, Java, BigQuery, Datadog) — soluções de pagamento que impactaram milhões de usuários LATAM
+- **Analista de Dados (estágio)** · Telefônica/Vivo · São Paulo · 2022 (Python, Power BI, detecção de fraude)
+
+**Formação acadêmica**:
+- **Pós-graduação em Ciência de Dados e Inteligência Artificial** · XP Educação · cursando (prev. dez/2025)
+- **Especialização em Análise de Machine Learning** · XP Educação · 2025 (concluído)
+- **Graduação em Ciência da Computação** · Faculdade Impacta de Tecnologia · 2024 (concluído)
+- **Licenciatura em Ciências Sociais** · UNILAB · 2021 (concluído) — *habilitado para magistério, fundamental para o eixo Formação do edital*
+- **Bacharelado em Humanidades** · UNILAB · 2017 (concluído)
+
+**Tríade rara**:
+1. Engenharia de software de grande porte (Mercado Livre)
+2. Licenciatura formal — habilitação docente
+3. Humanidades + perspectiva afrocentrada (UNILAB — universidade da integração afro-brasileira-lusófona)
+
+**Currículo completo**: `empresa/CURRICULO.md` · LinkedIn: linkedin.com/in/filipe-buba
 - Graduação em **Ciências da Computação**
 - Idealizador, desenvolvedor, designer e gestor do Sankofa
 - Residente em São Paulo / SP

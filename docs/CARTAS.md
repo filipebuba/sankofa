@@ -25,7 +25,7 @@ Pacote estimado: **R$ 250k–1M/ano**, conforme abrangência. Devolvo um deck de
 Atenciosamente,
 **Filipe Buba**
 UNILAB · Ciências Humanas + Computação
-nhadafilipe@gmail.com · +55 [DDD número]
+flifnhada@hotmail.com · +55 11 98483-7997
 [URL do jogo]
 
 ---
@@ -122,8 +122,8 @@ Cordialmente,
 
 Filipe Buba
 Graduado em Ciências Humanas e Sociais (UNILAB) · Ciências da Computação
-nhadafilipe@gmail.com
-+55 [DDD número]
+flifnhada@hotmail.com
++55 11 98483-7997
 ```
 
 ---
@@ -151,7 +151,7 @@ Aguardo a oportunidade de conversa.
 
 Atenciosamente,
 **Filipe Buba**
-UNILAB · nhadafilipe@gmail.com
+UNILAB · flifnhada@hotmail.com
 
 ---
 
@@ -165,7 +165,7 @@ Dossier de apresentação à UNESCO
    1.1. Proponente: Filipe Buba
    1.2. Formação: Ciências Humanas e Sociais (UNILAB) + Ciências da
         Computação
-   1.3. Contato: nhadafilipe@gmail.com / +55 [DDD número]
+   1.3. Contato: flifnhada@hotmail.com / +55 11 98483-7997
    1.4. URL do projeto: [...]
    1.5. Repositório: [github.com/...]
 
@@ -242,7 +242,7 @@ Resultados esperados (com base em literatura de gamificação):
 Posso passar 20 minutos com a sua equipe para demonstrar?
 
 Atenciosamente,
-**Filipe Buba** · UNILAB · nhadafilipe@gmail.com
+**Filipe Buba** · UNILAB · flifnhada@hotmail.com
 
 ---
 
@@ -303,7 +303,7 @@ Sankofa — Fragmentos da África para a rede municipal de [Município]
 
 ________________________________
 Filipe Buba
-nhadafilipe@gmail.com
+flifnhada@hotmail.com
 ```
 
 ---
@@ -326,7 +326,7 @@ Disponibilidade na quinta ou sexta?
 
 Atenciosamente,
 **Filipe Buba**
-nhadafilipe@gmail.com
+flifnhada@hotmail.com
 
 ---
 
@@ -340,7 +340,7 @@ PROJETO: Sankofa — Fragmentos da África
 1. Proponente
    Filipe Buba
    CPF: [...]   ·   RG: [...]
-   Endereço: [...]   ·   E-mail: nhadafilipe@gmail.com
+   Endereço: [...]   ·   E-mail: flifnhada@hotmail.com
 
 2. Linha do edital a que concorre
    [Cultura Digital / Audiovisual / Patrimônio / Memória]

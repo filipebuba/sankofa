@@ -14,8 +14,8 @@ Subtítulo: *Jogo educativo que torna a História Geral da África uma aventura.
 Logo (assets/logo.png) centralizado.
 
 Rodapé:
-- Filipe Buba — UNILAB / Ciências Humanas + Ciências da Computação
-- nhadafilipe@gmail.com
+- Filipe Buba N'hada (PCD) — Ex-Mercado Livre · UNILAB · Faculdade Impacta · XP Educação
+- flifnhada@hotmail.com
 - *Baseado na coleção História Geral da África (UNESCO, 8 volumes).*
 
 > **Visual**: fundo preto + ouro. Pássaro Sankofa olhando para trás, voando para a frente.
@@ -80,7 +80,7 @@ Rodapé:
 | **Geekie**         | Adaptativo                                      | Cobre Brasil/Europa, não África    |
 | **Sankofa**        | **Aventura + rigor + perspectiva afrocentrada** | **Nicho desocupado**               |
 
-**Vantagem de fundador**: Filipe Buba — formação dupla **Ciências Humanas (UNILAB)** + **Computação**. UNILAB é a Universidade da Integração Internacional da Lusofonia Afro-Brasileira. Esse cruzamento é raríssimo.
+**Vantagem de fundador**: Filipe Buba N'hada — **3 anos no Mercado Livre** (Software Engineer, 2022-2024, Node/React/Go/Java) + **Bacharelado em Humanidades + Licenciatura em Ciências Sociais (UNILAB)** + **Ciência da Computação (Impacta)** + **Pós em Ciência de Dados e IA (XP)**. **Pessoa com Deficiência** + afrodescendente lusófono. Combinação que cruza tech de ponta + educação formal docente + perspectiva afrocentrada — raríssima no mercado.
 
 > **Visual**: tabela competitiva. Logo de cada concorrente. Bandeira UNILAB destaque.
 
@@ -186,13 +186,13 @@ B2C (5%)          — Freemium R$ 19,90 · Mundos 1-2 grátis
 - **PNAB** garante R$ 3 bi/ano em cultura até 2027 — primeira vez na história
 - Geração Z + Alpha **não consome livro didático**, mas joga PWA
 - IA generativa virou commodity → **conteúdo curado humano (HGA)** vale mais
-- Eu (Filipe) tenho **rara intersecção**: Ciências Humanas UNILAB + Computação + sou afrodescendente lusófono
+- Eu (Filipe Buba N'hada) tenho **rara intersecção**: 3 anos Mercado Livre + Licenciatura Ciências Sociais UNILAB + Ciência da Computação Impacta + Pós em Ciência de Dados e IA + Pessoa com Deficiência + afrodescendente lusófono
 
 **"Não é errado voltar e buscar o que esqueceste." — Sankofa**
 
 **Vamos buscar juntos?**
 
-📧 nhadafilipe@gmail.com
+📧 flifnhada@hotmail.com
 🌐 [URL]
 🐙 github.com/filipebuba/sankofa
 
@@ -202,7 +202,7 @@ B2C (5%)          — Freemium R$ 19,90 · Mundos 1-2 grátis
 
 # English version (slides 1-10 condensed)
 
-**Sankofa — Fragments of Africa.** Educational puzzle game that turns UNESCO's *General History of Africa* (8 vols, 8.000 pages) into an 8-world adventure with synthesized African instruments, Royal Houses, and a global league. Mobile-first, offline-capable PWA. Open-source. Built by Filipe Buba (Humanities UNILAB + CS) for the 137k Brazilian schools forced by Law 10.639/03 to teach African history but lacking modern materials. Same need exists across PALOP, US/UK diaspora, francophone Africa. **TAM** ~R$ 1.2B/y. Currently 23 puzzles live, Worlds 1-2 done. Asking R$ 500k or USD 100k for Year 1: developer + illustrator + historian + audio + sales + infra. Window: UN Decade for People of African Descent 2025-34 just started. Contact: nhadafilipe@gmail.com.
+**Sankofa — Fragments of Africa.** Educational puzzle game that turns UNESCO's *General History of Africa* (8 vols, 8.000 pages) into an 8-world adventure with synthesized African instruments, Royal Houses, and a global league. Mobile-first, offline-capable PWA. Open-source. Built by Filipe Buba (Humanities UNILAB + CS) for the 137k Brazilian schools forced by Law 10.639/03 to teach African history but lacking modern materials. Same need exists across PALOP, US/UK diaspora, francophone Africa. **TAM** ~R$ 1.2B/y. Currently 23 puzzles live, Worlds 1-2 done. Asking R$ 500k or USD 100k for Year 1: developer + illustrator + historian + audio + sales + infra. Window: UN Decade for People of African Descent 2025-34 just started. Contact: flifnhada@hotmail.com.
 
 ---
 

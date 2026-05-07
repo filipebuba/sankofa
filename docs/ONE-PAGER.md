@@ -75,7 +75,7 @@ Formado em **Ciências Humanas** pela UNILAB (Universidade da Integração Inter
 
 Faz isto porque sentiu falta — sendo afrodescendente lusófono — de um jogo que conte a sua história sem doer.
 
-📧 nhadafilipe@gmail.com
+📧 flifnhada@hotmail.com
 🐙 github.com/filipebuba/sankofa
 
 ---
@@ -142,8 +142,8 @@ A lei manda. **Faltam materiais.**
 
 Mostro o jogo ao vivo. Trago dados. Saio sem cobrar nada.
 
-📞 +55 [DDD número]
-📧 nhadafilipe@gmail.com
+📞 +55 11 98483-7997
+📧 flifnhada@hotmail.com
 🌐 [URL do jogo + repositório]
 
 ---
