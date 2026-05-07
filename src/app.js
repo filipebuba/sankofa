@@ -343,7 +343,14 @@
       case "register": app.innerHTML = rRegister(); break;
       case "map": app.innerHTML = rMap(); break;
       case "world": app.innerHTML = rWorld(); break;
-      case "enigma": app.innerHTML = rEnigma(); enigmaStartTime = Date.now(); break;
+      case "enigma":
+        app.innerHTML = rEnigma();
+        enigmaStartTime = Date.now();
+        if (window.SankofaTTS && window.SankofaTTS.available() && window.SankofaTTS.enabled()) {
+          var _eid = S.screenData.enigma;
+          setTimeout(function () { handleSpeakEnigma(_eid); }, 250);
+        }
+        break;
       case "result": app.innerHTML = rResult(); break;
       case "mosaic": app.innerHTML = rMosaic(); break;
       case "profile": app.innerHTML = rProfile(); break;
@@ -537,7 +544,11 @@
     html += '<button class="context-toggle" data-act="toggle-context" id="ctx-btn">📖 Queres saber mais?</button>';
     html += '<div class="context-panel" id="ctx-panel"><div class="context-content">' + e.context + '</div></div>';
     html += '</div>';
-    html += '<div class="question">' + e.question + '</div>';
+    var ttsAvail = window.SankofaTTS && window.SankofaTTS.available();
+    html += '<div class="question-row">' +
+      '<div class="question">' + e.question + '</div>' +
+      (ttsAvail ? '<button type="button" class="speak-btn" data-act="speak-enigma" data-e="' + eid + '" aria-label="Ler em voz alta" title="Ler em voz alta">🔊</button>' : "") +
+      '</div>';
     html += '<div id="opts" class="options">';
     for (var k = 0; k < e.options.length; k++) {
       html += '<div class="option" data-act="pick" data-i="' + k + '"><span class="opt-letter">' + String.fromCharCode(65 + k) + '</span>' + e.options[k] + '</div>';
@@ -658,6 +669,21 @@
     html += '<button class="btn btn-gold btn-block" data-act="go-throne" style="margin-bottom:8px">♛ Sala do Trono</button>';
     html += '<button class="btn btn-outline btn-block" data-act="go-ach">Ver Conquistas</button>';
     html += '<button class="btn btn-outline btn-block" data-act="go-profiles" style="margin-top:8px">Liga Local (perfis)</button>';
+
+    // Compartilhar (WhatsApp + link)
+    html += '<div class="share-row" style="margin-top:14px">';
+    html += '<button class="btn btn-gold btn-block" data-act="share-wa">📲 Desafiar no WhatsApp</button>';
+    html += '<button class="btn btn-ghost btn-block btn-sm" data-act="share-link" style="margin-top:6px">🔗 Copiar link de convite</button>';
+    html += '</div>';
+
+    // Acessibilidade
+    var ttsAvail = window.SankofaTTS && window.SankofaTTS.available();
+    if (ttsAvail) {
+      var ttsOn = window.SankofaTTS.enabled();
+      html += '<button class="btn btn-ghost btn-block btn-sm" data-act="tts-toggle" style="margin-top:8px">'
+        + (ttsOn ? "🔊 Voz: Ligada" : "🔇 Voz: Desligada") + '</button>';
+    }
+
     html += '<button class="btn btn-ghost btn-block" data-act="reset" style="margin-top:8px;font-size:.8rem;color:var(--text-muted)">Recomeçar do Zero</button>';
     html += '<p class="version-stamp" style="text-align:center;margin-top:14px">Sankofa v' + (window.SANKOFA_VERSION || "?") + '</p>';
     return html;
@@ -879,7 +905,58 @@
       case "league-refresh": if (LEAGUE) LEAGUE.refresh().then(function () { if (S.screen === "league") render(); }); break;
       case "switch-profile": handleSwitchProfile(el.getAttribute("data-p")); break;
       case "new-profile": handleNewProfile(); break;
+      case "share-wa": handleShareWhatsApp(); break;
+      case "share-link": handleShareLink(); break;
+      case "tts-toggle": handleTTSToggle(); break;
+      case "speak-enigma": handleSpeakEnigma(el.getAttribute("data-e")); break;
     }
+  }
+
+  function profilePayloadForShare() {
+    return {
+      id: PROFILES ? PROFILES.activeId() : "default",
+      name: S.name || "Viajante",
+      house: (S.house && HOUSES) ? (HOUSES.find(function (h) { return h.id === S.house.id; }) || {}).name || "" : "",
+      cauris: S.cauris || 0,
+      solved: S.solved || []
+    };
+  }
+
+  function handleShareWhatsApp() {
+    if (!window.SankofaShare) return;
+    sfx("click");
+    window.SankofaShare.whatsapp(profilePayloadForShare());
+  }
+
+  function handleShareLink() {
+    if (!window.SankofaShare) return;
+    sfx("click");
+    window.SankofaShare.copyLink(profilePayloadForShare()).then(function (ok) {
+      if (ok) showToast("🔗", "Link copiado", "Cole onde quiser.");
+      else showToast("⚠️", "Não copiou", "Browser sem suporte. Tente compartilhar.");
+    });
+  }
+
+  function handleTTSToggle() {
+    if (!window.SankofaTTS || !window.SankofaTTS.available()) {
+      showToast("⚠️", "Sem voz", "Este browser não suporta leitura.");
+      return;
+    }
+    var on = window.SankofaTTS.toggle();
+    sfx("click");
+    showToast(on ? "🔊" : "🔇", on ? "Voz ligada" : "Voz desligada", on ? "Lerá enigmas em voz alta." : "Leitura desativada.");
+    render();
+  }
+
+  function handleSpeakEnigma(eid) {
+    if (!window.SankofaTTS || !window.SankofaTTS.available()) return;
+    var en = getEnigma(eid);
+    if (!en) return;
+    var optsTxt = en.options.map(function (o, i) {
+      return String.fromCharCode(65 + i) + ". " + o;
+    }).join(". ");
+    var full = en.question + ". Opções: " + optsTxt;
+    window.SankofaTTS.speak(full);
   }
 
   function handlePickHouse(houseId) {
@@ -1211,6 +1288,10 @@
     } else {
       render();
       applyAudioState();
+      // Onboarding 30s — só na 1ª visita ever, sem perfil ainda criado.
+      if (window.SankofaOnboarding && window.SankofaOnboarding.shouldShow()) {
+        setTimeout(function () { window.SankofaOnboarding.show(); }, 600);
+      }
     }
   }
 
