@@ -4,6 +4,31 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Pedagogia — Caderno de Revisão (branch `dev`)
+
+#### Adicionado
+
+- **Tracking persistente de erros**: `S.errored`, `S.solvedAfterError`,
+  `S.wrongPicks[eid]`, `S.lastTryAt[eid]`.
+- **Tela `Caderno de Revisão`** (`go-review`): lista enigmas com erros
+  pendentes ou superados, ordenados por mundo + última tentativa.
+  - Aba "🔴 A Revisar" — errou e ainda não acertou.
+  - Aba "✓ Superados" — errou mas acertou depois.
+  - Click → replay no enigma original.
+- **Banner no mapa** quando há pendências: "📓 Caderno · N para rever".
+- **Botão "📓 Caderno"** no menu inferior + Perfil quando há entradas.
+- **Toast pós-erro**: "📓 Adicionado ao Caderno · Vamos voltar a este depois."
+- **Indicador no enigma**: ao reabrir, mostra "Já errou X vezes. Tente
+  novamente." ou "✓ Acertou após errar. Pode rever."
+- **Sem cauris extras** ao acertar via Caderno (já contou na 1ª resolução).
+  Reforço puro de aprendizado.
+
+#### Inspiração
+
+Spaced repetition (Anki, Quizlet) sem complexidade de algoritmo SM-2.
+Versão lite: o jogador escolhe quando voltar; sistema só lembra que tem
+o que rever.
+
 ### Pedagogia — Avanço liberal + Mestria opcional (branch `dev`)
 
 #### Mudado

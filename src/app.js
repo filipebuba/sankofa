@@ -27,7 +27,12 @@
     lastLevel: 1, lastWorldPlayed: null,
     cauris: 0, lastTitleRank: 1, house: null, goods: {},
     // Tracking de toasts e marcos para não dispará-los repetidos
-    worldsUnlockToasted: [], worldsMasteryAwarded: [], worldsPerfectAwarded: []
+    worldsUnlockToasted: [], worldsMasteryAwarded: [], worldsPerfectAwarded: [],
+    // Caderno de Revisão — histórico de erros e mestria
+    errored: [],            // ids onde já errou ao menos 1×
+    solvedAfterError: [],   // ids que errou e depois acertou
+    wrongPicks: {},         // {eid: [picked_idx, picked_idx, ...]} histórico de palpites errados
+    lastTryAt: {}           // {eid: ISO date} — para spaced repetition futura
   };
 
   var enigmaLocked = false;
@@ -387,6 +392,7 @@
       case "league": app.innerHTML = rLeague(); break;
       case "profiles": app.innerHTML = rProfiles(); break;
       case "tournament": app.innerHTML = rTournament(); break;
+      case "review": app.innerHTML = rReview(); break;
       default: app.innerHTML = rLanding();
     }
     attachEvents();
@@ -465,6 +471,19 @@
         '</div>';
     }
 
+    // Caderno de Revisão — banner se há erros pendentes
+    var pendingReview = (S.errored || []).length;
+    if (pendingReview > 0) {
+      html += '<div class="review-banner" data-act="go-review" role="button" tabindex="0">' +
+        '<div class="review-banner-text">' +
+        '<div class="review-banner-eyebrow">📓 Caderno de Revisão</div>' +
+        '<div class="review-banner-title">' + pendingReview + ' enigma' + (pendingReview !== 1 ? "s" : "") + ' para rever</div>' +
+        '<div class="review-banner-meta">Volte quando quiser. Sem pressa.</div>' +
+        '</div>' +
+        '<div class="resume-banner-arrow">→</div>' +
+        '</div>';
+    }
+
     // Banner do Torneio Semanal (se Liga global ativa e semana carregada)
     if (window.SankofaTournament && window.SankofaTournament.enabled) {
       var tw = window.SankofaTournament.getWeek();
@@ -533,6 +552,10 @@
     html += '<button class="btn btn-outline btn-sm" data-act="go-league">🏆 Liga</button>';
     if (window.SankofaTournament && window.SankofaTournament.enabled) {
       html += '<button class="btn btn-outline btn-sm" data-act="go-tournament">🥇 Torneio</button>';
+    }
+    var pr = (S.errored || []).length;
+    if (pr > 0) {
+      html += '<button class="btn btn-outline btn-sm" data-act="go-review">📓 Caderno (' + pr + ')</button>';
     }
     html += '<button class="btn btn-ghost btn-sm" data-act="go-profile">Perfil</button>';
     html += '</div>';
@@ -623,6 +646,14 @@
     if (hu < 3) html += '<button class="hint-btn" data-act="hint" data-e="' + eid + '">🗝️ Pedir Dica ' + (hu + 1) + (hu > 0 ? ' (-10 pts)' : '') + '</button>';
     html += '</div>';
     html += '<div id="fb"></div>';
+    var attemptHistory = "";
+    var prevWrongs = (S.wrongPicks && S.wrongPicks[eid]) || [];
+    if (prevWrongs.length > 0 && !isSolved(eid)) {
+      attemptHistory = '<div class="prev-wrongs">📓 Já errou ' + prevWrongs.length + ' vez' + (prevWrongs.length !== 1 ? "es" : "") + '. Tente novamente.</div>';
+    } else if (S.solvedAfterError && S.solvedAfterError.indexOf(eid) !== -1) {
+      attemptHistory = '<div class="prev-wrongs prev-solved">✓ Acertou após errar. Pode rever.</div>';
+    }
+    html += attemptHistory;
     html += '<div style="text-align:center;font-size:.82rem;color:var(--text-muted);margin-top:8px">Pontos: <strong style="color:var(--gold)">' + Math.max(0, basePts - hu * 10) + '</strong> · Tentativa ' + (at + 1) + '</div>';
     return html;
   }
@@ -730,6 +761,9 @@
     html += '</div>';
     html += '<button class="btn btn-gold btn-block" data-act="go-throne" style="margin-bottom:8px">♛ Sala do Trono</button>';
     html += '<button class="btn btn-outline btn-block" data-act="go-ach">Ver Conquistas</button>';
+    var prCount = (S.errored || []).length;
+    var saeCount = (S.solvedAfterError || []).length;
+    html += '<button class="btn btn-outline btn-block" data-act="go-review" style="margin-top:8px">📓 Caderno de Revisão' + (prCount > 0 ? ' (' + prCount + ')' : (saeCount > 0 ? ' (' + saeCount + ' superados)' : '')) + '</button>';
     html += '<button class="btn btn-outline btn-block" data-act="go-profiles" style="margin-top:8px">Liga Local (perfis)</button>';
 
     // Compartilhar (WhatsApp + link)
@@ -912,6 +946,68 @@
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/"/g, "&quot;")
       .replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function rReview() {
+    var errored = (S.errored || []).slice();
+    var solvedAfterError = (S.solvedAfterError || []).slice();
+    var tab = (S.screenData && S.screenData.reviewTab) || "todo";
+
+    var html = '<button class="btn btn-ghost btn-sm" data-act="go-map" style="margin-bottom:14px">← Mapa</button>';
+    html += '<h2 style="text-align:center;font-size:1.4rem">📓 Caderno de Revisão</h2>';
+    html += '<p style="text-align:center;color:var(--text-dim);font-size:.86rem;margin-bottom:14px">Onde tropeçou. O griô que erra hoje conta a história amanhã.</p>';
+
+    html += '<div class="tabs" style="margin-bottom:12px">';
+    html += '<button class="tab' + (tab === "todo" ? " active" : "") + '" data-act="tab-review" data-tab="todo">🔴 A Revisar (' + errored.length + ')</button>';
+    html += '<button class="tab' + (tab === "done" ? " active" : "") + '" data-act="tab-review" data-tab="done">✓ Superados (' + solvedAfterError.length + ')</button>';
+    html += '</div>';
+
+    var ids = (tab === "todo") ? errored : solvedAfterError;
+
+    if (ids.length === 0) {
+      var msg = (tab === "todo")
+        ? "Nenhum erro para revisar — vamos manter assim. 👑"
+        : "Ainda não acertou nenhum que tinha errado. Volta na aba ao lado.";
+      html += '<div class="review-empty"><p>' + msg + '</p></div>';
+      return html;
+    }
+
+    // Ordenar por mundo + lastTryAt desc
+    ids.sort(function (a, b) {
+      var ea = getEnigma(a), eb = getEnigma(b);
+      if (!ea || !eb) return 0;
+      if (ea.world !== eb.world) return ea.world - eb.world;
+      var la = (S.lastTryAt && S.lastTryAt[a]) || "";
+      var lb = (S.lastTryAt && S.lastTryAt[b]) || "";
+      return lb.localeCompare(la);
+    });
+
+    html += '<div class="review-list">';
+    for (var i = 0; i < ids.length; i++) {
+      var eid = ids[i];
+      var en = getEnigma(eid);
+      if (!en) continue;
+      var attempts = S.attempts[eid] || 0;
+      var wrongs = (S.wrongPicks && S.wrongPicks[eid]) || [];
+      var lastTry = S.lastTryAt && S.lastTryAt[eid] ? new Date(S.lastTryAt[eid]).toLocaleDateString("pt-BR") : "—";
+
+      var stClass = (tab === "done") ? "solved" : "todo";
+      html += '<div class="review-item ' + stClass + '" data-act="replay-enigma" data-e="' + eid + '">';
+      html += '<div class="review-info">';
+      html += '<div class="review-meta">Mundo ' + en.world + ' · ' + lastTry + '</div>';
+      html += '<div class="review-title">' + en.title + '</div>';
+      html += '<div class="review-stats">';
+      html += '<span>' + attempts + ' tentativa' + (attempts !== 1 ? "s" : "") + '</span>';
+      if (wrongs.length) html += '<span>· ' + wrongs.length + ' erro' + (wrongs.length !== 1 ? "s" : "") + '</span>';
+      html += '</div>';
+      html += '</div>';
+      html += '<div class="review-action">' + (tab === "todo" ? "🔁 Tentar de novo" : "🔁 Rever") + ' →</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    html += '<p style="text-align:center;font-size:.78rem;color:var(--text-muted);margin-top:14px">Acertar aqui não dá cauris extra (já tinha contado). Mas dá conhecimento.</p>';
+    return html;
   }
 
   function rTournament() {
@@ -1104,6 +1200,17 @@
         render();
         break;
       }
+      case "go-review": sfx("navigate"); goTo("review"); break;
+      case "replay-enigma": {
+        var reid = el.getAttribute("data-e");
+        var ren = getEnigma(reid);
+        if (!ren) break;
+        if (!isWorldUnlocked(ren.world)) { showToast("🔒", "Mundo bloqueado", "Não dá pra revisar agora."); break; }
+        sfx("select"); enigmaLocked = false;
+        S.lastWorldPlayed = ren.world; save();
+        goTo("enigma", { enigma: reid, fromReview: true });
+        break;
+      }
       case "go-tournament": sfx("achievement"); goTo("tournament"); if (window.SankofaTournament) window.SankofaTournament.loadWeek().then(function(){ if (S.screen === "tournament") render(); }); break;
       case "open-tournament-enigma": {
         var teid = el.getAttribute("data-e");
@@ -1116,6 +1223,14 @@
         sfx("select"); enigmaLocked = false;
         S.lastWorldPlayed = ten.world; save();
         goTo("enigma", { enigma: teid, fromTournament: true });
+        break;
+      }
+      case "tab-review": {
+        var rt = el.getAttribute("data-tab") || "todo";
+        S.screenData = S.screenData || {};
+        S.screenData.reviewTab = rt;
+        sfx("click");
+        render();
         break;
       }
       case "tab-league": {
@@ -1340,6 +1455,17 @@
       if (attempts === 1) S.firstTries++;
       if (hu === 0) S.noHintSolves++;
       if (elapsed < 10) S.fastSolves = (S.fastSolves || 0) + 1;
+      S.lastTryAt = S.lastTryAt || {};
+      S.lastTryAt[eid] = new Date().toISOString();
+
+      // Caderno: se estava errado e acertou agora, move para "solvedAfterError"
+      S.errored = S.errored || [];
+      S.solvedAfterError = S.solvedAfterError || [];
+      var wasErrored = S.errored.indexOf(eid);
+      if (wasErrored !== -1) {
+        S.errored.splice(wasErrored, 1);
+        if (S.solvedAfterError.indexOf(eid) === -1) S.solvedAfterError.push(eid);
+      }
 
       // Cauris: only on first solve of an enigma.
       var caurisGained = 0;
@@ -1466,6 +1592,22 @@
       sfx("wrong");
       var fb2 = document.getElementById("fb");
       if (fb2) fb2.innerHTML = '<div class="feedback wrong">✗ Não é esta. Tenta de novo!</div>';
+
+      // Caderno de Revisão — registra erro persistente
+      S.errored = S.errored || [];
+      S.wrongPicks = S.wrongPicks || {};
+      S.lastTryAt = S.lastTryAt || {};
+      var firstErrorOnThis = S.errored.indexOf(eid) === -1;
+      if (firstErrorOnThis) S.errored.push(eid);
+      S.wrongPicks[eid] = (S.wrongPicks[eid] || []).concat([idx]);
+      S.lastTryAt[eid] = new Date().toISOString();
+
+      if (firstErrorOnThis) {
+        setTimeout(function () {
+          showToast("📓", "Adicionado ao Caderno", "Vamos voltar a este depois.");
+        }, 700);
+      }
+
       // Tournament: registra também a tentativa errada (até MAX_ATTEMPTS)
       submitToTournamentIfApplicable(eid, idx, attempts, S.hintsUsed[eid] || 0, Date.now() - enigmaStartTime, false);
       save();

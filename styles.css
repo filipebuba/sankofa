@@ -977,3 +977,100 @@ input { font-family: var(--font-body); }
   font-weight: 700;
   letter-spacing: .02em;
 }
+
+/* ============================================================
+   Caderno de Revisão (Spaced Repetition)
+   ============================================================ */
+
+.review-banner {
+  background: linear-gradient(135deg, rgba(192,64,64,.12), var(--surface2));
+  border: 1px solid rgba(192,64,64,.35);
+  border-left: 4px solid var(--danger);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin: 10px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 200ms var(--ease);
+}
+.review-banner:hover { border-color: var(--danger); transform: translateX(2px); }
+.review-banner-text { flex: 1; }
+.review-banner-eyebrow {
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: var(--danger);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.review-banner-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.review-banner-meta { font-size: .76rem; color: var(--text-dim); }
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.review-item {
+  background: var(--surface2);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 160ms var(--ease);
+}
+.review-item:hover { border-color: var(--gold); transform: translateX(2px); }
+.review-item.todo   { border-left: 3px solid var(--danger); }
+.review-item.solved { border-left: 3px solid var(--green); }
+
+.review-info { flex: 1; min-width: 0; }
+.review-meta { font-size: .72rem; color: var(--text-dim); margin-bottom: 2px; }
+.review-title {
+  font-weight: 700;
+  font-size: .94rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.review-stats { font-size: .72rem; color: var(--text-muted); display: flex; gap: 6px; }
+.review-action {
+  flex: 0 0 auto;
+  font-size: .8rem;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.review-empty {
+  background: var(--surface2);
+  border: 1px dashed var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  color: var(--text-dim);
+}
+
+.prev-wrongs {
+  background: rgba(192,64,64,.08);
+  border-left: 3px solid var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: .82rem;
+  color: var(--text);
+  margin: 8px 0;
+}
+.prev-wrongs.prev-solved {
+  background: rgba(74,138,80,.08);
+  border-left-color: var(--green);
+}
