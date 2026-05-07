@@ -13,13 +13,21 @@
   var LEGACY_KEYS = ["sankofa_v5", "sankofa_v4", "sankofa_v3", "sankofa_v2", "sankofa", "sankofa-progress-v1"];
   function STORAGE_KEY() { return PROFILES ? PROFILES.storageKey() : "sankofa_v5"; }
 
+  // Pedagogia: avança liberal, recompensa mestria.
+  var WORLD_UNLOCK_THRESHOLD = 0.70;        // 70% resolvidos = próximo mundo abre
+  var WORLD_PERFECT_FIRST_TRY = 0.80;       // 80%+ em 1ª tentativa = mestria perfeita
+  var REWARD_MASTERY = 100;                 // cauris bônus por 100% num mundo
+  var REWARD_MASTERY_PERFECT = 250;         // cauris bônus por mestria perfeita
+
   var S = {
     name: "", points: 0, solved: [], firstTries: 0, noHintSolves: 0, fastSolves: 0,
     hintsUsed: {}, attempts: {}, contextsRead: 0, achievements: [],
     streak: 0, lastPlayDate: null, dailyDone: 0, dailyDate: null,
     screen: "landing", screenData: {}, soundOn: true, ambientOn: false, ctxReadThis: {},
     lastLevel: 1, lastWorldPlayed: null,
-    cauris: 0, lastTitleRank: 1, house: null, goods: {}
+    cauris: 0, lastTitleRank: 1, house: null, goods: {},
+    // Tracking de toasts e marcos para não dispará-los repetidos
+    worldsUnlockToasted: [], worldsMasteryAwarded: [], worldsPerfectAwarded: []
   };
 
   var enigmaLocked = false;
@@ -65,14 +73,29 @@
     return null;
   }
   function getWorldProgress(wid) {
-    var total = 0, done = 0;
+    var total = 0, done = 0, firstTry = 0;
     for (var i = 0; i < ENIGMAS.length; i++) {
       if (ENIGMAS[i].world === wid) {
         total++;
-        if (isSolved(ENIGMAS[i].id)) done++;
+        if (isSolved(ENIGMAS[i].id)) {
+          done++;
+          if ((S.attempts[ENIGMAS[i].id] || 0) === 1) firstTry++;
+        }
       }
     }
-    return { total: total, done: done, pct: total ? Math.round(done / total * 100) : 0 };
+    var ratio = total ? done / total : 0;
+    var firstTryRatio = total ? firstTry / total : 0;
+    return {
+      total: total,
+      done: done,
+      firstTry: firstTry,
+      pct: Math.round(ratio * 100),
+      ratio: ratio,
+      firstTryRatio: firstTryRatio,
+      mastered: ratio === 1 && total > 0,
+      perfect: ratio === 1 && firstTryRatio >= WORLD_PERFECT_FIRST_TRY && total > 0,
+      unlocked: ratio >= WORLD_UNLOCK_THRESHOLD && total > 0
+    };
   }
 
   function worldEnigmas(wid) {
@@ -81,13 +104,14 @@
     return out;
   }
 
-  // Mundo 1 sempre destravado. Demais: previous world 100% OR data.unlocked=true.
+  // Mundo 1 sempre destravado. Demais: previous world ≥ WORLD_UNLOCK_THRESHOLD (default 70%)
+  // OR data.unlocked=true.
   function isWorldUnlocked(wid) {
     if (wid <= 1) return true;
     var w = getWorld(wid);
     if (w && w.unlocked) return true;
     var prev = getWorldProgress(wid - 1);
-    return prev.total > 0 && prev.done === prev.total;
+    return prev.unlocked;
   }
 
   // First unsolved enigma for a given world (in order, gated by predecessor solved).
@@ -469,16 +493,30 @@
       var artStyle = w.art ? ' style="background-image:url(' + w.art + ')"' : "";
       var unlocked = isWorldUnlocked(w.id);
       if (unlocked) {
-        html += '<div class="world-card unlocked" data-act="open-world" data-w="' + w.id + '">' +
+        var badge = "";
+        var extraClass = "";
+        if (p.perfect)      { badge = '<span class="world-badge perfect" title="Mestre Perfeito">🏛️</span>'; extraClass = " perfect"; }
+        else if (p.mastered) { badge = '<span class="world-badge mastered" title="Mestre">👑</span>'; extraClass = " mastered"; }
+
+        var label;
+        if (p.mastered)       label = '<div class="world-status mastered">' + (p.perfect ? "Mestre Perfeito" : "Mestre · " + p.done + "/" + p.total) + '</div>';
+        else if (p.unlocked)  label = '<div class="world-status partial">' + p.done + '/' + p.total + ' · próximo aberto</div>';
+        else                  label = '<div class="world-status">' + p.done + '/' + p.total + ' fragmentos</div>';
+
+        html += '<div class="world-card unlocked' + extraClass + '" data-act="open-world" data-w="' + w.id + '">' +
           '<div class="world-art"' + artStyle + '></div>' +
+          badge +
           '<div class="world-num">' + w.id + '</div>' +
           '<div class="world-name">' + w.name + '</div>' +
           '<div class="world-period">' + w.period + '</div>' +
           '<div style="margin-top:8px"><div class="progress-bar"><div class="progress-fill" style="width:' + p.pct + '%"></div></div>' +
-          '<div style="font-size:.68rem;color:var(--text-muted);margin-top:3px">' + p.done + '/' + p.total + ' fragmentos</div></div></div>';
+          label + '</div></div>';
       } else {
         var prevP = getWorldProgress(w.id - 1);
-        var hint = prevP.total ? "Conclua o Mundo " + (w.id - 1) + " (" + prevP.done + "/" + prevP.total + ")" : "Em breve";
+        var threshold = Math.ceil(prevP.total * WORLD_UNLOCK_THRESHOLD);
+        var hint = prevP.total
+          ? "Resolva " + threshold + "/" + prevP.total + " do Mundo " + (w.id - 1) + " (" + prevP.done + " feitos)"
+          : "Em breve";
         html += '<div class="world-card locked" title="' + hint + '">' +
           '<div class="world-art"' + artStyle + '></div>' +
           '<span class="lock-icon">🔒</span>' +
@@ -999,7 +1037,7 @@
       case "resume": handleResume(); break;
       case "continue-next":
         var nw = parseInt(el.getAttribute("data-w"), 10);
-        if (!isWorldUnlocked(nw)) { sfx("wrong"); showToast("🔒", "Mundo bloqueado", "Conclua o anterior primeiro."); break; }
+        if (!isWorldUnlocked(nw)) { sfx("wrong"); showToast("🔒", "Mundo bloqueado", "Resolva 70% do mundo anterior."); break; }
         var nxt = nextInWorld(nw);
         if (nxt) { sfx("select"); enigmaLocked = false; S.lastWorldPlayed = nw; save(); goTo("enigma", { enigma: nxt.id }); }
         else { sfx("fragment"); goTo("mosaic", { world: nw }); }
@@ -1010,7 +1048,13 @@
       case "go-daily": sfx("dailyOpen"); goTo("daily"); break;
       case "open-world":
         var wId = parseInt(el.getAttribute("data-w"), 10);
-        if (!isWorldUnlocked(wId)) { sfx("wrong"); showToast("🔒", "Mundo bloqueado", "Conclua o Mundo " + (wId - 1) + " primeiro."); break; }
+        if (!isWorldUnlocked(wId)) {
+          var prevPx = getWorldProgress(wId - 1);
+          var needX = Math.ceil(prevPx.total * WORLD_UNLOCK_THRESHOLD);
+          sfx("wrong");
+          showToast("🔒", "Mundo bloqueado", "Resolva " + needX + "/" + prevPx.total + " do Mundo " + (wId - 1) + " (faltam " + Math.max(0, needX - prevPx.done) + ").");
+          break;
+        }
         sfx("navigate"); S.lastWorldPlayed = wId; save();
         goTo("world", { world: wId });
         break;
@@ -1066,7 +1110,7 @@
         var ten = getEnigma(teid);
         if (!ten) break;
         if (!isWorldUnlocked(ten.world)) {
-          showToast("🔒", "Mundo bloqueado", "Conclua o Mundo " + (ten.world - 1) + " primeiro.");
+          showToast("🔒", "Mundo bloqueado", "Resolva 70% do Mundo " + (ten.world - 1) + " primeiro.");
           break;
         }
         sfx("select"); enigmaLocked = false;
@@ -1347,17 +1391,52 @@
       checkLevelUp();
       checkTitleUp();
 
-      // Mundo desbloqueado se acabou de fechar o atual
+      // Marcos pedagógicos no mundo atual:
+      //   1. Atingiu 70% → desbloqueia próximo mundo (toast 1×)
+      //   2. Atingiu 100% → mestria + 100 cauris (toast 1×)
+      //   3. Mestria perfeita → +250 cauris + título (toast 1×)
       if (newSolved) {
         var wpAfter = getWorldProgress(e.world);
-        if (wpAfter.done === wpAfter.total && wpAfter.total > 0) {
+        S.worldsUnlockToasted = S.worldsUnlockToasted || [];
+        S.worldsMasteryAwarded = S.worldsMasteryAwarded || [];
+        S.worldsPerfectAwarded = S.worldsPerfectAwarded || [];
+
+        // Threshold de desbloqueio
+        if (wpAfter.unlocked && S.worldsUnlockToasted.indexOf(e.world) === -1) {
+          S.worldsUnlockToasted.push(e.world);
           var nextW = getWorld(e.world + 1);
           if (nextW) {
             sfx("achievement");
-            setTimeout(function () {
-              showToast("🗝️", "Mundo " + nextW.id + " destravado!", nextW.name);
-            }, 600);
+            (function (nw, pct) {
+              setTimeout(function () {
+                showToast("🗝️", "Mundo " + nw.id + " aberto!", nw.name + " · " + pct + "% no anterior");
+              }, 600);
+            })(nextW, wpAfter.pct);
           }
+        }
+
+        // Mestria 100%
+        if (wpAfter.mastered && S.worldsMasteryAwarded.indexOf(e.world) === -1) {
+          S.worldsMasteryAwarded.push(e.world);
+          S.cauris = (S.cauris || 0) + REWARD_MASTERY;
+          (function (wid, w) {
+            setTimeout(function () {
+              showToast("👑", "Mestre do Mundo " + wid + "!", "+" + REWARD_MASTERY + " cauris · " + (w ? w.name : ""));
+              sfx("levelUp");
+            }, 1200);
+          })(e.world, getWorld(e.world));
+        }
+
+        // Mestria Perfeita (100% + 80%+ em 1ª tentativa)
+        if (wpAfter.perfect && S.worldsPerfectAwarded.indexOf(e.world) === -1) {
+          S.worldsPerfectAwarded.push(e.world);
+          S.cauris = (S.cauris || 0) + REWARD_MASTERY_PERFECT;
+          (function (wid) {
+            setTimeout(function () {
+              showToast("🏛️", "Mestre Perfeito do Mundo " + wid + "!", "+" + REWARD_MASTERY_PERFECT + " cauris · domínio quase total na 1ª tentativa");
+              sfx("achievement");
+            }, 1800);
+          })(e.world);
         }
       }
 

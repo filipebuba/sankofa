@@ -937,3 +937,43 @@ input { font-family: var(--font-body); }
 .tournament-item.done   .tour-status { color: var(--green); }
 .tournament-item.exhausted .tour-status { color: var(--danger); }
 .tournament-item.wip    .tour-status { color: var(--terra); }
+
+/* ============================================================
+   Mestria de Mundos (Pedagogia: 70% abre, 100% mestria)
+   ============================================================ */
+
+.world-card {
+  position: relative;
+}
+.world-badge {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 1.4rem;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.6));
+  z-index: 2;
+}
+
+.world-card.mastered {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold-dim);
+}
+.world-card.perfect {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold), 0 0 18px rgba(201, 168, 76, .35);
+}
+
+.world-status {
+  font-size: .68rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+.world-status.partial {
+  color: var(--gold);
+  font-weight: 600;
+}
+.world-status.mastered {
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: .02em;
+}

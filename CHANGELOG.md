@@ -4,6 +4,38 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Pedagogia — Avanço liberal + Mestria opcional (branch `dev`)
+
+#### Mudado
+
+- **Desbloqueio de mundo**: era 100% obrigatório no anterior; agora **70%**.
+  Reduz frustração, mantém exposição, encoraja tentativa-e-erro (errar é
+  parte do aprender). Constantes em `src/app.js`:
+  `WORLD_UNLOCK_THRESHOLD = 0.70`.
+- **Mestria 100%** agora é marco opcional com **+100 cauris**.
+  Toast "👑 Mestre do Mundo X!".
+- **Mestria Perfeita** (100% + 80%+ em 1ª tentativa) **+250 cauris**.
+  Toast "🏛️ Mestre Perfeito do Mundo X!".
+
+#### UI
+
+- Cards de mundo no mapa mostram badge 👑 (Mestre) ou 🏛️ (Perfeito) + brilho dourado.
+- Status textual claro: "X/Y · próximo aberto", "Mestre · X/Y" ou "Mestre Perfeito".
+- Mensagens de bloqueio dizem o threshold real ("Resolva 11/15 do Mundo 1").
+- Tracking persistente em `S.worldsUnlockToasted`, `S.worldsMasteryAwarded`,
+  `S.worldsPerfectAwarded` para evitar toasts duplicados em re-jogadas.
+
+#### Pedagogia (referência)
+
+| Marco | Antes | Agora |
+|---|---|---|
+| Próximo mundo abre | 15/15 | 11/15 (70%) |
+| Mestria 100% | implícito (já abria) | explícito + 100🐚 |
+| Mestria Perfeita | inexistente | +250🐚 + título |
+
+Inspiração: Duolingo (avança errando), Khan Academy (domínio 60-80%),
+Quizlet (spaced repetition no Daily — Fase futura).
+
 ### Fase 1.5 — Torneio Assíncrono Semanal (em desenvolvimento na branch `dev`)
 
 #### Adicionado
