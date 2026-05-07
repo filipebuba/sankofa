@@ -362,6 +362,7 @@
       case "seal": app.innerHTML = ROYALTY ? ROYALTY.rSeal(S, ctx) : rProfile(); break;
       case "league": app.innerHTML = rLeague(); break;
       case "profiles": app.innerHTML = rProfiles(); break;
+      case "tournament": app.innerHTML = rTournament(); break;
       default: app.innerHTML = rLanding();
     }
     attachEvents();
@@ -440,6 +441,26 @@
         '</div>';
     }
 
+    // Banner do Torneio Semanal (se Liga global ativa e semana carregada)
+    if (window.SankofaTournament && window.SankofaTournament.enabled) {
+      var tw = window.SankofaTournament.getWeek();
+      if (tw && tw.enigma_ids && tw.enigma_ids.length) {
+        var doneCount = 0;
+        for (var ti = 0; ti < tw.enigma_ids.length; ti++) {
+          if (window.SankofaTournament.attemptsUsed(tw.week_iso, tw.enigma_ids[ti]) > 0) doneCount++;
+        }
+        var totalScore = window.SankofaTournament.totalLocalScore(tw.week_iso, tw.enigma_ids);
+        html += '<div class="tournament-banner" data-act="go-tournament" role="button" tabindex="0">' +
+          '<div class="tournament-banner-text">' +
+          '<div class="tournament-banner-eyebrow">🏆 Torneio · Semana ' + (tw.week_iso || "") + '</div>' +
+          '<div class="tournament-banner-title">' + doneCount + '/' + tw.enigma_ids.length + ' enigmas resolvidos · ' + totalScore + ' pts</div>' +
+          '<div class="tournament-banner-meta">5 enigmas · até 3 tentativas · até domingo 23:59 UTC</div>' +
+          '</div>' +
+          '<div class="resume-banner-arrow">→</div>' +
+          '</div>';
+      }
+    }
+
     html += '<div class="world-map">';
 
     for (var i = 0; i < WORLDS.length; i++) {
@@ -472,6 +493,9 @@
     html += '<button class="btn btn-gold btn-sm" data-act="go-throne">♛ Trono</button>';
     html += '<button class="btn btn-outline btn-sm" data-act="go-daily">⭐ Audiência</button>';
     html += '<button class="btn btn-outline btn-sm" data-act="go-league">🏆 Liga</button>';
+    if (window.SankofaTournament && window.SankofaTournament.enabled) {
+      html += '<button class="btn btn-outline btn-sm" data-act="go-tournament">🥇 Torneio</button>';
+    }
     html += '<button class="btn btn-ghost btn-sm" data-act="go-profile">Perfil</button>';
     html += '</div>';
     return html;
@@ -852,6 +876,66 @@
       .replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
+  function rTournament() {
+    var html = '<button class="btn btn-ghost btn-sm" data-act="go-map" style="margin-bottom:14px">← Mapa</button>';
+    html += '<h2 style="text-align:center;font-size:1.4rem">🥇 Torneio Semanal</h2>';
+
+    if (!window.SankofaTournament || !window.SankofaTournament.enabled) {
+      html += '<p style="text-align:center;color:var(--text-dim);margin-top:14px">Liga global não configurada. Defina <code>window.SANKOFA_LEAGUE_CONFIG</code> com Supabase URL + chave anônima para ativar.</p>';
+      return html;
+    }
+
+    var w = window.SankofaTournament.getWeek();
+    if (!w) {
+      html += '<p style="text-align:center;color:var(--text-dim);margin-top:14px">A carregar a semana atual...</p>';
+      html += '<button class="btn btn-ghost btn-block btn-sm" data-act="go-tournament" style="margin-top:10px">Atualizar</button>';
+      return html;
+    }
+
+    var maxAtt = (window.SANKOFA_TOURNAMENT && window.SANKOFA_TOURNAMENT.MAX_ATTEMPTS) || 3;
+    var endsAt = new Date(w.ends_at);
+    var msLeft = endsAt.getTime() - Date.now();
+    var daysLeft = Math.max(0, Math.ceil(msLeft / 86400000));
+
+    html += '<p style="text-align:center;color:var(--text-dim);font-size:.86rem;margin-bottom:14px">' +
+      'Semana ' + w.week_iso + ' · ' + (daysLeft > 0 ? daysLeft + ' dia' + (daysLeft !== 1 ? "s" : "") + " restante" + (daysLeft !== 1 ? "s" : "") : "encerrando hoje") + '</p>';
+
+    var totalScore = window.SankofaTournament.totalLocalScore(w.week_iso, w.enigma_ids);
+    html += '<div class="league-stats">';
+    html += '<div class="lstat"><div class="lstat-val">' + w.enigma_ids.length + '</div><div class="lstat-lbl">enigmas</div></div>';
+    html += '<div class="lstat"><div class="lstat-val">' + maxAtt + '</div><div class="lstat-lbl">tentativas</div></div>';
+    html += '<div class="lstat"><div class="lstat-val">' + totalScore + '</div><div class="lstat-lbl">teu total</div></div>';
+    html += '</div>';
+
+    html += '<div class="tournament-list">';
+    for (var i = 0; i < w.enigma_ids.length; i++) {
+      var id = w.enigma_ids[i];
+      var en = getEnigma(id);
+      if (!en) continue;
+      var used = window.SankofaTournament.attemptsUsed(w.week_iso, id);
+      var best = window.SankofaTournament.localBest(w.week_iso, id);
+      var status, stClass;
+      if (best > 0) { status = "✓ " + best + " pts"; stClass = "done"; }
+      else if (used >= maxAtt) { status = "✗ esgotado"; stClass = "exhausted"; }
+      else if (used > 0) { status = used + "/" + maxAtt + " tentativas"; stClass = "wip"; }
+      else { status = "novo"; stClass = "new"; }
+
+      var canPlay = used < maxAtt && best === 0;
+      html += '<div class="tournament-item ' + stClass + '"' + (canPlay ? ' data-act="open-tournament-enigma" data-e="' + id + '"' : "") + '>';
+      html += '<div class="tour-idx">' + (i + 1) + '</div>';
+      html += '<div class="tour-info">';
+      html += '<div class="tour-title">' + en.title + '</div>';
+      html += '<div class="tour-meta">Mundo ' + en.world + '</div>';
+      html += '</div>';
+      html += '<div class="tour-status">' + status + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    html += '<p style="text-align:center;font-size:.78rem;color:var(--text-muted);margin-top:14px">Pontuação calculada server-side. Anti-cheat ativo.</p>';
+    return html;
+  }
+
   function rDaily() {
     var daily = getDailyEnigma();
     var done = isDailyDone();
@@ -974,6 +1058,20 @@
         S.screenData.tab = t;
         sfx("click");
         render();
+        break;
+      }
+      case "go-tournament": sfx("achievement"); goTo("tournament"); if (window.SankofaTournament) window.SankofaTournament.loadWeek().then(function(){ if (S.screen === "tournament") render(); }); break;
+      case "open-tournament-enigma": {
+        var teid = el.getAttribute("data-e");
+        var ten = getEnigma(teid);
+        if (!ten) break;
+        if (!isWorldUnlocked(ten.world)) {
+          showToast("🔒", "Mundo bloqueado", "Conclua o Mundo " + (ten.world - 1) + " primeiro.");
+          break;
+        }
+        sfx("select"); enigmaLocked = false;
+        S.lastWorldPlayed = ten.world; save();
+        goTo("enigma", { enigma: teid, fromTournament: true });
         break;
       }
       case "tab-league": {
@@ -1271,9 +1369,13 @@
         var hh = ROYALTY ? ROYALTY.getHouse(S) : null;
         LEAGUE.submit({
           handle: S.leagueHandle, cauris: S.cauris || 0,
-          title: tt.short, house: hh ? hh.id : ""
+          title: tt.short, house: hh ? hh.id : "",
+          tag: S.tag || ""
         });
       }
+
+      // Sync to weekly tournament (opt-in via league config; fire-and-forget)
+      submitToTournamentIfApplicable(eid, idx, attempts, hu, Date.now() - enigmaStartTime, true);
 
       setTimeout(function () {
         sfx("fragment");
@@ -1285,12 +1387,44 @@
       sfx("wrong");
       var fb2 = document.getElementById("fb");
       if (fb2) fb2.innerHTML = '<div class="feedback wrong">✗ Não é esta. Tenta de novo!</div>';
+      // Tournament: registra também a tentativa errada (até MAX_ATTEMPTS)
+      submitToTournamentIfApplicable(eid, idx, attempts, S.hintsUsed[eid] || 0, Date.now() - enigmaStartTime, false);
       save();
       setTimeout(function () {
         opts[idx].classList.remove("wrong", "selected");
         enigmaLocked = false;
       }, 1000);
     }
+  }
+
+  function submitToTournamentIfApplicable(eid, idx, attempt, hintsUsed, msTotal, correct) {
+    if (!window.SankofaTournament || !window.SankofaTournament.enabled) return;
+    if (!window.SankofaTournament.isInCurrentWeek(eid)) return;
+    var w = window.SankofaTournament.getWeek();
+    if (!w) return;
+    var maxAttempts = (window.SANKOFA_TOURNAMENT && window.SANKOFA_TOURNAMENT.MAX_ATTEMPTS) || 3;
+    if (attempt > maxAttempts) return;
+    var minMs = (window.SANKOFA_TOURNAMENT && window.SANKOFA_TOURNAMENT.MIN_MS) || 1500;
+    var ms = Math.max(minMs, msTotal | 0);
+    var profileUid = (PROFILES && PROFILES.activeId()) || "default";
+    window.SankofaTournament.submit({
+      week_iso: w.week_iso,
+      profile_uid: profileUid,
+      nick: (S.name || "Viajante").slice(0, 32),
+      tag: S.tag || null,
+      age_band: S.ageBand || null,
+      house: (S.house && S.house.id) || null,
+      enigma_id: eid,
+      picked: idx,
+      ms_to_answer: ms,
+      hints_used: hintsUsed | 0,
+      attempt: attempt
+    }).then(function (res) {
+      if (res && res.ok) {
+        window.SankofaTournament.recordAttempt(w.week_iso, eid, attempt, res.score | 0, !!res.correct);
+        if (correct) showToast("🏆", "Torneio: +" + res.score, "Pontuação registrada na semana.");
+      }
+    });
   }
 
   function handleHint(eid) {
@@ -1359,6 +1493,13 @@
       if (AUDIO) AUDIO.unlock();
       document.removeEventListener("click", unlockOnce);
     }, { once: true });
+
+    // Pre-load weekly tournament (não bloqueante; UI mostra banner depois)
+    if (window.SankofaTournament && window.SankofaTournament.enabled) {
+      window.SankofaTournament.loadWeek().then(function () {
+        if (S.screen === "landing" || S.screen === "map" || S.screen === "tournament") render();
+      });
+    }
 
     if (S.name) {
       updateStreak();

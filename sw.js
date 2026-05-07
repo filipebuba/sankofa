@@ -8,7 +8,7 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.2.0-dev";
+const VERSION = "v1.3.0-dev";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 
@@ -26,6 +26,7 @@ const APP_SHELL = [
   "/src/onboarding.js",
   "/src/royalty.js",
   "/src/league.js",
+  "/src/tournament.js",
   "/src/app.js",
 
   "/data/worlds.js",
@@ -40,6 +41,7 @@ const APP_SHELL = [
   "/data/leagues.js",
   "/data/hga-names.js",
   "/data/blocklist.js",
+  "/data/tournament-config.js",
 
   "/assets/favicon.png",
   "/assets/logo.png",
