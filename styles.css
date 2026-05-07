@@ -302,6 +302,66 @@ input { font-family: var(--font-body); }
 .fp-bantu { background: linear-gradient(180deg, var(--green) 0%, #2a4a28 100%); }
 .fp-arte { background: linear-gradient(225deg, var(--indigo) 0%, #1a2a40 100%); }
 
+/* Mundo 3 — Impérios do Sahel */
+.fp-mansa       { background: radial-gradient(circle at 50% 40%, #d9b95a 0%, #8a6a20 50%, #2a1808 100%); }
+.fp-sundiata    { background: linear-gradient(45deg, #6a4a2a 0%, #c9a84c 50%, #4a3018 100%); }
+.fp-tombuctu    { background: linear-gradient(180deg, #c9a84c 0%, #8a6030 60%, #1a1208 100%); }
+.fp-songhai     { background: linear-gradient(135deg, #b85a3a 0%, #d9b95a 50%, #4a2010 100%); }
+.fp-gana        { background: radial-gradient(circle at 30% 30%, #ede5d5 0%, #c9a84c 40%, #4a3018 100%); }
+.fp-ibn-battuta { background: linear-gradient(160deg, #4a3580 0%, #c9a84c 50%, #2a1808 100%); }
+.fp-ahmed-baba  { background: linear-gradient(225deg, #6a4a2a 0%, #2a4570 60%, #1a1208 100%); }
+.fp-gana-imp    { background: linear-gradient(90deg, #c9a84c 0%, #b85a3a 50%, #2a1010 100%); }
+
+/* Mundo 4 — Costas e Rotas */
+.fp-kilwa       { background: radial-gradient(circle at 60% 50%, #c9a84c 0%, #2a4570 60%, #0c0a30 100%); }
+.fp-zimbabwe    { background: linear-gradient(135deg, #6a5040 0%, #3a3128 50%, #1a140a 100%); }
+.fp-suaili      { background: linear-gradient(45deg, #2a4570 0%, #4a8a50 50%, #c9a84c 100%); }
+.fp-zanzibar    { background: radial-gradient(circle at 40% 60%, #ede5d5 0%, #d9b95a 40%, #6a4a2a 100%); }
+.fp-sofala      { background: linear-gradient(180deg, #c9a84c 0%, #4a8a50 50%, #2a4570 100%); }
+.fp-monsoon     { background: linear-gradient(160deg, #2a4570 0%, #4a8a50 50%, #ede5d5 100%); }
+.fp-madagascar  { background: linear-gradient(225deg, #4a8a50 0%, #d9b95a 50%, #6a4a2a 100%); }
+.fp-mombasa     { background: radial-gradient(circle at 30% 50%, #b85a3a 0%, #2a4570 60%, #0c0a06 100%); }
+
+/* Mundo 5 — Florestas e Reinos */
+.fp-benin       { background: linear-gradient(135deg, #8a6030 0%, #c9a84c 50%, #2a1810 100%); }
+.fp-kongo       { background: linear-gradient(180deg, #b85a3a 0%, #4a3018 60%, #1a0a08 100%); }
+.fp-ife         { background: radial-gradient(circle at 50% 40%, #d9b95a 0%, #8a6030 50%, #2a1808 100%); }
+.fp-asante      { background: linear-gradient(45deg, #d9be62 0%, #c9a84c 50%, #1a1208 100%); }
+.fp-oyo         { background: linear-gradient(160deg, #6a4a2a 0%, #b85a3a 50%, #2a1010 100%); }
+.fp-lunda       { background: linear-gradient(225deg, #6a4a2a 0%, #8a6030 50%, #4a3018 100%); }
+.fp-nzinga-w5   { background: radial-gradient(circle at 40% 40%, #b85a3a 0%, #6a3020 50%, #1a0a08 100%); }
+.fp-floresta    { background: linear-gradient(180deg, #4a8a50 0%, #2a4a28 50%, #1a2010 100%); }
+
+/* Mundo 6 — Resistência */
+.fp-palmares    { background: linear-gradient(180deg, #4a8a50 0%, #2a4a28 60%, #1a1006 100%); }
+.fp-zumbi       { background: radial-gradient(circle at 50% 50%, #b85a3a 0%, #4a3018 60%, #0c0a06 100%); }
+.fp-dandara     { background: linear-gradient(135deg, #b85a3a 0%, #c9a84c 50%, #2a1010 100%); }
+.fp-aqualtune   { background: radial-gradient(circle at 60% 40%, #d9b95a 0%, #8a6030 50%, #1a0a08 100%); }
+.fp-haiti       { background: linear-gradient(45deg, #b85a3a 0%, #2a4570 50%, #0c0a06 100%); }
+.fp-tereza      { background: linear-gradient(160deg, #6a4a2a 0%, #4a8a50 50%, #1a1006 100%); }
+.fp-yaa         { background: radial-gradient(circle at 30% 50%, #d9be62 0%, #b85a3a 50%, #2a1010 100%); }
+.fp-toussaint   { background: linear-gradient(225deg, #2a4570 0%, #b85a3a 50%, #1a0a08 100%); }
+
+/* Mundo 7 — O Encontro Forçado */
+.fp-candomble   { background: linear-gradient(180deg, #c9a84c 0%, #b85a3a 50%, #1a0a08 100%); }
+.fp-capoeira    { background: linear-gradient(45deg, #4a8a50 0%, #c9a84c 50%, #2a1010 100%); }
+.fp-samba       { background: conic-gradient(from 0deg at 50% 50%, #4a8a50, #c9a84c, #b85a3a, #2a4570, #4a8a50); }
+.fp-terreiro    { background: radial-gradient(circle at 50% 50%, #ede5d5 0%, #c9a84c 40%, #4a3018 100%); }
+.fp-orixa       { background: linear-gradient(135deg, #2a4570 0%, #b85a3a 50%, #c9a84c 100%); }
+.fp-vatapa      { background: linear-gradient(225deg, #d9be62 0%, #b85a3a 50%, #4a2010 100%); }
+.fp-jongo       { background: linear-gradient(160deg, #6a4a2a 0%, #4a8a50 50%, #2a1808 100%); }
+.fp-pixinguinha { background: radial-gradient(circle at 40% 40%, #c9a84c 0%, #6a4a2a 50%, #1a1206 100%); }
+
+/* Mundo 8 — Luta e Liberdade */
+.fp-au          { background: linear-gradient(180deg, #4a8a50 0%, #c9a84c 35%, #b85a3a 70%, #1a0a08 100%); }
+.fp-lumumba     { background: radial-gradient(circle at 50% 30%, #d9b95a 0%, #b85a3a 60%, #1a0a08 100%); }
+.fp-cabral      { background: linear-gradient(135deg, #b85a3a 0%, #4a8a50 50%, #1a1006 100%); }
+.fp-nkrumah     { background: linear-gradient(45deg, #4a8a50 0%, #c9a84c 50%, #1a1006 100%); }
+.fp-neto        { background: linear-gradient(180deg, #2a4570 0%, #b85a3a 50%, #4a8a50 100%); }
+.fp-biko        { background: radial-gradient(circle at 30% 60%, #b85a3a 0%, #1a0a08 60%, #0c0a06 100%); }
+.fp-mandela     { background: linear-gradient(225deg, #4a8a50 0%, #c9a84c 35%, #b85a3a 70%, #2a1010 100%); }
+.fp-pan         { background: conic-gradient(from 30deg at 50% 50%, #b85a3a, #c9a84c, #4a8a50, #2a4570, #b85a3a); }
+
 /* Mundo 1 — extras (Vol I) */
 .fp-toumai    { background: radial-gradient(circle at 50% 30%, #a88550 0%, #6a4a2a 60%, #2a1808 100%); }
 .fp-olduvai   { background: linear-gradient(135deg, #5a5040 0%, #3a3128 60%, #1a140a 100%); }
