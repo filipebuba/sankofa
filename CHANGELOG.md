@@ -4,6 +4,39 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [1.1.0] — 2026-05-07
+
+### Adicionado
+
+- **48 enigmas novos** distribuídos pelos Mundos 3–8 (8 cada).
+  Total agora: **71 enigmas** (HGA Vols I–VIII completos).
+
+- **Mundo 3 — Impérios do Sahel**: Mansa Musa, Sundiata, Tombuctu,
+  Songhai, sal-ouro, Ibn Battuta, Ahmed Baba, Império de Gana.
+- **Mundo 4 — Costas e Rotas**: Kilwa, Grande Zimbabwe, suaíli,
+  Zanzibar, Sofala, monção, Madagáscar, destruição portuguesa.
+- **Mundo 5 — Florestas e Reinos**: Bronzes do Benin, Reino do Kongo,
+  Ifé, Yaa Asantewaa, Oyo Mesi, Lunda, Nzinga, Kimpa Vita.
+- **Mundo 6 — Resistência**: Palmares, Zumbi, Dandara, Aqualtune,
+  Haiti, Tereza de Benguela, Carlota Lucumí, Revolta dos Malês.
+- **Mundo 7 — O Encontro Forçado**: Candomblé/Mãe Aninha, capoeira,
+  samba, terreiros, africanismos, acarajé, jongo, Pixinguinha.
+- **Mundo 8 — Luta e Liberdade**: Conferência de Berlim, Lumumba,
+  Cabral, Nkrumah, Agostinho Neto, Steve Biko, Mandela, Agenda 2063.
+
+- **48 fragments visuais novos** (gradientes únicos por mundo
+  cobrindo `fp-mansa`, `fp-sundiata`, `fp-tombuctu`, `fp-kilwa`,
+  `fp-zimbabwe`, `fp-benin`, `fp-kongo`, `fp-palmares`, `fp-zumbi`,
+  `fp-dandara`, `fp-candomble`, `fp-capoeira`, `fp-mandela`,
+  `fp-cabral`, `fp-nkrumah`, etc.).
+
+### Validado
+
+- Schema 100%: 71/71 enigmas com 4 opções + 3 dicas + correct
+  index válido + fonte HGA citada.
+- CSS coverage 100%: todos os 71 fragment patterns têm regra.
+- Progressão sequencial Mundo 1 → 8 funciona com lock dinâmico.
+
 ## [1.0.1] — 2026-05-06
 
 ### Corrigido
