@@ -61,7 +61,11 @@
         cauris: s.cauris || 0,
         solved: (s.solved || []).length,
         streak: s.streak || 0,
-        title: s.lastTitleRank || 1
+        title: s.lastTitleRank || 1,
+        tag: s.tag || "",
+        ageBand: s.ageBand || "skip",
+        hgaName: s.hgaName || null,
+        house: s.house || null
       });
     }
     return out;

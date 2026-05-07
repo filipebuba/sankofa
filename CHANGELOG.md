@@ -6,7 +6,7 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ### Fase 1 — Multiplayer/Social (em desenvolvimento na branch `dev`)
 
-#### Adicionado
+#### PR 1 — Modal de Perfil + LGPD
 
 - **Banco de nomes históricos da HGA** (`data/hga-names.js`): 60 figuras curadas
   de Volumes I-VIII com período, casa real e descrição educativa.
@@ -14,19 +14,52 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 - **Blocklist** (`data/blocklist.js`): vocabulário básico vetado em nicks/tags.
   Função `sankofaCensor(text)` com normalização NFD.
 - **Modal de Criação de Perfil** (`src/profile-modal.js`): substitui prompt simples.
-  - Botão "🌍 Gerar Nome Histórico" sorteia da HGA com mini-card educativo
-    (nome, período, casa, descrição, mundo).
+  - Botão "🌍 Gerar Nome Histórico" sorteia da HGA com mini-card educativo.
   - Faixa etária (8-12, 13-17, 18+, prefiro não dizer) — LGPD by design.
   - Tag de grupo opcional (#Turma7A, normalizada).
-  - Casa Real opcional (escolha ou no jogo).
-  - Aceite curto explicando privacidade (sem e-mail/foto/dados pessoais).
-- **`SankofaProfiles.createRich(opts)`**: cria perfil com payload completo.
-  Mantém retrocompatível `create(name)`.
-- **`SankofaProfiles.normalizeTag(raw)`**: normaliza tag (lower + sem acentos + #).
-- **`SankofaProfiles.isFresh()`**: detecta se é o 1º acesso sem consent.
-- **Supabase scaffold local** (`supabase/config.toml`): preparação para Fase 1.5
-  (torneio assíncrono) e Fase 2 (sala de aula realtime). Migrations e edge
-  functions ficarão em `supabase/migrations/` e `supabase/functions/`.
+  - Casa Real opcional, aceite curto sem PII.
+- **`SankofaProfiles.createRich(opts)`**: payload completo, retrocompatível.
+- **`SankofaProfiles.normalizeTag(raw)`** e **`isFresh()`** helpers.
+- **Supabase scaffold local** (`supabase/config.toml`).
+
+#### PR 2 — Share + TTS + Onboarding
+
+- **Compartilhamento social** (`src/share.js`):
+  - `whatsapp(profile)` — abre `wa.me/?text=...` com mensagem-desafio pronta
+    incluindo nome, casa, cauris, fragmentos e link `?ref=<id>` para tracking.
+  - `generic(profile)` — fallback Web Share API quando disponível.
+  - `copyLink(profile)` — copia link de convite ao clipboard.
+  - Botões 📲 "Desafiar no WhatsApp" e 🔗 "Copiar link" no Perfil.
+- **Acessibilidade — Text-to-Speech** (`src/accessibility.js`):
+  - `SankofaTTS.speak(text)` via Web Speech API nativa, zero custo.
+  - Botão 🔊 ao lado de cada pergunta lê em voz alta.
+  - Toggle "Voz: Ligada/Desligada" no Perfil.
+  - Auto-leitura opcional ao abrir cada enigma quando ativado.
+  - Detecta voz pt-BR / pt-PT / fallback automaticamente.
+- **Onboarding 30 segundos** (`src/onboarding.js`):
+  - Carrossel de 4 slides na 1ª visita: "Sou Sankofa", "Resolva enigmas",
+    "Cauris compram coroas", "Pronto para começar?".
+  - Setas ←/→ + Esc + skip + tap nos dots.
+  - Marca visualizado em `localStorage` (`sankofa_onboarding_seen_v1`).
+  - Não bloqueia gameplay; só aparece se nunca viu antes.
+
+#### PR 3 — Liga "Meu Grupo" (filtro por tag)
+
+- **Liga Local com abas** (`Todos | #MinhaTag`):
+  - `SankofaProfiles.list()` agora retorna `tag`, `ageBand`, `hgaName`, `house`.
+  - rProfiles renderiza tabs e filtra perfis locais pela tag ativa.
+  - Estado vazio mostra CTA "📲 Convidar no WhatsApp".
+- **Liga Global com abas** (`🌍 Global | #MinhaTag`):
+  - Aba "Meu Grupo" só aparece se `cfg.hasTagColumn = true` no league-config.
+  - `LEAGUE.refreshGroup(tag)` busca top 50 da semana com `tag=eq.<tag>`.
+  - `LEAGUE.topRowsByTag(tag, limit)` query direta com índice parcial.
+  - `LEAGUE.submit()` envia `tag` quando coluna existe (opt-in seguro).
+  - `tag-chip` visível nas linhas do leaderboard.
+- **Migration Supabase** (`supabase/migrations/20260507120000_add_tag_to_league_scores.sql`):
+  - `ALTER TABLE league_scores ADD COLUMN IF NOT EXISTS tag TEXT;`
+  - Índice parcial `(tag, week_start, cauris DESC) WHERE tag IS NOT NULL`.
+  - Idempotente. Aplicar via `supabase db push` ou painel SQL.
+- **CSS**: `.tabs`, `.tab`, `.tab-disabled`, `.tag-chip`, `.group-empty`.
 
 #### Documentação
 

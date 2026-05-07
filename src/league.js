@@ -24,7 +24,7 @@
 (function () {
   var cfg = window.SANKOFA_LEAGUE_CONFIG || null;
   var enabled = !!(cfg && cfg.url && cfg.anonKey);
-  var cache = { rows: [], activeCount: 0, fetchedAt: 0 };
+  var cache = { rows: [], activeCount: 0, fetchedAt: 0, groupRows: [], groupTag: "", groupFetchedAt: 0 };
 
   function endpoint(path) { return cfg.url + "/rest/v1/" + path; }
 
@@ -52,6 +52,11 @@
       week_start: week(),
       updated_at: new Date().toISOString()
     };
+    // Coluna tag opcional. Setar window.SANKOFA_LEAGUE_CONFIG.hasTagColumn = true
+    // depois de aplicar a migration 0001_add_tag_to_league_scores.sql.
+    if (cfg && cfg.hasTagColumn && payload.tag) {
+      row.tag = String(payload.tag).slice(0, 24);
+    }
     return fetch(endpoint("league_scores?on_conflict=handle"), {
       method: "POST",
       headers: headers({ "Prefer": "resolution=merge-duplicates,return=minimal" }),
@@ -61,6 +66,17 @@
     }).catch(function (e) {
       return { ok: false, error: String(e) };
     });
+  }
+
+  function topRowsByTag(tagValue, limit) {
+    if (!isOnline() || !cfg.hasTagColumn || !tagValue) return Promise.resolve([]);
+    var url = endpoint("league_scores?select=handle,cauris,title,house,tag,week_start") +
+      "&week_start=eq." + week() +
+      "&tag=eq." + encodeURIComponent(tagValue) +
+      "&order=cauris.desc&limit=" + (limit || 50);
+    return fetch(url, { headers: headers() })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .catch(function () { return []; });
   }
 
   function topRows(limit) {
@@ -94,6 +110,20 @@
     });
   }
 
+  function refreshGroup(tagValue) {
+    if (!isOnline() || !cfg.hasTagColumn || !tagValue) {
+      cache.groupRows = [];
+      cache.groupTag = tagValue || "";
+      return Promise.resolve(cache);
+    }
+    return topRowsByTag(tagValue, 50).then(function (rs) {
+      cache.groupRows = rs;
+      cache.groupTag = tagValue;
+      cache.groupFetchedAt = Date.now();
+      return cache;
+    });
+  }
+
   function tier(rank, total) {
     var leagues = window.SANKOFA_LEAGUES || [];
     if (!total || rank < 1) return leagues[0];
@@ -113,6 +143,9 @@
     isOnline: isOnline,
     submit: submit,
     refresh: refresh,
+    refreshGroup: refreshGroup,
+    topRowsByTag: topRowsByTag,
+    hasTagColumn: function () { return !!(cfg && cfg.hasTagColumn); },
     cache: cache,
     tier: tier,
     findRank: findRank,
