@@ -64,10 +64,38 @@
   <script src="src/app.js"></script>
 
   <script>
-    // Service Worker — só em produção (HTTPS) ou localhost
+    // Service Worker — auto-update agressivo:
+    //   updateViaCache:"none" força browser a sempre buscar /sw.js fresh.
+    //   reg.update() no load + visibilitychange + intervalo 1h.
+    //   Quando novo SW termina install, pede SKIP_WAITING.
+    //   controllerchange → reload 1x para servir bytes novos.
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
-        navigator.serviceWorker.register("/sw.js").catch(function () {});
+        navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" }).then(function (reg) {
+          var triggerUpdate = function () { reg.update().catch(function () {}); };
+          triggerUpdate();
+          setInterval(triggerUpdate, 60 * 60 * 1000);
+          document.addEventListener("visibilitychange", function () {
+            if (!document.hidden) triggerUpdate();
+          });
+          window.addEventListener("focus", triggerUpdate);
+          reg.addEventListener("updatefound", function () {
+            var nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener("statechange", function () {
+              if (nw.state === "installed" && navigator.serviceWorker.controller) {
+                nw.postMessage({ type: "SKIP_WAITING" });
+              }
+            });
+          });
+        }).catch(function () {});
+
+        var didReload = false;
+        navigator.serviceWorker.addEventListener("controllerchange", function () {
+          if (didReload) return;
+          didReload = true;
+          window.location.reload();
+        });
       });
     }
 

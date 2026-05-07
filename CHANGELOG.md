@@ -4,6 +4,27 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ## [Unreleased]
 
+## [1.1.1] — 2026-05-07
+
+### Corrigido
+
+- **PWA não atualizava no celular** mesmo com novas versões deployadas.
+  Causa: `navigator.serviceWorker.register` sem `updateViaCache:"none"`
+  fazia o browser cachear o próprio `sw.js` por até 24 h; sem
+  `reg.update()` no foco/visibilitychange, o app instalado nunca
+  consultava o backend; sem listener de `controllerchange`, mesmo
+  quando o novo SW tomava controlo, a página ficava com bytes velhos
+  até reload manual.
+- **Registo robusto**: `updateViaCache:"none"`, `reg.update()` no
+  load + visibilitychange + focus + intervalo de 1 h.
+- **Update automático**: `updatefound` → `SKIP_WAITING` → SW novo
+  ativa → `controllerchange` → `location.reload()` (1×).
+- **Headers Vercel**: `/`, `/index.html` e `/data/version.js` agora
+  com `Cache-Control: public, max-age=0, must-revalidate` para
+  garantir HTML sempre fresh.
+- **Cache bust**: `VERSION` em `sw.js` e `data/version.js` →
+  `v1.1.1` para forçar reinstall do precache em todos os clientes.
+
 ## [1.1.0] — 2026-05-07
 
 ### Adicionado
