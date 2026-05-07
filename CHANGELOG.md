@@ -43,6 +43,24 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
   - Marca visualizado em `localStorage` (`sankofa_onboarding_seen_v1`).
   - Não bloqueia gameplay; só aparece se nunca viu antes.
 
+#### PR 3 — Liga "Meu Grupo" (filtro por tag)
+
+- **Liga Local com abas** (`Todos | #MinhaTag`):
+  - `SankofaProfiles.list()` agora retorna `tag`, `ageBand`, `hgaName`, `house`.
+  - rProfiles renderiza tabs e filtra perfis locais pela tag ativa.
+  - Estado vazio mostra CTA "📲 Convidar no WhatsApp".
+- **Liga Global com abas** (`🌍 Global | #MinhaTag`):
+  - Aba "Meu Grupo" só aparece se `cfg.hasTagColumn = true` no league-config.
+  - `LEAGUE.refreshGroup(tag)` busca top 50 da semana com `tag=eq.<tag>`.
+  - `LEAGUE.topRowsByTag(tag, limit)` query direta com índice parcial.
+  - `LEAGUE.submit()` envia `tag` quando coluna existe (opt-in seguro).
+  - `tag-chip` visível nas linhas do leaderboard.
+- **Migration Supabase** (`supabase/migrations/20260507120000_add_tag_to_league_scores.sql`):
+  - `ALTER TABLE league_scores ADD COLUMN IF NOT EXISTS tag TEXT;`
+  - Índice parcial `(tag, week_start, cauris DESC) WHERE tag IS NOT NULL`.
+  - Idempotente. Aplicar via `supabase db push` ou painel SQL.
+- **CSS**: `.tabs`, `.tab`, `.tab-disabled`, `.tag-chip`, `.group-empty`.
+
 #### Documentação
 
 - `docs/MULTIPLAYER-SOCIAL.md` — plano completo das 3 fases com schemas SQL,

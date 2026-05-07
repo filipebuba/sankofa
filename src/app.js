@@ -741,10 +741,11 @@
       return html;
     }
 
-    var rows = (LEAGUE.cache && LEAGUE.cache.rows) || [];
-    var active = LEAGUE.cache && LEAGUE.cache.activeCount || 0;
-    var myRank = LEAGUE.findRank(S.leagueHandle || "");
-    var tier = myRank > 0 ? LEAGUE.tier(myRank, rows.length || 1) : null;
+    var globalRows = (LEAGUE.cache && LEAGUE.cache.rows) || [];
+    var groupRows  = (LEAGUE.cache && LEAGUE.cache.groupRows) || [];
+    var active     = (LEAGUE.cache && LEAGUE.cache.activeCount) || 0;
+    var myRank     = LEAGUE.findRank(S.leagueHandle || "");
+    var tier       = myRank > 0 ? LEAGUE.tier(myRank, globalRows.length || 1) : null;
 
     html += '<div class="league-stats">';
     html += '<div class="lstat"><div class="lstat-val">' + active + '</div><div class="lstat-lbl">jogadores ativos</div></div>';
@@ -752,45 +753,103 @@
     html += '<div class="lstat"><div class="lstat-val" style="color:' + (tier ? tier.color : "#8a8071") + '">' + (tier ? tier.name : "—") + '</div><div class="lstat-lbl">teu tier</div></div>';
     html += '</div>';
 
+    // Tabs Global / Meu Grupo
+    var leagueTab = (S.screenData && S.screenData.leagueTab) || "global";
+    var hasGroup  = !!S.tag && LEAGUE.hasTagColumn && LEAGUE.hasTagColumn();
+    html += '<div class="tabs" role="tablist" style="margin:10px 0 12px">';
+    html += '<button class="tab' + (leagueTab === "global" ? " active" : "") + '" role="tab" data-act="tab-league" data-tab="global">🌍 Global</button>';
+    if (hasGroup) {
+      html += '<button class="tab' + (leagueTab === "group" ? " active" : "") + '" role="tab" data-act="tab-league" data-tab="group">' + S.tag + '</button>';
+    } else if (S.tag) {
+      html += '<span class="tab tab-disabled" title="Liga global ainda sem coluna tag — peça ao admin">' + S.tag + ' (em breve)</span>';
+    } else {
+      html += '<span class="tab tab-disabled" title="Defina uma tag de grupo no perfil">+ Grupo</span>';
+    }
+    html += '</div>';
+
+    var rows = (leagueTab === "group") ? groupRows : globalRows;
+
     html += '<div class="leaderboard">';
     if (rows.length === 0) {
-      html += '<p style="text-align:center;color:var(--text-dim);font-size:.88rem;padding:20px">A carregar... ou ainda sem jogadores esta semana.</p>';
+      var emptyMsg = (leagueTab === "group")
+        ? "Ninguém com a tag " + (S.tag || "") + " ainda esta semana."
+        : "A carregar... ou ainda sem jogadores esta semana.";
+      html += '<p style="text-align:center;color:var(--text-dim);font-size:.88rem;padding:20px">' + emptyMsg + '</p>';
     } else {
       for (var i = 0; i < Math.min(rows.length, 20); i++) {
         var r = rows[i];
         var isMe = r.handle === S.leagueHandle;
+        var tagBadge = r.tag ? ' <span class="tag-chip">' + r.tag + '</span>' : '';
         html += '<div class="lb-row' + (isMe ? " me" : "") + '">' +
           '<span class="lb-rank">#' + (i + 1) + '</span>' +
-          '<span class="lb-name">' + r.handle + '</span>' +
+          '<span class="lb-name">' + r.handle + tagBadge + '</span>' +
           '<span class="lb-house">' + (r.house || "—") + '</span>' +
           '<span class="lb-cauris">◉ ' + r.cauris + '</span>' +
           '</div>';
       }
     }
     html += '</div>';
-    html += '<button class="btn btn-ghost btn-block btn-sm" data-act="league-refresh" style="margin-top:10px">Atualizar</button>';
+    if (leagueTab === "group" && hasGroup) {
+      html += '<button class="btn btn-gold btn-block btn-sm" data-act="share-wa" style="margin-top:10px">📲 Convidar com #' + S.tag.replace(/^#/, "") + '</button>';
+    }
+    html += '<button class="btn btn-ghost btn-block btn-sm" data-act="league-refresh" style="margin-top:8px">Atualizar</button>';
     return html;
   }
 
   function rProfiles() {
     var lb = PROFILES ? PROFILES.localLeaderboard() : [];
     var active = PROFILES ? PROFILES.activeId() : "default";
+    var myTag = S.tag || "";
+    var tab = S.screenData.tab || "all";
+    var hasGroup = !!myTag;
+
+    var rows = lb;
+    if (tab === "group" && hasGroup) {
+      rows = lb.filter(function (p) { return (p.tag || "").toLowerCase() === myTag.toLowerCase(); });
+    }
+
     var html = '<button class="btn btn-ghost btn-sm" data-act="go-map" style="margin-bottom:14px">← Mapa</button>';
     html += '<h2 style="text-align:center;font-size:1.4rem">Liga Local</h2>';
     html += '<p style="text-align:center;color:var(--text-dim);font-size:.86rem;margin-bottom:14px">Vários perfis neste dispositivo (sala de aula, família).</p>';
+
+    // Tabs
+    html += '<div class="tabs" role="tablist" style="margin-bottom:12px">';
+    html += '<button class="tab' + (tab === "all" ? " active" : "") + '" role="tab" data-act="tab-profiles" data-tab="all">Todos (' + lb.length + ')</button>';
+    if (hasGroup) {
+      var groupCount = lb.filter(function (p) { return (p.tag || "").toLowerCase() === myTag.toLowerCase(); }).length;
+      html += '<button class="tab' + (tab === "group" ? " active" : "") + '" role="tab" data-act="tab-profiles" data-tab="group">' + escapeAttr(myTag) + ' (' + groupCount + ')</button>';
+    } else {
+      html += '<span class="tab tab-disabled" title="Defina uma tag de grupo no perfil">+ Grupo</span>';
+    }
+    html += '</div>';
+
+    if (tab === "group" && rows.length <= 1) {
+      html += '<div class="group-empty"><p>Só você nesse grupo por enquanto.</p>';
+      html += '<p style="font-size:.84rem;color:var(--text-dim);margin-top:6px">Convide colegas com a tag <strong>' + escapeAttr(myTag) + '</strong>.</p>';
+      html += '<button class="btn btn-gold btn-block btn-sm" data-act="share-wa" style="margin-top:10px">📲 Convidar no WhatsApp</button>';
+      html += '</div>';
+    }
+
     html += '<div class="leaderboard">';
-    for (var i = 0; i < lb.length; i++) {
-      var p = lb[i];
+    for (var i = 0; i < rows.length; i++) {
+      var p = rows[i];
       var medal = i === 0 ? "♛" : (i === 1 ? "◆" : (i === 2 ? "◈" : "·"));
+      var tagChip = p.tag ? '<span class="tag-chip">' + escapeAttr(p.tag) + '</span>' : "";
       html += '<div class="lb-row' + (p.id === active ? " me" : "") + '" data-act="switch-profile" data-p="' + p.id + '">' +
         '<span class="lb-rank">' + medal + ' #' + (i + 1) + '</span>' +
-        '<span class="lb-name">' + p.name + (p.id === active ? " <em>(ativo)</em>" : "") + '</span>' +
+        '<span class="lb-name">' + p.name + (p.id === active ? " <em>(ativo)</em>" : "") + ' ' + tagChip + '</span>' +
         '<span class="lb-cauris">◉ ' + p.cauris + '</span>' +
         '</div>';
     }
     html += '</div>';
     html += '<button class="btn btn-gold btn-block" data-act="new-profile" style="margin-top:14px">+ Novo perfil</button>';
     return html;
+  }
+
+  function escapeAttr(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
   function rDaily() {
@@ -909,6 +968,29 @@
       case "share-link": handleShareLink(); break;
       case "tts-toggle": handleTTSToggle(); break;
       case "speak-enigma": handleSpeakEnigma(el.getAttribute("data-e")); break;
+      case "tab-profiles": {
+        var t = el.getAttribute("data-tab") || "all";
+        S.screenData = S.screenData || {};
+        S.screenData.tab = t;
+        sfx("click");
+        render();
+        break;
+      }
+      case "tab-league": {
+        var lt = el.getAttribute("data-tab") || "global";
+        S.screenData = S.screenData || {};
+        S.screenData.leagueTab = lt;
+        sfx("click");
+        if (LEAGUE && LEAGUE.enabled) {
+          if (lt === "group" && S.tag) {
+            LEAGUE.refreshGroup(S.tag).then(function () { if (S.screen === "league") render(); });
+          } else {
+            LEAGUE.refresh().then(function () { if (S.screen === "league") render(); });
+          }
+        }
+        render();
+        break;
+      }
     }
   }
 
@@ -988,7 +1070,8 @@
     var house = ROYALTY ? ROYALTY.getHouse(S) : null;
     LEAGUE.submit({
       handle: handle, cauris: S.cauris || 0,
-      title: t.short, house: house ? house.id : ""
+      title: t.short, house: house ? house.id : "",
+      tag: S.tag || ""
     }).then(function () {
       LEAGUE.refresh().then(function () { if (S.screen === "league") render(); });
     });
