@@ -11,5 +11,6 @@
 */
 window.SANKOFA_LEAGUE_CONFIG = {
   url: "https://YOUR-PROJECT.supabase.co",
-  anonKey: "YOUR-ANON-PUBLIC-KEY"
+  anonKey: "YOUR-ANON-PUBLIC-KEY",
+  hasTagColumn: true   // após rodar SETUP_TOURNAMENT.sql + RUN_THIS_FIRST.sql
 };

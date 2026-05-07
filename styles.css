@@ -846,3 +846,94 @@ input { font-family: var(--font-body); }
   margin-bottom: 12px;
 }
 .group-empty p { margin: 0; color: var(--text); }
+
+/* ============================================================
+   Torneio Semanal (Fase 1.5)
+   ============================================================ */
+
+.tournament-banner {
+  background: linear-gradient(135deg, var(--terra-dim), var(--gold-dim));
+  border: 1px solid var(--gold-dim);
+  border-left: 4px solid var(--terra);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin: 12px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 200ms var(--ease);
+}
+.tournament-banner:hover {
+  border-color: var(--gold);
+  transform: translateX(2px);
+}
+.tournament-banner-text { flex: 1; }
+.tournament-banner-eyebrow {
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.tournament-banner-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.tournament-banner-meta {
+  font-size: .76rem;
+  color: var(--text-dim);
+}
+
+.tournament-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+.tournament-item {
+  background: var(--surface2);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 160ms var(--ease);
+}
+.tournament-item[data-act] { cursor: pointer; }
+.tournament-item[data-act]:hover { border-color: var(--gold); }
+.tournament-item.done   { border-left: 3px solid var(--green); opacity: .85; }
+.tournament-item.exhausted { border-left: 3px solid var(--danger); opacity: .65; cursor: not-allowed; }
+.tournament-item.wip    { border-left: 3px solid var(--terra); }
+.tournament-item.new    { border-left: 3px solid var(--gold); }
+
+.tour-idx {
+  flex: 0 0 30px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--gold);
+}
+.tour-info { flex: 1; min-width: 0; }
+.tour-title {
+  font-weight: 700;
+  font-size: .92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tour-meta { font-size: .72rem; color: var(--text-dim); margin-top: 2px; }
+.tour-status {
+  flex: 0 0 auto;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.tournament-item.done   .tour-status { color: var(--green); }
+.tournament-item.exhausted .tour-status { color: var(--danger); }
+.tournament-item.wip    .tour-status { color: var(--terra); }

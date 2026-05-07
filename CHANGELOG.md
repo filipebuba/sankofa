@@ -4,6 +4,42 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Fase 1.5 — Torneio Assíncrono Semanal (em desenvolvimento na branch `dev`)
+
+#### Adicionado
+
+- **Schema Supabase** consolidado (`supabase/SETUP_TOURNAMENT.sql`):
+  - `enigma_answers` (gabarito server-only, RLS bloqueia leitura)
+  - `sankofa_tournament_week` (semanas com 5 enigmas selecionados)
+  - `sankofa_tournament_score` (tentativas + scores)
+  - Views `sankofa_tournament_best` e `sankofa_tournament_ranking`
+  - Função PL/pgSQL `rotate_weekly_tournament()` (sorteia 5 enigmas distribuídos
+    por mundo, prioriza variedade)
+  - Função `current_tournament_week()` para o cliente descobrir a semana ativa
+  - RLS: read aberto, INSERT bloqueado direto (Edge Function via service_role)
+- **Seed do gabarito** (`supabase/seed_enigma_answers.sql`): 71 enigmas com
+  `correct_idx`, `world`, `options_n`. Auto-gerado por
+  `scripts/build-tournament-answers.cjs`.
+- **Edge Function `submit_tournament_answer`** (Deno + TypeScript):
+  - Valida janela temporal, attempt 1..3, ms_to_answer >= 1500.
+  - Consulta gabarito server-side (cliente nunca vê).
+  - Calcula score: tentativa × dicas × velocidade.
+  - Insere via service role (RLS bloqueia INSERT direto).
+  - CORS aberto. Sem JWT.
+- **Cliente** (`data/tournament-config.js` + `src/tournament.js`):
+  - `loadWeek()` cacheia a semana atual; `isInCurrentWeek(eid)`.
+  - `submit()` POST para Edge Function.
+  - `attemptsUsed`, `localBest`, `recordAttempt`, `totalLocalScore` em localStorage.
+  - `fetchRanking(weekId, {tag, limit})` lê view `sankofa_tournament_ranking`.
+- **UI**:
+  - Banner do Torneio na home (rMap) mostra progresso e dias restantes.
+  - Tela `tournament` lista os 5 enigmas da semana com status (novo / wip /
+    feito / esgotado) e total de pontos.
+  - Botão "🥇 Torneio" no menu inferior.
+  - Toast pós-acerto: "🏆 Torneio: +X pontos".
+- **Integração com handlePick**: toda tentativa em enigma da semana corrente
+  submete também ao Torneio (fire-and-forget). Atinge MIN_MS automaticamente.
+
 ### Fase 1 — Multiplayer/Social (em desenvolvimento na branch `dev`)
 
 #### PR 1 — Modal de Perfil + LGPD
