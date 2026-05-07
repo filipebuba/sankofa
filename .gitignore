@@ -21,9 +21,6 @@ yarn-error.log*
 .cache
 dist/
 
-# Configs com segredos (Supabase URL+anon key)
-src/league-config.js
-
 # Supabase locais (migrations e functions ficam no git)
 supabase/.branches
 supabase/.temp
