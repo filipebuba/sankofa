@@ -8,7 +8,7 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.3.0-dev";
+const VERSION = "v1.3.1-dev";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 
@@ -138,16 +138,22 @@ self.addEventListener("fetch", function (event) {
     return;
   }
 
-  // JS/CSS/manifest: stale-while-revalidate
+  // JS/CSS/manifest: network-first para evitar app shell antigo durante desenvolvimento.
   if (isStatic(url) || url.origin === self.location.origin) {
     event.respondWith(
-      caches.match(req).then(function (cached) {
-        const network = fetch(req).then(function (res) {
-          const copy = res.clone();
-          caches.open(RUNTIME).then(function (c) { c.put(req, copy); });
-          return res;
-        }).catch(function () { return cached; });
-        return cached || network;
+      fetch(req).then(function (res) {
+        const copy = res.clone();
+        caches.open(RUNTIME).then(function (c) { c.put(req, copy); });
+        return res;
+      }).catch(function () {
+        return caches.match(req).then(function (cached) {
+          if (cached) return cached;
+          return fetch(req).then(function (res) {
+            const copy = res.clone();
+            caches.open(RUNTIME).then(function (c) { c.put(req, copy); });
+            return res;
+          });
+        });
       })
     );
     return;
