@@ -4,6 +4,35 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Fase 1 — Multiplayer/Social (em desenvolvimento na branch `dev`)
+
+#### Adicionado
+
+- **Banco de nomes históricos da HGA** (`data/hga-names.js`): 60 figuras curadas
+  de Volumes I-VIII com período, casa real e descrição educativa.
+  Helper `window.HGAName.random({sex, world, casa})`.
+- **Blocklist** (`data/blocklist.js`): vocabulário básico vetado em nicks/tags.
+  Função `sankofaCensor(text)` com normalização NFD.
+- **Modal de Criação de Perfil** (`src/profile-modal.js`): substitui prompt simples.
+  - Botão "🌍 Gerar Nome Histórico" sorteia da HGA com mini-card educativo
+    (nome, período, casa, descrição, mundo).
+  - Faixa etária (8-12, 13-17, 18+, prefiro não dizer) — LGPD by design.
+  - Tag de grupo opcional (#Turma7A, normalizada).
+  - Casa Real opcional (escolha ou no jogo).
+  - Aceite curto explicando privacidade (sem e-mail/foto/dados pessoais).
+- **`SankofaProfiles.createRich(opts)`**: cria perfil com payload completo.
+  Mantém retrocompatível `create(name)`.
+- **`SankofaProfiles.normalizeTag(raw)`**: normaliza tag (lower + sem acentos + #).
+- **`SankofaProfiles.isFresh()`**: detecta se é o 1º acesso sem consent.
+- **Supabase scaffold local** (`supabase/config.toml`): preparação para Fase 1.5
+  (torneio assíncrono) e Fase 2 (sala de aula realtime). Migrations e edge
+  functions ficarão em `supabase/migrations/` e `supabase/functions/`.
+
+#### Documentação
+
+- `docs/MULTIPLAYER-SOCIAL.md` — plano completo das 3 fases com schemas SQL,
+  RLS, edge functions, métricas, riscos e cronograma.
+
 ## [1.1.1] — 2026-05-07
 
 ### Corrigido

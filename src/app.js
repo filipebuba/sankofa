@@ -926,10 +926,20 @@
 
   function handleNewProfile() {
     if (!PROFILES) return;
-    var name = prompt("Nome do novo griô:");
-    if (!name) return;
-    PROFILES.create(name.trim().slice(0, 20));
-    location.reload();
+    if (window.SankofaProfileModal) {
+      window.SankofaProfileModal.open({
+        mode: "create",
+        onSubmit: function (data) {
+          PROFILES.createRich(data);
+          location.reload();
+        }
+      });
+    } else {
+      var name = prompt("Nome do novo griô:");
+      if (!name) return;
+      PROFILES.create(name.trim().slice(0, 20));
+      location.reload();
+    }
   }
 
   function handleResume() {
@@ -947,6 +957,25 @@
   }
 
   function handleRegister() {
+    if (window.SankofaProfileModal) {
+      window.SankofaProfileModal.open({
+        mode: "create",
+        defaults: { name: S.name || "" },
+        onSubmit: function (data) {
+          S.name = data.name;
+          S.hgaName = data.hgaName;
+          S.ageBand = data.ageBand;
+          S.tag = data.tag;
+          S.house = data.house || S.house;
+          S.consent = true;
+          updateStreak();
+          save();
+          sfx("levelUp");
+          goTo("map");
+        }
+      });
+      return;
+    }
     var input = document.getElementById("name-input");
     var name = input ? input.value.trim() : "";
     if (!name) { if (input) input.style.borderColor = "var(--danger)"; return; }
