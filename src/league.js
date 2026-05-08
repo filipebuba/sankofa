@@ -127,7 +127,7 @@
   function tier(rank, total) {
     var leagues = window.SANKOFA_LEAGUES || [];
     if (!total || rank < 1) return leagues[0];
-    var pct = ((total - rank) / total) * 100;
+    var pct = total <= 1 ? 100 : ((total - rank) / (total - 1)) * 100;
     var current = leagues[0];
     for (var i = 0; i < leagues.length; i++) if (pct >= leagues[i].minPct) current = leagues[i];
     return current;

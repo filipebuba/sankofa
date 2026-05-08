@@ -199,6 +199,44 @@
     return (prefix ? prefix + " " : "") + S.name;
   }
 
+  var FRAGMENT_IMAGE_PATTERNS = {
+    "fp-arco": true,
+    "fp-arte": true,
+    "fp-axum": true,
+    "fp-bantu": true,
+    "fp-border": true,
+    "fp-ceramica": true,
+    "fp-cruz": true,
+    "fp-escrita": true,
+    "fp-exodus": true,
+    "fp-ferro": true,
+    "fp-gado": true,
+    "fp-kandake": true,
+    "fp-khoisan": true,
+    "fp-linguas": true,
+    "fp-mansa": true,
+    "fp-naqada": true,
+    "fp-nilo": true,
+    "fp-olduvai": true,
+    "fp-piramide": true,
+    "fp-rift": true,
+    "fp-saara": true,
+    "fp-san": true,
+    "fp-taharqa": true,
+    "fp-toumai": true
+  };
+
+  function fragmentImageSrc(pattern) {
+    if (!pattern || !FRAGMENT_IMAGE_PATTERNS[pattern]) return "";
+    return "assets/frag_" + pattern.replace(/^fp-/, "").replace(/-/g, "_") + ".png";
+  }
+
+  function rFragmentImage(pattern, name) {
+    var src = fragmentImageSrc(pattern);
+    if (!src) return "";
+    return '<img class="fragment-img" src="' + src + '" alt="' + escapeAttr(name || "Fragmento") + '" loading="lazy">';
+  }
+
   // Cauris formula: base 5 + bonuses. Visible to player at result screen.
   function caurisForResult(opts) {
     opts = opts || {};
@@ -689,7 +727,7 @@
       '<h2 style="color:var(--green)">Fragmento Recolhido!</h2>' +
       '<div class="points-earned">+' + pts + ' pts</div>' +
       caurisChip +
-      '<div class="fragment-preview ' + e.fragment.pattern + '"></div>' +
+      '<div class="fragment-preview ' + e.fragment.pattern + '">' + rFragmentImage(e.fragment.pattern, e.fragment.name) + '</div>' +
       '<h3 style="margin-top:4px">' + e.fragment.name + '</h3>' +
       '<div class="explanation">' + e.explanation + '</div>' +
       '<div style="background:var(--surface2);padding:14px;border-radius:var(--radius);width:100%;text-align:left;font-size:.88rem;color:var(--text-dim);border-left:3px solid var(--terra)">' +
@@ -718,6 +756,7 @@
       var e = we[j];
       var s = isSolved(e.id);
       html += '<div class="fragment ' + (s ? 'unlocked ' + e.fragment.pattern : 'locked') + '" style="' + (s ? 'animation-delay:' + (j * 0.15) + 's' : '') + '">';
+      if (s) html += rFragmentImage(e.fragment.pattern, e.fragment.name);
       if (s) html += '<span class="frag-label">' + e.fragment.name + '</span>';
       html += '</div>';
     }
@@ -816,14 +855,18 @@
 
   function rLeague() {
     var html = '<button class="btn btn-ghost btn-sm" data-act="go-map" style="margin-bottom:14px">← Mapa</button>';
-    html += '<h2 style="text-align:center;font-size:1.4rem">Liga dos Griôs</h2>';
-    html += '<p style="text-align:center;color:var(--text-dim);font-size:.86rem;margin-bottom:14px">Reset domingo · Semana de ' + (LEAGUE ? LEAGUE.week() : "—") + '</p>';
+    var weekLabel = LEAGUE ? LEAGUE.week() : "—";
+    html += '<div class="league-hero">';
+    html += '<div class="league-kicker">Temporada semanal</div>';
+    html += '<h2>Liga dos Griôs</h2>';
+    html += '<p>Reset domingo · Semana de ' + weekLabel + '</p>';
+    html += '</div>';
 
     if (!LEAGUE || !LEAGUE.enabled) {
       html += '<div class="league-offline">';
-      html += '<p style="color:var(--text);font-size:.92rem">Liga global não configurada.</p>';
-      html += '<p style="color:var(--text-dim);font-size:.84rem;margin-top:6px">Define <code>window.SANKOFA_LEAGUE_CONFIG</code> com Supabase URL + chave anônima para ativar.</p>';
-      html += '<p style="color:var(--text-dim);font-size:.84rem;margin-top:10px">Liga local entre perfis deste dispositivo está sempre disponível ↓</p>';
+      html += '<h3>Liga global indisponível</h3>';
+      html += '<p>Quando o Supabase estiver configurado, os cauris entram no placar semanal automaticamente.</p>';
+      html += '<p class="league-note">A Liga Local entre perfis deste dispositivo continua disponível.</p>';
       html += '<button class="btn btn-outline btn-block" data-act="go-profiles" style="margin-top:10px">Ver Liga Local</button>';
       html += '</div>';
       return html;
@@ -832,7 +875,8 @@
     if (!S.leagueOptIn) {
       html += '<div class="league-optin">';
       html += '<h3>Entrar na Liga Global</h3>';
-      html += '<p style="color:var(--text-dim);font-size:.86rem">Apenas o teu nome de jogador, cauris da semana e casa. Sem email, sem foto.</p>';
+      html += '<p>Apenas nome de jogador, cauris da semana, título, casa e grupo opcional. Sem email, sem foto.</p>';
+      html += '<div class="league-rules"><span>◉ Cauris contam pontos</span><span>Domingo zera</span><span>Grupo cria placar de turma</span></div>';
       html += '<button class="btn btn-gold btn-block" data-act="league-optin" style="margin-top:14px">Aceito participar</button>';
       html += '</div>';
       return html;
@@ -843,6 +887,27 @@
     var active     = (LEAGUE.cache && LEAGUE.cache.activeCount) || 0;
     var myRank     = LEAGUE.findRank(S.leagueHandle || "");
     var tier       = myRank > 0 ? LEAGUE.tier(myRank, globalRows.length || 1) : null;
+    var myScore    = S.cauris || 0;
+    var leader     = globalRows[0] || null;
+    var leaderGap  = leader ? Math.max(0, (leader.cauris | 0) - myScore) : 0;
+    var fetchedAt  = LEAGUE.cache && LEAGUE.cache.fetchedAt ? new Date(LEAGUE.cache.fetchedAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
+
+    html += '<div class="league-me-card">';
+    html += '<div><div class="league-me-label">Tua campanha</div><div class="league-me-name">' + escapeAttr(S.leagueHandle || S.name || "Viajante") + '</div></div>';
+    html += '<div class="league-me-score">◉ ' + myScore + '</div>';
+    html += '<div class="league-me-meta">';
+    html += '<span>' + (myRank > 0 ? "#" + myRank + " no global" : "aguardando ranking") + '</span>';
+    html += '<span>' + (tier ? tier.name : "Sem tier ainda") + '</span>';
+    html += '</div>';
+    if (leader && leader.handle !== S.leagueHandle) {
+      html += '<div class="league-progress"><div class="league-progress-fill" style="width:' + Math.min(100, Math.round((myScore / Math.max(leader.cauris || 1, 1)) * 100)) + '%"></div></div>';
+      html += '<div class="league-tip">Faltam ' + leaderGap + ' cauris para alcançar ' + escapeAttr(leader.handle) + '.</div>';
+    } else if (leader && leader.handle === S.leagueHandle) {
+      html += '<div class="league-tip good">Você lidera a semana. Mantém o ritmo.</div>';
+    } else {
+      html += '<div class="league-tip">Resolva enigmas para publicar teus cauris no placar.</div>';
+    }
+    html += '</div>';
 
     html += '<div class="league-stats">';
     html += '<div class="lstat"><div class="lstat-val">' + active + '</div><div class="lstat-lbl">jogadores ativos</div></div>';
@@ -853,43 +918,63 @@
     // Tabs Global / Meu Grupo
     var leagueTab = (S.screenData && S.screenData.leagueTab) || "global";
     var hasGroup  = !!S.tag && LEAGUE.hasTagColumn && LEAGUE.hasTagColumn();
-    html += '<div class="tabs" role="tablist" style="margin:10px 0 12px">';
-    html += '<button class="tab' + (leagueTab === "global" ? " active" : "") + '" role="tab" data-act="tab-league" data-tab="global">🌍 Global</button>';
+    html += '<div class="tabs league-tabs" role="tablist">';
+    html += '<button class="tab' + (leagueTab === "global" ? " active" : "") + '" role="tab" data-act="tab-league" data-tab="global">🌍 Global (' + globalRows.length + ')</button>';
     if (hasGroup) {
-      html += '<button class="tab' + (leagueTab === "group" ? " active" : "") + '" role="tab" data-act="tab-league" data-tab="group">' + S.tag + '</button>';
+      html += '<button class="tab' + (leagueTab === "group" ? " active" : "") + '" role="tab" data-act="tab-league" data-tab="group">' + escapeAttr(S.tag) + ' (' + groupRows.length + ')</button>';
     } else if (S.tag) {
-      html += '<span class="tab tab-disabled" title="Liga global ainda sem coluna tag — peça ao admin">' + S.tag + ' (em breve)</span>';
+      html += '<span class="tab tab-disabled" title="Liga global ainda sem coluna tag">' + escapeAttr(S.tag) + ' em breve</span>';
     } else {
       html += '<span class="tab tab-disabled" title="Defina uma tag de grupo no perfil">+ Grupo</span>';
     }
     html += '</div>';
 
     var rows = (leagueTab === "group") ? groupRows : globalRows;
+    var title = leagueTab === "group" && S.tag ? "Placar do grupo " + S.tag : "Placar global";
+    html += '<div class="league-board-head"><strong>' + escapeAttr(title) + '</strong><span>' + (fetchedAt ? "Atualizado " + fetchedAt : "Sincronizando...") + '</span></div>';
+
+    if (rows.length > 0) {
+      html += '<div class="league-podium">';
+      for (var pi = 0; pi < Math.min(rows.length, 3); pi++) {
+        var pr = rows[pi];
+        var medal = pi === 0 ? "♛" : (pi === 1 ? "◆" : "◈");
+        html += '<div class="podium-card p' + (pi + 1) + '">';
+        html += '<div class="podium-medal">' + medal + '</div>';
+        html += '<div class="podium-name">' + escapeAttr(pr.handle) + '</div>';
+        html += '<div class="podium-score">◉ ' + (pr.cauris | 0) + '</div>';
+        html += '</div>';
+      }
+      html += '</div>';
+    }
 
     html += '<div class="leaderboard">';
     if (rows.length === 0) {
       var emptyMsg = (leagueTab === "group")
-        ? "Ninguém com a tag " + (S.tag || "") + " ainda esta semana."
-        : "A carregar... ou ainda sem jogadores esta semana.";
-      html += '<p style="text-align:center;color:var(--text-dim);font-size:.88rem;padding:20px">' + emptyMsg + '</p>';
+        ? "Ninguém com a tag " + (S.tag || "") + " apareceu nesta semana."
+        : "Ainda não há jogadores nesta semana.";
+      html += '<div class="league-empty"><p>' + escapeAttr(emptyMsg) + '</p><span>Toque em Atualizar ou resolva um enigma para enviar tua pontuação.</span></div>';
     } else {
       for (var i = 0; i < Math.min(rows.length, 20); i++) {
         var r = rows[i];
         var isMe = r.handle === S.leagueHandle;
-        var tagBadge = r.tag ? ' <span class="tag-chip">' + r.tag + '</span>' : '';
+        var tagBadge = r.tag ? ' <span class="tag-chip">' + escapeAttr(r.tag) + '</span>' : '';
+        var rowTier = LEAGUE.tier(i + 1, rows.length || 1);
+        var medalIcon = i === 0 ? "♛" : (i === 1 ? "◆" : (i === 2 ? "◈" : "#" + (i + 1)));
         html += '<div class="lb-row' + (isMe ? " me" : "") + '">' +
-          '<span class="lb-rank">#' + (i + 1) + '</span>' +
-          '<span class="lb-name">' + r.handle + tagBadge + '</span>' +
-          '<span class="lb-house">' + (r.house || "—") + '</span>' +
-          '<span class="lb-cauris">◉ ' + r.cauris + '</span>' +
+          '<span class="lb-rank">' + medalIcon + '</span>' +
+          '<span class="lb-name">' + escapeAttr(r.handle) + (isMe ? " <em>(você)</em>" : "") + tagBadge + '<small>' + escapeAttr((r.title || rowTier.name || "Griô")) + '</small></span>' +
+          '<span class="lb-house">' + escapeAttr(r.house || "—") + '</span>' +
+          '<span class="lb-cauris">◉ ' + (r.cauris | 0) + '</span>' +
           '</div>';
       }
     }
     html += '</div>';
     if (leagueTab === "group" && hasGroup) {
-      html += '<button class="btn btn-gold btn-block btn-sm" data-act="share-wa" style="margin-top:10px">📲 Convidar com #' + S.tag.replace(/^#/, "") + '</button>';
+      html += '<button class="btn btn-gold btn-block btn-sm" data-act="share-wa" style="margin-top:10px">📲 Convidar com ' + escapeAttr(S.tag) + '</button>';
+    } else if (!S.tag) {
+      html += '<button class="btn btn-outline btn-block btn-sm" data-act="go-profile" style="margin-top:10px">Adicionar grupo no perfil</button>';
     }
-    html += '<button class="btn btn-ghost btn-block btn-sm" data-act="league-refresh" style="margin-top:8px">Atualizar</button>';
+    html += '<div class="league-actions"><button class="btn btn-ghost btn-block btn-sm" data-act="league-refresh">Atualizar placar</button></div>';
     return html;
   }
 
@@ -1192,11 +1277,23 @@
       case "go-houses": sfx("navigate"); goTo("houses"); break;
       case "go-genealogy": sfx("navigate"); goTo("genealogy"); break;
       case "go-seal": sfx("achievement"); goTo("seal"); break;
-      case "go-league": sfx("navigate"); goTo("league"); if (LEAGUE && LEAGUE.enabled) LEAGUE.refresh().then(function () { if (S.screen === "league") render(); }); break;
+      case "go-league": sfx("navigate"); goTo("league"); if (LEAGUE && LEAGUE.enabled) {
+        LEAGUE.refresh().then(function () {
+          if (S.tag && LEAGUE.hasTagColumn && LEAGUE.hasTagColumn()) return LEAGUE.refreshGroup(S.tag);
+        }).then(function () { if (S.screen === "league") render(); });
+      } break;
       case "go-profiles": sfx("navigate"); goTo("profiles"); break;
       case "pick-house": handlePickHouse(el.getAttribute("data-h")); break;
       case "league-optin": handleLeagueOptIn(); break;
-      case "league-refresh": if (LEAGUE) LEAGUE.refresh().then(function () { if (S.screen === "league") render(); }); break;
+      case "league-refresh": if (LEAGUE) {
+        sfx("click");
+        LEAGUE.refresh().then(function () {
+          if (S.tag && LEAGUE.hasTagColumn && LEAGUE.hasTagColumn()) return LEAGUE.refreshGroup(S.tag);
+        }).then(function () {
+          if (S.screen === "league") render();
+          showToast("🏆", "Liga atualizada", "Placar sincronizado.");
+        });
+      } break;
       case "switch-profile": handleSwitchProfile(el.getAttribute("data-p")); break;
       case "new-profile": handleNewProfile(); break;
       case "share-wa": handleShareWhatsApp(); break;
@@ -1341,7 +1438,12 @@
       title: t.short, house: house ? house.id : "",
       tag: S.tag || ""
     }).then(function () {
-      LEAGUE.refresh().then(function () { if (S.screen === "league") render(); });
+      LEAGUE.refresh().then(function () {
+        if (S.tag && LEAGUE.hasTagColumn && LEAGUE.hasTagColumn()) return LEAGUE.refreshGroup(S.tag);
+      }).then(function () {
+        if (S.screen === "league") render();
+        showToast("🏆", "Entraste na Liga", "Teus cauris já contam nesta semana.");
+      });
     });
     sfx("achievement");
   }

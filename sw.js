@@ -8,14 +8,14 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.3.1-dev";
+const VERSION = "v1.3.6-dev";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 
 const APP_SHELL = [
   "/",
   "/index.html",
-  "/styles.css",
+  "/styles.css?v=1.3.6-dev",
   "/manifest.webmanifest",
 
   "/src/audio.js",
@@ -25,9 +25,9 @@ const APP_SHELL = [
   "/src/accessibility.js",
   "/src/onboarding.js",
   "/src/royalty.js",
-  "/src/league.js",
+  "/src/league.js?v=1.3.6-dev",
   "/src/tournament.js",
-  "/src/app.js",
+  "/src/app.js?v=1.3.6-dev",
 
   "/data/worlds.js",
   "/data/enigmas.js",
@@ -88,6 +88,10 @@ function isSupabase(url) {
   return /supabase\.co/.test(url.host);
 }
 
+function fetchFresh(req) {
+  return fetch(req, { cache: "reload" });
+}
+
 self.addEventListener("fetch", function (event) {
   const req = event.request;
   if (req.method !== "GET") return;
@@ -99,7 +103,7 @@ self.addEventListener("fetch", function (event) {
   // HTML: network-first
   if (isHTML(req)) {
     event.respondWith(
-      fetch(req).then(function (res) {
+      fetchFresh(req).then(function (res) {
         const copy = res.clone();
         caches.open(RUNTIME).then(function (c) { c.put(req, copy); });
         return res;
@@ -141,7 +145,7 @@ self.addEventListener("fetch", function (event) {
   // JS/CSS/manifest: network-first para evitar app shell antigo durante desenvolvimento.
   if (isStatic(url) || url.origin === self.location.origin) {
     event.respondWith(
-      fetch(req).then(function (res) {
+      fetchFresh(req).then(function (res) {
         const copy = res.clone();
         caches.open(RUNTIME).then(function (c) { c.put(req, copy); });
         return res;
