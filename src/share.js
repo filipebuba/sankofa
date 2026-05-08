@@ -12,10 +12,17 @@
     var cauris = p.cauris != null ? p.cauris : 0;
     var fragsCount = (p.solved && p.solved.length) || 0;
     var ref = p.id ? "?ref=" + encodeURIComponent(p.id) : "";
-    return "🌍 *Sou " + name + house + " em Sankofa — Fragmentos da África.*\n\n" +
-      "🐚 " + cauris + " cauris · " + fragsCount + "/71 fragmentos da História Geral da África (UNESCO).\n\n" +
-      "Te desafio a vir resolver os enigmas comigo:\n" +
-      APP_URL + "/" + ref;
+    var tagRef = p.tag ? "&tag=" + encodeURIComponent(p.tag) : "";
+    var msg = "🌍 *Sou " + name + house + " em Sankofa — Fragmentos da África.*\n\n" +
+      "🐚 " + cauris + " cauris · " + fragsCount + "/71 fragmentos da História Geral da África (UNESCO).\n\n";
+    if (p.tag) {
+      msg += "👥 *Meu grupo: " + p.tag + "*\n" +
+        "Para jogar comigo, abre o link e na hora de criar teu perfil coloca *" + p.tag + "* no campo \"Grupo\".\n\n";
+    } else {
+      msg += "Te desafio a vir resolver os enigmas comigo:\n";
+    }
+    msg += APP_URL + "/" + ref + tagRef;
+    return msg;
   }
 
   function encodeForWhatsApp(text) {

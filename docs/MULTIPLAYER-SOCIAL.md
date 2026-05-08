@@ -36,21 +36,25 @@ O objetivo final é transformar o Sankofa de "joguinho que aprende sozinho" em *
 ## 3. Fases — Visão geral
 
 ```
-[Fase 1]   Perfil HGA + Social leve              ~5 dias
+[Fase 1]   Perfil HGA + Social leve              ✅ shipped  (v1.2.0)
    ↓
-[Fase 1.5] Torneio Assíncrono Semanal            ~4 dias
-   ↓  (aguarda 2 sem. observando uso real)
-[Fase 2]   Modo Sala de Aula (Kahoot-style)      ~12 dias
+[Fase 1.5] Torneio Assíncrono Semanal            ✅ shipped  (v1.3.x-dev)
+   ↓
+[Fase 2]   Modo Sala de Aula (Kahoot-style)      🔜 próxima  (~12 dias)
    ↓
 [Fase 3]   Painel Professor + Integrações        diferido
 ```
 
+**Status real (2026-05-08)**: Fase 1 e 1.5 estão em produção. Documentação abaixo
+mantida como referência histórica e plano de Fase 2 (Sala de Aula).
+
 ---
 
-## 4. Fase 1 — Perfil HGA + Social leve
+## 4. Fase 1 — Perfil HGA + Social leve ✅ SHIPPED
 
-**Duração estimada**: 5 dias úteis.
-**Custo infra**: zero (tudo em localStorage + Supabase REST grátis).
+**Status**: em produção desde v1.2.0.
+**Duração real**: ~5 dias.
+**Custo infra**: zero (localStorage + Supabase REST free tier).
 
 ### 4.1 Modal de Criação de Perfil
 
@@ -193,10 +197,12 @@ const AGE_BANDS = {
 
 ---
 
-## 5. Fase 1.5 — Torneio Assíncrono Semanal
+## 5. Fase 1.5 — Torneio Assíncrono Semanal ✅ SHIPPED
 
-**Duração estimada**: 4 dias.
-**Custo infra**: zero adicional (1 cron job grátis no Supabase).
+**Status**: em produção (branch `dev`, v1.3.x-dev). Schema, RPC, Edge Function e UI integrados.
+Documentação operacional completa em `docs/LIGA.md` — secção "Torneio Semanal Assíncrono".
+**Duração real**: ~4 dias.
+**Custo infra**: zero adicional (1 cron grátis no Supabase).
 
 ### 5.1 Por que primeiro
 
@@ -278,8 +284,9 @@ Edge Function `submit_tournament_answer` valida:
 
 ---
 
-## 6. Fase 2 — Modo Sala de Aula (Kahoot-style)
+## 6. Fase 2 — Modo Sala de Aula (Kahoot-style) 🔜 PRÓXIMA
 
+**Status**: planejado, não iniciado.
 **Duração estimada**: 12 dias.
 **Custo infra**: Supabase Realtime (200 conexões simultâneas grátis, depois US$ 25/mês).
 

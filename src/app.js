@@ -1507,7 +1507,8 @@
       name: S.name || "Viajante",
       house: (S.house && HOUSES) ? (HOUSES.find(function (h) { return h.id === S.house.id; }) || {}).name || "" : "",
       cauris: S.cauris || 0,
-      solved: S.solved || []
+      solved: S.solved || [],
+      tag: S.tag || ""
     };
   }
 
