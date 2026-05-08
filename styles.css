@@ -879,15 +879,23 @@ input { font-family: var(--font-body); }
 .install-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px var(--gold-dim); }
 .install-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--gold-dim), 0 4px 14px var(--gold-dim); }
 
-/* Conteúdo da página: empurra para baixo da topbar */
-#app { padding-top: 64px; }
+/* Conteúdo da página: empurra para baixo da topbar.
+   Topbar com label coluna fica ~62-72px conforme escala de texto;
+   80px garante folga mesmo a 150% zoom + safe-area iOS. */
+#app { padding-top: max(80px, calc(64px + env(safe-area-inset-top, 0px))); }
 
 @media (max-width: 540px) {
   .topbar { padding: 6px 8px; gap: 4px; }
-  .topbar-btn, .profile-btn { min-width: 44px; padding: 4px 6px; }
-  .topbar-label { font-size: .52rem; }
-  .install-btn { padding: 0 10px; font-size: .78rem; }
+  /* Mobile: só ícone na topbar — labels ficam no drawer.
+     Profile mantém só o avatar circular (sem texto "PERFIL"). */
+  .topbar-btn, .profile-btn { min-width: 44px; min-height: 44px; padding: 6px; gap: 0; }
+  .topbar .topbar-label { display: none; }
+  .install-btn { padding: 0 10px; font-size: .78rem; min-height: 44px; }
   .install-btn-text { display: none; } /* só o ⬇ no mobile */
+  /* Drawer mobile: full-width próximo da topbar para alinhamento natural */
+  .menu-drawer { right: 6px; left: 6px; min-width: 0; max-width: none; }
+  /* #app folga menor — sem label, topbar é ~56px */
+  #app { padding-top: max(64px, calc(56px + env(safe-area-inset-top, 0px))); }
 }
 
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
@@ -905,7 +913,11 @@ input { font-family: var(--font-body); }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
 @media (max-width: 420px) {
-  #app { padding: 14px; }
+  #app {
+    padding-right: 14px;
+    padding-bottom: 14px;
+    padding-left: 14px;
+  }
   .landing h1 { font-size: 2.2rem; letter-spacing: .12em; }
   .intro-line { font-size: 1.15rem; }
   .option { padding: 12px 14px; font-size: .9rem; }
@@ -913,7 +925,12 @@ input { font-family: var(--font-body); }
 }
 
 @media (min-width: 768px) {
-  #app { max-width: 620px; padding: 30px; }
+  #app {
+    max-width: 620px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+  }
 }
 
 /* ============================================================
