@@ -720,24 +720,38 @@
     if (hu < 3) html += '<button class="hint-btn" data-act="hint" data-e="' + eid + '">🗝️ Pedir Dica ' + (hu + 1) + (hu > 0 ? ' (-10 pts)' : '') + '</button>';
     html += '</div>';
     html += '<div id="fb"></div>';
-    var attemptHistory = "";
+    html += '<div id="enigma-dynamic">' + buildEnigmaDynamic(eid) + '</div>';
+    return html;
+  }
+
+  // Gera HTML dinâmico do rodapé do enigma (histórico de erros, botão pular, contador)
+  function buildEnigmaDynamic(eid) {
+    var at = S.attempts[eid] || 0;
+    var hu = S.hintsUsed[eid] || 0;
+    var basePts = at === 0 ? 100 : (at === 1 ? 50 : 25);
+    var out = "";
     var prevWrongs = (S.wrongPicks && S.wrongPicks[eid]) || [];
     if (prevWrongs.length > 0 && !isSolved(eid)) {
-      attemptHistory = '<div class="prev-wrongs">📓 Já errou ' + prevWrongs.length + ' vez' + (prevWrongs.length !== 1 ? "es" : "") + '. Tente novamente.</div>';
+      out += '<div class="prev-wrongs">📓 Já errou ' + prevWrongs.length + ' vez' + (prevWrongs.length !== 1 ? "es" : "") + '. Tente novamente.</div>';
     } else if (S.solvedAfterError && S.solvedAfterError.indexOf(eid) !== -1) {
-      attemptHistory = '<div class="prev-wrongs prev-solved">✓ Acertou após errar. Pode rever.</div>';
+      out += '<div class="prev-wrongs prev-solved">✓ Acertou após errar. Pode rever.</div>';
     }
-    html += attemptHistory;
-
     // Karma — botão "Pular e ver resposta" após N erros
     if (at >= SKIP_AFTER_ATTEMPTS && !isSolved(eid)) {
-      html += '<button class="btn btn-outline btn-block btn-sm skip-btn" data-act="skip-enigma" data-e="' + eid + '" style="margin-top:10px">' +
+      out += '<button class="btn btn-outline btn-block btn-sm skip-btn" data-act="skip-enigma" data-e="' + eid + '" style="margin-top:10px">' +
         '🌿 Pular e ver resposta · 0 cauris</button>' +
         '<div class="skip-hint">Sem julgamento. Vai pro Caderno e pode voltar quando quiser.</div>';
     }
+    out += '<div style="text-align:center;font-size:.82rem;color:var(--text-muted);margin-top:8px">Pontos: <strong style="color:var(--gold)">' + Math.max(0, basePts - hu * 10) + '</strong> · Tentativa ' + (at + 1) + '</div>';
+    return out;
+  }
 
-    html += '<div style="text-align:center;font-size:.82rem;color:var(--text-muted);margin-top:8px">Pontos: <strong style="color:var(--gold)">' + Math.max(0, basePts - hu * 10) + '</strong> · Tentativa ' + (at + 1) + '</div>';
-    return html;
+  function updateEnigmaDynamic(eid) {
+    var el = document.getElementById("enigma-dynamic");
+    if (el) {
+      el.innerHTML = buildEnigmaDynamic(eid);
+      attachEvents();
+    }
   }
 
   function rResult() {
@@ -1880,6 +1894,8 @@
       setTimeout(function () {
         opts[idx].classList.remove("wrong", "selected");
         enigmaLocked = false;
+        // Atualiza rodapé dinâmico (histórico de erros, botão pular, contador)
+        updateEnigmaDynamic(eid);
       }, 1000);
     }
   }
