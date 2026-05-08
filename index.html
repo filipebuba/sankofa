@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <!-- A11y: permite pinch-to-zoom (WCAG 1.4.4 Resize Text). user-scalable=yes + max 5x. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>Sankofa — Fragmentos da África</title>
   <meta name="description" content="Jogo educativo de enigmas sobre a História Geral da África (UNESCO).">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
@@ -22,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.3.9-dev">
+  <link rel="stylesheet" href="styles.css?v=1.5.7-dev">
   <script>
     (function () {
       var t = localStorage.getItem("sankofa_theme");
@@ -30,23 +31,105 @@
         t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
       }
       document.documentElement.setAttribute("data-theme", t);
+      // Acessibilidade: escala de texto persistente. Aplica antes do render
+      // para evitar flicker em deficientes visuais.
+      var scale = parseFloat(localStorage.getItem("sankofa_text_scale"));
+      if (!isFinite(scale) || scale < 0.85 || scale > 1.6) scale = 1;
+      document.documentElement.style.setProperty("--text-scale", scale);
     })();
   </script>
 </head>
 <body>
-  <button class="install-btn" id="install-btn" title="Instalar como app" aria-label="Instalar como app" style="display:none">⬇ Instalar</button>
-  <button class="theme-toggle" id="theme-toggle" title="Modo claro/escuro" aria-label="Alternar tema">🌙</button>
-  <button class="ambient-toggle" id="ambient-toggle" title="Tambor ambiente" aria-label="Ativar tambor ambiente">🥁</button>
-  <button class="sound-toggle" id="sound-toggle" title="Som on/off" aria-label="Som on/off">🔊</button>
+  <!-- Top bar: perfil à esquerda, hamburger + install à direita. -->
+  <nav class="topbar" aria-label="Controles do jogo">
+    <div class="topbar-left">
+      <button class="profile-btn" id="profile-btn" type="button" title="Meu Perfil" aria-label="Abrir meu perfil">
+        <span class="profile-btn-avatar" id="profile-btn-avatar" aria-hidden="true">👤</span>
+        <span class="topbar-label">Perfil</span>
+      </button>
+    </div>
+    <div class="topbar-right">
+      <button class="install-btn" id="install-btn" type="button" title="Instalar como app" aria-label="Instalar como app" style="display:none">
+        <span aria-hidden="true">⬇</span><span class="install-btn-text">Instalar</span>
+      </button>
+      <button class="topbar-btn menu-toggle" id="menu-toggle" type="button"
+              title="Menu de configurações" aria-label="Abrir menu de configurações"
+              aria-controls="menu-drawer" aria-expanded="false">
+        <span class="topbar-icon" aria-hidden="true">☰</span>
+        <span class="topbar-label">Menu</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Drawer com Zoom / Tema / Tambor / Som. Linhas largas, ícone + texto + estado. -->
+  <div class="menu-drawer" id="menu-drawer" role="menu" aria-label="Configurações" hidden>
+    <div class="menu-row menu-row-zoom" role="group" aria-label="Tamanho do texto">
+      <span class="menu-row-icon zoom-icon" aria-hidden="true">Aa</span>
+      <span class="menu-row-text">Tamanho do texto</span>
+      <div class="zoom-controls">
+        <button class="zoom-step" id="zoom-decrease" type="button"
+                aria-label="Diminuir texto" title="Diminuir texto (atalho: −)">
+          <span aria-hidden="true">A−</span>
+        </button>
+        <span class="menu-row-state zoom-display" id="zoom-state" aria-live="polite">100%</span>
+        <button class="zoom-step" id="zoom-increase" type="button"
+                aria-label="Aumentar texto" title="Aumentar texto (atalho: +)">
+          <span aria-hidden="true">A+</span>
+        </button>
+      </div>
+    </div>
+    <button class="menu-row theme-toggle" id="theme-toggle" type="button" role="menuitem"
+            title="Modo claro/escuro" aria-label="Alternar tema">
+      <span class="menu-row-icon topbar-icon" aria-hidden="true">🌙</span>
+      <span class="menu-row-text">Tema</span>
+      <span class="menu-row-state" id="theme-state">Escuro</span>
+    </button>
+    <button class="menu-row ambient-toggle" id="ambient-toggle" type="button" role="menuitem"
+            title="Tambor ambiente" aria-label="Ativar tambor ambiente">
+      <span class="menu-row-icon topbar-icon" aria-hidden="true">🥁</span>
+      <span class="menu-row-text">Tambor ambiente</span>
+      <span class="menu-row-state" id="ambient-state">Desligado</span>
+    </button>
+    <button class="menu-row sound-toggle" id="sound-toggle" type="button" role="menuitem"
+            title="Som on/off" aria-label="Ativar ou desativar som">
+      <span class="menu-row-icon topbar-icon" aria-hidden="true">🔊</span>
+      <span class="menu-row-text">Som</span>
+      <span class="menu-row-state" id="sound-state">Ligado</span>
+    </button>
+    <hr class="menu-divider" aria-hidden="true">
+    <button class="menu-row" data-act="go-info-hub" type="button" role="menuitem">
+      <span class="menu-row-icon topbar-icon" aria-hidden="true">ℹ</span>
+      <span class="menu-row-text">Ajuda &amp; Privacidade</span>
+      <span class="menu-row-state">Abrir</span>
+    </button>
+  </div>
 
   <main id="app" aria-live="polite"></main>
   <div id="toast-container" aria-live="polite"></div>
+
+  <!-- Banner de instalação. Aparece na 1ª visita após 2s, dismiss persiste. -->
+  <aside class="install-banner" id="install-banner" role="region"
+         aria-label="Sugestão: instalar como app" hidden>
+    <div class="install-banner-card">
+      <button class="install-banner-close" id="install-banner-close" type="button"
+              aria-label="Fechar sugestão">×</button>
+      <div class="install-banner-icon" aria-hidden="true">📱</div>
+      <div class="install-banner-text">
+        <strong>Instalar Sankofa no teu dispositivo</strong>
+        <p id="install-banner-msg">Vira app — abre na tela de início, funciona sem internet, sem app store.</p>
+      </div>
+      <div class="install-banner-actions">
+        <button class="btn btn-gold" id="install-banner-yes" type="button">⬇ Instalar agora</button>
+        <button class="btn btn-ghost btn-sm" id="install-banner-later" type="button">Mais tarde</button>
+      </div>
+    </div>
+  </aside>
 
   <script src="data/worlds.js"></script>
   <script src="data/enigmas.js"></script>
   <script src="data/levels.js"></script>
   <script src="data/achievements.js"></script>
-  <script src="data/version.js?v=1.3.9-dev"></script>
+  <script src="data/version.js?v=1.5.7-dev"></script>
   <script src="data/titles.js"></script>
   <script src="data/houses.js"></script>
   <script src="data/suditos.js"></script>
@@ -59,7 +142,7 @@
   <script src="src/audio.js"></script>
   <script src="src/profiles.js"></script>
   <script src="src/profile-modal.js"></script>
-  <script src="src/share.js?v=1.3.9-dev"></script>
+  <script src="src/share.js?v=1.5.7-dev"></script>
   <script src="src/accessibility.js"></script>
   <script src="src/onboarding.js"></script>
   <script src="src/royalty.js"></script>
@@ -67,9 +150,9 @@
        Sem ele, a Liga online fica oculta e a Liga local continua a funcionar. -->
   <script src="src/league-config.js" onerror="this.remove()"></script>
   <script>window.SANKOFA_LEAGUE_CONFIG = window.SANKOFA_LEAGUE_CONFIG || null;</script>
-  <script src="src/league.js?v=1.3.9-dev"></script>
+  <script src="src/league.js?v=1.5.7-dev"></script>
   <script src="src/tournament.js"></script>
-  <script src="src/app.js?v=1.3.9-dev"></script>
+  <script src="src/app.js?v=1.5.7-dev"></script>
 
   <script>
     // Service Worker — auto-update agressivo:

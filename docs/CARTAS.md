@@ -66,6 +66,17 @@ da Diáspora, Encontro Forçado e Luta pela Liberdade do séc. XX.
 Próximas fases: Sala de Aula (Kahoot-style), tradução EN/FR/ES e
 piloto pedagógico em escolas públicas.
 
+**Conformidade com a licença UNESCO**: Sankofa é uma obra derivada da
+*General History of Africa* sob os termos da licença Creative Commons
+**CC BY-SA IGO 3.0** aplicada às publicações abertas da UNESCO. A
+atribuição formal e o disclaimer obrigatório ("The present work is not
+an official UNESCO publication and shall not be considered as such")
+estão visíveis nas páginas <em>Termos de Uso</em> e <em>Sobre</em> do
+aplicativo. Sankofa não utiliza o logotipo UNESCO nem reproduz
+fotografias da publicação original (ambos fora do escopo da CC BY-SA),
+e adota a mesma família de licença (CC BY-SA 4.0) para o conteúdo
+adaptado, conforme exigido pela cláusula ShareAlike.
+
 2. Por que o patrocínio interessa à [Empresa]
 
 a) Cumprimento legal de escolas: a Lei 10.639/03 (e a 11.645/08)
@@ -196,6 +207,8 @@ Dossier de apresentação à UNESCO
 
 5. Estado atual
    5.1. MVP funcional — Volumes I–VIII (71 enigmas)
+   5.2. Conformidade com licença CC BY-SA IGO 3.0 da UNESCO declarada
+        e visível em-app (Termos + Sobre).
    5.2. Open source · MIT (código) · CC BY-SA 4.0 (conteúdo)
    5.3. Liga Global de jogadores
    5.4. Modo claro (papiro) e escuro
