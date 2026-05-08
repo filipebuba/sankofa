@@ -44,6 +44,7 @@ pandoc musica/CANCOES-VOLUME-2-SUNO.md   -o word/24-Musica-Cancoes-Volume-2-Suno
 pandoc musica/CIFRAS.md                  -o word/25-Musica-Cifras.docx                   --from markdown --to docx --standalone --toc --toc-depth=2
 pandoc musica/CIFRAS-VOLUME-2.md         -o word/26-Musica-Cifras-Volume-2.docx          --from markdown --to docx --standalone --toc --toc-depth=2
 pandoc docs/EDITAL-04-SP-PNAB.md       -o word/Edital-04-SP-PNAB.docx               --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/EMAIL-UNESCO-COMISSAO-NACIONAL.md -o word/Email-UNESCO-Comissao-Nacional.docx --from markdown --to docx --standalone
 
 # Cópias docx em pastas-irmãs com nomes alternativos (para envios diretos)
 pandoc empresa/ALTERACAO-CONTRATUAL.md -o empresa/Alteracao-Contratual-Datacenter-Vision.docx --from markdown --to docx --standalone

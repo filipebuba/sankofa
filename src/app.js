@@ -309,7 +309,7 @@
       if (icon) icon.textContent = theme === "light" ? "☀" : "🌙";
     }
     var st = document.getElementById("theme-state");
-    if (st) st.textContent = theme === "light" ? "Claro" : "Escuro";
+    if (st) st.textContent = theme === "light" ? t("menu.theme_light") : t("menu.theme_dark");
   }
   function toggleTheme() {
     var next = getTheme() === "light" ? "dark" : "light";
@@ -365,6 +365,51 @@
     localStorage.setItem(TEXT_SCALE_KEY, "1");
     applyTextScale(1);
     showToast("Aa", "Texto 100%", "Tamanho padrão restaurado.");
+  }
+
+  /* ---------------- I18N HELPERS ---------------- */
+  function t(key, vars) {
+    return window.SankofaI18n ? window.SankofaI18n.t(key, vars) : key;
+  }
+  function langDisplayName(code) {
+    if (code === "en") return "English";
+    if (code === "es") return "Español";
+    return "Português (Brasil)";
+  }
+  function langShortCode(code) {
+    if (code === "en") return "EN";
+    if (code === "es") return "ES";
+    return "PT";
+  }
+  function tn(oneKey, manyKey, count, vars) {
+    vars = vars || {};
+    vars.count = count;
+    return t(count === 1 ? oneKey : manyKey, vars);
+  }
+  function updateLangLabels() {
+    if (!window.SankofaI18n) return;
+    var code = window.SankofaI18n.getLang();
+    var langState = document.getElementById("lang-state");
+    if (langState) langState.textContent = langShortCode(code);
+    var langLabel = document.getElementById("lang-label");
+    if (langLabel) langLabel.textContent = t("menu.lang");
+    var zoomLabel = document.getElementById("zoom-label");
+    if (zoomLabel) zoomLabel.textContent = t("menu.zoom");
+    var themeLabel = document.getElementById("theme-label");
+    if (themeLabel) themeLabel.textContent = t("menu.theme");
+    var ambientLabel = document.getElementById("ambient-label");
+    if (ambientLabel) ambientLabel.textContent = t("menu.ambient");
+    var soundLabel = document.getElementById("sound-label");
+    if (soundLabel) soundLabel.textContent = t("menu.sound");
+    var hp = document.getElementById("help-privacy-label");
+    if (hp) hp.textContent = t("menu.help_privacy");
+    var helpState = hp && hp.parentNode ? hp.parentNode.querySelector(".menu-row-state") : null;
+    if (helpState) helpState.textContent = t("menu.open");
+    // Atualizar também nomes em ambient/theme/zoom mesmos
+    var rows = document.querySelectorAll(".menu-drawer .menu-row .menu-row-text");
+    if (rows.length) {
+      // Por ID seria mais robusto; aqui só os principais já cobertos via labels acima.
+    }
   }
 
   /* ---------------- INSTALL PROMPT (PWA) ---------------- */
@@ -493,7 +538,7 @@
       b.classList.toggle("muted", !S.soundOn);
     }
     var bState = document.getElementById("sound-state");
-    if (bState) bState.textContent = S.soundOn ? "Ligado" : "Mudo";
+    if (bState) bState.textContent = S.soundOn ? t("menu.on") : t("menu.muted");
 
     var a = document.getElementById("ambient-toggle");
     if (a) {
@@ -502,7 +547,7 @@
       a.classList.toggle("active", !!S.ambientOn && !!S.soundOn);
     }
     var aState = document.getElementById("ambient-state");
-    if (aState) aState.textContent = (!!S.ambientOn && !!S.soundOn) ? "Ligado" : "Desligado";
+    if (aState) aState.textContent = (!!S.ambientOn && !!S.soundOn) ? t("menu.on") : t("menu.off");
   }
 
   function updateProfileBtn() {
@@ -674,38 +719,38 @@
     var ctaBlock = "";
     if (hp) {
       var resume = nextResume();
-      var t = getTitle();
-      var greeting = '<p class="resume-greeting">Bem-vindo de volta, <strong>' + t.short + ' ' + S.name + '</strong>.</p>' +
-        '<p class="resume-title-line">' + t.icon + ' ' + t.title + ' · ◉ ' + (S.cauris || 0) + ' cauris</p>';
+      var ti = getTitle();
+      var greeting = '<p class="resume-greeting">' + t("landing.welcome_back") + ', <strong>' + ti.short + ' ' + S.name + '</strong>.</p>' +
+        '<p class="resume-title-line">' + ti.icon + ' ' + ti.title + ' · ◉ ' + (S.cauris || 0) + ' cauris</p>';
       if (resume) {
         var w = getWorld(resume.world);
         ctaBlock =
           greeting +
-          '<button class="btn btn-gold cta" data-act="resume">Continuar Jornada</button>' +
-          '<p class="resume-hint">Próximo: <strong>' + resume.enigma.title + '</strong> · Mundo ' + resume.world + (w ? " — " + w.name : "") + '</p>' +
-          '<button class="btn btn-outline cta" data-act="go-map">Mapa de Mundos</button>';
+          '<button class="btn btn-gold cta" data-act="resume">' + t("landing.resume") + '</button>' +
+          '<p class="resume-hint">→ <strong>' + resume.enigma.title + '</strong> · Mundo ' + resume.world + (w ? " — " + w.name : "") + '</p>' +
+          '<button class="btn btn-outline cta" data-act="go-map">' + t("landing.map") + '</button>';
       } else {
         ctaBlock =
           greeting +
-          '<button class="btn btn-gold cta" data-act="go-map">Mapa de Mundos</button>' +
+          '<button class="btn btn-gold cta" data-act="go-map">' + t("landing.map") + '</button>' +
           '<p class="resume-hint">Recolheste todos os fragmentos disponíveis.</p>';
       }
-      ctaBlock += '<button class="btn btn-ghost cta btn-sm" data-act="reset" style="font-size:.78rem;color:var(--text-muted);margin-top:4px">Recomeçar do Zero</button>';
+      ctaBlock += '<button class="btn btn-ghost cta btn-sm" data-act="reset" style="font-size:.78rem;color:var(--text-muted);margin-top:4px">' + t("landing.reset") + '</button>';
     } else {
-      ctaBlock = '<button class="btn btn-gold cta" data-act="start">Começar a Jornada</button>';
+      ctaBlock = '<button class="btn btn-gold cta" data-act="start">' + t("landing.start") + '</button>';
     }
     return '<div class="landing">' +
       '<img class="bird logo-img" src="assets/logo.png" alt="Símbolo Sankofa" />' +
-      '<h1>SANKOFA</h1>' +
-      '<p class="subtitle">Fragmentos da África</p>' +
-      '<p class="tagline">"Volte e busque. Não é errado voltar pelo que esqueceste."</p>' +
+      '<h1>' + t("landing.title") + '</h1>' +
+      '<p class="subtitle">' + t("landing.subtitle") + '</p>' +
+      '<p class="tagline">' + t("landing.tagline") + '</p>' +
       ctaBlock +
-      '<p style="font-size:.72rem;color:var(--text-muted);margin-top:4px;opacity:0;animation:fadeUp .6s ease 1.4s forwards">Baseado na História Geral da África — UNESCO</p>' +
+      '<p style="font-size:.72rem;color:var(--text-muted);margin-top:4px;opacity:0;animation:fadeUp .6s ease 1.4s forwards">' + t("landing.based_on") + '</p>' +
       '<div class="landing-contrib">' +
-        '<p>Sankofa está em construção. Tua palavra ajuda.</p>' +
+        '<p>' + t("landing.contrib_intro") + '</p>' +
         '<div class="landing-contrib-actions">' +
-          '<button class="btn btn-ghost btn-sm" data-act="go-feedback">💬 Feedback</button>' +
-          '<button class="btn btn-ghost btn-sm" data-act="go-contribute">🤝 Contribuir</button>' +
+          '<button class="btn btn-ghost btn-sm" data-act="go-feedback">' + t("landing.contrib_feedback") + '</button>' +
+          '<button class="btn btn-ghost btn-sm" data-act="go-contribute">' + t("landing.contrib_help") + '</button>' +
         '</div>' +
       '</div>' +
       '<p class="version-stamp">v' + (window.SANKOFA_VERSION || "0.0.0") + (window.SANKOFA_BUILD_DATE ? " · " + window.SANKOFA_BUILD_DATE : "") + '</p>' +
@@ -714,25 +759,25 @@
 
   function rRegister() {
     return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:68dvh;gap:20px;text-align:center">' +
-      '<h2 style="font-size:1.5rem">Como te chamas, viajante?</h2>' +
-      '<p style="color:var(--text-dim);font-size:.92rem">O teu nome será gravado nos fragmentos.</p>' +
-      '<input type="text" id="name-input" placeholder="O teu nome..." maxlength="30" ' +
+      '<h2 style="font-size:1.5rem">' + t("register.title") + '</h2>' +
+      '<p style="color:var(--text-dim);font-size:.92rem">' + t("register.subtitle") + '</p>' +
+      '<input type="text" id="name-input" placeholder="' + t("register.placeholder") + '" maxlength="30" ' +
       'style="width:100%;max-width:300px;padding:14px 18px;background:var(--surface);border:1.5px solid var(--surface3);border-radius:var(--radius);color:var(--text);font-size:1.1rem;text-align:center;outline:none;transition:border-color .2s">' +
-      '<button class="btn btn-gold" data-act="register">Entrar</button>' +
+      '<button class="btn btn-gold" data-act="register">' + t("register.submit") + '</button>' +
       '</div>';
   }
 
   function rMap() {
-    var t = getTitle();
+    var titleInfo = getTitle();
     var html = '<div class="section-header" style="margin-bottom:14px">' +
-      '<h2 style="font-size:1.2rem">Mundos</h2>' +
+      '<h2 style="font-size:1.2rem">' + t("map.worlds") + '</h2>' +
       '<div class="header-balances">' +
-      '<span class="badge badge-gold">' + S.points + ' pts</span>' +
+      '<span class="badge badge-gold">' + S.points + ' ' + t("common.points_abbr") + '</span>' +
       '<span class="badge badge-cauri">◉ ' + (S.cauris || 0) + '</span>' +
       '</div></div>' +
       '<p class="map-greeting">' +
-      '<span class="title-prefix">' + t.icon + ' ' + t.short + '</span> <strong style="color:var(--gold)">' + S.name + '</strong>' +
-      (S.streak > 0 ? ' <span style="color:var(--terra)">🔥 ' + S.streak + ' dia' + (S.streak !== 1 ? "s" : "") + '</span>' : "") +
+      '<span class="title-prefix">' + titleInfo.icon + ' ' + titleInfo.short + '</span> <strong style="color:var(--gold)">' + S.name + '</strong>' +
+      (S.streak > 0 ? ' <span style="color:var(--terra)">🔥 ' + tn("common.day_one", "common.day_many", S.streak) + '</span>' : "") +
       '</p>';
 
     var resume = nextResume();
@@ -740,9 +785,9 @@
       var rw = getWorld(resume.world);
       html += '<div class="resume-banner" data-act="resume" role="button" tabindex="0">' +
         '<div class="resume-banner-text">' +
-        '<div class="resume-banner-eyebrow">Continuar onde paraste</div>' +
+        '<div class="resume-banner-eyebrow">' + t("map.continue_where_left") + '</div>' +
         '<div class="resume-banner-title">' + resume.enigma.title + '</div>' +
-        '<div class="resume-banner-meta">Mundo ' + resume.world + (rw ? " · " + rw.name : "") + '</div>' +
+        '<div class="resume-banner-meta">' + t("common.world") + ' ' + resume.world + (rw ? " · " + rw.name : "") + '</div>' +
         '</div>' +
         '<div class="resume-banner-arrow">→</div>' +
         '</div>';
@@ -753,9 +798,9 @@
     if (pendingReview > 0) {
       html += '<div class="review-banner" data-act="go-review" role="button" tabindex="0">' +
         '<div class="review-banner-text">' +
-        '<div class="review-banner-eyebrow">📓 Caderno de Revisão</div>' +
-        '<div class="review-banner-title">' + pendingReview + ' enigma' + (pendingReview !== 1 ? "s" : "") + ' para rever</div>' +
-        '<div class="review-banner-meta">Volte quando quiser. Sem pressa.</div>' +
+        '<div class="review-banner-eyebrow">📓 ' + t("map.review_notebook") + '</div>' +
+        '<div class="review-banner-title">' + tn("map.review_count_one", "map.review_count_many", pendingReview) + '</div>' +
+        '<div class="review-banner-meta">' + t("map.review_meta") + '</div>' +
         '</div>' +
         '<div class="resume-banner-arrow">→</div>' +
         '</div>';
@@ -795,9 +840,9 @@
         else if (p.mastered) { badge = '<span class="world-badge mastered" title="Mestre">👑</span>'; extraClass = " mastered"; }
 
         var label;
-        if (p.mastered)       label = '<div class="world-status mastered">' + (p.perfect ? "Mestre Perfeito" : "Mestre · " + p.done + "/" + p.total) + '</div>';
-        else if (p.unlocked)  label = '<div class="world-status partial">' + p.done + '/' + p.total + ' · próximo aberto</div>';
-        else                  label = '<div class="world-status">' + p.done + '/' + p.total + ' fragmentos</div>';
+        if (p.mastered)       label = '<div class="world-status mastered">' + (p.perfect ? t("map.perfect_master") : t("map.master") + " · " + p.done + "/" + p.total) + '</div>';
+        else if (p.unlocked)  label = '<div class="world-status partial">' + p.done + '/' + p.total + ' · ' + t("map.next_open") + '</div>';
+        else                  label = '<div class="world-status">' + t("map.fragments", { done: p.done, total: p.total }) + '</div>';
 
         html += '<div class="world-card unlocked' + extraClass + '" data-act="open-world" data-w="' + w.id + '">' +
           '<div class="world-art"' + artStyle + '></div>' +
@@ -815,8 +860,8 @@
         if (prevK.level === "block") karmaHint = " · 🌳 anciãos pedem revisão";
         else if (prevK.level === "warn") karmaHint = " · 🌿 caderno cheio";
         var hint = prevP.total
-          ? "Resolva " + threshold + "/" + prevP.total + " do Mundo " + (w.id - 1) + " (" + prevP.done + " feitos)" + karmaHint
-          : "Em breve";
+          ? t("map.lock_hint", { threshold: threshold, total: prevP.total, world: (w.id - 1), done: prevP.done }) + karmaHint
+          : t("map.coming_soon");
         html += '<div class="world-card locked" title="' + hint + '">' +
           '<div class="world-art"' + artStyle + '></div>' +
           '<span class="lock-icon">🔒</span>' +
@@ -828,17 +873,17 @@
     }
     html += '</div>';
     html += '<div style="display:flex;gap:8px;margin-top:18px;justify-content:center;flex-wrap:wrap">';
-    html += '<button class="btn btn-gold btn-sm" data-act="go-throne">♛ Trono</button>';
-    html += '<button class="btn btn-outline btn-sm" data-act="go-daily">⭐ Audiência</button>';
-    html += '<button class="btn btn-outline btn-sm" data-act="go-league">🏆 Liga</button>';
+    html += '<button class="btn btn-gold btn-sm" data-act="go-throne">♛ ' + t("map.throne") + '</button>';
+    html += '<button class="btn btn-outline btn-sm" data-act="go-daily">⭐ ' + t("map.audience") + '</button>';
+    html += '<button class="btn btn-outline btn-sm" data-act="go-league">🏆 ' + t("map.league") + '</button>';
     if (window.SankofaTournament && window.SankofaTournament.enabled) {
-      html += '<button class="btn btn-outline btn-sm" data-act="go-tournament">🥇 Torneio</button>';
+      html += '<button class="btn btn-outline btn-sm" data-act="go-tournament">🥇 ' + t("map.tournament") + '</button>';
     }
     var pr = (S.errored || []).length;
     if (pr > 0) {
       html += '<button class="btn btn-outline btn-sm" data-act="go-review">📓 Caderno (' + pr + ')</button>';
     }
-    html += '<button class="btn btn-ghost btn-sm" data-act="go-profile">Perfil</button>';
+    html += '<button class="btn btn-ghost btn-sm" data-act="go-profile">' + t("about.profile") + '</button>';
     html += '</div>';
     return html;
   }
@@ -1513,22 +1558,23 @@
 
   /* ---------------- INFO PAGES ---------------- */
   function infoBackBtn() {
-    return '<button class="btn btn-ghost btn-sm" data-act="go-info-hub" style="margin-bottom:14px">← Ajuda &amp; Privacidade</button>';
+    return '<button class="btn btn-ghost btn-sm" data-act="go-info-hub" style="margin-bottom:14px">' + t("info.back_to_hub") + '</button>';
   }
 
   function rInfoHub() {
     var v = window.SANKOFA_VERSION || "?";
-    var html = '<button class="btn btn-ghost btn-sm" data-act="go-map" style="margin-bottom:14px">← Mapa</button>';
-    html += '<h2 style="text-align:center;font-size:1.4rem">Ajuda &amp; Privacidade</h2>';
-    html += '<p style="text-align:center;color:var(--text-dim);font-size:.88rem;margin-bottom:6px">Tudo o que precisas saber sobre o Sankofa.</p>';
+    var html = '<button class="btn btn-ghost btn-sm" data-act="go-map" style="margin-bottom:14px">' + t("common.back_to_map") + '</button>';
+    html += '<h2 style="text-align:center;font-size:1.4rem">' + t("info.title") + '</h2>';
+    html += '<p style="text-align:center;color:var(--text-dim);font-size:.88rem;margin-bottom:6px">' + t("info.subtitle") + '</p>';
+    html += '<p style="text-align:center;color:var(--text-dim);font-size:.82rem;line-height:1.45;margin:0 auto 12px;max-width:420px">' + t("info.translation_notice") + '</p>';
     html += '<div class="info-hub-grid">';
-    html += hubCard("📖", "Como Jogar", "Regras, dicas, conquistas, atalhos.", "go-help");
-    html += hubCard("💬", "Enviar Feedback", "Reporta um bug, sugere algo, manda um abraço.", "go-feedback");
-    html += hubCard("🤝", "Contribuir", "Como ajudar Sankofa a crescer.", "go-contribute");
-    html += hubCard("🛡️", "Política de Privacidade", "O que guardamos, onde, e como apagar.", "go-privacy");
-    html += hubCard("📜", "Termos de Uso", "Licenças, conduta, idade mínima.", "go-terms");
-    html += hubCard("♿", "Acessibilidade", "Tamanho de texto, voz, contraste, teclado.", "go-accessibility");
-    html += hubCard("🌍", "Sobre o Sankofa", "Origem, autor, fontes UNESCO.", "go-about");
+    html += hubCard("📖", t("info.help_title"), t("info.help_desc"), "go-help");
+    html += hubCard("💬", t("info.feedback_title"), t("info.feedback_desc"), "go-feedback");
+    html += hubCard("🤝", t("info.contribute_title"), t("info.contribute_desc"), "go-contribute");
+    html += hubCard("🛡️", t("info.privacy_title"), t("info.privacy_desc"), "go-privacy");
+    html += hubCard("📜", t("info.terms_title"), t("info.terms_desc"), "go-terms");
+    html += hubCard("♿", t("info.accessibility_title"), t("info.accessibility_desc"), "go-accessibility");
+    html += hubCard("🌍", t("info.about_title"), t("info.about_desc"), "go-about");
     html += '</div>';
     html += '<p class="version-stamp" style="text-align:center;margin-top:18px;color:var(--text-muted);font-size:.78rem">Sankofa v' + v + ' · MIT (código) · CC BY-SA 4.0 (conteúdo)</p>';
     return html;
@@ -1744,10 +1790,14 @@
     html += '<li>ODS 4 (Educação de Qualidade) e ODS 10 (Redução das Desigualdades).</li>';
     html += '</ul>';
 
+    html += '<h3>' + t("about.translations") + '</h3>';
+    html += '<p>' + t("about.translations_status") + '</p>';
+    html += '<p style="font-size:.84rem;color:var(--text-dim)">' + t("about.translations_note") + '</p>';
+
     html += '<h3>Stack</h3>';
     html += '<p>Vanilla JS, Web Audio API, PWA Service Worker. Sem framework, sem build step. Backend opt-in via Supabase (RLS + Edge Functions). Hospedado no Vercel.</p>';
 
-    html += '<h3>Apoiar o projeto</h3>';
+    html += '<h3>' + t("about.support") + '</h3>';
     html += '<p>Sankofa é gratuito, sem ads, sem venda de dados. Servidor + domínio + tempo de manutenção saem do bolso do autor. Apoio voluntário em três modalidades:</p>';
     html += '<ul style="font-size:.9rem">';
     html += '<li><strong>PIX (CNPJ):</strong> <code style="font-family:\'Atkinson Hyperlegible\',ui-monospace,monospace;color:var(--gold);user-select:all">62.823.295/0001-53</code> · Datacenter Vision Ltda · com recibo</li>';
@@ -2886,6 +2936,20 @@
         closeMenuDrawer();
         goTo("info-hub");
       });
+    }
+
+    // Language toggle — cycle PT-BR → EN → ES → PT-BR
+    var langBtn = document.getElementById("lang-toggle");
+    if (langBtn && window.SankofaI18n) {
+      langBtn.addEventListener("click", function () {
+        var next = window.SankofaI18n.cycle();
+        sfx("click");
+        updateLangLabels();
+        showToast("🌐", langDisplayName(next), window.SankofaI18n.t("about.translations_status"));
+        // Re-render para aplicar traduções novas
+        render();
+      });
+      updateLangLabels();
     }
     // Click fora fecha
     document.addEventListener("click", function (ev) {
