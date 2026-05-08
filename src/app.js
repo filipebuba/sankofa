@@ -367,6 +367,112 @@
     showToast("Aa", "Texto 100%", "Tamanho padrão restaurado.");
   }
 
+  /* ---------------- INSTALL PROMPT (PWA) ---------------- */
+  var INSTALL_DISMISS_KEY = "sankofa_install_dismissed_v1";
+  var INSTALL_DONE_KEY = "sankofa_install_done_v1";
+  var INSTALL_BANNER_DELAY_MS = 2500; // espera o utilizador respirar antes de sugerir
+
+  function isStandalone() {
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+      window.navigator.standalone === true;
+  }
+  function isIOSDevice() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent || "") && !window.MSStream;
+  }
+  function installAlreadyHandled() {
+    if (localStorage.getItem(INSTALL_DONE_KEY) === "1") return true;
+    if (localStorage.getItem(INSTALL_DISMISS_KEY) === "1") return true;
+    if (isStandalone()) return true;
+    return false;
+  }
+
+  function triggerInstallPrompt(onDone) {
+    if (!window.__sankofaInstall) return false;
+    window.__sankofaInstall.prompt();
+    window.__sankofaInstall.userChoice.then(function (res) {
+      if (res && res.outcome === "accepted") {
+        localStorage.setItem(INSTALL_DONE_KEY, "1");
+        showToast("✅", "Instalado!", "Abre Sankofa pela tela de início.");
+      }
+      window.__sankofaInstall = null;
+      if (typeof onDone === "function") onDone();
+    });
+    return true;
+  }
+
+  function setupInstallBanner() {
+    var banner = document.getElementById("install-banner");
+    var msg = document.getElementById("install-banner-msg");
+    var btnYes = document.getElementById("install-banner-yes");
+    var btnLater = document.getElementById("install-banner-later");
+    var btnClose = document.getElementById("install-banner-close");
+    if (!banner) return;
+
+    function hideBanner(persist) {
+      banner.hidden = true;
+      if (persist) localStorage.setItem(INSTALL_DISMISS_KEY, "1");
+    }
+
+    function showForAndroid() {
+      if (msg) msg.textContent = "Vira app — abre na tela de início, funciona sem internet, sem app store.";
+      if (btnYes) {
+        btnYes.style.display = "";
+        btnYes.textContent = "⬇ Instalar agora";
+      }
+      banner.hidden = false;
+    }
+
+    function showForIOS() {
+      if (msg) {
+        msg.innerHTML = "No iPhone/iPad: toque em <strong>Compartilhar</strong> abaixo " +
+          "e escolha <strong>“Adicionar à Tela de Início”</strong>.";
+      }
+      if (btnYes) btnYes.style.display = "none"; // iOS Safari não tem prompt programático
+      banner.hidden = false;
+    }
+
+    if (btnYes) btnYes.addEventListener("click", function () {
+      sfx("achievement");
+      if (!triggerInstallPrompt(function () { hideBanner(false); })) {
+        // Sem prompt disponível por algum motivo — esconde sem persistir como dismiss.
+        hideBanner(false);
+      } else {
+        hideBanner(false);
+      }
+    });
+    if (btnLater) btnLater.addEventListener("click", function () { sfx("click"); hideBanner(true); });
+    if (btnClose) btnClose.addEventListener("click", function () { sfx("click"); hideBanner(true); });
+
+    // Decide se vai mostrar
+    if (installAlreadyHandled()) return;
+
+    var android = !!window.__sankofaInstall;
+    var ios = isIOSDevice();
+
+    // Android: __sankofaInstall pode chegar tarde — escuta evento global.
+    function maybeShow() {
+      if (banner.hidden === false) return;
+      if (installAlreadyHandled()) return;
+      if (window.__sankofaInstall) showForAndroid();
+      else if (ios) showForIOS();
+    }
+
+    if (android) setTimeout(maybeShow, INSTALL_BANNER_DELAY_MS);
+    else if (ios) setTimeout(maybeShow, INSTALL_BANNER_DELAY_MS);
+    else {
+      // Pode chegar depois — espera evento beforeinstallprompt.
+      window.addEventListener("beforeinstallprompt", function () {
+        setTimeout(maybeShow, 800);
+      });
+    }
+
+    // Após "appinstalled" do browser, marca como done e esconde.
+    window.addEventListener("appinstalled", function () {
+      localStorage.setItem(INSTALL_DONE_KEY, "1");
+      hideBanner(false);
+    });
+  }
+
 
   /* ---------------- AUDIO ---------------- */
   function sfx(name) { if (S.soundOn && AUDIO) AUDIO.play(name); }
@@ -2224,14 +2330,10 @@
     var ib = document.getElementById("install-btn");
     if (ib) ib.addEventListener("click", function () {
       sfx("achievement");
-      if (window.__sankofaInstall) {
-        window.__sankofaInstall.prompt();
-        window.__sankofaInstall.userChoice.then(function () {
-          window.__sankofaInstall = null;
-          ib.style.display = "none";
-        });
-      }
+      triggerInstallPrompt(function () { ib.style.display = "none"; });
     });
+
+    setupInstallBanner();
 
     // ?action= shortcuts (ícones do PWA)
     try {
