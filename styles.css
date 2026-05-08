@@ -295,6 +295,7 @@ input { font-family: var(--font-body); }
 .fragment.locked { background: var(--surface3); border: 2px dashed var(--text-muted); }
 .fragment.locked::after { content: '?'; font-size: 1.8rem; color: var(--text-muted); font-family: var(--font-display); }
 .fragment.unlocked { border: 2px solid var(--gold); animation: fragmentReveal .8s var(--ease) both; }
+.fragment-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .fragment .frag-label { position: absolute; bottom: 0; left: 0; right: 0; background: var(--frag-label-bg); color: #ede5d5; font-size: .62rem; padding: 5px 4px; text-align: center; }
 .fp-rift { background: radial-gradient(circle at 30% 40%, var(--terra) 0%, #7a3520 40%, #4a2010 100%); }
 .fp-saara { background: linear-gradient(135deg, var(--gold) 0%, #8a6a20 50%, #5a4510 100%); }
@@ -373,16 +374,60 @@ input { font-family: var(--font-body); }
 .fp-san       { background: radial-gradient(circle at 30% 30%, #d97a2a 0%, #8a3a14 60%, #2a1408 100%); }
 .fp-linguas   { background: conic-gradient(from 30deg at 50% 50%, #c9a84c, #b85a3a, #4a8a50, #2a4570, #c9a84c); }
 .fp-naqada    { background: linear-gradient(135deg, var(--gold) 0%, #8a6a20 40%, var(--indigo) 100%); }
-.fp-nilo { background-image: url('assets/frag_nilo.png'); background-size: cover; background-position: center; }
-.fp-arco { background-image: url('assets/frag_arco.png'); background-size: cover; background-position: center; }
-.fp-taharqa { background-image: url('assets/frag_taharqa.png'); background-size: cover; background-position: center; }
-.fp-piramide { background-image: url('assets/frag_piramide.png'); background-size: cover; background-position: center; }
-.fp-escrita { background-image: url('assets/frag_escrita.png'); background-size: cover; background-position: center; }
-.fp-kandake { background-image: url('assets/frag_kandake.png'); background-size: cover; background-position: center; }
-.fp-axum { background-image: url('assets/frag_axum.png'); background-size: cover; background-position: center; }
-.fp-cruz { background: radial-gradient(circle at 50% 50%, var(--gold) 0%, #8a6a20 40%, #2a1f0a 100%); } /* Temp gradient: cruz de ouro */
+.fp-rift,
+.fp-saara,
+.fp-ferro,
+.fp-bantu,
+.fp-arte,
+.fp-toumai,
+.fp-olduvai,
+.fp-border,
+.fp-khoisan,
+.fp-exodus,
+.fp-ceramica,
+.fp-gado,
+.fp-san,
+.fp-linguas,
+.fp-naqada,
+.fp-nilo,
+.fp-arco,
+.fp-taharqa,
+.fp-piramide,
+.fp-escrita,
+.fp-kandake,
+.fp-axum,
+.fp-cruz,
+.fp-mansa {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.fp-rift { background-image: url('assets/frag_rift.png'); }
+.fp-saara { background-image: url('assets/frag_saara.png'); }
+.fp-ferro { background-image: url('assets/frag_ferro.png'); }
+.fp-bantu { background-image: url('assets/frag_bantu.png'); }
+.fp-arte { background-image: url('assets/frag_arte.png'); }
+.fp-toumai { background-image: url('assets/frag_toumai.png'); }
+.fp-olduvai { background-image: url('assets/frag_olduvai.png'); }
+.fp-border { background-image: url('assets/frag_border.png'); }
+.fp-khoisan { background-image: url('assets/frag_khoisan.png'); }
+.fp-exodus { background-image: url('assets/frag_exodus.png'); }
+.fp-ceramica { background-image: url('assets/frag_ceramica.png'); }
+.fp-gado { background-image: url('assets/frag_gado.png'); }
+.fp-san { background-image: url('assets/frag_san.png'); }
+.fp-linguas { background-image: url('assets/frag_linguas.png'); }
+.fp-naqada { background-image: url('assets/frag_naqada.png'); }
+.fp-nilo { background-image: url('assets/frag_nilo.png'); }
+.fp-arco { background-image: url('assets/frag_arco.png'); }
+.fp-taharqa { background-image: url('assets/frag_taharqa.png'); }
+.fp-piramide { background-image: url('assets/frag_piramide.png'); }
+.fp-escrita { background-image: url('assets/frag_escrita.png'); }
+.fp-kandake { background-image: url('assets/frag_kandake.png'); }
+.fp-axum { background-image: url('assets/frag_axum.png'); }
+.fp-cruz { background-image: url('assets/frag_cruz.png'); }
+.fp-mansa { background-image: url('assets/frag_mansa.png'); }
 
-/* Mundo 2 images are loaded via background-image above */
+/* Fragment images available in assets override the fallback gradients above. */
 
 .landing { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 88dvh; text-align: center; gap: 20px; }
 .landing .bird { width: 140px; height: 140px; opacity: 0; animation: fadeScale .8s ease .2s forwards; }
@@ -440,7 +485,7 @@ input { font-family: var(--font-body); }
 
 .result { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; padding-top: 24px; }
 .result .points-earned { font-family: var(--font-display); font-size: 3rem; font-weight: 900; color: var(--gold); animation: fadeScale .5s var(--ease); }
-.result .fragment-preview { width: 140px; height: 140px; border-radius: var(--radius-lg); border: 3px solid var(--gold); animation: fragmentReveal .8s var(--ease) .3s both; }
+.result .fragment-preview { width: 140px; height: 140px; border-radius: var(--radius-lg); border: 3px solid var(--gold); animation: fragmentReveal .8s var(--ease) .3s both; overflow: hidden; }
 .result .explanation { font-size: .92rem; color: var(--text-dim); line-height: 1.7; text-align: left; background: var(--surface); padding: 18px; border-radius: var(--radius); border-left: 3px solid var(--gold); }
 
 .profile-header { text-align: center; padding: 16px 0; }

@@ -199,6 +199,44 @@
     return (prefix ? prefix + " " : "") + S.name;
   }
 
+  var FRAGMENT_IMAGE_PATTERNS = {
+    "fp-arco": true,
+    "fp-arte": true,
+    "fp-axum": true,
+    "fp-bantu": true,
+    "fp-border": true,
+    "fp-ceramica": true,
+    "fp-cruz": true,
+    "fp-escrita": true,
+    "fp-exodus": true,
+    "fp-ferro": true,
+    "fp-gado": true,
+    "fp-kandake": true,
+    "fp-khoisan": true,
+    "fp-linguas": true,
+    "fp-mansa": true,
+    "fp-naqada": true,
+    "fp-nilo": true,
+    "fp-olduvai": true,
+    "fp-piramide": true,
+    "fp-rift": true,
+    "fp-saara": true,
+    "fp-san": true,
+    "fp-taharqa": true,
+    "fp-toumai": true
+  };
+
+  function fragmentImageSrc(pattern) {
+    if (!pattern || !FRAGMENT_IMAGE_PATTERNS[pattern]) return "";
+    return "assets/frag_" + pattern.replace(/^fp-/, "").replace(/-/g, "_") + ".png";
+  }
+
+  function rFragmentImage(pattern, name) {
+    var src = fragmentImageSrc(pattern);
+    if (!src) return "";
+    return '<img class="fragment-img" src="' + src + '" alt="' + escapeAttr(name || "Fragmento") + '" loading="lazy">';
+  }
+
   // Cauris formula: base 5 + bonuses. Visible to player at result screen.
   function caurisForResult(opts) {
     opts = opts || {};
@@ -689,7 +727,7 @@
       '<h2 style="color:var(--green)">Fragmento Recolhido!</h2>' +
       '<div class="points-earned">+' + pts + ' pts</div>' +
       caurisChip +
-      '<div class="fragment-preview ' + e.fragment.pattern + '"></div>' +
+      '<div class="fragment-preview ' + e.fragment.pattern + '">' + rFragmentImage(e.fragment.pattern, e.fragment.name) + '</div>' +
       '<h3 style="margin-top:4px">' + e.fragment.name + '</h3>' +
       '<div class="explanation">' + e.explanation + '</div>' +
       '<div style="background:var(--surface2);padding:14px;border-radius:var(--radius);width:100%;text-align:left;font-size:.88rem;color:var(--text-dim);border-left:3px solid var(--terra)">' +
@@ -718,6 +756,7 @@
       var e = we[j];
       var s = isSolved(e.id);
       html += '<div class="fragment ' + (s ? 'unlocked ' + e.fragment.pattern : 'locked') + '" style="' + (s ? 'animation-delay:' + (j * 0.15) + 's' : '') + '">';
+      if (s) html += rFragmentImage(e.fragment.pattern, e.fragment.name);
       if (s) html += '<span class="frag-label">' + e.fragment.name + '</span>';
       html += '</div>';
     }
