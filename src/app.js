@@ -267,6 +267,18 @@
     return '<img class="fragment-img" src="' + src + '" alt="' + escapeAttr(name || "Fragmento") + '" loading="lazy">';
   }
 
+  function shuffledOptionIndexes(len) {
+    var arr = [];
+    for (var i = 0; i < len; i++) arr.push(i);
+    for (var j = arr.length - 1; j > 0; j--) {
+      var k = Math.floor(Math.random() * (j + 1));
+      var tmp = arr[j];
+      arr[j] = arr[k];
+      arr[k] = tmp;
+    }
+    return arr;
+  }
+
   // Cauris formula: base 5 + bonuses. Visible to player at result screen.
   function caurisForResult(opts) {
     opts = opts || {};
@@ -973,8 +985,10 @@
       (ttsAvail ? '<button type="button" class="speak-btn" data-act="speak-enigma" data-e="' + eid + '" aria-label="Ler em voz alta" title="Ler em voz alta">🔊</button>' : "") +
       '</div>';
     html += '<div id="opts" class="options">';
-    for (var k = 0; k < e.options.length; k++) {
-      html += '<div class="option" data-act="pick" data-i="' + k + '"><span class="opt-letter">' + String.fromCharCode(65 + k) + '</span>' + e.options[k] + '</div>';
+    var optionOrder = shuffledOptionIndexes(e.options.length);
+    for (var k = 0; k < optionOrder.length; k++) {
+      var originalIdx = optionOrder[k];
+      html += '<div class="option" data-act="pick" data-i="' + originalIdx + '" data-pos="' + k + '"><span class="opt-letter">' + String.fromCharCode(65 + k) + '</span>' + e.options[originalIdx] + '</div>';
     }
     html += '</div>';
     html += '<div id="hints" class="hints-area">';
@@ -2073,7 +2087,7 @@
     var idx = map[e.key.toLowerCase()];
     if (idx !== undefined) {
       var opts = document.querySelectorAll("#opts .option");
-      if (opts[idx]) handlePick(idx);
+      if (opts[idx]) handlePick(parseInt(opts[idx].getAttribute("data-i"), 10), opts[idx]);
     }
   }
 
@@ -2127,7 +2141,7 @@
         goTo("enigma", { enigma: eId });
         break;
       case "open-mosaic": sfx("fragment"); goTo("mosaic", { world: parseInt(el.getAttribute("data-w"), 10) }); break;
-      case "pick": handlePick(parseInt(el.getAttribute("data-i"), 10)); break;
+      case "pick": handlePick(parseInt(el.getAttribute("data-i"), 10), el); break;
       case "skip-enigma": handleSkipEnigma(el.getAttribute("data-e")); break;
       case "karma-insist": {
         var iw = parseInt(el.getAttribute("data-w"), 10);
@@ -2640,7 +2654,7 @@
     }
   }
 
-  function handlePick(idx) {
+  function handlePick(idx, selectedEl) {
     if (enigmaLocked) return;
     enigmaLocked = true;
 
@@ -2651,7 +2665,16 @@
     var elapsed = Math.round((Date.now() - enigmaStartTime) / 1000);
     var opts = document.querySelectorAll("#opts .option");
     for (var i = 0; i < opts.length; i++) opts[i].classList.remove("selected");
-    opts[idx].classList.add("selected");
+    if (!selectedEl) {
+      for (var si = 0; si < opts.length; si++) {
+        if (parseInt(opts[si].getAttribute("data-i"), 10) === idx) {
+          selectedEl = opts[si];
+          break;
+        }
+      }
+    }
+    if (!selectedEl) { enigmaLocked = false; return; }
+    selectedEl.classList.add("selected");
 
     var correct = (idx === e.correct);
     var attempts = (S.attempts[eid] || 0) + 1;
@@ -2725,8 +2748,8 @@
       S.screenData._caurisGained = caurisGained;
       S.screenData._goodsGained = goodsGained;
 
-      opts[idx].classList.add("correct");
-      for (var j = 0; j < opts.length; j++) if (j !== idx) opts[j].classList.add("locked");
+      selectedEl.classList.add("correct");
+      for (var j = 0; j < opts.length; j++) if (opts[j] !== selectedEl) opts[j].classList.add("locked");
       sfx("correct");
       spawnConfetti();
 
@@ -2808,7 +2831,7 @@
         goTo("result", { enigma: eid, points: pts });
       }, 1800);
     } else {
-      opts[idx].classList.add("wrong");
+      selectedEl.classList.add("wrong");
       sfx("wrong");
       var fb2 = document.getElementById("fb");
       if (fb2) fb2.innerHTML = '<div class="feedback wrong">✗ Não é esta. Tenta de novo!</div>';
@@ -2832,7 +2855,7 @@
       submitToTournamentIfApplicable(eid, idx, attempts, S.hintsUsed[eid] || 0, Date.now() - enigmaStartTime, false);
       save();
       setTimeout(function () {
-        opts[idx].classList.remove("wrong", "selected");
+        selectedEl.classList.remove("wrong", "selected");
         enigmaLocked = false;
         // Atualiza rodapé dinâmico (histórico de erros, botão pular, contador)
         updateEnigmaDynamic(eid);
