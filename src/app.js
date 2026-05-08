@@ -367,6 +367,38 @@
     showToast("Aa", "Texto 100%", "Tamanho padrão restaurado.");
   }
 
+  /* ---------------- I18N HELPERS ---------------- */
+  function t(key) {
+    return window.SankofaI18n ? window.SankofaI18n.t(key) : key;
+  }
+  function langDisplayName(code) {
+    if (code === "en") return "English";
+    if (code === "es") return "Español";
+    return "Português (Brasil)";
+  }
+  function langShortCode(code) {
+    if (code === "en") return "EN";
+    if (code === "es") return "ES";
+    return "PT";
+  }
+  function updateLangLabels() {
+    if (!window.SankofaI18n) return;
+    var code = window.SankofaI18n.getLang();
+    var langState = document.getElementById("lang-state");
+    if (langState) langState.textContent = langShortCode(code);
+    var langLabel = document.getElementById("lang-label");
+    if (langLabel) langLabel.textContent = t("menu.lang");
+    var soundLabel = document.getElementById("sound-label");
+    if (soundLabel) soundLabel.textContent = t("menu.sound");
+    var hp = document.getElementById("help-privacy-label");
+    if (hp) hp.textContent = t("menu.help_privacy");
+    // Atualizar também nomes em ambient/theme/zoom mesmos
+    var rows = document.querySelectorAll(".menu-drawer .menu-row .menu-row-text");
+    if (rows.length) {
+      // Por ID seria mais robusto; aqui só os principais já cobertos via labels acima.
+    }
+  }
+
   /* ---------------- INSTALL PROMPT (PWA) ---------------- */
   var INSTALL_DISMISS_KEY = "sankofa_install_dismissed_v1";
   var INSTALL_DONE_KEY = "sankofa_install_done_v1";
@@ -674,38 +706,38 @@
     var ctaBlock = "";
     if (hp) {
       var resume = nextResume();
-      var t = getTitle();
-      var greeting = '<p class="resume-greeting">Bem-vindo de volta, <strong>' + t.short + ' ' + S.name + '</strong>.</p>' +
-        '<p class="resume-title-line">' + t.icon + ' ' + t.title + ' · ◉ ' + (S.cauris || 0) + ' cauris</p>';
+      var ti = getTitle();
+      var greeting = '<p class="resume-greeting">' + t("landing.welcome_back") + ', <strong>' + ti.short + ' ' + S.name + '</strong>.</p>' +
+        '<p class="resume-title-line">' + ti.icon + ' ' + ti.title + ' · ◉ ' + (S.cauris || 0) + ' cauris</p>';
       if (resume) {
         var w = getWorld(resume.world);
         ctaBlock =
           greeting +
-          '<button class="btn btn-gold cta" data-act="resume">Continuar Jornada</button>' +
-          '<p class="resume-hint">Próximo: <strong>' + resume.enigma.title + '</strong> · Mundo ' + resume.world + (w ? " — " + w.name : "") + '</p>' +
-          '<button class="btn btn-outline cta" data-act="go-map">Mapa de Mundos</button>';
+          '<button class="btn btn-gold cta" data-act="resume">' + t("landing.resume") + '</button>' +
+          '<p class="resume-hint">→ <strong>' + resume.enigma.title + '</strong> · Mundo ' + resume.world + (w ? " — " + w.name : "") + '</p>' +
+          '<button class="btn btn-outline cta" data-act="go-map">' + t("landing.map") + '</button>';
       } else {
         ctaBlock =
           greeting +
-          '<button class="btn btn-gold cta" data-act="go-map">Mapa de Mundos</button>' +
+          '<button class="btn btn-gold cta" data-act="go-map">' + t("landing.map") + '</button>' +
           '<p class="resume-hint">Recolheste todos os fragmentos disponíveis.</p>';
       }
-      ctaBlock += '<button class="btn btn-ghost cta btn-sm" data-act="reset" style="font-size:.78rem;color:var(--text-muted);margin-top:4px">Recomeçar do Zero</button>';
+      ctaBlock += '<button class="btn btn-ghost cta btn-sm" data-act="reset" style="font-size:.78rem;color:var(--text-muted);margin-top:4px">' + t("landing.reset") + '</button>';
     } else {
-      ctaBlock = '<button class="btn btn-gold cta" data-act="start">Começar a Jornada</button>';
+      ctaBlock = '<button class="btn btn-gold cta" data-act="start">' + t("landing.start") + '</button>';
     }
     return '<div class="landing">' +
       '<img class="bird logo-img" src="assets/logo.png" alt="Símbolo Sankofa" />' +
-      '<h1>SANKOFA</h1>' +
-      '<p class="subtitle">Fragmentos da África</p>' +
-      '<p class="tagline">"Volte e busque. Não é errado voltar pelo que esqueceste."</p>' +
+      '<h1>' + t("landing.title") + '</h1>' +
+      '<p class="subtitle">' + t("landing.subtitle") + '</p>' +
+      '<p class="tagline">' + t("landing.tagline") + '</p>' +
       ctaBlock +
-      '<p style="font-size:.72rem;color:var(--text-muted);margin-top:4px;opacity:0;animation:fadeUp .6s ease 1.4s forwards">Baseado na História Geral da África — UNESCO</p>' +
+      '<p style="font-size:.72rem;color:var(--text-muted);margin-top:4px;opacity:0;animation:fadeUp .6s ease 1.4s forwards">' + t("landing.based_on") + '</p>' +
       '<div class="landing-contrib">' +
-        '<p>Sankofa está em construção. Tua palavra ajuda.</p>' +
+        '<p>' + t("landing.contrib_intro") + '</p>' +
         '<div class="landing-contrib-actions">' +
-          '<button class="btn btn-ghost btn-sm" data-act="go-feedback">💬 Feedback</button>' +
-          '<button class="btn btn-ghost btn-sm" data-act="go-contribute">🤝 Contribuir</button>' +
+          '<button class="btn btn-ghost btn-sm" data-act="go-feedback">' + t("landing.contrib_feedback") + '</button>' +
+          '<button class="btn btn-ghost btn-sm" data-act="go-contribute">' + t("landing.contrib_help") + '</button>' +
         '</div>' +
       '</div>' +
       '<p class="version-stamp">v' + (window.SANKOFA_VERSION || "0.0.0") + (window.SANKOFA_BUILD_DATE ? " · " + window.SANKOFA_BUILD_DATE : "") + '</p>' +
@@ -1743,6 +1775,10 @@
     html += '<li>Lei 10.639/03 e 11.645/08 (Brasil) — História e Cultura Afro-Brasileira e Indígena.</li>';
     html += '<li>ODS 4 (Educação de Qualidade) e ODS 10 (Redução das Desigualdades).</li>';
     html += '</ul>';
+
+    html += '<h3>' + t("about.translations") + '</h3>';
+    html += '<p>' + t("about.translations_status") + '</p>';
+    html += '<p style="font-size:.84rem;color:var(--text-dim)">Trocar idioma: menu ☰ → Idioma. Nesta versão a tradução EN/ES está em <strong>fase inicial</strong> (landing + menus principais). Tradução completa de UI + 71 enigmas em curso. FR planejado para Fase 2 (Q3 2026).</p>';
 
     html += '<h3>Stack</h3>';
     html += '<p>Vanilla JS, Web Audio API, PWA Service Worker. Sem framework, sem build step. Backend opt-in via Supabase (RLS + Edge Functions). Hospedado no Vercel.</p>';
@@ -2886,6 +2922,20 @@
         closeMenuDrawer();
         goTo("info-hub");
       });
+    }
+
+    // Language toggle — cycle PT-BR → EN → ES → PT-BR
+    var langBtn = document.getElementById("lang-toggle");
+    if (langBtn && window.SankofaI18n) {
+      langBtn.addEventListener("click", function () {
+        var next = window.SankofaI18n.cycle();
+        sfx("click");
+        updateLangLabels();
+        showToast("🌐", langDisplayName(next), window.SankofaI18n.t("about.translations_status"));
+        // Re-render para aplicar traduções novas
+        render();
+      });
+      updateLangLabels();
     }
     // Click fora fecha
     document.addEventListener("click", function (ev) {
