@@ -23,7 +23,7 @@ Sou **Filipe Buba**, egresso do curso de Ciências Humanas e Sociais da UNILAB. 
 
 O projeto chama-se **Sankofa — Fragmentos da África**: jogo digital educativo de enigmas baseado nos 8 volumes da *História Geral da África* da UNESCO. Está em conformidade com a Lei 10.639/03, é open source, funciona offline, e atualmente cobre os Volumes I e II com 23 enigmas validados, 9 Casas Reais Africanas e motor de áudio sintetizado de instrumentos africanos.
 
-URL pública: **https://sankofa-eosin.vercel.app**
+URL pública: **https://www.sankofahga.com**
 Repositório: **https://github.com/filipebuba/sankofa**
 
 Estou submetendo o projeto ao **Edital nº 04/2026/SMC/ALDIRBLANC/CICLO2 — Formação e Internacionalização** da Secretaria Municipal de Cultura de São Paulo, com proposta de:
@@ -124,7 +124,7 @@ Cordiais saudações.
 
 Sou Filipe Buba, egresso da UNILAB e desenvolvedor do projeto **Sankofa — Fragmentos da África**, jogo digital educativo construído a partir dos 8 volumes da *História Geral da África* (UNESCO, 1964–1999).
 
-O projeto está em fase pública (https://sankofa-eosin.vercel.app), licenciado MIT (código) e CC BY-SA 4.0 (conteúdo), em pleno alinhamento com a **Década Internacional dos Afrodescendentes 2025–2034** declarada pelas Nações Unidas e UNESCO. Atualmente cobre os Volumes I e II, com 23 enigmas validados, em português brasileiro, com interface acessível (WCAG AA) e funcionando offline (PWA).
+O projeto está em fase pública (https://www.sankofahga.com), licenciado MIT (código) e CC BY-SA 4.0 (conteúdo), em pleno alinhamento com a **Década Internacional dos Afrodescendentes 2025–2034** declarada pelas Nações Unidas e UNESCO. Atualmente cobre os Volumes I e II, com 23 enigmas validados, em português brasileiro, com interface acessível (WCAG AA) e funcionando offline (PWA).
 
 Estou submetendo o Sankofa ao **Edital nº 04/2026/SMC/ALDIRBLANC/CICLO2** da Secretaria Municipal de Cultura de São Paulo, na linha de Formação e Internacionalização. A proposta inclui, entre outras ações:
 
@@ -221,7 +221,7 @@ Olá [Coordenador(a) Pedagógico(a) / Diretor(a)],
 
 Sou Filipe Buba, criador do Sankofa, jogo digital educativo de enigmas baseado nos 8 volumes da *História Geral da África* da UNESCO. Cumpre Lei 10.639/03 e funciona em qualquer celular, sem instalação.
 
-URL: **https://sankofa-eosin.vercel.app**
+URL: **https://www.sankofahga.com**
 
 Estou submetendo o projeto ao Edital nº 04/2026 da SMC-SP (PNAB Aldir Blanc, linha Formação e Internacionalização). Para fortalecer a candidatura, gostaria de duas coisas:
 
@@ -291,7 +291,7 @@ ________________________________________
 
 Olá pessoal de [Ponto de Cultura]!
 
-Sou Filipe, criador do Sankofa — jogo digital sobre História Geral da África. URL: https://sankofa-eosin.vercel.app
+Sou Filipe, criador do Sankofa — jogo digital sobre História Geral da África. URL: https://www.sankofahga.com
 
 Estou submetendo ao Edital 04 da SMC (PNAB SP). A proposta inclui **8 oficinas presenciais em SP**, e adoraria que pelo menos 2 fossem no [Ponto de Cultura], se houver interesse.
 
@@ -355,7 +355,7 @@ Prezado(a) Professor(a) [Nome] / Coordenação do [Departamento/Centro],
 
 Sou Filipe Buba, egresso da UNILAB e desenvolvedor do projeto Sankofa, jogo digital baseado na *História Geral da África* da UNESCO (8 volumes). Está em fase pública, com 23 enigmas validados via fontes da HGA, e a candidatar-se ao Edital 04/2026 da SMC-SP.
 
-URL: https://sankofa-eosin.vercel.app
+URL: https://www.sankofahga.com
 
 Pediria duas coisas:
 
@@ -441,6 +441,6 @@ Se já conheces alguém na lista (professor pessoal, ex-colega, contato direto),
 >
 > Lembra do meu projeto Sankofa? Está concorrendo a um edital de R$ 1M da Prefeitura de SP. Preciso de **uma carta de apoio breve** — anexo o modelo, é só ajustar e assinar. Recebo até 22/05?
 >
-> Link do projeto: https://sankofa-eosin.vercel.app
+> Link do projeto: https://www.sankofahga.com
 >
 > Me ajuda nessa? 🙏

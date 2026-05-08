@@ -58,11 +58,40 @@ Sem config = liga global e torneio escondidos automaticamente; o jogo continua 1
 
 Domingo 00:00 UTC. `week_start` recalculado a cada submit.
 
+## Handle (PK) — anti-colisão
+
+A PK da tabela é `handle TEXT`. Dois jogadores com o mesmo nome (ex: duas
+"Maria"s em turmas diferentes) colidiriam. Para evitar isso sem mudar o
+schema:
+
+```js
+// src/app.js — leagueHandleFor()
+handle = name.slice(0, 20) + "·" + profileUid.slice(0, 6);
+// Exemplo: "Maria·m4f8gp"
+```
+
+O sufixo é **estável por dispositivo/perfil**. Re-submits do mesmo
+jogador continuam fazendo upsert na mesma linha. Outro jogador com o
+mesmo nome num dispositivo diferente recebe sufixo distinto e ocupa
+linha própria.
+
+Na UI, o helper `displayHandle(h)` recorta tudo após o último `·` para
+o leaderboard mostrar apenas "Maria".
+
+**Limitação conhecida**: trocar o nome via "✏️ Editar perfil" cria uma
+nova linha (PK diferente) e deixa a anterior órfã na semana corrente.
+Como a UI filtra por `week_start=eq.<semana atual>`, a órfã deixa de
+aparecer no domingo seguinte sem intervenção. Para fixar definitivamente
+seria preciso migrar para `handle = uid6` puro + coluna `nick` separada
+para exibição — schema change diferida.
+
 ## Privacy
 
-- Apenas `handle` (nome do jogador truncado a 20 chars), `cauris`, `title`, `house`.
+- Apenas `handle` (nome + sufixo de 6 chars do uid local), `cauris`, `title`, `house`, `tag`.
+- Sufixo é derivado do `profile_uid` local (UUID gerado por `Date.now().toString(36)`), não tem PII.
 - Sem email, sem foto, sem IP no schema.
 - Player pode desativar via "Recomeçar do Zero" (limpa state, opt-out implícito).
+- Edição de perfil ("✏️ Editar perfil" no Perfil) re-submit ao mesmo handle (upsert), não cria entrada órfã.
 
 ## Liga local (sempre disponível)
 

@@ -541,11 +541,11 @@ A história ainda não terminou
 ### Cross-funnel obrigatório
 
 Cada música tem na **descrição do Spotify**:
-> "Esta é a faixa do Mundo 3 do jogo Sankofa. Insira o código `MANSAMUSA50` no jogo (sankofa-eosin.vercel.app) para ganhar 50 cauris."
+> "Esta é a faixa do Mundo 3 do jogo Sankofa. Insira o código `MANSAMUSA50` no jogo (www.sankofahga.com) para ganhar 50 cauris."
 
 Cada **clipe musical** termina com:
 - 5 segundos de silêncio
-- "Próximo passo: joga o Mundo 3 em sankofa-eosin.vercel.app"
+- "Próximo passo: joga o Mundo 3 em www.sankofahga.com"
 
 ### Capa de cada música
 

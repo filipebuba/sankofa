@@ -173,7 +173,8 @@
     // ACTIONS
     var actions = el("div", { class: "sk-row sk-actions" });
     var btnCancel = el("button", { type: "button", class: "btn btn-ghost" }, "Cancelar");
-    var btnOK     = el("button", { type: "button", class: "btn btn-gold" }, "Começar a contar a história");
+    var okLabel = opts.mode === "edit" ? "Salvar alterações" : "Começar a contar a história";
+    var btnOK     = el("button", { type: "button", class: "btn btn-gold" }, okLabel);
     actions.appendChild(btnCancel);
     actions.appendChild(btnOK);
     modal.appendChild(actions);

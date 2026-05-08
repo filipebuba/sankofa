@@ -455,7 +455,7 @@ SANKOFA! SANKOFA! SANKOFA!
 - ✅ Pode gravar performance e postar (com créditos)
 - ✅ Pode adaptar/remixar (mantendo CC BY-SA)
 - ❌ Não pode vender CD/digital sem comunicar autor
-- 📝 Crédito mínimo: "Sankofa — sankofa-eosin.vercel.app"
+- 📝 Crédito mínimo: "Sankofa — www.sankofahga.com"
 
 ### Contato para escolas
 

@@ -116,7 +116,7 @@ function shareChallenge(profile) {
   const txt = encodeURIComponent(
     `Sou ${profile.title} ${profile.name}, da Casa ${profile.house}, com ${profile.cauris}🐚 cauris e ${profile.fragments}/71 fragmentos.\n\n` +
     `Te desafio em Sankofa — Fragmentos da África:\n` +
-    `https://sankofa-eosin.vercel.app/?ref=${profile.id}`
+    `https://www.sankofahga.com/?ref=${profile.id}`
   );
   window.open(`https://wa.me/?text=${txt}`, "_blank");
 }
@@ -655,7 +655,7 @@ Backend (Supabase):
 Hospedagem:
   - Vercel (PWA estática)
   - Supabase (backend)
-  - Domínio: sankofa-eosin.vercel.app (custom domain quando adquirir)
+  - Domínio: www.sankofahga.com (custom domain quando adquirir)
 
 Distribuição:
   - PWA instalável (já existe, fix v1.1.1)

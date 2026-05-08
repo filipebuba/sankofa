@@ -293,7 +293,7 @@ Quizlet (spaced repetition no Daily — Fase futura).
 
 #### Infraestrutura
 
-- Deploy Vercel (`https://sankofa-eosin.vercel.app`)
+- Deploy Vercel (`https://www.sankofahga.com`)
 - `vercel.json` com cache + headers de segurança + clean URLs
 - Service Worker `sw.js` v1.0.1
 - 3 skills `.claude/skills/`: add-enigma, add-world, tune-audio

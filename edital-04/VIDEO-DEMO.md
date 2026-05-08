@@ -150,7 +150,7 @@
 **Visual**: Logo Sankofa volta. URL grande na tela. Selo da SMC (se permitido na arte) ao lado.
 
 **Texto na tela**:
-> **sankofa-eosin.vercel.app**
+> **www.sankofahga.com**
 >
 > *Sankofa. Volte e busque.*
 >

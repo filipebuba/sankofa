@@ -885,6 +885,10 @@
     html += '<button class="btn btn-outline btn-block" data-act="go-review" style="margin-top:8px">📓 Caderno de Revisão' + (prCount > 0 ? ' (' + prCount + ')' : (saeCount > 0 ? ' (' + saeCount + ' superados)' : '')) + '</button>';
     html += '<button class="btn btn-outline btn-block" data-act="go-profiles" style="margin-top:8px">Liga Local (perfis)</button>';
 
+    // Editar perfil (nome, idade, casa, tag de grupo)
+    var tagLabel = S.tag ? S.tag : "sem grupo";
+    html += '<button class="btn btn-outline btn-block" data-act="edit-profile" style="margin-top:8px">✏️ Editar perfil <small style="color:var(--text-muted);font-weight:400">(' + escapeAttr(tagLabel) + ')</small></button>';
+
     // Compartilhar (WhatsApp + link)
     html += '<div class="share-row" style="margin-top:14px">';
     html += '<button class="btn btn-gold btn-block" data-act="share-wa">📲 Desafiar no WhatsApp</button>';
@@ -972,7 +976,7 @@
     var fetchedAt  = LEAGUE.cache && LEAGUE.cache.fetchedAt ? new Date(LEAGUE.cache.fetchedAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
 
     html += '<div class="league-me-card">';
-    html += '<div><div class="league-me-label">Tua campanha</div><div class="league-me-name">' + escapeAttr(S.leagueHandle || S.name || "Viajante") + '</div></div>';
+    html += '<div><div class="league-me-label">Tua campanha</div><div class="league-me-name">' + escapeAttr(displayHandle(S.leagueHandle) || S.name || "Viajante") + '</div></div>';
     html += '<div class="league-me-score">◉ ' + myScore + '</div>';
     html += '<div class="league-me-meta">';
     html += '<span>' + (myRank > 0 ? "#" + myRank + " no global" : "aguardando ranking") + '</span>';
@@ -980,7 +984,7 @@
     html += '</div>';
     if (leader && leader.handle !== S.leagueHandle) {
       html += '<div class="league-progress"><div class="league-progress-fill" style="width:' + Math.min(100, Math.round((myScore / Math.max(leader.cauris || 1, 1)) * 100)) + '%"></div></div>';
-      html += '<div class="league-tip">Faltam ' + leaderGap + ' cauris para alcançar ' + escapeAttr(leader.handle) + '.</div>';
+      html += '<div class="league-tip">Faltam ' + leaderGap + ' cauris para alcançar ' + escapeAttr(displayHandle(leader.handle)) + '.</div>';
     } else if (leader && leader.handle === S.leagueHandle) {
       html += '<div class="league-tip good">Você lidera a semana. Mantém o ritmo.</div>';
     } else {
@@ -1019,7 +1023,7 @@
         var medal = pi === 0 ? "♛" : (pi === 1 ? "◆" : "◈");
         html += '<div class="podium-card p' + (pi + 1) + '">';
         html += '<div class="podium-medal">' + medal + '</div>';
-        html += '<div class="podium-name">' + escapeAttr(pr.handle) + '</div>';
+        html += '<div class="podium-name">' + escapeAttr(displayHandle(pr.handle)) + '</div>';
         html += '<div class="podium-score">◉ ' + (pr.cauris | 0) + '</div>';
         html += '</div>';
       }
@@ -1041,7 +1045,7 @@
         var medalIcon = i === 0 ? "♛" : (i === 1 ? "◆" : (i === 2 ? "◈" : "#" + (i + 1)));
         html += '<div class="lb-row' + (isMe ? " me" : "") + '">' +
           '<span class="lb-rank">' + medalIcon + '</span>' +
-          '<span class="lb-name">' + escapeAttr(r.handle) + (isMe ? " <em>(você)</em>" : "") + tagBadge + '<small>' + escapeAttr((r.title || rowTier.name || "Griô")) + '</small></span>' +
+          '<span class="lb-name">' + escapeAttr(displayHandle(r.handle)) + (isMe ? " <em>(você)</em>" : "") + tagBadge + '<small>' + escapeAttr((r.title || rowTier.name || "Griô")) + '</small></span>' +
           '<span class="lb-house">' + escapeAttr(r.house || "—") + '</span>' +
           '<span class="lb-cauris">◉ ' + (r.cauris | 0) + '</span>' +
           '</div>';
@@ -1438,6 +1442,7 @@
       } break;
       case "switch-profile": handleSwitchProfile(el.getAttribute("data-p")); break;
       case "new-profile": handleNewProfile(); break;
+      case "edit-profile": handleEditProfile(); break;
       case "share-wa": handleShareWhatsApp(); break;
       case "share-link": handleShareLink(); break;
       case "tts-toggle": handleTTSToggle(); break;
@@ -1510,6 +1515,25 @@
       solved: S.solved || [],
       tag: S.tag || ""
     };
+  }
+
+  // Liga Global: o `handle` é PK na tabela `league_scores`.
+  // Para evitar colisão entre dois jogadores com o mesmo nome (ex: "Maria"
+  // em duas turmas), suffixamos com 6 chars do profile_uid local.
+  // O sufixo é estável por dispositivo/perfil — re-submits do mesmo jogador
+  // continuam fazendo upsert na mesma linha.
+  function leagueHandleFor(name) {
+    var raw = (name || "Viajante").toString().trim().slice(0, 20);
+    var uid = (PROFILES && PROFILES.activeId()) || "default";
+    var uid6 = uid.replace(/^p/, "").slice(0, 6) || "anon00";
+    return raw + "·" + uid6;
+  }
+
+  // Para exibição: tira o sufixo `·xxxxxx` que serve só de tie-breaker.
+  function displayHandle(h) {
+    if (!h) return "";
+    var ix = String(h).lastIndexOf("·");
+    return ix > 0 ? String(h).slice(0, ix) : String(h);
   }
 
   function handleShareWhatsApp() {
@@ -1585,7 +1609,7 @@
 
   function handleLeagueOptIn() {
     if (!LEAGUE || !LEAGUE.enabled) return;
-    var handle = (S.name || "Viajante").trim().slice(0, 20);
+    var handle = leagueHandleFor(S.name);
     S.leagueOptIn = true;
     S.leagueHandle = handle;
     save();
@@ -1628,6 +1652,70 @@
       PROFILES.create(name.trim().slice(0, 20));
       location.reload();
     }
+  }
+
+  function handleEditProfile() {
+    if (!window.SankofaProfileModal) {
+      // Fallback: prompt simples só para tag, melhor que nada.
+      var t = prompt("Nova tag de grupo (ex: #Turma7A). Vazio remove.", S.tag || "");
+      if (t == null) return;
+      S.tag = (PROFILES && PROFILES.normalizeTag) ? PROFILES.normalizeTag(t) : t.trim();
+      save();
+      resubmitToLeagueIfOptedIn();
+      showToast("✏️", "Perfil atualizado", S.tag ? ("Grupo: " + S.tag) : "Sem grupo.");
+      render();
+      return;
+    }
+    var houseId = (S.house && S.house.id) || "";
+    window.SankofaProfileModal.open({
+      mode: "edit",
+      defaults: {
+        name: S.name || "",
+        ageBand: S.ageBand || "",
+        tag: S.tag || "",
+        house: houseId,
+        consent: !!S.consent
+      },
+      onSubmit: function (data) {
+        var prevTag = S.tag || "";
+        S.name = data.name;
+        S.hgaName = data.hgaName || S.hgaName;
+        S.ageBand = data.ageBand;
+        S.tag = (PROFILES && PROFILES.normalizeTag) ? PROFILES.normalizeTag(data.tag) : (data.tag || "");
+        if (data.house && (!S.house || S.house.id !== data.house)) {
+          var picked = null;
+          for (var i = 0; i < HOUSES.length; i++) if (HOUSES[i].id === data.house) { picked = HOUSES[i]; break; }
+          if (picked) S.house = { id: picked.id, worldId: picked.worldId, chosenAt: new Date().toISOString() };
+        }
+        S.consent = true;
+        save();
+        sfx("achievement");
+        resubmitToLeagueIfOptedIn();
+        var tagMsg = S.tag !== prevTag ? (S.tag ? ("Grupo: " + S.tag) : "Grupo removido.") : "Mudanças salvas.";
+        showToast("✏️", "Perfil atualizado", tagMsg);
+        render();
+      }
+    });
+  }
+
+  function resubmitToLeagueIfOptedIn() {
+    if (!S.leagueOptIn || !LEAGUE || !LEAGUE.enabled) return;
+    var newHandle = leagueHandleFor(S.name);
+    S.leagueHandle = newHandle;
+    save();
+    var t = getTitle();
+    var house = ROYALTY ? ROYALTY.getHouse(S) : null;
+    LEAGUE.submit({
+      handle: newHandle, cauris: S.cauris || 0,
+      title: t.short, house: house ? house.id : "",
+      tag: S.tag || ""
+    }).then(function () {
+      LEAGUE.refresh().then(function () {
+        if (S.tag && LEAGUE.hasTagColumn && LEAGUE.hasTagColumn()) return LEAGUE.refreshGroup(S.tag);
+      }).then(function () {
+        if (S.screen === "league") render();
+      });
+    });
   }
 
   function handleResume() {

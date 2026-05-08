@@ -22,7 +22,7 @@
   mapa traz banner "Continuar onde paraste"; cada mundo tem CTA *Continuar/Começar*;
   tela de resultado avança automaticamente para o próximo enigma sem voltar à lista.
 
-## Fase 1.1 — Conteúdo completo ✅ (v1.1.0 → v1.3.6-dev)
+## Fase 1.1 — Conteúdo completo ✅ (v1.1.0 → v1.3.7-dev)
 
 - **71 enigmas** validados (Mundo 1 = 15, Mundos 2–8 = 8 cada), cobrindo Vols. I–VIII.
 - 71 fragmentos visuais (24 com PNG, restantes em CSS gradient).
@@ -51,7 +51,7 @@
 - **Compartilhamento social**: WhatsApp deeplink + Web Share API + clipboard.
 - **Liga Local multi-perfil** com abas `Todos | #MinhaTag`.
 - **Liga Global Supabase opt-in**: schema `league_scores` (com coluna `tag` + índice parcial), tiers semanais, reset domingo 00:00 UTC.
-- Hospedagem: Vercel (`https://sankofa-eosin.vercel.app`) + Supabase prod.
+- Hospedagem: Vercel (`https://www.sankofahga.com`) + Supabase prod.
 
 ## Fase 1.5 — Torneio Semanal Assíncrono ✅ (branch `dev`)
 
@@ -101,8 +101,9 @@ Plano detalhado em `docs/MULTIPLAYER-SOCIAL.md` §6.
 
 ## Bugs/dívidas conhecidas
 
-- `package.json` versão (`1.3.0-dev`) divergente de `data/version.js` (`1.3.6-dev`); script `bump-version.sh` só atualiza o segundo.
+- `scripts/bump-version.sh` só atualiza `data/version.js` e `sw.js` — `package.json` precisa ser sincronizado manualmente.
 - Achievements `explorer` (☀) e `collector` (◆) têm a mesma condição (`solved.w1 ≥ 15`) — disparam juntos.
 - Casa Kush tem `freeHint:true` declarado mas `royalty.applyHousePerk` não consome.
 - Quests por casa (27 IDs) sem código consumidor.
 - Súditos `gift.cauris/daily/weekly/perkId` não distribuídos automaticamente.
+- Liga Global: editar nome do perfil cria linha órfã na semana corrente (resolve no domingo). Fix definitivo exige `handle = uid6` + coluna `nick`.
