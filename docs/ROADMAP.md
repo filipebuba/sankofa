@@ -85,7 +85,8 @@ Plano detalhado em `docs/MULTIPLAYER-SOCIAL.md` §6.
 
 - Tradução EN / FR / ES.
 - Paleta sonora regional por mundo (kora no Sahel, ney no Nilo, etc.).
-- Separar dados em JSON puro para abrir contribuição externa.
+- Separar dados em JSON puro para abrir contribuição externa (planejado para
+  depois do 1º piloto pedagógico — ver `CONTRIBUTING.md`).
 - Distribuir gifts recorrentes dos súditos (`SUDITOS[i].gift` hoje só display).
 - Implementar quests por casa (`HOUSES[i].questIds` hoje data-only).
 - Painel do Professor web (`/professor`).

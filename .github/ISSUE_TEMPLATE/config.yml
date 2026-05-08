@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Reportar bug, sugerir melhoria ou novo enigma
+    url: https://www.sankofahga.com
+    about: "Use o formulário em-app: menu ☰ → Ajuda & Privacidade → Feedback. Permite contato anônimo, anexa versão e contexto automaticamente, e chega direto ao mantenedor."
+  - name: Validar conteúdo histórico HGA (académicos)
+    url: mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20valida%C3%A7%C3%A3o%20de%20conte%C3%BAdo%20HGA
+    about: "Para historiadores, professores e educadores afrocentrados que queiram revisar enigmas. Crédito como revisor(a) acadêmico no produto."
+  - name: Levar Sankofa à minha escola
+    url: mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20piloto%20em%20escola
+    about: "Pilotos gratuitos de 90 dias para escolas públicas e privadas."
+  - name: Patrocínio / parceria institucional
+    url: mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20patroc%C3%ADnio%20institucional
+    about: "Empresas, ONGs, secretarias com interesse em ESG / D&I."
+  - name: Tradução para EN / FR / ES
+    url: mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20tradu%C3%A7%C3%A3o
+    about: "PALOPs francófonos, diáspora EUA, América Latina."

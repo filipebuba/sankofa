@@ -1845,17 +1845,24 @@
     html += '<h2>🤝 Como contribuir com Sankofa</h2>';
     html += '<p>Sankofa é open source, gratuito e sustentado por entusiasmo. <strong>Cada gesto ajuda.</strong> Escolhe o que cabe em ti hoje:</p>';
 
+    html += '<div style="background:var(--surface2);border:1px solid var(--surface3);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:.86rem;color:var(--text-dim)">';
+    html += '<strong style="color:var(--gold)">Sobre o código-fonte</strong><br>';
+    html += 'O repositório é público (transparência total: qualquer pessoa pode ler, auditar, baixar). ';
+    html += 'Mas Sankofa está em fase de <strong>estabilização inicial</strong>: contribuições externas (Pull Requests, forks colaborativos) <strong>ainda não estão sendo aceitas</strong>. ';
+    html += 'Quando a base estiver madura, abriremos o processo. Por enquanto: <strong>feedback estruturado</strong> é o canal certo.';
+    html += '</div>';
+
+    html += '<h3>💬 Mandar feedback</h3>';
+    html += '<p>O canal principal para sugestões, bugs, ideias de enigmas, críticas. Lido pessoalmente, todo o feedback molda a próxima versão.</p>';
+    html += '<button class="btn btn-gold btn-block" data-act="go-feedback" style="margin-top:6px">💬 Abrir formulário</button>';
+
     html += '<h3>📲 Compartilhar</h3>';
     html += '<p>Manda para uma professora, um aluno, um amigo. O melhor marketing é boca-a-boca.</p>';
-    html += '<button class="btn btn-gold btn-block" data-act="share-wa" style="margin-top:6px">📲 Partilhar no WhatsApp</button>';
+    html += '<button class="btn btn-outline btn-block" data-act="share-wa" style="margin-top:6px">📲 Partilhar no WhatsApp</button>';
 
-    html += '<h3>⭐ Estrela no GitHub</h3>';
-    html += '<p>Stars ajudam o projeto a aparecer em buscas e a ser indicado para programas. Leva 3 segundos.</p>';
-    html += '<a class="btn btn-outline btn-block" href="https://github.com/filipebuba/sankofa" target="_blank" rel="noopener" style="margin-top:6px">🐙 Abrir repositório</a>';
-
-    html += '<h3>🐛 Reportar problema ou sugerir</h3>';
-    html += '<p>Encontraste um bug? Tens ideia para um enigma novo, uma melhoria, uma crítica? Manda no formulário rápido — anônimo se quiseres.</p>';
-    html += '<button class="btn btn-outline btn-block" data-act="go-feedback" style="margin-top:6px">💬 Abrir formulário</button>';
+    html += '<h3>👀 Acompanhar o desenvolvimento</h3>';
+    html += '<p>Ver o código, o histórico, as licenças, ou apenas seguir a evolução do projeto.</p>';
+    html += '<a class="btn btn-outline btn-block" href="https://github.com/filipebuba/sankofa" target="_blank" rel="noopener" style="margin-top:6px">🐙 Ver repositório (somente leitura)</a>';
 
     html += '<h3>📚 Validar conteúdo histórico</h3>';
     html += '<p>És professor(a), historiador(a), educador(a) afrocentrado(a)? <strong>Lê 5 enigmas e diz onde melhorar.</strong> Crédito como revisor(a) acadêmico no produto + carta formal de colaboração.</p>';
