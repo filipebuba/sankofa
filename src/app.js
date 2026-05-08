@@ -652,6 +652,12 @@
       case "tournament": app.innerHTML = rTournament(); break;
       case "review": app.innerHTML = rReview(); break;
       case "karma-gate": app.innerHTML = rKarmaGate(); break;
+      case "info-hub": app.innerHTML = rInfoHub(); break;
+      case "help": app.innerHTML = rHelp(); break;
+      case "privacy": app.innerHTML = rPrivacy(); break;
+      case "terms": app.innerHTML = rTerms(); break;
+      case "about": app.innerHTML = rAbout(); break;
+      case "accessibility": app.innerHTML = rAccessibility(); break;
       default: app.innerHTML = rLanding();
     }
     attachEvents();
@@ -1107,7 +1113,13 @@
     html += '</div>';
 
     html += '<button class="btn btn-ghost btn-block" data-act="reset" style="margin-top:8px;font-size:.8rem;color:var(--text-muted)">Recomeçar do Zero</button>';
-    html += '<p class="version-stamp" style="text-align:center;margin-top:14px">Sankofa v' + (window.SANKOFA_VERSION || "?") + '</p>';
+    html += '<div style="text-align:center;margin-top:18px;font-size:.8rem;color:var(--text-muted);display:flex;justify-content:center;gap:14px;flex-wrap:wrap">';
+    html += '<button class="link-btn" data-act="go-help" style="background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;font:inherit">Ajuda</button>';
+    html += '<button class="link-btn" data-act="go-privacy" style="background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;font:inherit">Privacidade</button>';
+    html += '<button class="link-btn" data-act="go-terms" style="background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;font:inherit">Termos</button>';
+    html += '<button class="link-btn" data-act="go-about" style="background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;font:inherit">Sobre</button>';
+    html += '</div>';
+    html += '<p class="version-stamp" style="text-align:center;margin-top:8px">Sankofa v' + (window.SANKOFA_VERSION || "?") + '</p>';
     return html;
   }
 
@@ -1487,6 +1499,259 @@
     return html;
   }
 
+  /* ---------------- INFO PAGES ---------------- */
+  function infoBackBtn() {
+    return '<button class="btn btn-ghost btn-sm" data-act="go-info-hub" style="margin-bottom:14px">← Ajuda &amp; Privacidade</button>';
+  }
+
+  function rInfoHub() {
+    var v = window.SANKOFA_VERSION || "?";
+    var html = '<button class="btn btn-ghost btn-sm" data-act="go-map" style="margin-bottom:14px">← Mapa</button>';
+    html += '<h2 style="text-align:center;font-size:1.4rem">Ajuda &amp; Privacidade</h2>';
+    html += '<p style="text-align:center;color:var(--text-dim);font-size:.88rem;margin-bottom:6px">Tudo o que precisas saber sobre o Sankofa.</p>';
+    html += '<div class="info-hub-grid">';
+    html += hubCard("📖", "Como Jogar", "Regras, dicas, conquistas, atalhos.", "go-help");
+    html += hubCard("🛡️", "Política de Privacidade", "O que guardamos, onde, e como apagar.", "go-privacy");
+    html += hubCard("📜", "Termos de Uso", "Licenças, conduta, idade mínima.", "go-terms");
+    html += hubCard("♿", "Acessibilidade", "Tamanho de texto, voz, contraste, teclado.", "go-accessibility");
+    html += hubCard("🌍", "Sobre o Sankofa", "Origem, autor, fontes UNESCO.", "go-about");
+    html += '</div>';
+    html += '<p class="version-stamp" style="text-align:center;margin-top:18px;color:var(--text-muted);font-size:.78rem">Sankofa v' + v + ' · MIT (código) · CC BY-SA 4.0 (conteúdo)</p>';
+    return html;
+  }
+
+  function hubCard(icon, title, desc, act) {
+    return '<button class="info-hub-card" data-act="' + act + '" type="button">' +
+      '<span class="info-hub-card-icon" aria-hidden="true">' + icon + '</span>' +
+      '<span class="info-hub-card-text">' +
+        '<span class="info-hub-card-title">' + title + '</span>' +
+        '<span class="info-hub-card-desc">' + desc + '</span>' +
+      '</span></button>';
+  }
+
+  function rHelp() {
+    var html = infoBackBtn();
+    html += '<div class="info-page">';
+    html += '<h2>Como Jogar</h2>';
+    html += '<ol>';
+    html += '<li>Lê a frase poética e a pergunta do enigma.</li>';
+    html += '<li>Escolhe entre 4 opções (A, B, C, D). Pelo teclado: tecla <strong>A/B/C/D</strong>.</li>';
+    html += '<li>Se travar, pede até 3 dicas (cada uma custa 10 pts).</li>';
+    html += '<li>Acertaste? Recolhes um fragmento. Erraste? Vai para o <strong>Caderno de Revisão</strong> e podes voltar quando quiseres.</li>';
+    html += '</ol>';
+
+    html += '<h3>Pontos e cauris</h3>';
+    html += '<ul>';
+    html += '<li><strong>1ª tentativa:</strong> 100 pts + 5 cauris bônus.</li>';
+    html += '<li><strong>2ª tentativa:</strong> 50 pts. <strong>3ª+:</strong> 25 pts.</li>';
+    html += '<li>Acertar em <strong>menos de 10s</strong>: +5 cauris bônus.</li>';
+    html += '<li><strong>Sem usar dicas:</strong> +5 cauris bônus.</li>';
+    html += '<li><strong>Audiência Diária:</strong> +25 cauris.</li>';
+    html += '</ul>';
+
+    html += '<h3>Mestria de mundo</h3>';
+    html += '<ul>';
+    html += '<li>O próximo mundo abre quando resolves <strong>70%</strong> do anterior.</li>';
+    html += '<li><strong>100% completo:</strong> +100 cauris (Mestre do Mundo 👑).</li>';
+    html += '<li><strong>100% com 80%+ na 1ª tentativa:</strong> +250 cauris (Mestre Perfeito 🏛️).</li>';
+    html += '</ul>';
+
+    html += '<h3>Som e tema</h3>';
+    html += '<p>O motor sintetiza djembe, kalimba, balafon, talking drum e shaker via Web Audio. Ativa/desativa pelo menu (☰). O tema (papiro/escuro) também está lá.</p>';
+
+    html += '<h3>Acessibilidade</h3>';
+    html += '<ul>';
+    html += '<li><strong>Tamanho do texto:</strong> menu ☰ → A− / A+. Atalhos: <code>+</code> <code>−</code> <code>0</code>.</li>';
+    html += '<li><strong>Voz alta (TTS):</strong> liga em Perfil ou clica 🔊 ao lado da pergunta.</li>';
+    html += '<li><strong>Pinch-to-zoom</strong> mobile: dois dedos ampliam o ecrã.</li>';
+    html += '<li><strong>Tab</strong> navega botões. <strong>Esc</strong> fecha menu/diálogo.</li>';
+    html += '</ul>';
+
+    html += '<h3>Como instalar</h3>';
+    html += '<ul>';
+    html += '<li><strong>Android Chrome/Edge:</strong> banner de instalação aparece na 1ª visita, ou usa o botão <strong>⬇ Instalar</strong> no canto superior direito.</li>';
+    html += '<li><strong>iPhone/iPad (Safari):</strong> toca em <strong>Compartilhar</strong> → <strong>Adicionar à Tela de Início</strong>.</li>';
+    html += '</ul>';
+
+    html += '<p class="info-meta">Mais perguntas? Escreve para <a href="mailto:flifnhada@hotmail.com">flifnhada@hotmail.com</a>.</p>';
+    html += '</div>';
+    return html;
+  }
+
+  function rPrivacy() {
+    var html = infoBackBtn();
+    html += '<div class="info-page">';
+    html += '<h2>Política de Privacidade</h2>';
+    html += '<p><em>Última atualização: 8 de maio de 2026. Em conformidade com a Lei Geral de Proteção de Dados (LGPD, Lei 13.709/18) e o GDPR (UE).</em></p>';
+
+    html += '<h3>1. O que guardamos</h3>';
+    html += '<p>Sankofa é projetado para guardar o <strong>mínimo absoluto</strong> de dados:</p>';
+    html += '<ul>';
+    html += '<li><strong>Apelido</strong> (nome de griô, máximo 24 caracteres). Nunca pedimos nome real.</li>';
+    html += '<li><strong>Faixa etária</strong> (8-12, 13-17, 18+, ou "prefiro não dizer"). Nunca data de nascimento.</li>';
+    html += '<li><strong>Tag de grupo</strong> opcional (ex: <code>#Turma7A</code>) — só se digitares.</li>';
+    html += '<li><strong>Progresso do jogo</strong>: enigmas resolvidos, cauris, conquistas, casa real escolhida.</li>';
+    html += '</ul>';
+    html += '<p><strong>Nunca pedimos:</strong> e-mail, telefone, CPF, endereço, foto, geolocalização, contactos.</p>';
+
+    html += '<h3>2. Onde os dados ficam</h3>';
+    html += '<ul>';
+    html += '<li><strong>No teu dispositivo</strong> (<code>localStorage</code>): tudo, por padrão. Não sai daí.</li>';
+    html += '<li><strong>No servidor (Supabase)</strong>: <em>somente</em> se ativares a Liga Global. Envia apenas o teu apelido, cauris da semana, casa, e tag de grupo. Sem PII.</li>';
+    html += '</ul>';
+
+    html += '<h3>3. Cookies</h3>';
+    html += '<p>Não usamos cookies. Não rastreamos. Não há analytics, pixels, fingerprinting nem ad-tech.</p>';
+
+    html += '<h3>4. Crianças (menores de 18 anos)</h3>';
+    html += '<p>O ranking público <strong>não inclui menores</strong> sem opt-in explícito. A faixa etária <code>8-12</code> e <code>13-17</code> só aparecem em rankings privados de tag (turma). Recomendamos uso com supervisão de responsável.</p>';
+
+    html += '<h3>5. Os teus direitos</h3>';
+    html += '<ul>';
+    html += '<li><strong>Acesso e portabilidade:</strong> tudo já está no teu dispositivo (<code>localStorage</code>) — podes inspecionar via DevTools.</li>';
+    html += '<li><strong>Apagar:</strong> botão "Recomeçar do Zero" no Perfil apaga tudo localmente. Para dados na Liga Global, escreve para o e-mail abaixo.</li>';
+    html += '<li><strong>Opt-out da Liga Global:</strong> desativa quando quiseres no menu. Ao apagar localmente, paramos de enviar.</li>';
+    html += '</ul>';
+
+    html += '<h3>6. Compartilhamento com terceiros</h3>';
+    html += '<p>Nenhum. Os dados anónimos da Liga Global ficam apenas em base própria (Supabase) e não são vendidos, partilhados ou cedidos.</p>';
+
+    html += '<h3>7. Segurança</h3>';
+    html += '<p>HTTPS obrigatório. Banco com Row Level Security (RLS). Service Role nunca exposto ao cliente. Anti-cheat server-side no Torneio.</p>';
+
+    html += '<h3>8. Mudanças nesta política</h3>';
+    html += '<p>Atualizações entram em vigor com a próxima versão pública. A data acima é a referência.</p>';
+
+    html += '<p class="info-meta">Encarregado de Proteção de Dados (DPO): Filipe Buba N\'hada · <a href="mailto:flifnhada@hotmail.com">flifnhada@hotmail.com</a></p>';
+    html += '</div>';
+    return html;
+  }
+
+  function rTerms() {
+    var html = infoBackBtn();
+    html += '<div class="info-page">';
+    html += '<h2>Termos de Uso</h2>';
+    html += '<p><em>Última atualização: 8 de maio de 2026.</em></p>';
+
+    html += '<h3>1. Sobre o serviço</h3>';
+    html += '<p>Sankofa — Fragmentos da África é um jogo digital educativo, gratuito e open source, baseado nos 8 volumes da <strong>História Geral da África</strong> (UNESCO). Funciona offline como Progressive Web App.</p>';
+
+    html += '<h3>2. Licenças</h3>';
+    html += '<ul>';
+    html += '<li><strong>Código-fonte:</strong> licença <strong>MIT</strong> — usa, modifica, distribui livremente, inclusive para fins comerciais. Veja <code>LICENSE</code> no repositório GitHub.</li>';
+    html += '<li><strong>Conteúdo educacional</strong> (enigmas, textos, fragmentos): <strong>Creative Commons BY-SA 4.0</strong> — partilha desde que cite a autoria e mantenha a mesma licença.</li>';
+    html += '<li><strong>Áudio sintetizado:</strong> original do projeto, livre.</li>';
+    html += '<li>Os 8 volumes da <em>História Geral da África</em> são publicação da UNESCO; consulta a fonte oficial para uso direto desses textos.</li>';
+    html += '</ul>';
+
+    html += '<h3>3. Idade mínima</h3>';
+    html += '<p>Recomendado para 10 anos ou mais. Crianças entre 8-12 podem jogar com supervisão. Para menores de 18, o uso da Liga Global pública requer ciência do responsável.</p>';
+
+    html += '<h3>4. Conduta esperada</h3>';
+    html += '<ul>';
+    html += '<li>Sem apelidos ou tags ofensivos. Há blocklist automática; reportes manuais podem chegar.</li>';
+    html += '<li>Sem tentativas de fraudar o ranking ou a pontuação. Anti-cheat server-side ativo.</li>';
+    html += '<li>Sem extração massiva de conteúdo via scraping — usa o repositório aberto.</li>';
+    html += '</ul>';
+
+    html += '<h3>5. Disponibilidade</h3>';
+    html += '<p>O jogo é fornecido "como está" (<em>as-is</em>). Não garantimos disponibilidade contínua, embora façamos o melhor esforço. Liga Global e Torneio dependem do Supabase; em caso de indisponibilidade, o modo offline solo continua a funcionar.</p>';
+
+    html += '<h3>6. Limitação de responsabilidade</h3>';
+    html += '<p>O Sankofa é um material educativo. Não substitui currículo escolar oficial. Não nos responsabilizamos por usos indevidos ou interpretações fora do contexto histórico apresentado.</p>';
+
+    html += '<h3>7. Conformidade</h3>';
+    html += '<ul>';
+    html += '<li>Lei <strong>10.639/03</strong> e <strong>11.645/08</strong> (História e Cultura Afro-Brasileira e Indígena).</li>';
+    html += '<li>Lei <strong>13.709/18</strong> (LGPD).</li>';
+    html += '<li>WCAG <strong>2.1 nível AA</strong> (acessibilidade).</li>';
+    html += '</ul>';
+
+    html += '<h3>8. Contacto e foro</h3>';
+    html += '<p>Dúvidas: <a href="mailto:flifnhada@hotmail.com">flifnhada@hotmail.com</a>. Foro: comarca de São Paulo / SP, Brasil.</p>';
+    html += '</div>';
+    return html;
+  }
+
+  function rAbout() {
+    var html = infoBackBtn();
+    html += '<div class="info-page">';
+    html += '<h2>Sobre o Sankofa</h2>';
+    html += '<p><em>"Sankofa" vem do povo Acano-Axanti (Gana) e significa "volte e busque". O símbolo — um pássaro que olha para trás enquanto voa em frente — guia o tom do projeto: recuperar o que foi apagado, distorcido ou esquecido.</em></p>';
+
+    html += '<h3>O que é</h3>';
+    html += '<p>Jogo digital educativo de enigmas baseado nos <strong>8 volumes</strong> da <em>História Geral da África</em> da UNESCO. <strong>71 enigmas</strong> validados, distribuídos em 8 mundos (Origens → Luta e Liberdade), cobrindo Volumes I a VIII.</p>';
+
+    html += '<h3>Por que existe</h3>';
+    html += '<p>A Lei 10.639/03 obriga o ensino de História da África há 22 anos. O conteúdo da UNESCO existe há décadas. Mas falta um material lúdico, mobile-first, gratuito e que respeite a perspectiva afrocentrada. Sankofa preenche essa lacuna.</p>';
+
+    html += '<h3>Autor</h3>';
+    html += '<p><strong>Filipe Buba N\'hada</strong> · Engenheiro de Software · Bacharel em Humanidades (UNILAB) · Licenciado em Ciências Sociais (UNILAB) · Graduado em Ciência da Computação (Faculdade Impacta).</p>';
+    html += '<ul>';
+    html += '<li>📧 <a href="mailto:flifnhada@hotmail.com">flifnhada@hotmail.com</a></li>';
+    html += '<li>🔗 <a href="https://www.linkedin.com/in/filipe-buba/" target="_blank" rel="noopener">linkedin.com/in/filipe-buba</a></li>';
+    html += '<li>🌐 <a href="https://www.sankofahga.com" target="_blank" rel="noopener">www.sankofahga.com</a></li>';
+    html += '<li>🐙 <a href="https://github.com/filipebuba/sankofa" target="_blank" rel="noopener">github.com/filipebuba/sankofa</a></li>';
+    html += '</ul>';
+
+    html += '<h3>Fontes</h3>';
+    html += '<p>Coleção <em>História Geral da África</em>, UNESCO, 8 volumes (1964–1999). Disponível gratuitamente em <a href="https://unesdoc.unesco.org" target="_blank" rel="noopener">unesdoc.unesco.org</a>.</p>';
+
+    html += '<h3>Alinhamentos institucionais</h3>';
+    html += '<ul>';
+    html += '<li>Década Internacional dos Afrodescendentes 2025–2034 (ONU/UNESCO).</li>';
+    html += '<li>Lei 10.639/03 e 11.645/08 (Brasil) — História e Cultura Afro-Brasileira e Indígena.</li>';
+    html += '<li>ODS 4 (Educação de Qualidade) e ODS 10 (Redução das Desigualdades).</li>';
+    html += '</ul>';
+
+    html += '<h3>Stack</h3>';
+    html += '<p>Vanilla JS, Web Audio API, PWA Service Worker. Sem framework, sem build step. Backend opt-in via Supabase (RLS + Edge Functions). Hospedado no Vercel.</p>';
+
+    html += '<p class="info-meta">Versão atual: <strong>v' + (window.SANKOFA_VERSION || "?") + '</strong>.</p>';
+    html += '</div>';
+    return html;
+  }
+
+  function rAccessibility() {
+    var html = infoBackBtn();
+    html += '<div class="info-page">';
+    html += '<h2>Declaração de Acessibilidade</h2>';
+    html += '<p>O Sankofa adopta as <strong>Web Content Accessibility Guidelines (WCAG) 2.1 nível AA</strong> como referência mínima. Trabalhamos para chegar a AAA onde for tecnicamente viável.</p>';
+
+    html += '<h3>Recursos disponíveis</h3>';
+    html += '<ul>';
+    html += '<li><strong>Tamanho do texto regulável</strong> em 5 níveis (90%, 100%, 115%, 130%, 150%) via menu ☰ ou atalhos de teclado <code>+</code> / <code>−</code> / <code>0</code>.</li>';
+    html += '<li><strong>Pinch-to-zoom</strong> mobile (até 500%).</li>';
+    html += '<li><strong>Síntese de voz (TTS)</strong> em PT-BR via Web Speech API. Lê a pergunta e o contexto a pedido.</li>';
+    html += '<li><strong>Tema claro (papiro)</strong> e <strong>escuro</strong>; respeita <code>prefers-color-scheme</code> do sistema.</li>';
+    html += '<li>Contraste <strong>AA garantido</strong>: texto principal ≥ 14:1, secundário ≥ 5:1.</li>';
+    html += '<li>Fonte <strong>Atkinson Hyperlegible</strong> — desenhada para baixa visão pelo Braille Institute.</li>';
+    html += '<li>Alvos de toque ≥ <strong>44×44 px</strong> (WCAG 2.5.5).</li>';
+    html += '<li>Navegação completa por <strong>Tab</strong>, com anel de foco dourado visível.</li>';
+    html += '<li>Atalhos no enigma: <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code> selecionam respostas.</li>';
+    html += '<li><code>Esc</code> fecha menus e diálogos.</li>';
+    html += '<li>Feedback visual sempre acompanha o feedback sonoro (toasts, animações).</li>';
+    html += '<li><code>aria-live</code> em zonas dinâmicas (toasts, ranking).</li>';
+    html += '</ul>';
+
+    html += '<h3>Modo "erro sem punição"</h3>';
+    html += '<p>Errar não bloqueia o jogo. Cria-se uma entrada no <strong>Caderno de Revisão</strong> e o jogador volta quando quiser. Pular um enigma após 2 erros é permitido (+5 pts piedade), sem custo.</p>';
+
+    html += '<h3>O que ainda falta</h3>';
+    html += '<ul>';
+    html += '<li>Validação manual com leitores de tela (NVDA, VoiceOver, TalkBack) — em curso.</li>';
+    html += '<li>Tradução para Libras (sinalização em vídeo) — fase futura.</li>';
+    html += '<li>Modo "alto contraste extremo" para baixa visão grave — fase futura.</li>';
+    html += '</ul>';
+
+    html += '<h3>Reportar barreira</h3>';
+    html += '<p>Encontrou uma barreira de acessibilidade? Escreva para <a href="mailto:flifnhada@hotmail.com">flifnhada@hotmail.com</a> com prints, modelo de dispositivo e tecnologia assistiva usada. Respondemos em até 7 dias úteis.</p>';
+
+    html += '<p class="info-meta">Esta declaração refere-se à versão v' + (window.SANKOFA_VERSION || "?") + '. Próxima auditoria prevista: jul/2026.</p>';
+    html += '</div>';
+    return html;
+  }
+
   function rDaily() {
     var daily = getDailyEnigma();
     var done = isDailyDone();
@@ -1519,7 +1784,10 @@
 
   /* ---------------- EVENTS ---------------- */
   function attachEvents() {
-    var els = document.querySelectorAll("[data-act]");
+    // Escopo restrito a #app: elementos fora (drawer, banner) gerenciam próprios listeners
+    // e persistem entre renders — query global causaria múltiplos listeners.
+    var root = document.getElementById("app");
+    var els = (root || document).querySelectorAll("[data-act]");
     for (var i = 0; i < els.length; i++) els[i].addEventListener("click", handleAction);
     var ni = document.getElementById("name-input");
     if (ni) {
@@ -1661,6 +1929,12 @@
       case "tts-toggle": handleTTSToggle(); break;
       case "text-smaller": if (changeTextScale(-1)) { sfx("click"); render(); } break;
       case "text-larger": if (changeTextScale(+1)) { sfx("click"); render(); } break;
+      case "go-info-hub": sfx("navigate"); goTo("info-hub"); break;
+      case "go-help": sfx("navigate"); goTo("help"); break;
+      case "go-privacy": sfx("navigate"); goTo("privacy"); break;
+      case "go-terms": sfx("navigate"); goTo("terms"); break;
+      case "go-about": sfx("navigate"); goTo("about"); break;
+      case "go-accessibility": sfx("navigate"); goTo("accessibility"); break;
       case "speak-enigma": handleSpeakEnigma(el.getAttribute("data-e")); break;
       case "tab-profiles": {
         var t = el.getAttribute("data-tab") || "all";
@@ -2303,6 +2577,15 @@
       toggleMenuDrawer();
       sfx("click");
     });
+    // Hub button no drawer (fora do #app, precisa wiring próprio)
+    if (menuDrawer) {
+      var hubBtn = menuDrawer.querySelector('[data-act="go-info-hub"]');
+      if (hubBtn) hubBtn.addEventListener("click", function () {
+        sfx("navigate");
+        closeMenuDrawer();
+        goTo("info-hub");
+      });
+    }
     // Click fora fecha
     document.addEventListener("click", function (ev) {
       if (!menuDrawer || menuDrawer.hidden) return;
