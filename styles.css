@@ -850,6 +850,20 @@ input { font-family: var(--font-body); }
 .pix-val { font-size: .92rem; color: var(--text); text-align: right; }
 .pix-hint { font-size: .8rem; color: var(--text-dim); margin-top: 8px; line-height: 1.45; }
 
+.pix-card-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  margin-bottom: 6px; padding-bottom: 8px; border-bottom: 1px solid var(--surface3);
+}
+.pix-card-head strong { font-size: .95rem; color: var(--gold); }
+.pix-tag { font-size: .72rem; color: var(--text-muted); font-style: italic; }
+.pix-card-alt { border-color: var(--surface3); box-shadow: none; }
+.pix-card-alt .pix-card-head strong { color: var(--text); }
+.pix-qr-wrap { display: flex; justify-content: center; margin: 12px 0 4px; }
+.pix-qr-img { width: 200px; height: 200px; border-radius: 12px; background: white; padding: 6px; display: block; }
+@media (max-width: 480px) {
+  .pix-qr-img { width: 180px; height: 180px; }
+}
+
 /* Landing — apelo de contribuição */
 .landing-contrib {
   margin-top: 24px; padding: 14px 16px;

@@ -1685,8 +1685,14 @@
     html += '<h3>6. Disponibilidade</h3>';
     html += '<p>O jogo é fornecido "como está" (<em>as-is</em>). Não garantimos disponibilidade contínua, embora façamos o melhor esforço. Liga Global e Torneio dependem do Supabase; em caso de indisponibilidade, o modo offline solo continua a funcionar.</p>';
 
-    html += '<h3>6.1. Doações via PIX</h3>';
-    html += '<p>Sankofa aceita apoio financeiro voluntário via PIX (chave CNPJ <code>62.823.295/0001-53</code> — DATACENTER VISION LTDA). As doações são <strong>voluntárias</strong>, <strong>não geram obrigação contratual</strong>, <strong>não dão direito a recursos exclusivos</strong> nem alteram acesso ao jogo (que permanece gratuito para todos). Os recursos são alocados em infraestrutura (Vercel, Supabase, registro de domínio sankofahga.com) e tempo de desenvolvimento. Recibos para fins de comprovação podem ser solicitados ao e-mail abaixo, com data e valor da transferência.</p>';
+    html += '<h3>6.1. Doações financeiras</h3>';
+    html += '<p>Sankofa aceita apoio financeiro voluntário em três modalidades:</p>';
+    html += '<ul>';
+    html += '<li><strong>PIX — Conta empresa:</strong> chave CNPJ <code>62.823.295/0001-53</code> — DATACENTER VISION LTDA. Recibo formal disponível por solicitação.</li>';
+    html += '<li><strong>PIX — Conta mantenedor:</strong> chave e-mail <code>flifnhada@hotmail.com</code> — Filipe Buba N\'hada (autor). Sem recibo formal.</li>';
+    html += '<li><strong>Wise e PayPal — Internacional:</strong> mesmo e-mail acima — para apoiadores fora do Brasil. Aceita múltiplas moedas (USD, EUR, GBP, etc.).</li>';
+    html += '</ul>';
+    html += '<p>As doações são <strong>voluntárias</strong>, <strong>não geram obrigação contratual</strong>, <strong>não dão direito a recursos exclusivos</strong> nem alteram acesso ao jogo (que permanece gratuito para todos). Os recursos são alocados em infraestrutura (Vercel, Supabase, registro de domínio sankofahga.com) e tempo de desenvolvimento. Recibos para fins de comprovação na conta empresa podem ser solicitados ao e-mail abaixo, com data e valor da transferência.</p>';
 
     html += '<h3>7. Limitação de responsabilidade</h3>';
     html += '<p>O Sankofa é um material educativo. Não substitui currículo escolar oficial. Não nos responsabilizamos por usos indevidos ou interpretações fora do contexto histórico apresentado.</p>';
@@ -1742,8 +1748,12 @@
     html += '<p>Vanilla JS, Web Audio API, PWA Service Worker. Sem framework, sem build step. Backend opt-in via Supabase (RLS + Edge Functions). Hospedado no Vercel.</p>';
 
     html += '<h3>Apoiar o projeto</h3>';
-    html += '<p>Sankofa é gratuito, sem ads, sem venda de dados. Servidor + domínio + tempo de manutenção saem do bolso do autor. Apoio voluntário via PIX:</p>';
-    html += '<p style="font-size:.9rem"><strong>Chave PIX (CNPJ):</strong> <code style="font-family:\'Atkinson Hyperlegible\',ui-monospace,monospace;color:var(--gold);user-select:all">62.823.295/0001-53</code> — DATACENTER VISION LTDA.</p>';
+    html += '<p>Sankofa é gratuito, sem ads, sem venda de dados. Servidor + domínio + tempo de manutenção saem do bolso do autor. Apoio voluntário em três modalidades:</p>';
+    html += '<ul style="font-size:.9rem">';
+    html += '<li><strong>PIX (CNPJ):</strong> <code style="font-family:\'Atkinson Hyperlegible\',ui-monospace,monospace;color:var(--gold);user-select:all">62.823.295/0001-53</code> · Datacenter Vision Ltda · com recibo</li>';
+    html += '<li><strong>PIX (e-mail):</strong> <code style="font-family:\'Atkinson Hyperlegible\',ui-monospace,monospace;color:var(--gold);user-select:all">flifnhada@hotmail.com</code> · com QR Code</li>';
+    html += '<li><strong>Wise / PayPal:</strong> mesmo e-mail acima · para apoiadores fora do Brasil</li>';
+    html += '</ul>';
     html += '<p style="font-size:.84rem;color:var(--text-muted)">Mais detalhes na página <button class="link-btn" data-act="go-contribute" style="background:none;border:none;color:var(--gold);cursor:pointer;text-decoration:underline;font:inherit">Contribuir</button>.</p>';
 
     html += '<p class="info-meta">Versão atual: <strong>v' + (window.SANKOFA_VERSION || "?") + '</strong>.</p>';
@@ -1882,13 +1892,41 @@
 
     html += '<h3>💛 Apoiar com PIX</h3>';
     html += '<p>Sankofa não tem ads, não vende dados, não cobra acesso. Servidor + domínio + tempo de desenvolvimento saem do bolso do autor. Qualquer valor ajuda a manter o jogo gratuito e online.</p>';
+    html += '<p style="font-size:.86rem;color:var(--text-dim)">Duas opções — escolhe a que preferires:</p>';
+
+    // OPÇÃO 1 — CNPJ (recomendado para fins fiscais / comprovantes)
     html += '<div class="pix-card">';
-    html += '<div class="pix-row"><span class="pix-label">Chave PIX (CNPJ)</span><code class="pix-key" id="pix-key">62.823.295/0001-53</code></div>';
+    html += '<div class="pix-card-head"><strong>Opção 1 · CNPJ</strong> <span class="pix-tag">Recomendado para empresas, escolas, recibo</span></div>';
+    html += '<div class="pix-row"><span class="pix-label">Chave PIX</span><code class="pix-key">62.823.295/0001-53</code></div>';
     html += '<div class="pix-row"><span class="pix-label">Titular</span><span class="pix-val">DATACENTER VISION LTDA</span></div>';
-    html += '<button class="btn btn-gold btn-block" data-act="copy-pix" style="margin-top:10px">📋 Copiar chave PIX</button>';
-    html += '<p class="pix-hint">Abre o app do teu banco → PIX → "Copia e cola" → cola a chave acima → escolhe o valor → confirma.</p>';
+    html += '<button class="btn btn-gold btn-block" data-act="copy-pix-cnpj" style="margin-top:10px">📋 Copiar chave CNPJ</button>';
+    html += '<p class="pix-hint">App do banco → PIX → "Copia e cola" → cola a chave → valor → confirma. Recibos para fins fiscais sob solicitação ao e-mail abaixo.</p>';
     html += '</div>';
-    html += '<p style="font-size:.78rem;color:var(--text-muted);margin-top:10px"><strong>Transparência fiscal:</strong> recursos vão para infra (Vercel, Supabase, domínio sankofahga.com) e manutenção. Doações são voluntárias, sem contrapartida material — só gratidão e Sankofa vivo. Recibos disponíveis a pedido para apoio &gt; R$ 100 (escreve para o e-mail abaixo com data e valor).</p>';
+
+    // OPÇÃO 2 — Pessoal (QR escaneável)
+    html += '<div class="pix-card pix-card-alt" style="margin-top:14px">';
+    html += '<div class="pix-card-head"><strong>Opção 2 · E-mail (mantenedor)</strong> <span class="pix-tag">QR Code, mais rápido no celular</span></div>';
+    html += '<div class="pix-row"><span class="pix-label">Chave PIX</span><code class="pix-key">flifnhada@hotmail.com</code></div>';
+    html += '<div class="pix-row"><span class="pix-label">Titular</span><span class="pix-val">Filipe Buba N\'hada</span></div>';
+    html += '<div class="pix-qr-wrap"><img class="pix-qr-img" src="assets/pix-qr-pessoal.jpg" alt="QR Code PIX para a conta do mantenedor (e-mail flifnhada@hotmail.com)" loading="lazy"></div>';
+    html += '<button class="btn btn-outline btn-block" data-act="copy-pix-personal" style="margin-top:10px">📋 Copiar chave (e-mail)</button>';
+    html += '<p class="pix-hint">App do banco → PIX → escanear QR (apontar a câmera) ou "Copia e cola" da chave acima.</p>';
+    html += '</div>';
+
+    // OPÇÃO 3 — Internacional (Wise + PayPal)
+    html += '<div class="pix-card pix-card-alt" style="margin-top:14px">';
+    html += '<div class="pix-card-head"><strong>Opção 3 · Internacional</strong> <span class="pix-tag">Para apoiadores fora do Brasil</span></div>';
+    html += '<div class="pix-row"><span class="pix-label">Wise / PayPal</span><code class="pix-key">flifnhada@hotmail.com</code></div>';
+    html += '<div class="pix-row"><span class="pix-label">Titular</span><span class="pix-val">Filipe Buba N\'hada</span></div>';
+    html += '<div class="pix-intl-row" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">';
+    html += '<a class="btn btn-outline" href="https://wise.com/send" target="_blank" rel="noopener" style="flex:1;min-width:140px">🌐 Wise</a>';
+    html += '<a class="btn btn-outline" href="https://www.paypal.com/donate/?business=flifnhada%40hotmail.com&item_name=Apoio+ao+Sankofa&currency_code=BRL" target="_blank" rel="noopener" style="flex:1;min-width:140px">💳 PayPal</a>';
+    html += '</div>';
+    html += '<button class="btn btn-ghost btn-sm btn-block" data-act="copy-pix-personal" style="margin-top:8px">📋 Copiar e-mail</button>';
+    html += '<p class="pix-hint">Wise: envia em qualquer moeda (USD, EUR, GBP…) com taxa baixa. PayPal: cartão de crédito ou saldo direto. Ambos para a conta do mantenedor.</p>';
+    html += '</div>';
+
+    html += '<p style="font-size:.78rem;color:var(--text-muted);margin-top:14px"><strong>Transparência fiscal:</strong> opção CNPJ (PIX) vai para a empresa do mantenedor (Datacenter Vision Ltda) e gera recibo formal. Opções e-mail (PIX, Wise, PayPal) vão para a conta pessoal do mantenedor — úteis para apoios pequenos ou doadores fora do Brasil, sem necessidade de comprovante. Em todos os casos os recursos cobrem infraestrutura (Vercel, Supabase, domínio sankofahga.com) e tempo de manutenção. Doações são voluntárias, sem contrapartida material.</p>';
 
     html += '<h3>🤝 Patrocínio institucional / ESG</h3>';
     html += '<p>Empresas, ONGs, secretarias: pacotes de R$ 50k a R$ 1M+ com selo "Apresentado por…". Métricas auditáveis para relatórios ESG / GRI / ODS 4 e 10. Década dos Afrodescendentes 2025–2034.</p>';
@@ -2099,7 +2137,9 @@
       case "go-feedback": sfx("navigate"); goTo("feedback"); break;
       case "go-contribute": sfx("navigate"); goTo("contribute"); break;
       case "submit-feedback": handleSubmitFeedback(); break;
-      case "copy-pix": handleCopyPix(); break;
+      case "copy-pix": handleCopyPix("62.823.295/0001-53", "Chave CNPJ copiada"); break;
+      case "copy-pix-cnpj": handleCopyPix("62.823.295/0001-53", "Chave CNPJ copiada"); break;
+      case "copy-pix-personal": handleCopyPix("flifnhada@hotmail.com", "Chave e-mail copiada"); break;
       case "speak-enigma": handleSpeakEnigma(el.getAttribute("data-e")); break;
       case "tab-profiles": {
         var t = el.getAttribute("data-tab") || "all";
@@ -2290,16 +2330,16 @@
     location.reload();
   }
 
-  function handleCopyPix() {
-    var key = "62.823.295/0001-53";
+  function handleCopyPix(key, title) {
+    key = key || "62.823.295/0001-53";
+    title = title || "Chave copiada";
     function done(ok) {
-      if (ok) { sfx("achievement"); showToast("💛", "Chave copiada", "Cola no PIX do teu banco e obrigado!"); }
+      if (ok) { sfx("achievement"); showToast("💛", title, "Cola no PIX do teu banco. Obrigado!"); }
       else { sfx("wrong"); showToast("⚠️", "Não copiou", "Copia manualmente: " + key); }
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(key).then(function () { done(true); }, function () { done(false); });
     } else {
-      // Fallback antigo
       try {
         var ta = document.createElement("textarea");
         ta.value = key; document.body.appendChild(ta); ta.select();
