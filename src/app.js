@@ -1399,11 +1399,19 @@
     if (!window.SankofaTTS || !window.SankofaTTS.available()) return;
     var en = getEnigma(eid);
     if (!en) return;
-    var optsTxt = en.options.map(function (o, i) {
-      return String.fromCharCode(65 + i) + ". " + o;
-    }).join(". ");
-    var full = en.question + ". Opções: " + optsTxt;
-    window.SankofaTTS.speak(full);
+    var ordinals = ["primeira", "segunda", "terceira", "quarta", "quinta", "sexta"];
+    var parts = [];
+    if (en.title)   parts.push(en.title + ".");
+    if (en.intro)   parts.push(en.intro);
+    if (en.context) parts.push(en.context);
+    if (en.question) parts.push(en.question);
+    parts.push("Opções de resposta.");
+    en.options.forEach(function (o, i) {
+      var label = ordinals[i] ? "Opção " + ordinals[i] : "Opção " + (i + 1);
+      parts.push(label + ". " + o + ".");
+    });
+    if (window.SankofaTTS.speakSequence) window.SankofaTTS.speakSequence(parts);
+    else window.SankofaTTS.speak(parts.join(". "));
   }
 
   function handlePickHouse(houseId) {
