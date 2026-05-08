@@ -1685,6 +1685,9 @@
     html += '<h3>6. Disponibilidade</h3>';
     html += '<p>O jogo é fornecido "como está" (<em>as-is</em>). Não garantimos disponibilidade contínua, embora façamos o melhor esforço. Liga Global e Torneio dependem do Supabase; em caso de indisponibilidade, o modo offline solo continua a funcionar.</p>';
 
+    html += '<h3>6.1. Doações via PIX</h3>';
+    html += '<p>Sankofa aceita apoio financeiro voluntário via PIX (chave CNPJ <code>62.823.295/0001-53</code> — DATACENTER VISION LTDA). As doações são <strong>voluntárias</strong>, <strong>não geram obrigação contratual</strong>, <strong>não dão direito a recursos exclusivos</strong> nem alteram acesso ao jogo (que permanece gratuito para todos). Os recursos são alocados em infraestrutura (Vercel, Supabase, registro de domínio sankofahga.com) e tempo de desenvolvimento. Recibos para fins de comprovação podem ser solicitados ao e-mail abaixo, com data e valor da transferência.</p>';
+
     html += '<h3>7. Limitação de responsabilidade</h3>';
     html += '<p>O Sankofa é um material educativo. Não substitui currículo escolar oficial. Não nos responsabilizamos por usos indevidos ou interpretações fora do contexto histórico apresentado.</p>';
 
@@ -1737,6 +1740,11 @@
 
     html += '<h3>Stack</h3>';
     html += '<p>Vanilla JS, Web Audio API, PWA Service Worker. Sem framework, sem build step. Backend opt-in via Supabase (RLS + Edge Functions). Hospedado no Vercel.</p>';
+
+    html += '<h3>Apoiar o projeto</h3>';
+    html += '<p>Sankofa é gratuito, sem ads, sem venda de dados. Servidor + domínio + tempo de manutenção saem do bolso do autor. Apoio voluntário via PIX:</p>';
+    html += '<p style="font-size:.9rem"><strong>Chave PIX (CNPJ):</strong> <code style="font-family:\'Atkinson Hyperlegible\',ui-monospace,monospace;color:var(--gold);user-select:all">62.823.295/0001-53</code> — DATACENTER VISION LTDA.</p>';
+    html += '<p style="font-size:.84rem;color:var(--text-muted)">Mais detalhes na página <button class="link-btn" data-act="go-contribute" style="background:none;border:none;color:var(--gold);cursor:pointer;text-decoration:underline;font:inherit">Contribuir</button>.</p>';
 
     html += '<p class="info-meta">Versão atual: <strong>v' + (window.SANKOFA_VERSION || "?") + '</strong>.</p>';
     html += '</div>';
@@ -1872,9 +1880,15 @@
     html += '<p>Pilotos gratuitos de 90 dias para escolas públicas e privadas. Painel do professor + relatórios + capacitação. Cumpre Lei 10.639/03.</p>';
     html += '<a class="btn btn-outline btn-block" href="mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20piloto%20em%20escola" style="margin-top:6px">🏫 Falar sobre piloto escolar</a>';
 
-    html += '<h3>💛 Apoiar financeiramente</h3>';
-    html += '<p>Sankofa não tem ads, não vende dados, não cobra acesso. Custo de servidor + tempo de desenvolvimento sai do bolso do autor. Doações pontuais ou recorrentes ajudam a manter o jogo gratuito.</p>';
-    html += '<a class="btn btn-outline btn-block" href="mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20apoio%20financeiro" style="margin-top:6px">💛 Quero apoiar</a>';
+    html += '<h3>💛 Apoiar com PIX</h3>';
+    html += '<p>Sankofa não tem ads, não vende dados, não cobra acesso. Servidor + domínio + tempo de desenvolvimento saem do bolso do autor. Qualquer valor ajuda a manter o jogo gratuito e online.</p>';
+    html += '<div class="pix-card">';
+    html += '<div class="pix-row"><span class="pix-label">Chave PIX (CNPJ)</span><code class="pix-key" id="pix-key">62.823.295/0001-53</code></div>';
+    html += '<div class="pix-row"><span class="pix-label">Titular</span><span class="pix-val">DATACENTER VISION LTDA</span></div>';
+    html += '<button class="btn btn-gold btn-block" data-act="copy-pix" style="margin-top:10px">📋 Copiar chave PIX</button>';
+    html += '<p class="pix-hint">Abre o app do teu banco → PIX → "Copia e cola" → cola a chave acima → escolhe o valor → confirma.</p>';
+    html += '</div>';
+    html += '<p style="font-size:.78rem;color:var(--text-muted);margin-top:10px"><strong>Transparência fiscal:</strong> recursos vão para infra (Vercel, Supabase, domínio sankofahga.com) e manutenção. Doações são voluntárias, sem contrapartida material — só gratidão e Sankofa vivo. Recibos disponíveis a pedido para apoio &gt; R$ 100 (escreve para o e-mail abaixo com data e valor).</p>';
 
     html += '<h3>🤝 Patrocínio institucional / ESG</h3>';
     html += '<p>Empresas, ONGs, secretarias: pacotes de R$ 50k a R$ 1M+ com selo "Apresentado por…". Métricas auditáveis para relatórios ESG / GRI / ODS 4 e 10. Década dos Afrodescendentes 2025–2034.</p>';
@@ -2085,6 +2099,7 @@
       case "go-feedback": sfx("navigate"); goTo("feedback"); break;
       case "go-contribute": sfx("navigate"); goTo("contribute"); break;
       case "submit-feedback": handleSubmitFeedback(); break;
+      case "copy-pix": handleCopyPix(); break;
       case "speak-enigma": handleSpeakEnigma(el.getAttribute("data-e")); break;
       case "tab-profiles": {
         var t = el.getAttribute("data-tab") || "all";
@@ -2273,6 +2288,25 @@
     if (!PROFILES || !id) return;
     PROFILES.switchTo(id);
     location.reload();
+  }
+
+  function handleCopyPix() {
+    var key = "62.823.295/0001-53";
+    function done(ok) {
+      if (ok) { sfx("achievement"); showToast("💛", "Chave copiada", "Cola no PIX do teu banco e obrigado!"); }
+      else { sfx("wrong"); showToast("⚠️", "Não copiou", "Copia manualmente: " + key); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(key).then(function () { done(true); }, function () { done(false); });
+    } else {
+      // Fallback antigo
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = key; document.body.appendChild(ta); ta.select();
+        document.execCommand("copy"); document.body.removeChild(ta);
+        done(true);
+      } catch (e) { done(false); }
+    }
   }
 
   function handleSubmitFeedback() {
