@@ -304,12 +304,59 @@
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     var b = document.getElementById("theme-toggle");
-    if (b) b.textContent = theme === "light" ? "☀" : "🌙";
+    if (b) {
+      var icon = b.querySelector(".topbar-icon, .menu-row-icon");
+      if (icon) icon.textContent = theme === "light" ? "☀" : "🌙";
+    }
+    var st = document.getElementById("theme-state");
+    if (st) st.textContent = theme === "light" ? "Claro" : "Escuro";
   }
   function toggleTheme() {
     var next = getTheme() === "light" ? "dark" : "light";
     localStorage.setItem(THEME_KEY, next);
     applyTheme(next);
+  }
+
+  /* ---------------- TEXT SCALE (a11y) ---------------- */
+  var TEXT_SCALE_KEY = "sankofa_text_scale";
+  var SCALES = [0.9, 1.0, 1.15, 1.3, 1.5];
+  var SCALE_LABELS = ["90%", "100%", "115%", "130%", "150%"];
+
+  function getTextScale() {
+    var v = parseFloat(localStorage.getItem(TEXT_SCALE_KEY));
+    if (!isFinite(v)) return 1;
+    // Se valor antigo não bate com o novo array, snap pro mais próximo.
+    var best = 1, bestDiff = Infinity;
+    for (var i = 0; i < SCALES.length; i++) {
+      var d = Math.abs(SCALES[i] - v);
+      if (d < bestDiff) { best = SCALES[i]; bestDiff = d; }
+    }
+    return best;
+  }
+
+  function applyTextScale(scale) {
+    document.documentElement.style.setProperty("--text-scale", scale);
+    var btn = document.getElementById("zoom-toggle");
+    var state = document.getElementById("zoom-state");
+    var idx = SCALES.indexOf(scale);
+    var pct = idx >= 0 ? SCALE_LABELS[idx] : Math.round(scale * 100) + "%";
+    if (state) state.textContent = pct;
+    if (btn) {
+      btn.classList.toggle("scale-up", scale > 1);
+      btn.setAttribute("aria-label", "Tamanho do texto " + pct + ". Toque para mudar.");
+      btn.setAttribute("title", "Tamanho do texto: " + pct);
+    }
+  }
+
+  function cycleTextScale() {
+    var current = getTextScale();
+    var idx = SCALES.indexOf(current);
+    if (idx === -1) idx = 1; // default 100%
+    var next = SCALES[(idx + 1) % SCALES.length];
+    localStorage.setItem(TEXT_SCALE_KEY, String(next));
+    applyTextScale(next);
+    var nextIdx = SCALES.indexOf(next);
+    showToast("Aa", "Texto " + SCALE_LABELS[nextIdx], next === 1 ? "Tamanho padrão." : (next > 1 ? "Aumentado para leitura mais confortável." : "Reduzido."));
   }
 
   /* ---------------- AUDIO ---------------- */
@@ -326,13 +373,40 @@
   function updateSoundBtn() {
     var b = document.getElementById("sound-toggle");
     if (b) {
-      b.textContent = S.soundOn ? "🔊" : "🔇";
+      var bIcon = b.querySelector(".topbar-icon, .menu-row-icon");
+      if (bIcon) bIcon.textContent = S.soundOn ? "🔊" : "🔇";
       b.classList.toggle("muted", !S.soundOn);
     }
+    var bState = document.getElementById("sound-state");
+    if (bState) bState.textContent = S.soundOn ? "Ligado" : "Mudo";
+
     var a = document.getElementById("ambient-toggle");
     if (a) {
-      a.textContent = "🥁";
+      var aIcon = a.querySelector(".topbar-icon, .menu-row-icon");
+      if (aIcon) aIcon.textContent = "🥁";
       a.classList.toggle("active", !!S.ambientOn && !!S.soundOn);
+    }
+    var aState = document.getElementById("ambient-state");
+    if (aState) aState.textContent = (!!S.ambientOn && !!S.soundOn) ? "Ligado" : "Desligado";
+  }
+
+  function updateProfileBtn() {
+    var pbtn = document.getElementById("profile-btn");
+    var avatar = document.getElementById("profile-btn-avatar");
+    if (!pbtn || !avatar) return;
+    if (S.screen === "register") {
+      pbtn.style.display = "none";
+      return;
+    }
+    pbtn.style.display = "";
+    if (S.name && S.consent) {
+      avatar.textContent = S.name.charAt(0).toUpperCase();
+      pbtn.setAttribute("aria-label", "Abrir perfil de " + S.name);
+      pbtn.setAttribute("title", "Perfil — " + S.name);
+    } else {
+      avatar.textContent = "👤";
+      pbtn.setAttribute("aria-label", "Criar perfil");
+      pbtn.setAttribute("title", "Criar perfil");
     }
   }
 
@@ -435,6 +509,7 @@
   function render() {
     var app = document.getElementById("app");
     var ctx = royaltyCtx();
+    updateProfileBtn();
     switch (S.screen) {
       case "landing": app.innerHTML = rLanding(); break;
       case "register": app.innerHTML = rRegister(); break;
@@ -902,6 +977,19 @@
       html += '<button class="btn btn-ghost btn-block btn-sm" data-act="tts-toggle" style="margin-top:8px">'
         + (ttsOn ? "🔊 Voz: Ligada" : "🔇 Voz: Desligada") + '</button>';
     }
+
+    // Acessibilidade — escala de texto
+    var curScale = getTextScale();
+    var curIdx = SCALES.indexOf(curScale);
+    if (curIdx < 0) curIdx = 1;
+    var curPct = SCALE_LABELS[curIdx];
+    var atMin = curIdx === 0;
+    var atMax = curIdx === SCALES.length - 1;
+    html += '<div class="zoom-row" role="group" aria-label="Tamanho do texto" style="display:flex;gap:8px;align-items:center;margin-top:8px">';
+    html += '<button class="btn btn-ghost btn-sm" data-act="text-smaller" aria-label="Diminuir texto"' + (atMin ? ' disabled' : '') + ' style="flex:0 0 auto;min-width:48px;font-size:.92rem">A−</button>';
+    html += '<div style="flex:1;text-align:center;font-size:.86rem;color:var(--text-dim)">Texto ' + curPct + '</div>';
+    html += '<button class="btn btn-ghost btn-sm" data-act="text-larger" aria-label="Aumentar texto"' + (atMax ? ' disabled' : '') + ' style="flex:0 0 auto;min-width:48px;font-size:1.05rem">A+</button>';
+    html += '</div>';
 
     html += '<button class="btn btn-ghost btn-block" data-act="reset" style="margin-top:8px;font-size:.8rem;color:var(--text-muted)">Recomeçar do Zero</button>';
     html += '<p class="version-stamp" style="text-align:center;margin-top:14px">Sankofa v' + (window.SANKOFA_VERSION || "?") + '</p>';
@@ -1446,6 +1534,32 @@
       case "share-wa": handleShareWhatsApp(); break;
       case "share-link": handleShareLink(); break;
       case "tts-toggle": handleTTSToggle(); break;
+      case "text-smaller": {
+        var cur = getTextScale();
+        var i = SCALES.indexOf(cur);
+        if (i > 0) {
+          var nxt = SCALES[i - 1];
+          localStorage.setItem(TEXT_SCALE_KEY, String(nxt));
+          applyTextScale(nxt);
+          sfx("click");
+          showToast("Aa", "Texto " + SCALE_LABELS[i - 1], "Reduzido.");
+          render();
+        }
+        break;
+      }
+      case "text-larger": {
+        var curL = getTextScale();
+        var iL = SCALES.indexOf(curL);
+        if (iL < SCALES.length - 1) {
+          var nxtL = SCALES[iL + 1];
+          localStorage.setItem(TEXT_SCALE_KEY, String(nxtL));
+          applyTextScale(nxtL);
+          sfx("click");
+          showToast("Aa", "Texto " + SCALE_LABELS[iL + 1], "Aumentado para leitura mais confortável.");
+          render();
+        }
+        break;
+      }
       case "speak-enigma": handleSpeakEnigma(el.getAttribute("data-e")); break;
       case "tab-profiles": {
         var t = el.getAttribute("data-tab") || "all";
@@ -2056,7 +2170,59 @@
     updateSoundBtn();
 
     var tb = document.getElementById("theme-toggle");
-    if (tb) tb.addEventListener("click", function () { toggleTheme(); sfx("click"); });
+    if (tb) tb.addEventListener("click", function () { toggleTheme(); sfx("click"); closeMenuDrawer(); });
+
+    applyTextScale(getTextScale());
+    var zb = document.getElementById("zoom-toggle");
+    if (zb) zb.addEventListener("click", function () { cycleTextScale(); sfx("click"); /* mantém aberto: deixa o jogador ciclar */ });
+
+    // Hamburger drawer
+    var menuBtn = document.getElementById("menu-toggle");
+    var menuDrawer = document.getElementById("menu-drawer");
+    function openMenuDrawer() {
+      if (!menuDrawer || !menuBtn) return;
+      menuDrawer.hidden = false;
+      menuBtn.setAttribute("aria-expanded", "true");
+      menuBtn.classList.add("open");
+    }
+    function closeMenuDrawer() {
+      if (!menuDrawer || !menuBtn) return;
+      menuDrawer.hidden = true;
+      menuBtn.setAttribute("aria-expanded", "false");
+      menuBtn.classList.remove("open");
+    }
+    function toggleMenuDrawer() {
+      if (menuDrawer && menuDrawer.hidden) openMenuDrawer();
+      else closeMenuDrawer();
+    }
+    if (menuBtn) menuBtn.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      toggleMenuDrawer();
+      sfx("click");
+    });
+    // Click fora fecha
+    document.addEventListener("click", function (ev) {
+      if (!menuDrawer || menuDrawer.hidden) return;
+      if (menuDrawer.contains(ev.target) || (menuBtn && menuBtn.contains(ev.target))) return;
+      closeMenuDrawer();
+    });
+    // Esc fecha
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && menuDrawer && !menuDrawer.hidden) closeMenuDrawer();
+    });
+
+    var pb = document.getElementById("profile-btn");
+    if (pb) pb.addEventListener("click", function () {
+      if (!S.name || !S.consent) {
+        // Sem perfil ainda → leva pra registro
+        sfx("click");
+        goTo("register");
+        return;
+      }
+      sfx("click");
+      goTo("profile");
+    });
+    updateProfileBtn();
 
     var ib = document.getElementById("install-btn");
     if (ib) ib.addEventListener("click", function () {
@@ -2087,6 +2253,7 @@
       applyAudioState();
       updateSoundBtn();
       if (S.soundOn) sfx("click");
+      closeMenuDrawer();
     });
 
     var ab = document.getElementById("ambient-toggle");
@@ -2097,6 +2264,7 @@
       applyAudioState();
       updateSoundBtn();
       if (AUDIO) AUDIO.unlock();
+      closeMenuDrawer();
     });
 
     document.addEventListener("keydown", handleKey);
