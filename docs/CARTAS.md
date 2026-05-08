@@ -59,10 +59,12 @@ acadêmico em uma experiência lúdica acessível, mobile-first, com
 sonoridade de instrumentos africanos sintetizados (djembe, kalimba,
 balafon, agogô) e estética que valoriza a perspectiva afrocentrada.
 
-A versão atual cobre os Volumes I e II — origens da humanidade no
-continente africano, civilizações do Vale do Nilo, expansão Bantu e
-fundamentos linguísticos. O roadmap prevê a totalidade dos 8 mundos até
-2027.
+A versão atual cobre os 8 mundos / Volumes I–VIII com 71 enigmas
+validados — das origens da humanidade no Vale do Rift, passando por
+Kemet, Mali medieval, Costa Suaíli, Reinos das Florestas, Resistências
+da Diáspora, Encontro Forçado e Luta pela Liberdade do séc. XX.
+Próximas fases: Sala de Aula (Kahoot-style), tradução EN/FR/ES e
+piloto pedagógico em escolas públicas.
 
 2. Por que o patrocínio interessa à [Empresa]
 
@@ -172,8 +174,8 @@ Dossier de apresentação à UNESCO
 2. Resumo executivo (1 parágrafo)
    Jogo digital de enigmas educativos baseado nos 8 volumes da HGA
    UNESCO. Aberto, gratuito, mobile-first, multilíngue (PT-BR no MVP),
-   licença CC BY-SA 4.0. Atualmente cobre Volumes I e II com 23
-   enigmas validados.
+   licença CC BY-SA 4.0. Atualmente cobre os 8 mundos com 71
+   enigmas validados (Volumes I–VIII).
 
 3. Aderência aos princípios UNESCO
    3.1. Educação de qualidade (ODS 4)
@@ -193,7 +195,7 @@ Dossier de apresentação à UNESCO
         irregular
 
 5. Estado atual
-   5.1. MVP funcional — Volumes I e II
+   5.1. MVP funcional — Volumes I–VIII (71 enigmas)
    5.2. Open source · MIT (código) · CC BY-SA 4.0 (conteúdo)
    5.3. Liga Global de jogadores
    5.4. Modo claro (papiro) e escuro
@@ -350,9 +352,9 @@ PROJETO: Sankofa — Fragmentos da África
    volumes da História Geral da África da UNESCO. Mobile-first,
    offline (PWA), open source, com motor de áudio sintetizado de
    instrumentos africanos. Cumpre Lei 10.639/03 e a 11.645/08.
-   Atualmente com 23 enigmas validados (Volumes I e II); este edital
-   sustenta produção dos Volumes III e IV (Impérios do Sahel + Costas
-   e Rotas).
+   Atualmente com 71 enigmas validados em 8 mundos (Volumes I–VIII);
+   este edital sustenta validação acadêmica, expansão pedagógica
+   (Sala de Aula Kahoot-style) e tradução EN/FR/ES.
 
 4. Justificativa cultural
    [...]

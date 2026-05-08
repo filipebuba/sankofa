@@ -305,7 +305,7 @@ Esse orçamento sai do crowdfunding mês 4 + edital PNAB SP mês 8 + ESG (se hou
 >
 > Posso conceder entrevista por telefone, vídeo ou presencial. Disponibilizo dossier de 12 págs, capturas em alta, link do jogo e contatos de educadores parceiros.
 >
-> URL: https://sankofa-eosin.vercel.app
+> URL: https://www.sankofahga.com
 > Repositório: https://github.com/filipebuba/sankofa
 >
 > Atenciosamente,

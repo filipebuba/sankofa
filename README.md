@@ -11,41 +11,76 @@ progressivas, mosaicos visuais e sonoridade africana sintetizada.
 Abra `index.html` no navegador. Sem instalação, sem servidor, sem banco de dados.
 O progresso fica salvo no `localStorage`.
 
-## Estado atual (MVP — Mundo 1)
+## Estado atual (v1.3.6-dev — 8 mundos, 71 enigmas)
 
-- Fluxo completo: landing → registro → mapa de mundos → mundo → enigma → resultado → mosaico → perfil → conquistas → desafio diário.
-- 5 enigmas jogáveis baseados no Volume I da HGA.
+- Fluxo completo: landing → registro (modal HGA) → mapa de mundos → mundo → enigma → resultado → mosaico → perfil → conquistas → desafio diário → caderno de revisão.
+- **71 enigmas** validados em 8 mundos (Vol. I 15 + Vols. II–VIII 8 cada), cobrindo toda a HGA UNESCO.
 - 3 dicas progressivas por enigma (com custo em pontos).
 - 10 níveis (Aprendiz → Herdeiro de Sankofa) e 10 conquistas.
-- Mosaico de fragmentos com gradientes próprios.
-- Persistência local com migração automática de chaves antigas.
+- 8 patentes/títulos (Caçador → Soberano Pan-Africano) com avaliação por mundos+cauris+casa.
+- Mosaico de fragmentos com gradientes próprios + 24 PNGs.
+- Persistência local com migração automática de chaves antigas (`sankofa_v5_<profileId>`).
+- **Pedagogia liberal**: próximo mundo abre a 70%, não 100%. Mestria 100% +100 cauris, Mestria Perfeita (100% com ≥80% em 1ª tentativa) +250 cauris.
+- **Caderno de Revisão**: enigmas errados ficam pendentes para reforço sem cauris extras.
+- **Karma + Skip**: >50% pendente bloqueia avançar (custa 50 cauris pular); >20% gera toast de aviso. Skip após 2 erros: +5 pts piedade.
+- **HGA Royalty**: 9 Casas Reais com perks, 9 Súditos com gifts, genealogia em 9 árvores, 4 festivais com multiplicador ×1.5–2.0, Selo Real exportável (PNG 1080²) com casa+título+mosaico.
 - **Áudio sintetizado de instrumentos africanos** (djembe, dùndún, kalimba, balafon, agogô, shaker) via Web Audio API. Toggle global 🔊 e tambor ambiente 🥁.
+- **Acessibilidade**: TTS via Web Speech API (PT-BR), tema claro/escuro (papiro/dark), fonte Atkinson Hyperlegible.
+- **Liga local** multi-perfil + **Liga Global** Supabase opt-in com tiers semanais e abas `🌍 Global | #MinhaTag`.
+- **Torneio Assíncrono Semanal**: 5 enigmas/sem, anti-cheat server-side via Edge Function (`MIN_MS=1500`, ≤3 tentativas).
+- **PWA** instalável, offline-first, auto-update com `controllerchange`.
 - 8 capas de mundo (PNG) integradas nos cartões e na tela do mundo.
+- **Compartilhamento**: WhatsApp deeplink + Web Share API + clipboard.
 
 ## Estrutura
 
 ```
 sankofa/
 ├── index.html              # entrada
-├── styles.css              # tema escuro ouro/terra/verde/índigo
+├── styles.css              # tema papiro/dark ouro/terra/verde/índigo
+├── sw.js                   # Service Worker (PWA, auto-update)
+├── manifest.webmanifest    # PWA manifest
 ├── src/
-│   ├── app.js              # state machine de telas, lógica de enigma, conquistas
-│   └── audio.js            # motor de instrumentos africanos (Web Audio API)
+│   ├── app.js              # state machine, loop core, karma, caderno, mestria
+│   ├── audio.js            # motor de instrumentos africanos (Web Audio API)
+│   ├── royalty.js          # casas, títulos, festivais, perks, selo PNG
+│   ├── league.js           # Liga Global + abas por tag (Supabase REST)
+│   ├── league-config.js    # config Supabase (anon key pública por design)
+│   ├── tournament.js       # Torneio semanal (Edge Function + RPC)
+│   ├── profiles.js         # multi-perfil localStorage
+│   ├── profile-modal.js    # modal de criação rico (HGA + idade + tag)
+│   ├── onboarding.js       # carrossel 4 slides (1ª visita)
+│   ├── share.js            # WhatsApp + Web Share API + clipboard
+│   └── accessibility.js    # TTS via Web Speech API
 ├── data/
 │   ├── worlds.js           # 8 mundos da HGA
-│   ├── enigmas.js          # enigmas (Mundo 1 = 5 entradas)
+│   ├── enigmas.js          # 71 enigmas (Vols I-VIII)
 │   ├── levels.js           # 10 níveis
-│   └── achievements.js     # 10 conquistas
+│   ├── achievements.js     # 10 conquistas
+│   ├── titles.js           # 8 patentes
+│   ├── houses.js           # 9 casas reais + perks + questIds
+│   ├── suditos.js          # 9 NPCs com gifts
+│   ├── genealogy.js        # ancestrais por casa
+│   ├── festivals.js        # 4 festivais com multiplier
+│   ├── leagues.js          # 6 tiers semanais
+│   ├── hga-names.js        # 60 nomes históricos para gerador
+│   ├── blocklist.js        # vocabulário vetado em nicks/tags
+│   ├── tournament-config.js# regras semanais (5 enigmas, ≤3 tentativas)
+│   └── version.js          # versão + build date
+├── supabase/
+│   ├── SETUP_TOURNAMENT.sql# schema + RPC + view + seed gabarito
+│   ├── seed_enigma_answers.sql
+│   ├── migrations/
+│   └── functions/submit_tournament_answer/  # Edge Function
 ├── assets/
 │   ├── logo.png · favicon.png
-│   └── world-1..8-*.png    # capas dos 8 mundos
-├── docs/
-│   ├── CONCEITO.md         # tese, problema, princípios
-│   ├── ROADMAP.md          # fases 0–4
-│   ├── AUDIO.md            # mapa instrumento ↔ evento
-│   └── raw/                # material original arquivado
-└── .claude/
-    └── skills/             # sankofa-add-enigma, -add-world, -tune-audio
+│   ├── world-1..8-*.png    # capas dos 8 mundos
+│   └── frag_*.png          # 24 fragmentos com arte
+├── docs/                   # CONCEITO, ROADMAP, AUDIO, LIGA, MONETIZACAO,
+│                           # PITCH-DECK, CARTAS, ONE-PAGER, MULTIPLAYER-SOCIAL,
+│                           # UNIVERSO-TRANSMIDIA, CAMPANHA-LANCAMENTO, EDITAL-04
+├── word/                   # versão .docx de cada doc
+└── .claude/skills/         # sankofa-add-enigma, -add-world, -tune-audio
 ```
 
 ## Skills disponíveis
@@ -121,12 +156,13 @@ Localmente, copia `src/league-config.example.js` → `src/league-config.js` e pr
 
 ## Próximos passos recomendados
 
-1. Validar enigmas com especialista em HGA / educação básica.
-2. Acrescentar mais 10 enigmas para fechar o Mundo 1 com 15 desafios.
-3. Iniciar Mundo 2 (Reinos do Nilo, Volume II) com 8 enigmas piloto.
-4. Paleta sonora regional por mundo (kora no Sahel, ney no Nilo, etc.).
-5. Auditoria de acessibilidade (contraste AAA, foco visível, leitor de tela).
-6. Publicação online (GitHub Pages ou Vercel).
+1. Validar 71 enigmas com especialista em HGA / educação básica.
+2. Modo Sala de Aula (Kahoot-style) — Fase 2 do `MULTIPLAYER-SOCIAL.md`.
+3. Paleta sonora regional por mundo (kora no Sahel, ney no Nilo, etc.).
+4. Tradução EN/FR/ES.
+5. Painel do professor com relatório PNG/PDF.
+6. Cumprir as quests por casa (`HOUSES[i].questIds` hoje data-only).
+7. Distribuir gifts recorrentes dos súditos (`SUDITOS[i].gift` hoje só display).
 
 ## Licenças planejadas
 

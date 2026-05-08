@@ -17,7 +17,7 @@
 **Linha do edital:** Formação **e** Internacionalização (combinada)
 **Valor solicitado:** R$ 1.000.000,00
 **Duração:** 18 meses (jul/2026 a dez/2027)
-**URL pública:** https://sankofa-eosin.vercel.app
+**URL pública:** https://www.sankofahga.com
 **Repositório:** https://github.com/filipebuba/sankofa
 
 ---

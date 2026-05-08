@@ -15,15 +15,35 @@ cd "$(dirname "$0")/.."
 mkdir -p word
 
 echo "Gerando docs individuais em word/ ..."
-pandoc README.md             -o word/00-README.docx              --from markdown --to docx --standalone
-pandoc docs/CONCEITO.md      -o word/01-Conceito.docx            --from markdown --to docx --standalone
-pandoc docs/ROADMAP.md       -o word/02-Roadmap.docx             --from markdown --to docx --standalone
-pandoc docs/AUDIO.md         -o word/03-Audio.docx               --from markdown --to docx --standalone --toc --toc-depth=2
-pandoc docs/LIGA.md          -o word/04-Liga.docx                --from markdown --to docx --standalone
-pandoc docs/MONETIZACAO.md   -o word/05-Monetizacao.docx         --from markdown --to docx --standalone --toc --toc-depth=2
-pandoc docs/PITCH-DECK.md    -o word/06-Pitch-Deck.docx          --from markdown --to docx --standalone --toc --toc-depth=2
-pandoc docs/CARTAS.md        -o word/07-Cartas.docx              --from markdown --to docx --standalone --toc --toc-depth=2
-pandoc docs/ONE-PAGER.md     -o word/08-One-Pager.docx           --from markdown --to docx --standalone
+pandoc README.md                       -o word/00-README.docx                       --from markdown --to docx --standalone
+pandoc docs/CONCEITO.md                -o word/01-Conceito.docx                     --from markdown --to docx --standalone
+pandoc docs/ROADMAP.md                 -o word/02-Roadmap.docx                      --from markdown --to docx --standalone
+pandoc docs/AUDIO.md                   -o word/03-Audio.docx                        --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/LIGA.md                    -o word/04-Liga.docx                         --from markdown --to docx --standalone
+pandoc docs/MONETIZACAO.md             -o word/05-Monetizacao.docx                  --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/PITCH-DECK.md              -o word/06-Pitch-Deck.docx                   --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/CARTAS.md                  -o word/07-Cartas.docx                       --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/ONE-PAGER.md               -o word/08-One-Pager.docx                    --from markdown --to docx --standalone
+
+echo "Gerando docs adicionais (universo, música, podcast, kids, empresa, edital) ..."
+pandoc docs/UNIVERSO-TRANSMIDIA.md     -o word/10-Universo-Transmidia.docx          --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/LETRAS.md                -o word/11-Musica-Letras.docx                --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc podcast/EPISODIOS.md            -o word/12-Podcast-Episodios.docx            --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc kids/STORYBOARD-EP1.md          -o word/13-Kids-Storyboard-Ep1.docx          --from markdown --to docx --standalone
+pandoc musica/ACAPELLA.md              -o word/14-Musica-Acapella.docx              --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc podcast/EPISODIOS-5-12.md       -o word/15-Podcast-Eps-5-12.docx             --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc kids/STORYBOARDS-EP2-8.md       -o word/16-Kids-Storyboards-Ep2-8.docx       --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/CAMPANHA-LANCAMENTO.md     -o word/17-Campanha-Lancamento.docx          --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc empresa/ALTERACAO-CONTRATUAL.md -o word/18-Empresa-Alteracao-Contratual.docx --from markdown --to docx --standalone
+pandoc empresa/CURRICULO.md            -o word/19-Curriculo-Filipe.docx             --from markdown --to docx --standalone
+pandoc musica/SUNO-PROMPTS.md          -o word/20-Musica-Suno-Prompts.docx          --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/EDITAL-04-SP-PNAB.md       -o word/Edital-04-SP-PNAB.docx               --from markdown --to docx --standalone --toc --toc-depth=2
+
+# Cópias docx em pastas-irmãs com nomes alternativos (para envios diretos)
+pandoc empresa/ALTERACAO-CONTRATUAL.md -o empresa/Alteracao-Contratual-Datacenter-Vision.docx --from markdown --to docx --standalone
+pandoc empresa/CURRICULO.md            -o empresa/Curriculo-Filipe-Buba-Nhada.docx           --from markdown --to docx --standalone
+pandoc edital-04/CARTAS-APOIO.md       -o edital-04/CARTAS-APOIO.docx                        --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc edital-04/VIDEO-DEMO.md         -o edital-04/VIDEO-DEMO.docx                          --from markdown --to docx --standalone
 
 echo "Gerando volume completo ..."
 TMP=$(mktemp -d)

@@ -422,7 +422,7 @@ Conteúdo:
 
 ### 8.2. Engajamento
 
-- Cada Short termina: "Joga em sankofa-eosin.vercel.app"
+- Cada Short termina: "Joga em www.sankofahga.com"
 - Trends de áudio: usar áudios de músicas Sankofa (cria viral próprio)
 - Duets convidando criadores afro
 

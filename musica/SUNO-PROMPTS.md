@@ -680,7 +680,7 @@ Pelos Termos de Serviço Suno, **plano pago dá direito comercial**. Plano grát
 
 Cada música, na descrição do Spotify/Apple, inclui:
 
-> "Esta é a faixa do Mundo X do jogo Sankofa. Insira o código `XXXXX` no jogo (sankofa-eosin.vercel.app) para ganhar 50 cauris. Letra disponível em Genius. Baseado na *História Geral da África* da UNESCO. Open source CC BY-SA 4.0."
+> "Esta é a faixa do Mundo X do jogo Sankofa. Insira o código `XXXXX` no jogo (www.sankofahga.com) para ganhar 50 cauris. Letra disponível em Genius. Baseado na *História Geral da África* da UNESCO. Open source CC BY-SA 4.0."
 
 ### Capas das 8 músicas
 

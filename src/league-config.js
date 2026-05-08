@@ -1,12 +1,7 @@
 /*
   Sankofa — configuração da Liga + Torneio.
-  Este arquivo é gitignored. NUNCA commitá-lo.
-
-  Substitua "COLE_SUA_ANON_KEY_AQUI" pela chave anon real:
-    https://supabase.com/dashboard/project/jcfqlvzdmmkeehqvfdtb/settings/api
-    → "Project API keys" → anon public
-
-  Service role NÃO entra aqui (só Edge Functions usam).
+  A anon key é pública por design — RLS protege. Comitar é seguro.
+  Service role NUNCA entra aqui (só Edge Functions usam).
 */
 window.SANKOFA_LEAGUE_CONFIG = {
   url: "https://jcfqlvzdmmkeehqvfdtb.supabase.co",

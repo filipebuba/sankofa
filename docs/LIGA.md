@@ -10,10 +10,13 @@ create table league_scores (
   cauris int not null default 0,
   title  text,
   house  text,
+  tag    text,                          -- v1.2.0: filtro "Meu Grupo"
   week_start date not null,
   updated_at timestamptz not null default now()
 );
 create index league_scores_week_idx on league_scores(week_start, cauris desc);
+create index league_scores_tag_week_idx
+  on league_scores(tag, week_start, cauris desc) where tag is not null;
 
 alter table league_scores enable row level security;
 create policy "read all" on league_scores for select using (true);
@@ -21,20 +24,24 @@ create policy "upsert" on league_scores for insert with check (true);
 create policy "update self" on league_scores for update using (true);
 ```
 
+Migration idempotente para adicionar `tag` em bases já provisionadas:
+`supabase/migrations/20260507120000_add_tag_to_league_scores.sql`.
+
 ## Configurar no jogo
 
-Antes do `<script src="src/league.js">`, em `index.html`:
+Em `src/league-config.js` (ou via env injetada no build, ver README):
 
-```html
-<script>
-  window.SANKOFA_LEAGUE_CONFIG = {
-    url: "https://<project-ref>.supabase.co",
-    anonKey: "<anon-public-key>"
-  };
-</script>
+```js
+window.SANKOFA_LEAGUE_CONFIG = {
+  url: "https://<project-ref>.supabase.co",
+  anonKey: "<anon-public-key>",
+  hasTagColumn: true   // habilita aba "Meu Grupo"
+};
 ```
 
-Sem config = liga global escondida automaticamente.
+A anon key é pública por design — o RLS é quem protege. **Nunca commit Service Role.**
+
+Sem config = liga global e torneio escondidos automaticamente; o jogo continua 100% solo.
 
 ## Tiers (semanais)
 
@@ -51,12 +58,161 @@ Sem config = liga global escondida automaticamente.
 
 Domingo 00:00 UTC. `week_start` recalculado a cada submit.
 
+## Handle (PK) — anti-colisão
+
+A PK da tabela é `handle TEXT`. Dois jogadores com o mesmo nome (ex: duas
+"Maria"s em turmas diferentes) colidiriam. Para evitar isso sem mudar o
+schema:
+
+```js
+// src/app.js — leagueHandleFor()
+handle = name.slice(0, 20) + "·" + profileUid.slice(0, 6);
+// Exemplo: "Maria·m4f8gp"
+```
+
+O sufixo é **estável por dispositivo/perfil**. Re-submits do mesmo
+jogador continuam fazendo upsert na mesma linha. Outro jogador com o
+mesmo nome num dispositivo diferente recebe sufixo distinto e ocupa
+linha própria.
+
+Na UI, o helper `displayHandle(h)` recorta tudo após o último `·` para
+o leaderboard mostrar apenas "Maria".
+
+**Limitação conhecida**: trocar o nome via "✏️ Editar perfil" cria uma
+nova linha (PK diferente) e deixa a anterior órfã na semana corrente.
+Como a UI filtra por `week_start=eq.<semana atual>`, a órfã deixa de
+aparecer no domingo seguinte sem intervenção. Para fixar definitivamente
+seria preciso migrar para `handle = uid6` puro + coluna `nick` separada
+para exibição — schema change diferida.
+
 ## Privacy
 
-- Apenas `handle` (nome do jogador truncado a 20 chars), `cauris`, `title`, `house`.
+- Apenas `handle` (nome + sufixo de 6 chars do uid local), `cauris`, `title`, `house`, `tag`.
+- Sufixo é derivado do `profile_uid` local (UUID gerado por `Date.now().toString(36)`), não tem PII.
 - Sem email, sem foto, sem IP no schema.
 - Player pode desativar via "Recomeçar do Zero" (limpa state, opt-out implícito).
+- Edição de perfil ("✏️ Editar perfil" no Perfil) re-submit ao mesmo handle (upsert), não cria entrada órfã.
 
 ## Liga local (sempre disponível)
 
 `SankofaProfiles` permite múltiplos perfis no mesmo `localStorage`. Cada um tem cauris/state isolados. Útil para sala de aula. Nada vai para servidor.
+
+UI tem abas `Todos | #MinhaTag` quando o perfil ativo tem tag definida.
+
+---
+
+# Torneio Semanal Assíncrono — Setup
+
+Junto da Liga, um torneio semanal opt-in com 5 enigmas selecionados, anti-cheat server-side. Schema, RPC, view e Edge Function consolidados em `supabase/SETUP_TOURNAMENT.sql`.
+
+## Schemas
+
+```sql
+-- Gabarito server-only (RLS bloqueia leitura ao cliente)
+create table enigma_answers (
+  enigma_id   text primary key,
+  correct_idx int  not null,
+  world       int  not null,
+  options_n   int  not null
+);
+alter table enigma_answers enable row level security;
+-- Sem policy de SELECT → cliente não lê. Edge Function usa service_role.
+
+-- Semana ativa
+create table sankofa_tournament_week (
+  id          serial primary key,
+  week_iso    text unique not null,         -- '2026-W19'
+  enigma_ids  text[] not null,
+  starts_at   timestamptz not null,
+  ends_at     timestamptz not null,
+  created_at  timestamptz default now()
+);
+
+-- Tentativas (insert via Edge Function, leitura aberta)
+create table sankofa_tournament_score (
+  id            bigserial primary key,
+  week_id       int references sankofa_tournament_week(id),
+  profile_uid   text not null,
+  nick          text not null,
+  tag           text,
+  age_band      text,
+  house         text,
+  enigma_id     text not null,
+  picked        int  not null,
+  correct       boolean not null,
+  score         int  not null,
+  ms_to_answer  int,
+  hints_used    int,
+  attempt       int  not null,
+  submitted_at  timestamptz default now(),
+  unique (week_id, profile_uid, enigma_id, attempt)
+);
+create index on sankofa_tournament_score (week_id, score desc);
+create index on sankofa_tournament_score (week_id, tag, score desc);
+
+alter table sankofa_tournament_score enable row level security;
+create policy "score_read_public" on sankofa_tournament_score
+  for select using (true);
+-- INSERT direto bloqueado: Edge Function usa service_role.
+```
+
+## RPC e view
+
+- `current_tournament_week()` → `{week_iso, enigma_ids, starts_at, ends_at}` para o cliente descobrir a semana ativa.
+- `rotate_weekly_tournament()` (cron domingo 00:00 UTC) sorteia 5 enigmas distribuídos por mundo.
+- View `sankofa_tournament_ranking` agrega melhor score por jogador/semana.
+- View `sankofa_tournament_best` agrega melhor por enigma.
+
+Seed do gabarito: `supabase/seed_enigma_answers.sql` com 71 enigmas. Auto-gerado por `scripts/build-tournament-answers.cjs`.
+
+## Edge Function `submit_tournament_answer`
+
+Caminho: `supabase/functions/submit_tournament_answer/`. Deploy via `supabase functions deploy submit_tournament_answer`.
+
+Anti-cheat:
+
+- Janela temporal: `now() between week.starts_at and week.ends_at`.
+- `enigma_id ∈ week.enigma_ids`.
+- `attempt ≤ 3` (`MAX_ATTEMPTS`).
+- `ms_to_answer ≥ 1500` (`MIN_MS`) — tempo mínimo humano de leitura.
+- Gabarito consultado server-side (cliente nunca vê `correct_idx`).
+
+Score: tentativa × dicas × velocidade. Cliente recebe `{ok, correct, score}`.
+
+## Configuração do cliente
+
+`data/tournament-config.js`:
+
+```js
+window.SANKOFA_TOURNAMENT = {
+  ENIGMAS_PER_WEEK: 5,
+  MAX_ATTEMPTS: 3,
+  MIN_MS: 1500,
+  REWARDS: { weekChampion: 100 }   // distribuição manual no momento
+};
+```
+
+`src/tournament.js` expõe:
+
+- `loadWeek()` — cacheia semana atual via RPC.
+- `isInCurrentWeek(eid)` — checa se enigma jogado conta para o torneio.
+- `submit({eid, picked, hintsUsed, msToAnswer, attempt})` — POST para Edge Function.
+- `attemptsUsed(eid)`, `localBest(eid)`, `recordAttempt(...)`, `totalLocalScore()` — em localStorage `sankofa_tournament_local_v1`.
+- `fetchRanking(weekId, {tag, limit})` — lê view ranking.
+
+Integração: `submitToTournamentIfApplicable()` em `app.js` dispara fire-and-forget após cada `handlePick` em enigma da semana corrente.
+
+## UI
+
+- Banner do Torneio na home (`rMap`) mostra progresso e dias restantes.
+- Tela `tournament` lista os 5 enigmas com status (novo / wip / feito / esgotado).
+- Botão "🥇 Torneio" no menu inferior.
+- Toast pós-acerto: "🏆 Torneio: +X pontos".
+
+## Reset
+
+Domingo 00:00 UTC. Cron `rotate_weekly_tournament` cria nova semana com 5 enigmas sorteados.
+
+## Privacy
+
+Mesmo nível da Liga. `profile_uid` é UUID local, sem PII.
