@@ -24,7 +24,7 @@
 
 ## 1. Resumo executivo (1.500 caracteres)
 
-Sankofa é um jogo digital educativo de enigmas baseado nos 8 volumes da *História Geral da África* da UNESCO, lançado em 2026 com cobertura completa dos Volumes I e II (23 enigmas validados, 9 Casas Reais Africanas, motor de áudio sintetizado de instrumentos africanos). Disponível gratuitamente como Progressive Web App, funciona offline em qualquer celular e está em conformidade com a Lei 10.639/03.
+Sankofa é um jogo digital educativo de enigmas baseado nos 8 volumes da *História Geral da África* da UNESCO, lançado em 2026 com cobertura completa dos 8 volumes (71 enigmas validados, 9 Casas Reais Africanas, motor de áudio sintetizado de instrumentos africanos). Disponível gratuitamente como Progressive Web App, funciona offline em qualquer celular e está em conformidade com a Lei 10.639/03.
 
 Esta proposta apresenta, para o Edital 04, dois eixos complementares: **(1) FORMAÇÃO** de 200 professores e mediadores culturais da rede pública e privada paulistana em letramento racial e ensino de história africana via gameplay, com produção de cartilhas, planos de aula e Painel do Professor; e **(2) INTERNACIONALIZAÇÃO** com tradução para inglês, francês e espanhol, parcerias com universidades dos PALOP (Moçambique, Cabo Verde, Angola), apresentação em festivais internacionais (Games for Change NY, A MAZE. Berlin, FLIP/FLUP) e lançamento simultâneo Brasil-Portugal-África lusófona.
 
@@ -269,7 +269,7 @@ Modelo "Formação Cascata 3:1":
 | 00–10s | Fade in. Logo Sankofa. Pássaro voando.                          | "Sankofa. Volte e busque o que ficou."                |
 | 10–25s | Tu olhando câmera. Background: estante de livros + bandeira SP. | "Eu sou Filipe Buba. Da UNILAB. De São Paulo."       |
 | 25–55s | Tela do jogo: landing → enigma → mosaico → trono.               | "A Lei 10.639 obriga ensino de História da África há 22 anos. Sankofa entrega isso." |
-| 55–90s | Mãos jogando no celular. Som de djembe e kalimba.               | "8 mundos. 23 enigmas. 9 casas reais. Tudo na HGA UNESCO." |
+| 55–90s | Mãos jogando no celular. Som de djembe e kalimba.               | "8 mundos. 71 enigmas. 9 casas reais. Tudo na HGA UNESCO." |
 | 90–120s | Mapa-múndi com ponto SP + linhas para Maputo, Praia, Luanda, Lisboa. | "Vamos formar 200 professores em SP. Traduzir para 5 idiomas. Levar a 4 países lusófonos." |
 | 120–150s | Tu de novo, sério.                                              | "R$ 1 milhão. 18 meses. 50 mil alunos atingidos." |
 | 150–170s | Schedule: cronograma rolando.                                    | "Open source. CC BY-SA. Selo SMC em todo lugar."    |

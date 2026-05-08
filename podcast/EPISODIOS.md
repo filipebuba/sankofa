@@ -24,7 +24,7 @@
 >
 > Há um ano comecei a fazer um jogo. Um jogo simples, no celular. Que pegava os 8 volumes da *História Geral da África* da UNESCO — 8.000 páginas escritas por mais de 230 acadêmicos, a maioria africanos — e transformava em enigmas. Quem é Mansa Musa? Quem foi Amanirenas? O que tem o Vale do Rift que o vale do Reno não tem?
 >
-> O jogo virou maior do que eu imaginava. Hoje tem 23 enigmas, 9 Casas Reais, motor de áudio com instrumentos africanos sintetizados, está em www.sankofahga.com. Mas faltava som. Faltava palavra puxada conversa puxada com gente que pensa essas coisas. Faltava um lugar onde a história não fosse texto, fosse voz."
+> O jogo virou maior do que eu imaginava. Hoje tem 71 enigmas, 9 Casas Reais, motor de áudio com instrumentos africanos sintetizados, está em www.sankofahga.com. Mas faltava som. Faltava palavra puxada conversa puxada com gente que pensa essas coisas. Faltava um lugar onde a história não fosse texto, fosse voz."
 
 **[02:00–04:00]** Música — drop instrumental do single "Mansa Musa" (30 seg).
 

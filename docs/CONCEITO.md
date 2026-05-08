@@ -47,7 +47,7 @@ Um jogo web aberto, leve, mobile-first e acessível em que cada enigma combina:
 Estudantes de 10 a 17 anos, professores da educação básica e educadores afrodescendentes.
 Deve funcionar de forma autônoma e também caber em sala de aula.
 
-## Estado atual (v1.3.6-dev)
+## Estado atual (v1.3.9-dev)
 
 A versão jogável cobre **os 8 mundos** com **71 enigmas** validados a partir dos Volumes I–VIII da HGA:
 

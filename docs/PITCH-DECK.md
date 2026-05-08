@@ -112,7 +112,7 @@ Rodapé:
 
 **O que já está pronto (MVP).**
 
-- ✅ **23 enigmas** validados na HGA (Vols I e II completos)
+- ✅ **71 enigmas** validados na HGA (Vols I a VIII completos)
 - ✅ 8 mundos definidos (Origens → Luta e Liberdade)
 - ✅ 9 Casas Reais Africanas (Mansas do Mali, Faraós de Kemet, Kandakes de Kush…)
 - ✅ Motor de áudio sintetizado (sem amostras externas, licença livre)
@@ -159,7 +159,7 @@ B2C (5%)          — Freemium R$ 19,90 · Mundos 1-2 grátis
 
 | Recurso                      | Para quê                            | Valor          |
 |------------------------------|-------------------------------------|----------------|
-| 1 desenvolvedor pleno        | Mundos 3-8                          | R$ 180k/ano    |
+| 1 desenvolvedor pleno        | Expansão Vols III-VIII (15 por mundo) + manutenção | R$ 180k/ano    |
 | 1 ilustrador(a) negro(a)     | Arte original, sem stock            | R$ 96k/ano     |
 | 1 historiador consultor      | Validação acadêmica                 | R$ 60k/ano     |
 | Audio engineer (parcial)     | Refinar instrumentos por mundo      | R$ 36k         |
