@@ -529,6 +529,9 @@
     data = data || {};
     enigmaLocked = false;
     contextOpened = false;
+    if (screen === "feedback" && S.screen && S.screen !== "feedback") {
+      S.lastScreenBeforeFeedback = S.screen;
+    }
     S.screen = screen;
     S.screenData = data;
     save();
@@ -658,6 +661,8 @@
       case "terms": app.innerHTML = rTerms(); break;
       case "about": app.innerHTML = rAbout(); break;
       case "accessibility": app.innerHTML = rAccessibility(); break;
+      case "feedback": app.innerHTML = rFeedback(); break;
+      case "contribute": app.innerHTML = rContribute(); break;
       default: app.innerHTML = rLanding();
     }
     attachEvents();
@@ -696,6 +701,13 @@
       '<p class="tagline">"Volte e busque. Não é errado voltar pelo que esqueceste."</p>' +
       ctaBlock +
       '<p style="font-size:.72rem;color:var(--text-muted);margin-top:4px;opacity:0;animation:fadeUp .6s ease 1.4s forwards">Baseado na História Geral da África — UNESCO</p>' +
+      '<div class="landing-contrib">' +
+        '<p>Sankofa está em construção. Tua palavra ajuda.</p>' +
+        '<div class="landing-contrib-actions">' +
+          '<button class="btn btn-ghost btn-sm" data-act="go-feedback">💬 Feedback</button>' +
+          '<button class="btn btn-ghost btn-sm" data-act="go-contribute">🤝 Contribuir</button>' +
+        '</div>' +
+      '</div>' +
       '<p class="version-stamp">v' + (window.SANKOFA_VERSION || "0.0.0") + (window.SANKOFA_BUILD_DATE ? " · " + window.SANKOFA_BUILD_DATE : "") + '</p>' +
       '</div>';
   }
@@ -1511,6 +1523,8 @@
     html += '<p style="text-align:center;color:var(--text-dim);font-size:.88rem;margin-bottom:6px">Tudo o que precisas saber sobre o Sankofa.</p>';
     html += '<div class="info-hub-grid">';
     html += hubCard("📖", "Como Jogar", "Regras, dicas, conquistas, atalhos.", "go-help");
+    html += hubCard("💬", "Enviar Feedback", "Reporta um bug, sugere algo, manda um abraço.", "go-feedback");
+    html += hubCard("🤝", "Contribuir", "Como ajudar Sankofa a crescer.", "go-contribute");
     html += hubCard("🛡️", "Política de Privacidade", "O que guardamos, onde, e como apagar.", "go-privacy");
     html += hubCard("📜", "Termos de Uso", "Licenças, conduta, idade mínima.", "go-terms");
     html += hubCard("♿", "Acessibilidade", "Tamanho de texto, voz, contraste, teclado.", "go-accessibility");
@@ -1752,6 +1766,105 @@
     return html;
   }
 
+  function rFeedback() {
+    var html = infoBackBtn();
+    html += '<div class="info-page">';
+    html += '<h2>💬 Enviar Feedback</h2>';
+    html += '<p>Sankofa está em construção contínua. <strong>O teu feedback molda o que vem a seguir.</strong> Bug, sugestão, elogio, dúvida — manda. Sem fricção, sem cadastro.</p>';
+
+    html += '<form id="feedback-form" onsubmit="return false" novalidate>';
+
+    // Tipo
+    html += '<div class="fb-field">';
+    html += '<label class="fb-label">Tipo de mensagem</label>';
+    html += '<div class="fb-radios" role="radiogroup" aria-label="Tipo de feedback">';
+    var types = [
+      { id: "bug", label: "🐛 Bug", desc: "Algo quebrou" },
+      { id: "suggestion", label: "💡 Sugestão", desc: "Ideia para melhorar" },
+      { id: "praise", label: "🙏 Elogio", desc: "Algo que gostou" },
+      { id: "question", label: "❓ Pergunta", desc: "Quero saber" },
+      { id: "enigma", label: "📚 Conteúdo", desc: "Sobre um enigma específico" }
+    ];
+    for (var ti = 0; ti < types.length; ti++) {
+      var t = types[ti];
+      html += '<label class="fb-radio">';
+      html += '<input type="radio" name="fb-type" value="' + t.id + '"' + (ti === 1 ? " checked" : "") + '>';
+      html += '<span><strong>' + t.label + '</strong><small>' + t.desc + '</small></span>';
+      html += '</label>';
+    }
+    html += '</div></div>';
+
+    // Mensagem
+    html += '<div class="fb-field">';
+    html += '<label class="fb-label" for="fb-msg">Mensagem <span style="color:var(--danger)">*</span></label>';
+    html += '<textarea id="fb-msg" class="fb-textarea" rows="6" maxlength="4000" minlength="5" required placeholder="Descreve o que aconteceu, o que sugeres, ou o que te tocou. Quanto mais específico, melhor."></textarea>';
+    html += '<div class="fb-counter"><span id="fb-counter">0</span>/4000</div>';
+    html += '</div>';
+
+    // Contato opcional
+    html += '<div class="fb-field">';
+    html += '<label class="fb-label" for="fb-contact">Contato <small style="color:var(--text-muted)">(opcional, só se quiseres resposta)</small></label>';
+    html += '<input type="text" id="fb-contact" class="fb-input" maxlength="120" placeholder="email ou WhatsApp — em branco = anônimo">';
+    html += '<small class="fb-hint">Não partilhamos. Usado só para te responder, se for o caso.</small>';
+    html += '</div>';
+
+    // Submit
+    html += '<div class="fb-actions">';
+    html += '<button id="fb-submit" type="button" class="btn btn-gold btn-block" data-act="submit-feedback">Enviar feedback</button>';
+    html += '<small style="display:block;text-align:center;color:var(--text-muted);margin-top:8px">Ou escreve direto: <a href="mailto:flifnhada@hotmail.com?subject=Sankofa%20feedback">flifnhada@hotmail.com</a></small>';
+    html += '</div>';
+
+    html += '</form>';
+
+    html += '<p class="info-meta">Os feedbacks anônimos vão para a base privada do projeto. Não são partilhados, vendidos ou indexados. Apenas o autor lê e responde.</p>';
+    html += '</div>';
+    return html;
+  }
+
+  function rContribute() {
+    var html = infoBackBtn();
+    var v = window.SANKOFA_VERSION || "?";
+    html += '<div class="info-page">';
+    html += '<h2>🤝 Como contribuir com Sankofa</h2>';
+    html += '<p>Sankofa é open source, gratuito e sustentado por entusiasmo. <strong>Cada gesto ajuda.</strong> Escolhe o que cabe em ti hoje:</p>';
+
+    html += '<h3>📲 Compartilhar</h3>';
+    html += '<p>Manda para uma professora, um aluno, um amigo. O melhor marketing é boca-a-boca.</p>';
+    html += '<button class="btn btn-gold btn-block" data-act="share-wa" style="margin-top:6px">📲 Partilhar no WhatsApp</button>';
+
+    html += '<h3>⭐ Estrela no GitHub</h3>';
+    html += '<p>Stars ajudam o projeto a aparecer em buscas e a ser indicado para programas. Leva 3 segundos.</p>';
+    html += '<a class="btn btn-outline btn-block" href="https://github.com/filipebuba/sankofa" target="_blank" rel="noopener" style="margin-top:6px">🐙 Abrir repositório</a>';
+
+    html += '<h3>🐛 Reportar problema ou sugerir</h3>';
+    html += '<p>Encontraste um bug? Tens ideia para um enigma novo, uma melhoria, uma crítica? Manda no formulário rápido — anônimo se quiseres.</p>';
+    html += '<button class="btn btn-outline btn-block" data-act="go-feedback" style="margin-top:6px">💬 Abrir formulário</button>';
+
+    html += '<h3>📚 Validar conteúdo histórico</h3>';
+    html += '<p>És professor(a), historiador(a), educador(a) afrocentrado(a)? <strong>Lê 5 enigmas e diz onde melhorar.</strong> Crédito como revisor(a) acadêmico no produto + carta formal de colaboração.</p>';
+    html += '<a class="btn btn-outline btn-block" href="mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20valida%C3%A7%C3%A3o%20de%20conte%C3%BAdo%20HGA" style="margin-top:6px">✉ Quero validar enigmas</a>';
+
+    html += '<h3>🏫 Levar Sankofa à tua escola</h3>';
+    html += '<p>Pilotos gratuitos de 90 dias para escolas públicas e privadas. Painel do professor + relatórios + capacitação. Cumpre Lei 10.639/03.</p>';
+    html += '<a class="btn btn-outline btn-block" href="mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20piloto%20em%20escola" style="margin-top:6px">🏫 Falar sobre piloto escolar</a>';
+
+    html += '<h3>💛 Apoiar financeiramente</h3>';
+    html += '<p>Sankofa não tem ads, não vende dados, não cobra acesso. Custo de servidor + tempo de desenvolvimento sai do bolso do autor. Doações pontuais ou recorrentes ajudam a manter o jogo gratuito.</p>';
+    html += '<a class="btn btn-outline btn-block" href="mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20apoio%20financeiro" style="margin-top:6px">💛 Quero apoiar</a>';
+
+    html += '<h3>🤝 Patrocínio institucional / ESG</h3>';
+    html += '<p>Empresas, ONGs, secretarias: pacotes de R$ 50k a R$ 1M+ com selo "Apresentado por…". Métricas auditáveis para relatórios ESG / GRI / ODS 4 e 10. Década dos Afrodescendentes 2025–2034.</p>';
+    html += '<a class="btn btn-outline btn-block" href="mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20patroc%C3%ADnio%20institucional" style="margin-top:6px">🤝 Conversar sobre patrocínio</a>';
+
+    html += '<h3>🌍 Traduzir</h3>';
+    html += '<p>Roadmap inclui EN / FR / ES (PALOP francófonos, diáspora EUA, América Latina). Falas outra língua e queres ajudar? Avisa.</p>';
+    html += '<a class="btn btn-outline btn-block" href="mailto:flifnhada@hotmail.com?subject=Sankofa%20%E2%80%94%20tradu%C3%A7%C3%A3o" style="margin-top:6px">🌍 Quero traduzir</a>';
+
+    html += '<p class="info-meta">Sankofa v' + v + ' · MIT (código) · CC BY-SA 4.0 (conteúdo) · <a href="https://github.com/filipebuba/sankofa" target="_blank" rel="noopener">github.com/filipebuba/sankofa</a></p>';
+    html += '</div>';
+    return html;
+  }
+
   function rDaily() {
     var daily = getDailyEnigma();
     var done = isDailyDone();
@@ -1794,6 +1907,16 @@
       ni.addEventListener("keydown", function (e) { if (e.key === "Enter") handleRegister(); });
       if (S.name) ni.value = S.name;
       setTimeout(function () { ni.focus(); }, 350);
+    }
+    // Feedback form: contador de caracteres
+    var fbMsg = document.getElementById("fb-msg");
+    var fbCounter = document.getElementById("fb-counter");
+    if (fbMsg && fbCounter) {
+      var updateCounter = function () { fbCounter.textContent = String(fbMsg.value.length); };
+      fbMsg.addEventListener("input", updateCounter);
+      updateCounter();
+      // Lembra a tela anterior para anexar ao feedback
+      // (S.screenData passou pelo goTo; usamos S.screen como fallback)
     }
   }
 
@@ -1935,6 +2058,9 @@
       case "go-terms": sfx("navigate"); goTo("terms"); break;
       case "go-about": sfx("navigate"); goTo("about"); break;
       case "go-accessibility": sfx("navigate"); goTo("accessibility"); break;
+      case "go-feedback": sfx("navigate"); goTo("feedback"); break;
+      case "go-contribute": sfx("navigate"); goTo("contribute"); break;
+      case "submit-feedback": handleSubmitFeedback(); break;
       case "speak-enigma": handleSpeakEnigma(el.getAttribute("data-e")); break;
       case "tab-profiles": {
         var t = el.getAttribute("data-tab") || "all";
@@ -2123,6 +2249,83 @@
     if (!PROFILES || !id) return;
     PROFILES.switchTo(id);
     location.reload();
+  }
+
+  function handleSubmitFeedback() {
+    var msgEl = document.getElementById("fb-msg");
+    var contactEl = document.getElementById("fb-contact");
+    var btn = document.getElementById("fb-submit");
+    if (!msgEl) return;
+
+    var typeRadio = document.querySelector('input[name="fb-type"]:checked');
+    var typeVal = typeRadio ? typeRadio.value : "suggestion";
+    var msgVal = (msgEl.value || "").trim();
+    var contactVal = (contactEl && contactEl.value || "").trim().slice(0, 120);
+
+    if (msgVal.length < 5) {
+      showToast("⚠️", "Mensagem curta", "Escreve pelo menos 5 caracteres.");
+      msgEl.focus();
+      return;
+    }
+    if (msgVal.length > 4000) {
+      showToast("⚠️", "Mensagem longa", "Máximo 4000 caracteres.");
+      return;
+    }
+
+    var cfg = window.SANKOFA_LEAGUE_CONFIG || null;
+    var endpoint = cfg && cfg.url ? (cfg.url + "/rest/v1/feedback") : null;
+    var payload = {
+      type: typeVal,
+      message: msgVal,
+      screen: (S.lastScreenBeforeFeedback || S.screen || "feedback"),
+      contact: contactVal || null,
+      age_band: S.ageBand || null,
+      app_version: window.SANKOFA_VERSION || null,
+      ua: (navigator.userAgent || "").slice(0, 240),
+      url_ref: (function () {
+        try { return new URLSearchParams(location.search).get("ref") || null; }
+        catch (e) { return null; }
+      })()
+    };
+
+    if (btn) { btn.disabled = true; btn.textContent = "Enviando..."; }
+
+    function onSuccess() {
+      sfx("achievement");
+      showToast("💛", "Obrigado!", "Recebido. Cada palavra ajuda Sankofa a crescer.");
+      msgEl.value = "";
+      if (contactEl) contactEl.value = "";
+      var ctr = document.getElementById("fb-counter");
+      if (ctr) ctr.textContent = "0";
+      if (btn) { btn.disabled = false; btn.textContent = "Enviar feedback"; }
+    }
+
+    function onFailure(reason) {
+      sfx("wrong");
+      var subject = encodeURIComponent("Sankofa feedback (" + typeVal + ")");
+      var body = encodeURIComponent(msgVal + (contactVal ? "\n\nContato: " + contactVal : ""));
+      showToast("⚠️", "Não enviou online", "Abrindo e-mail como alternativa.");
+      window.location.href = "mailto:flifnhada@hotmail.com?subject=" + subject + "&body=" + body;
+      if (btn) { btn.disabled = false; btn.textContent = "Enviar feedback"; }
+    }
+
+    if (!endpoint || !cfg.anonKey) return onFailure("no-config");
+
+    fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "apikey": cfg.anonKey,
+        "Authorization": "Bearer " + cfg.anonKey,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (r.ok) onSuccess();
+      else onFailure("status-" + r.status);
+    }).catch(function (e) {
+      onFailure(String(e));
+    });
   }
 
   function handleNewProfile() {
