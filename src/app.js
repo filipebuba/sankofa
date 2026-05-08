@@ -1401,9 +1401,9 @@
     if (!en) return;
     var ordinals = ["primeira", "segunda", "terceira", "quarta", "quinta", "sexta"];
     var parts = [];
-    if (en.title)   parts.push(en.title + ".");
-    if (en.intro)   parts.push(en.intro);
-    if (en.context) parts.push(en.context);
+    if (en.title) parts.push(en.title + ".");
+    if (en.intro) parts.push(en.intro);
+    // Contexto NÃO entra aqui — só lido se jogador abrir "Queres saber mais?"
     if (en.question) parts.push(en.question);
     parts.push("Opções de resposta.");
     en.options.forEach(function (o, i) {
@@ -1412,6 +1412,13 @@
     });
     if (window.SankofaTTS.speakSequence) window.SankofaTTS.speakSequence(parts);
     else window.SankofaTTS.speak(parts.join(". "));
+  }
+
+  function speakContext(eid) {
+    if (!window.SankofaTTS || !window.SankofaTTS.available()) return;
+    var en = getEnigma(eid);
+    if (!en || !en.context) return;
+    window.SankofaTTS.speak(en.context);
   }
 
   function handlePickHouse(houseId) {
@@ -1541,6 +1548,13 @@
         save();
         checkAchievements();
       }
+      // Lê o contexto em voz alta SE TTS estiver ligado.
+      if (window.SankofaTTS && window.SankofaTTS.available() && window.SankofaTTS.enabled()) {
+        speakContext(eid);
+      }
+    } else {
+      // Fechou contexto — para fala atual se for dele
+      if (window.SankofaTTS && window.SankofaTTS.stop) window.SankofaTTS.stop();
     }
   }
 
