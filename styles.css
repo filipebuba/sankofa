@@ -698,6 +698,42 @@ input { font-family: var(--font-body); }
 .result .fragment-preview { width: 140px; height: 140px; border-radius: var(--radius-lg); border: 3px solid var(--gold); animation: fragmentReveal .8s var(--ease) .3s both; overflow: hidden; }
 .result .explanation { font-size: .92rem; color: var(--text-dim); line-height: 1.7; text-align: left; background: var(--surface); padding: 18px; border-radius: var(--radius); border-left: 3px solid var(--gold); }
 
+.world-milestone {
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--gold);
+  background:
+    linear-gradient(135deg, rgba(201, 168, 76, .18), rgba(184, 90, 58, .16)),
+    var(--surface2);
+  text-align: left;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .28);
+  animation: fadeScale .45s var(--ease) both;
+}
+.world-milestone.unlocked { border-color: var(--green); }
+.world-milestone.perfect { border-color: var(--gold); box-shadow: 0 12px 34px rgba(201, 168, 76, .22); }
+.world-milestone-kicker {
+  color: var(--gold);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.world-milestone-title {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-top: 3px;
+}
+.world-milestone p {
+  color: var(--text-dim);
+  font-size: .86rem;
+  line-height: 1.45;
+  margin-top: 6px;
+}
+
 .profile-header { text-align: center; padding: 16px 0; }
 .profile-header .avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--terra)); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.8rem; font-weight: 900; color: var(--bg); margin: 0 auto 10px; }
 .profile-header h2 { font-size: 1.3rem; }
