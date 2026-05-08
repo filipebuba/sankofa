@@ -42,6 +42,30 @@
     return weekIso + "::" + enigmaId;
   }
 
+  function normalizeEnigmaIds(ids) {
+    if (Array.isArray(ids)) {
+      return ids.filter(function (id) { return typeof id === "string" && id.trim(); });
+    }
+    if (typeof ids === "string") {
+      var raw = ids.trim();
+      if (!raw) return [];
+      if (raw.charAt(0) === "{" && raw.charAt(raw.length - 1) === "}") {
+        raw = raw.slice(1, -1);
+      }
+      return raw.split(",").map(function (id) {
+        return id.replace(/^"|"$/g, "").trim();
+      }).filter(Boolean);
+    }
+    return [];
+  }
+
+  function normalizeWeek(w) {
+    if (!w) return null;
+    var out = Object.assign({}, w);
+    out.enigma_ids = normalizeEnigmaIds(w.enigma_ids);
+    return out;
+  }
+
   function attemptsUsed(weekIso, enigmaId) {
     var s = readLocal();
     var k = localKey(weekIso, enigmaId);
@@ -73,8 +97,8 @@
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) {
         if (!data) return null;
-        if (Array.isArray(data)) return data[0] || null;
-        return data;
+        if (Array.isArray(data)) return normalizeWeek(data[0] || null);
+        return normalizeWeek(data);
       })
       .catch(function () { return null; });
   }
@@ -115,6 +139,7 @@
 
   function totalLocalScore(weekIso, enigmaIds) {
     var sum = 0;
+    if (!Array.isArray(enigmaIds)) return sum;
     for (var i = 0; i < enigmaIds.length; i++) sum += localBest(weekIso, enigmaIds[i]);
     return sum;
   }

@@ -1027,6 +1027,16 @@
       return html;
     }
 
+    var tournamentIds = Array.isArray(w.enigma_ids) ? w.enigma_ids : [];
+    if (!tournamentIds.length) {
+      html += '<div class="card" style="margin-top:16px;text-align:center">';
+      html += '<p style="color:var(--text-dim);margin-bottom:12px">A semana atual do torneio ainda nao tem enigmas configurados.</p>';
+      html += '<p style="color:var(--text-muted);font-size:.82rem">Rode a rotacao semanal no Supabase apos preencher o gabarito dos enigmas, ou toque em atualizar depois que a semana for criada.</p>';
+      html += '<button class="btn btn-gold btn-block btn-sm" data-act="go-tournament" style="margin-top:14px">Atualizar</button>';
+      html += '</div>';
+      return html;
+    }
+
     var maxAtt = (window.SANKOFA_TOURNAMENT && window.SANKOFA_TOURNAMENT.MAX_ATTEMPTS) || 3;
     var endsAt = new Date(w.ends_at);
     var msLeft = endsAt.getTime() - Date.now();
@@ -1035,16 +1045,16 @@
     html += '<p style="text-align:center;color:var(--text-dim);font-size:.86rem;margin-bottom:14px">' +
       'Semana ' + w.week_iso + ' · ' + (daysLeft > 0 ? daysLeft + ' dia' + (daysLeft !== 1 ? "s" : "") + " restante" + (daysLeft !== 1 ? "s" : "") : "encerrando hoje") + '</p>';
 
-    var totalScore = window.SankofaTournament.totalLocalScore(w.week_iso, w.enigma_ids);
+    var totalScore = window.SankofaTournament.totalLocalScore(w.week_iso, tournamentIds);
     html += '<div class="league-stats">';
-    html += '<div class="lstat"><div class="lstat-val">' + w.enigma_ids.length + '</div><div class="lstat-lbl">enigmas</div></div>';
+    html += '<div class="lstat"><div class="lstat-val">' + tournamentIds.length + '</div><div class="lstat-lbl">enigmas</div></div>';
     html += '<div class="lstat"><div class="lstat-val">' + maxAtt + '</div><div class="lstat-lbl">tentativas</div></div>';
     html += '<div class="lstat"><div class="lstat-val">' + totalScore + '</div><div class="lstat-lbl">teu total</div></div>';
     html += '</div>';
 
     html += '<div class="tournament-list">';
-    for (var i = 0; i < w.enigma_ids.length; i++) {
-      var id = w.enigma_ids[i];
+    for (var i = 0; i < tournamentIds.length; i++) {
+      var id = tournamentIds[i];
       var en = getEnigma(id);
       if (!en) continue;
       var used = window.SankofaTournament.attemptsUsed(w.week_iso, id);
@@ -1212,7 +1222,7 @@
         goTo("enigma", { enigma: reid, fromReview: true });
         break;
       }
-      case "go-tournament": sfx("achievement"); goTo("tournament"); if (window.SankofaTournament) window.SankofaTournament.loadWeek().then(function(){ if (S.screen === "tournament") render(); }); break;
+      case "go-tournament": sfx("achievement"); goTo("tournament"); if (window.SankofaTournament) window.SankofaTournament.loadWeek().then(function(){ if (S.screen === "tournament") render(); }).catch(function(){ if (S.screen === "tournament") render(); }); break;
       case "open-tournament-enigma": {
         var teid = el.getAttribute("data-e");
         var ten = getEnigma(teid);
@@ -1720,7 +1730,7 @@
     if (window.SankofaTournament && window.SankofaTournament.enabled) {
       window.SankofaTournament.loadWeek().then(function () {
         if (S.screen === "landing" || S.screen === "map" || S.screen === "tournament") render();
-      });
+      }).catch(function () {});
     }
 
     if (S.name) {
