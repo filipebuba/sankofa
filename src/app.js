@@ -947,13 +947,24 @@
     var worldEnigmas = [];
     for (var i = 0; i < ENIGMAS.length; i++) if (ENIGMAS[i].world === e.world) worldEnigmas.push(ENIGMAS[i]);
     for (var j = 0; j < worldEnigmas.length; j++) if (worldEnigmas[j].id === eid) { enIdx = j + 1; break; }
+    var enigmaWorld = getWorld(e.world);
+    var enigmaArt = enigmaWorld && enigmaWorld.art ? ' style="background-image:url(' + enigmaWorld.art + ')"' : "";
+    var fragSrc = fragmentImageSrc(e.fragment && e.fragment.pattern);
 
     var html = '<button class="btn btn-ghost btn-sm" data-act="open-world" data-w="' + e.world + '" style="margin-bottom:14px">← Mundo ' + e.world + '</button>';
     html += '<div style="text-align:center;margin-bottom:8px"><span class="badge badge-gold">Enigma ' + enIdx + ' · Mundo ' + e.world + '</span></div>';
     html += '<div style="text-align:center;margin-bottom:4px"><h2 style="font-size:1.4rem">' + e.title + '</h2></div>';
     html += '<div class="intro-line">' + e.intro + '</div>';
+    html += '<div class="enigma-visual" aria-label="' + escapeAttr(t("enigma.visual_alt")) + '">' +
+      '<div class="enigma-visual-bg"' + enigmaArt + '></div>' +
+      '<div class="enigma-visual-shade"></div>' +
+      '<div class="enigma-visual-fragment ' + (e.fragment && e.fragment.pattern ? e.fragment.pattern : "") + '">' +
+        (fragSrc ? '<img class="fragment-img" src="' + fragSrc + '" alt="" loading="lazy">' : "") +
+      '</div>' +
+      '<div class="enigma-visual-caption">' + t("enigma.visual_hint") + '</div>' +
+      '</div>';
     html += '<div class="context-area">';
-    html += '<button class="context-toggle" data-act="toggle-context" id="ctx-btn">📖 Queres saber mais?</button>';
+    html += '<button class="context-toggle" data-act="toggle-context" id="ctx-btn">📖 ' + t("enigma.context_cta") + '</button>';
     html += '<div class="context-panel" id="ctx-panel"><div class="context-content">' + e.context + '</div></div>';
     html += '</div>';
     var ttsAvail = window.SankofaTTS && window.SankofaTTS.available();

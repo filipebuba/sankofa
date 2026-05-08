@@ -50,6 +50,11 @@ window.SANKOFA_I18N = {
     "map.league": "Liga",
     "map.tournament": "Torneio",
 
+    // Enigma
+    "enigma.visual_hint": "Observe a pista visual antes de responder",
+    "enigma.visual_alt": "Pista visual do enigma",
+    "enigma.context_cta": "Ler contexto histórico",
+
     // Central de informação
     "info.title": "Ajuda & Privacidade",
     "info.subtitle": "Tudo o que precisas saber sobre o Sankofa.",
@@ -149,6 +154,11 @@ window.SANKOFA_I18N = {
     "map.league": "League",
     "map.tournament": "Tournament",
 
+    // Enigma
+    "enigma.visual_hint": "Observe the visual clue before answering",
+    "enigma.visual_alt": "Visual clue for the enigma",
+    "enigma.context_cta": "Read historical context",
+
     // Info hub
     "info.title": "Help & Privacy",
     "info.subtitle": "Everything you need to know about Sankofa.",
@@ -247,6 +257,11 @@ window.SANKOFA_I18N = {
     "map.audience": "Audiencia",
     "map.league": "Liga",
     "map.tournament": "Torneo",
+
+    // Enigma
+    "enigma.visual_hint": "Observa la pista visual antes de responder",
+    "enigma.visual_alt": "Pista visual del enigma",
+    "enigma.context_cta": "Leer contexto histórico",
 
     // Centro de información
     "info.title": "Ayuda y Privacidad",
