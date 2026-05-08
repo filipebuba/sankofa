@@ -1655,33 +1655,47 @@
     html += '<li><strong>Código-fonte:</strong> licença <strong>MIT</strong> — usa, modifica, distribui livremente, inclusive para fins comerciais. Veja <code>LICENSE</code> no repositório GitHub.</li>';
     html += '<li><strong>Conteúdo educacional</strong> (enigmas, textos, fragmentos): <strong>Creative Commons BY-SA 4.0</strong> — partilha desde que cite a autoria e mantenha a mesma licença.</li>';
     html += '<li><strong>Áudio sintetizado:</strong> original do projeto, livre.</li>';
-    html += '<li>Os 8 volumes da <em>História Geral da África</em> são publicação da UNESCO; consulta a fonte oficial para uso direto desses textos.</li>';
     html += '</ul>';
 
-    html += '<h3>3. Idade mínima</h3>';
+    html += '<h3>3. Atribuição UNESCO — História Geral da África</h3>';
+    html += '<p>Sankofa é uma <strong>obra derivada</strong> baseada em fatos e narrativas históricas da coleção <em>General History of Africa</em> (Volumes I–VIII), publicada pela UNESCO entre 1981 e 1993, organizada pelo Comitê Científico Internacional para a Redação de uma História Geral da África.</p>';
+    html += '<p><strong>Atribuição formal:</strong></p>';
+    html += '<blockquote style="border-left:3px solid var(--gold);padding:8px 14px;margin:8px 0;background:var(--surface2);border-radius:0 8px 8px 0;font-size:.88rem">UNESCO &amp; International Scientific Committee for the Drafting of a General History of Africa (1981–1993). <em>General History of Africa</em>, Volumes I–VIII. Paris: UNESCO Publishing. Licenciado sob Creative Commons CC BY-SA IGO 3.0 (texto).</blockquote>';
+    html += '<p><strong>Disclaimer obrigatório (UNESCO CC BY-SA IGO):</strong></p>';
+    html += '<blockquote style="border-left:3px solid var(--terra);padding:8px 14px;margin:8px 0;background:var(--surface2);border-radius:0 8px 8px 0;font-size:.88rem">The present work is not an official UNESCO publication and shall not be considered as such. <br><em>(Esta obra não é uma publicação oficial da UNESCO e não deve ser considerada como tal.)</em></blockquote>';
+    html += '<p>Conformidade adicional com os termos UNESCO IGO:</p>';
+    html += '<ul>';
+    html += '<li>Sankofa <strong>não usa o logotipo UNESCO</strong>.</li>';
+    html += '<li>Sankofa <strong>não usa fotografias</strong> da publicação original (a licença CC BY-SA cobre apenas o texto).</li>';
+    html += '<li>Sankofa adota a <strong>mesma família de licença</strong> (CC BY-SA 4.0) para o conteúdo derivado.</li>';
+    html += '<li>O autor de Sankofa assume <strong>responsabilidade integral</strong> pelas adaptações, e isenta a UNESCO de qualquer dano resultante deste uso.</li>';
+    html += '<li>O conteúdo é apresentado para fins educativos, sem prejuízo à reputação da UNESCO ou dos autores originais.</li>';
+    html += '</ul>';
+
+    html += '<h3>4. Idade mínima</h3>';
     html += '<p>Recomendado para 10 anos ou mais. Crianças entre 8-12 podem jogar com supervisão. Para menores de 18, o uso da Liga Global pública requer ciência do responsável.</p>';
 
-    html += '<h3>4. Conduta esperada</h3>';
+    html += '<h3>5. Conduta esperada</h3>';
     html += '<ul>';
     html += '<li>Sem apelidos ou tags ofensivos. Há blocklist automática; reportes manuais podem chegar.</li>';
     html += '<li>Sem tentativas de fraudar o ranking ou a pontuação. Anti-cheat server-side ativo.</li>';
     html += '<li>Sem extração massiva de conteúdo via scraping — usa o repositório aberto.</li>';
     html += '</ul>';
 
-    html += '<h3>5. Disponibilidade</h3>';
+    html += '<h3>6. Disponibilidade</h3>';
     html += '<p>O jogo é fornecido "como está" (<em>as-is</em>). Não garantimos disponibilidade contínua, embora façamos o melhor esforço. Liga Global e Torneio dependem do Supabase; em caso de indisponibilidade, o modo offline solo continua a funcionar.</p>';
 
-    html += '<h3>6. Limitação de responsabilidade</h3>';
+    html += '<h3>7. Limitação de responsabilidade</h3>';
     html += '<p>O Sankofa é um material educativo. Não substitui currículo escolar oficial. Não nos responsabilizamos por usos indevidos ou interpretações fora do contexto histórico apresentado.</p>';
 
-    html += '<h3>7. Conformidade</h3>';
+    html += '<h3>8. Conformidade</h3>';
     html += '<ul>';
     html += '<li>Lei <strong>10.639/03</strong> e <strong>11.645/08</strong> (História e Cultura Afro-Brasileira e Indígena).</li>';
     html += '<li>Lei <strong>13.709/18</strong> (LGPD).</li>';
     html += '<li>WCAG <strong>2.1 nível AA</strong> (acessibilidade).</li>';
     html += '</ul>';
 
-    html += '<h3>8. Contacto e foro</h3>';
+    html += '<h3>9. Contacto e foro</h3>';
     html += '<p>Dúvidas: <a href="mailto:flifnhada@hotmail.com">flifnhada@hotmail.com</a>. Foro: comarca de São Paulo / SP, Brasil.</p>';
     html += '</div>';
     return html;
@@ -1708,8 +1722,11 @@
     html += '<li>🐙 <a href="https://github.com/filipebuba/sankofa" target="_blank" rel="noopener">github.com/filipebuba/sankofa</a></li>';
     html += '</ul>';
 
-    html += '<h3>Fontes</h3>';
-    html += '<p>Coleção <em>História Geral da África</em>, UNESCO, 8 volumes (1964–1999). Disponível gratuitamente em <a href="https://unesdoc.unesco.org" target="_blank" rel="noopener">unesdoc.unesco.org</a>.</p>';
+    html += '<h3>Fontes &amp; Atribuição</h3>';
+    html += '<p>Sankofa adapta fatos e narrativas históricas da coleção:</p>';
+    html += '<blockquote style="border-left:3px solid var(--gold);padding:8px 14px;margin:8px 0;background:var(--surface2);border-radius:0 8px 8px 0;font-size:.9rem">UNESCO &amp; International Scientific Committee for the Drafting of a General History of Africa. <em>General History of Africa</em>, Volumes I–VIII (1981–1993). Paris: UNESCO Publishing. Texto original sob <strong>Creative Commons CC BY-SA IGO 3.0</strong>.</blockquote>';
+    html += '<p>Acesso gratuito ao original: <a href="https://www.unesco.org/en/general-history-africa" target="_blank" rel="noopener">unesco.org/en/general-history-africa</a> · Repositório UNESDOC: <a href="https://unesdoc.unesco.org" target="_blank" rel="noopener">unesdoc.unesco.org</a>.</p>';
+    html += '<p style="font-size:.84rem;color:var(--text-muted);font-style:italic;border-top:1px solid var(--surface3);padding-top:10px;margin-top:14px"><strong>Disclaimer:</strong> The present work is not an official UNESCO publication and shall not be considered as such. (Esta obra não é uma publicação oficial da UNESCO e não deve ser considerada como tal.)</p>';
 
     html += '<h3>Alinhamentos institucionais</h3>';
     html += '<ul>';
