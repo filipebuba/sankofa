@@ -65,7 +65,7 @@
   <div class="menu-drawer" id="menu-drawer" role="menu" aria-label="Configurações" hidden>
     <div class="menu-row menu-row-zoom" role="group" aria-label="Tamanho do texto">
       <span class="menu-row-icon zoom-icon" aria-hidden="true">Aa</span>
-      <span class="menu-row-text">Tamanho do texto</span>
+      <span class="menu-row-text" id="zoom-label">Tamanho do texto</span>
       <div class="zoom-controls">
         <button class="zoom-step" id="zoom-decrease" type="button"
                 aria-label="Diminuir texto" title="Diminuir texto (atalho: −)">
@@ -81,13 +81,13 @@
     <button class="menu-row theme-toggle" id="theme-toggle" type="button" role="menuitem"
             title="Modo claro/escuro" aria-label="Alternar tema">
       <span class="menu-row-icon topbar-icon" aria-hidden="true">🌙</span>
-      <span class="menu-row-text">Tema</span>
+      <span class="menu-row-text" id="theme-label">Tema</span>
       <span class="menu-row-state" id="theme-state">Escuro</span>
     </button>
     <button class="menu-row ambient-toggle" id="ambient-toggle" type="button" role="menuitem"
             title="Tambor ambiente" aria-label="Ativar tambor ambiente">
       <span class="menu-row-icon topbar-icon" aria-hidden="true">🥁</span>
-      <span class="menu-row-text">Tambor ambiente</span>
+      <span class="menu-row-text" id="ambient-label">Tambor ambiente</span>
       <span class="menu-row-state" id="ambient-state">Desligado</span>
     </button>
     <button class="menu-row sound-toggle" id="sound-toggle" type="button" role="menuitem"

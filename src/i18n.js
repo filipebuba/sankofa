@@ -32,13 +32,24 @@
   var current = detectInitial();
   document.documentElement.setAttribute("lang", current);
 
-  function t(key, lang) {
+  function interpolate(str, vars) {
+    if (!vars) return str;
+    return String(str).replace(/\{([a-zA-Z0-9_]+)\}/g, function (_, name) {
+      return vars[name] != null ? String(vars[name]) : "{" + name + "}";
+    });
+  }
+
+  function t(key, lang, vars) {
+    if (lang && typeof lang === "object") {
+      vars = lang;
+      lang = null;
+    }
     var L = lang || current;
     var bag = data[L] || {};
-    if (bag[key] != null) return bag[key];
+    if (bag[key] != null) return interpolate(bag[key], vars);
     // Fallback PT
     var fallback = data[DEFAULT] || {};
-    if (fallback[key] != null) return fallback[key];
+    if (fallback[key] != null) return interpolate(fallback[key], vars);
     // Última instância: chave nua, ajuda no debug
     return key;
   }
