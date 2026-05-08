@@ -21,7 +21,7 @@ Cordiais saudações.
 
 Sou **Filipe Buba**, egresso do curso de Ciências Humanas e Sociais da UNILAB. Desenvolvi, com base no que aprendi na universidade, um projeto que está em fase pública e a candidatar-se a editais de fomento cultural e educacional.
 
-O projeto chama-se **Sankofa — Fragmentos da África**: jogo digital educativo de enigmas baseado nos 8 volumes da *História Geral da África* da UNESCO. Está em conformidade com a Lei 10.639/03, é open source, funciona offline, e atualmente cobre os Volumes I e II com 23 enigmas validados, 9 Casas Reais Africanas e motor de áudio sintetizado de instrumentos africanos.
+O projeto chama-se **Sankofa — Fragmentos da África**: jogo digital educativo de enigmas baseado nos 8 volumes da *História Geral da África* da UNESCO. Está em conformidade com a Lei 10.639/03, é open source, funciona offline, e atualmente cobre os Volumes I a VIII com 71 enigmas validados, 9 Casas Reais Africanas e motor de áudio sintetizado de instrumentos africanos.
 
 URL pública: **https://www.sankofahga.com**
 Repositório: **https://github.com/filipebuba/sankofa**
@@ -124,7 +124,7 @@ Cordiais saudações.
 
 Sou Filipe Buba, egresso da UNILAB e desenvolvedor do projeto **Sankofa — Fragmentos da África**, jogo digital educativo construído a partir dos 8 volumes da *História Geral da África* (UNESCO, 1964–1999).
 
-O projeto está em fase pública (https://www.sankofahga.com), licenciado MIT (código) e CC BY-SA 4.0 (conteúdo), em pleno alinhamento com a **Década Internacional dos Afrodescendentes 2025–2034** declarada pelas Nações Unidas e UNESCO. Atualmente cobre os Volumes I e II, com 23 enigmas validados, em português brasileiro, com interface acessível (WCAG AA) e funcionando offline (PWA).
+O projeto está em fase pública (https://www.sankofahga.com), licenciado MIT (código) e CC BY-SA 4.0 (conteúdo), em pleno alinhamento com a **Década Internacional dos Afrodescendentes 2025–2034** declarada pelas Nações Unidas e UNESCO. Atualmente cobre os Volumes I a VIII, com 71 enigmas validados, em português brasileiro, com interface acessível (WCAG AA) e funcionando offline (PWA).
 
 Estou submetendo o Sankofa ao **Edital nº 04/2026/SMC/ALDIRBLANC/CICLO2** da Secretaria Municipal de Cultura de São Paulo, na linha de Formação e Internacionalização. A proposta inclui, entre outras ações:
 
@@ -353,13 +353,13 @@ ________________________________________
 
 Prezado(a) Professor(a) [Nome] / Coordenação do [Departamento/Centro],
 
-Sou Filipe Buba, egresso da UNILAB e desenvolvedor do projeto Sankofa, jogo digital baseado na *História Geral da África* da UNESCO (8 volumes). Está em fase pública, com 23 enigmas validados via fontes da HGA, e a candidatar-se ao Edital 04/2026 da SMC-SP.
+Sou Filipe Buba, egresso da UNILAB e desenvolvedor do projeto Sankofa, jogo digital baseado na *História Geral da África* da UNESCO (8 volumes). Está em fase pública, com 71 enigmas validados via fontes da HGA, e a candidatar-se ao Edital 04/2026 da SMC-SP.
 
 URL: https://www.sankofahga.com
 
 Pediria duas coisas:
 
-1. **Avaliação acadêmica curta** dos 23 enigmas atuais, sob a perspectiva [da história africana / da educação antirracista / do que for da sua área]. Apenas comentários gerais — não precisa parecer formal.
+1. **Avaliação acadêmica curta** dos 71 enigmas atuais, sob a perspectiva [da história africana / da educação antirracista / do que for da sua área]. Apenas comentários gerais — não precisa parecer formal.
 
 2. **Carta de apoio** ao projeto, anexada à submissão municipal.
 

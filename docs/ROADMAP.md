@@ -22,7 +22,7 @@
   mapa traz banner "Continuar onde paraste"; cada mundo tem CTA *Continuar/Começar*;
   tela de resultado avança automaticamente para o próximo enigma sem voltar à lista.
 
-## Fase 1.1 — Conteúdo completo ✅ (v1.1.0 → v1.3.7-dev)
+## Fase 1.1 — Conteúdo completo ✅ (v1.1.0 → v1.3.9-dev)
 
 - **71 enigmas** validados (Mundo 1 = 15, Mundos 2–8 = 8 cada), cobrindo Vols. I–VIII.
 - 71 fragmentos visuais (24 com PNG, restantes em CSS gradient).

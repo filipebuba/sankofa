@@ -113,7 +113,7 @@
 - Logo SMC + Prefeitura de SP no canto
 
 **Voz**:
-> "Já cobre os Volumes I e II. 23 enigmas. 8 mundos."
+> "Cobre todos os 8 mundos. 71 enigmas. Volumes I a VIII."
 >
 > "Com o apoio da Secretaria Municipal de Cultura de São Paulo, a próxima fase é maior:"
 >
@@ -169,7 +169,7 @@
 
 ## Texto de descrição (caso a plataforma exija)
 
-> Sankofa — Fragmentos da África é um jogo digital educativo de enigmas baseado nos 8 volumes da *História Geral da África* (UNESCO). Cumpre a Lei 10.639/03, é gratuito, open source, e funciona offline. Atualmente cobre os Volumes I e II com 23 enigmas, 9 Casas Reais Africanas e motor de áudio sintetizado de instrumentos africanos.
+> Sankofa — Fragmentos da África é um jogo digital educativo de enigmas baseado nos 8 volumes da *História Geral da África* (UNESCO). Cumpre a Lei 10.639/03, é gratuito, open source, e funciona offline. Atualmente cobre os Volumes I a VIII com 71 enigmas, 9 Casas Reais Africanas e motor de áudio sintetizado de instrumentos africanos.
 >
 > Esta proposta, submetida ao Edital nº 04/2026/SMC/ALDIRBLANC/CICLO2, prevê: formação de 200 professores em São Paulo, tradução para 5 idiomas, parcerias com universidades dos PALOP (Moçambique, Cabo Verde, Angola) e apresentação em festivais internacionais (Games for Change NY, A MAZE. Berlin, FLIP/FLUP).
 >
@@ -261,7 +261,7 @@
     patente. Constróis o teu trono. A história entra
     sem doer.
 
-[5] Já cobre os Volumes I e II. 23 enigmas. 8 mundos.
+[5] Cobre todos os 8 mundos. 71 enigmas. Volumes I a VIII.
     Com o apoio da Secretaria Municipal de Cultura
     de São Paulo, a próxima fase é maior:
     Formar duzentos professores em São Paulo.

@@ -37,6 +37,12 @@ pandoc docs/CAMPANHA-LANCAMENTO.md     -o word/17-Campanha-Lancamento.docx      
 pandoc empresa/ALTERACAO-CONTRATUAL.md -o word/18-Empresa-Alteracao-Contratual.docx --from markdown --to docx --standalone
 pandoc empresa/CURRICULO.md            -o word/19-Curriculo-Filipe.docx             --from markdown --to docx --standalone
 pandoc musica/SUNO-PROMPTS.md          -o word/20-Musica-Suno-Prompts.docx          --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CANCOES-EDUCATIVAS.md      -o word/21-Musica-Cancoes-Educativas.docx       --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CANCOES-EDUCATIVAS-SUNO.md -o word/22-Musica-Cancoes-Educativas-Suno.docx  --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CANCOES-VOLUME-2.md        -o word/23-Musica-Cancoes-Volume-2.docx         --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CANCOES-VOLUME-2-SUNO.md   -o word/24-Musica-Cancoes-Volume-2-Suno.docx    --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CIFRAS.md                  -o word/25-Musica-Cifras.docx                   --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CIFRAS-VOLUME-2.md         -o word/26-Musica-Cifras-Volume-2.docx          --from markdown --to docx --standalone --toc --toc-depth=2
 pandoc docs/EDITAL-04-SP-PNAB.md       -o word/Edital-04-SP-PNAB.docx               --from markdown --to docx --standalone --toc --toc-depth=2
 
 # Cópias docx em pastas-irmãs com nomes alternativos (para envios diretos)
@@ -44,6 +50,17 @@ pandoc empresa/ALTERACAO-CONTRATUAL.md -o empresa/Alteracao-Contratual-Datacente
 pandoc empresa/CURRICULO.md            -o empresa/Curriculo-Filipe-Buba-Nhada.docx           --from markdown --to docx --standalone
 pandoc edital-04/CARTAS-APOIO.md       -o edital-04/CARTAS-APOIO.docx                        --from markdown --to docx --standalone --toc --toc-depth=2
 pandoc edital-04/VIDEO-DEMO.md         -o edital-04/VIDEO-DEMO.docx                          --from markdown --to docx --standalone
+
+# Cópia docx ao lado dos .md em musica/ para envio direto
+pandoc musica/ACAPELLA.md                -o musica/ACAPELLA.docx                --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/LETRAS.md                  -o musica/LETRAS.docx                  --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/SUNO-PROMPTS.md            -o musica/SUNO-PROMPTS.docx            --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CANCOES-EDUCATIVAS.md      -o musica/CANCOES-EDUCATIVAS.docx      --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CANCOES-EDUCATIVAS-SUNO.md -o musica/CANCOES-EDUCATIVAS-SUNO.docx --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CANCOES-VOLUME-2.md        -o musica/CANCOES-VOLUME-2.docx        --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CANCOES-VOLUME-2-SUNO.md   -o musica/CANCOES-VOLUME-2-SUNO.docx   --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CIFRAS.md                  -o musica/CIFRAS.docx                  --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc musica/CIFRAS-VOLUME-2.md         -o musica/CIFRAS-VOLUME-2.docx         --from markdown --to docx --standalone --toc --toc-depth=2
 
 echo "Gerando volume completo ..."
 TMP=$(mktemp -d)

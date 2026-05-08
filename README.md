@@ -11,7 +11,7 @@ progressivas, mosaicos visuais e sonoridade africana sintetizada.
 Abra `index.html` no navegador. Sem instalação, sem servidor, sem banco de dados.
 O progresso fica salvo no `localStorage`.
 
-## Estado atual (v1.3.6-dev — 8 mundos, 71 enigmas)
+## Estado atual (v1.3.9-dev — 8 mundos, 71 enigmas)
 
 - Fluxo completo: landing → registro (modal HGA) → mapa de mundos → mundo → enigma → resultado → mosaico → perfil → conquistas → desafio diário → caderno de revisão.
 - **71 enigmas** validados em 8 mundos (Vol. I 15 + Vols. II–VIII 8 cada), cobrindo toda a HGA UNESCO.
