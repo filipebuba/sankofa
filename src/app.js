@@ -1058,6 +1058,30 @@
       caurisChip = '<div class="cauris-chip">+' + cg + ' <span class="cauris-icon">◉</span> cauris</div>';
     }
 
+    var milestone = "";
+    if (S.screenData.worldPerfect) {
+      var perfectWorld = getWorld(S.screenData.worldPerfect);
+      milestone = '<div class="world-milestone perfect">' +
+        '<div class="world-milestone-kicker">Mestria perfeita</div>' +
+        '<div class="world-milestone-title">Mundo ' + S.screenData.worldPerfect + ' consagrado</div>' +
+        '<p>' + (perfectWorld ? perfectWorld.name + ' · ' : '') + 'Completaste tudo com domínio de primeira tentativa.</p>' +
+        '</div>';
+    } else if (S.screenData.worldMastered) {
+      var masteredWorld = getWorld(S.screenData.worldMastered);
+      milestone = '<div class="world-milestone mastered">' +
+        '<div class="world-milestone-kicker">Mundo completo</div>' +
+        '<div class="world-milestone-title">' + (masteredWorld ? masteredWorld.name : "Mundo " + S.screenData.worldMastered) + '</div>' +
+        '<p>Todos os fragmentos deste mundo foram reunidos. O teu mosaico está pronto para ser visto.</p>' +
+        '</div>';
+    } else if (S.screenData.worldUnlocked) {
+      var unlockedWorld = getWorld(S.screenData.worldUnlocked);
+      milestone = '<div class="world-milestone unlocked">' +
+        '<div class="world-milestone-kicker">Caminho aberto</div>' +
+        '<div class="world-milestone-title">Mundo ' + S.screenData.worldUnlocked + (unlockedWorld ? ' · ' + unlockedWorld.name : '') + '</div>' +
+        '<p>A tua memória já abriu a próxima travessia. Podes seguir adiante ou voltar para completar este mundo.</p>' +
+        '</div>';
+    }
+
     // Modo skipped: mostra resposta correta + explicação, sem fragmento brilhando
     if (S.screenData.skipped) {
       var correctIdx = e.correct;
@@ -1084,6 +1108,7 @@
       '<h2 style="color:var(--green)">Fragmento Recolhido!</h2>' +
       '<div class="points-earned">+' + pts + ' pts</div>' +
       caurisChip +
+      milestone +
       '<div class="fragment-preview ' + e.fragment.pattern + '">' + rFragmentImage(e.fragment.pattern, e.fragment.name) + '</div>' +
       '<h3 style="margin-top:4px">' + e.fragment.name + '</h3>' +
       '<div class="explanation">' + e.explanation + '</div>' +
@@ -1639,6 +1664,14 @@
     html += '<li>O próximo mundo abre quando resolves <strong>70%</strong> do anterior.</li>';
     html += '<li><strong>100% completo:</strong> +100 cauris (Mestre do Mundo 👑).</li>';
     html += '<li><strong>100% com 80%+ na 1ª tentativa:</strong> +250 cauris (Mestre Perfeito 🏛️).</li>';
+    html += '</ul>';
+
+    html += '<h3>Dificuldade progressiva</h3>';
+    html += '<ul>';
+    html += '<li><strong>Mundo 1:</strong> enigmas de entrada, com 2 alternativas para aprender o ritmo do jogo.</li>';
+    html += '<li><strong>Mundos 2 e 3:</strong> passam para 3 alternativas e exigem mais atenção ao contexto histórico.</li>';
+    html += '<li><strong>Mundo 4 em diante:</strong> usam 4 alternativas, com temas mais conectados entre política, comércio, cultura e resistência.</li>';
+    html += '<li>As respostas são embaralhadas a cada partida para evitar decorar a ordem.</li>';
     html += '</ul>';
 
     html += '<h3>Som e tema</h3>';
@@ -2684,8 +2717,10 @@
       var hu = S.hintsUsed[eid] || 0;
       var pts = attempts === 1 ? 100 : (attempts === 2 ? 50 : 25);
       pts = Math.max(0, pts - hu * 10);
+      var resultPayload = { enigma: eid, points: pts };
       if (S.screenData.isDaily && !isDailyDone()) {
         pts += 150;
+        resultPayload.points = pts;
         S.dailyDone = (S.dailyDone || 0) + 1;
         S.dailyDate = new Date().toISOString().slice(0, 10);
       }
@@ -2775,6 +2810,7 @@
           S.worldsUnlockToasted.push(e.world);
           var nextW = getWorld(e.world + 1);
           if (nextW) {
+            resultPayload.worldUnlocked = nextW.id;
             sfx("achievement");
             (function (nw, pct) {
               setTimeout(function () {
@@ -2787,6 +2823,7 @@
         // Mestria 100%
         if (wpAfter.mastered && S.worldsMasteryAwarded.indexOf(e.world) === -1) {
           S.worldsMasteryAwarded.push(e.world);
+          resultPayload.worldMastered = e.world;
           S.cauris = (S.cauris || 0) + REWARD_MASTERY;
           (function (wid, w) {
             setTimeout(function () {
@@ -2799,6 +2836,7 @@
         // Mestria Perfeita (100% + 80%+ em 1ª tentativa)
         if (wpAfter.perfect && S.worldsPerfectAwarded.indexOf(e.world) === -1) {
           S.worldsPerfectAwarded.push(e.world);
+          resultPayload.worldPerfect = e.world;
           S.cauris = (S.cauris || 0) + REWARD_MASTERY_PERFECT;
           (function (wid) {
             setTimeout(function () {
@@ -2828,7 +2866,7 @@
       setTimeout(function () {
         sfx("fragment");
         enigmaLocked = false;
-        goTo("result", { enigma: eid, points: pts });
+        goTo("result", resultPayload);
       }, 1800);
     } else {
       selectedEl.classList.add("wrong");
