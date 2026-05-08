@@ -1566,6 +1566,7 @@
     var html = '<button class="btn btn-ghost btn-sm" data-act="go-map" style="margin-bottom:14px">' + t("common.back_to_map") + '</button>';
     html += '<h2 style="text-align:center;font-size:1.4rem">' + t("info.title") + '</h2>';
     html += '<p style="text-align:center;color:var(--text-dim);font-size:.88rem;margin-bottom:6px">' + t("info.subtitle") + '</p>';
+    html += '<p style="text-align:center;color:var(--text-dim);font-size:.82rem;line-height:1.45;margin:0 auto 12px;max-width:420px">' + t("info.translation_notice") + '</p>';
     html += '<div class="info-hub-grid">';
     html += hubCard("📖", t("info.help_title"), t("info.help_desc"), "go-help");
     html += hubCard("💬", t("info.feedback_title"), t("info.feedback_desc"), "go-feedback");

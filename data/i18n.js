@@ -53,6 +53,7 @@ window.SANKOFA_I18N = {
     // Central de informação
     "info.title": "Ajuda & Privacidade",
     "info.subtitle": "Tudo o que precisas saber sobre o Sankofa.",
+    "info.translation_notice": "Idiomas: a interface principal já muda entre PT-BR, EN e ES. Os enigmas e textos históricos serão traduzidos em etapa editorial separada, com revisão pedagógica, para preservar contexto e precisão.",
     "info.back_to_hub": "← Ajuda & Privacidade",
     "info.help_title": "Como Jogar",
     "info.help_desc": "Regras, dicas, conquistas, atalhos.",
@@ -90,7 +91,7 @@ window.SANKOFA_I18N = {
     "about.title": "Sobre o Sankofa",
     "about.translations": "Idiomas disponíveis",
     "about.translations_status": "PT-BR completo · EN em progresso (Q2 2026) · ES em progresso (Q2 2026) · FR planejado (Q3 2026)",
-    "about.translations_note": "Trocar idioma: menu ☰ → Idioma. Nesta versão a tradução EN/ES cobre a casca principal da interface. Tradução completa dos 71 enigmas exige revisão pedagógica e está em curso. FR planejado para Fase 2 (Q3 2026).",
+    "about.translations_note": "Trocar idioma: menu ☰ → Idioma. Nesta versão a tradução EN/ES cobre a casca principal da interface. Os 71 enigmas e textos históricos ficam para uma etapa editorial separada, com revisão pedagógica, porque envolvem contexto histórico, vocabulário sensível e precisão didática. FR planejado para Fase 2 (Q3 2026).",
     "about.support": "Apoiar o projeto",
     "about.profile": "Perfil",
 
@@ -151,6 +152,7 @@ window.SANKOFA_I18N = {
     // Info hub
     "info.title": "Help & Privacy",
     "info.subtitle": "Everything you need to know about Sankofa.",
+    "info.translation_notice": "Languages: the main interface already switches between PT-BR, EN, and ES. The enigmas and historical texts will be translated in a separate editorial step, with pedagogical review, to preserve context and accuracy.",
     "info.back_to_hub": "← Help & Privacy",
     "info.help_title": "How to Play",
     "info.help_desc": "Rules, tips, achievements, shortcuts.",
@@ -188,7 +190,7 @@ window.SANKOFA_I18N = {
     "about.title": "About Sankofa",
     "about.translations": "Available languages",
     "about.translations_status": "PT-BR complete · EN in progress (Q2 2026) · ES in progress (Q2 2026) · FR planned (Q3 2026)",
-    "about.translations_note": "Change language: menu ☰ → Language. In this version, EN/ES cover the main interface shell. Full translation of the 71 enigmas needs pedagogical review and is in progress. FR is planned for Phase 2 (Q3 2026).",
+    "about.translations_note": "Change language: menu ☰ → Language. In this version, EN/ES cover the main interface shell. The 71 enigmas and historical texts are reserved for a separate editorial step, with pedagogical review, because they involve historical context, sensitive vocabulary, and didactic accuracy. FR is planned for Phase 2 (Q3 2026).",
     "about.support": "Support the project",
     "about.profile": "Profile",
 
@@ -249,6 +251,7 @@ window.SANKOFA_I18N = {
     // Centro de información
     "info.title": "Ayuda y Privacidad",
     "info.subtitle": "Todo lo que necesitas saber sobre Sankofa.",
+    "info.translation_notice": "Idiomas: la interfaz principal ya cambia entre PT-BR, EN y ES. Los enigmas y textos históricos se traducirán en una etapa editorial separada, con revisión pedagógica, para preservar contexto y precisión.",
     "info.back_to_hub": "← Ayuda y Privacidad",
     "info.help_title": "Cómo jugar",
     "info.help_desc": "Reglas, consejos, logros, atajos.",
@@ -286,7 +289,7 @@ window.SANKOFA_I18N = {
     "about.title": "Sobre Sankofa",
     "about.translations": "Idiomas disponibles",
     "about.translations_status": "PT-BR completo · EN en progreso (Q2 2026) · ES en progreso (Q2 2026) · FR planeado (Q3 2026)",
-    "about.translations_note": "Cambiar idioma: menú ☰ → Idioma. En esta versión, EN/ES cubren la interfaz principal. La traducción completa de los 71 enigmas requiere revisión pedagógica y está en curso. FR planeado para la Fase 2 (Q3 2026).",
+    "about.translations_note": "Cambiar idioma: menú ☰ → Idioma. En esta versión, EN/ES cubren la interfaz principal. Los 71 enigmas y textos históricos quedan para una etapa editorial separada, con revisión pedagógica, porque involucran contexto histórico, vocabulario sensible y precisión didáctica. FR planeado para la Fase 2 (Q3 2026).",
     "about.support": "Apoyar el proyecto",
     "about.profile": "Perfil",
 
