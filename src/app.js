@@ -19,6 +19,12 @@
   var REWARD_MASTERY = 100;                 // cauris bônus por 100% num mundo
   var REWARD_MASTERY_PERFECT = 250;         // cauris bônus por mestria perfeita
 
+  // Karma + Skip
+  var SKIP_AFTER_ATTEMPTS = 2;              // mostra "Pular" após 2 erros
+  var SKIP_PITY_POINTS = 5;                 // pontos simbólicos por tentar
+  var KARMA_WARN_RATIO = 0.20;              // > 20% pendente = aviso anciãos
+  var KARMA_BLOCK_RATIO = 0.50;             // > 50% pendente = bloqueia até cair
+
   var S = {
     name: "", points: 0, solved: [], firstTries: 0, noHintSolves: 0, fastSolves: 0,
     hintsUsed: {}, attempts: {}, contextsRead: 0, achievements: [],
@@ -28,6 +34,8 @@
     cauris: 0, lastTitleRank: 1, house: null, goods: {},
     // Tracking de toasts e marcos para não dispará-los repetidos
     worldsUnlockToasted: [], worldsMasteryAwarded: [], worldsPerfectAwarded: [],
+    // Karma — enigmas pulados (saiu sem acertar)
+    skipped: [],
     // Caderno de Revisão — histórico de erros e mestria
     errored: [],            // ids onde já errou ao menos 1×
     solvedAfterError: [],   // ids que errou e depois acertou
@@ -111,6 +119,28 @@
 
   // Mundo 1 sempre destravado. Demais: previous world ≥ WORLD_UNLOCK_THRESHOLD (default 70%)
   // OR data.unlocked=true.
+  // Pendências do Caderno num mundo (errored + skipped que ainda não foram resolvidos).
+  function getWorldKarma(wid) {
+    var pending = 0, total = 0;
+    var errored = S.errored || [];
+    var skipped = S.skipped || [];
+    var solved = S.solved || [];
+    for (var i = 0; i < ENIGMAS.length; i++) {
+      var e = ENIGMAS[i];
+      if (e.world !== wid) continue;
+      total++;
+      if (solved.indexOf(e.id) !== -1) continue;
+      if (errored.indexOf(e.id) !== -1 || skipped.indexOf(e.id) !== -1) pending++;
+    }
+    var ratio = total ? pending / total : 0;
+    return {
+      pending: pending,
+      total: total,
+      ratio: ratio,
+      level: ratio > KARMA_BLOCK_RATIO ? "block" : (ratio > KARMA_WARN_RATIO ? "warn" : "ok")
+    };
+  }
+
   function isWorldUnlocked(wid) {
     if (wid <= 1) return true;
     var w = getWorld(wid);
@@ -431,6 +461,7 @@
       case "profiles": app.innerHTML = rProfiles(); break;
       case "tournament": app.innerHTML = rTournament(); break;
       case "review": app.innerHTML = rReview(); break;
+      case "karma-gate": app.innerHTML = rKarmaGate(); break;
       default: app.innerHTML = rLanding();
     }
     attachEvents();
@@ -571,8 +602,12 @@
       } else {
         var prevP = getWorldProgress(w.id - 1);
         var threshold = Math.ceil(prevP.total * WORLD_UNLOCK_THRESHOLD);
+        var prevK = w.id > 1 ? getWorldKarma(w.id - 1) : { level: "ok", pending: 0 };
+        var karmaHint = "";
+        if (prevK.level === "block") karmaHint = " · 🌳 anciãos pedem revisão";
+        else if (prevK.level === "warn") karmaHint = " · 🌿 caderno cheio";
         var hint = prevP.total
-          ? "Resolva " + threshold + "/" + prevP.total + " do Mundo " + (w.id - 1) + " (" + prevP.done + " feitos)"
+          ? "Resolva " + threshold + "/" + prevP.total + " do Mundo " + (w.id - 1) + " (" + prevP.done + " feitos)" + karmaHint
           : "Em breve";
         html += '<div class="world-card locked" title="' + hint + '">' +
           '<div class="world-art"' + artStyle + '></div>' +
@@ -693,6 +728,14 @@
       attemptHistory = '<div class="prev-wrongs prev-solved">✓ Acertou após errar. Pode rever.</div>';
     }
     html += attemptHistory;
+
+    // Karma — botão "Pular e ver resposta" após N erros
+    if (at >= SKIP_AFTER_ATTEMPTS && !isSolved(eid)) {
+      html += '<button class="btn btn-outline btn-block btn-sm skip-btn" data-act="skip-enigma" data-e="' + eid + '" style="margin-top:10px">' +
+        '🌿 Pular e ver resposta · 0 cauris</button>' +
+        '<div class="skip-hint">Sem julgamento. Vai pro Caderno e pode voltar quando quiser.</div>';
+    }
+
     html += '<div style="text-align:center;font-size:.82rem;color:var(--text-muted);margin-top:8px">Pontos: <strong style="color:var(--gold)">' + Math.max(0, basePts - hu * 10) + '</strong> · Tentativa ' + (at + 1) + '</div>';
     return html;
   }
@@ -721,6 +764,28 @@
     var cg = S.screenData._caurisGained || 0;
     if (cg > 0) {
       caurisChip = '<div class="cauris-chip">+' + cg + ' <span class="cauris-icon">◉</span> cauris</div>';
+    }
+
+    // Modo skipped: mostra resposta correta + explicação, sem fragmento brilhando
+    if (S.screenData.skipped) {
+      var correctIdx = e.correct;
+      var correctText = e.options[correctIdx];
+      return '<div class="result skipped-result">' +
+        '<h2 style="color:var(--terra)">🌿 Anotado no Caderno</h2>' +
+        '<p class="skip-eyebrow">Sem julgamento. A sabedoria é uma volta antes da partida.</p>' +
+        '<div class="skip-answer-card">' +
+          '<div class="skip-answer-label">A resposta era</div>' +
+          '<div class="skip-answer-text">' + correctText + '</div>' +
+        '</div>' +
+        '<div class="explanation">' + e.explanation + '</div>' +
+        '<div style="background:var(--surface2);padding:14px;border-radius:var(--radius);width:100%;text-align:left;font-size:.88rem;color:var(--text-dim);border-left:3px solid var(--terra)">' +
+        '<strong style="color:var(--terra)">Curiosidade:</strong> ' + e.curiosity + '</div>' +
+        (e.source ? '<div style="font-size:.72rem;color:var(--text-muted)">' + e.source + '</div>' : '') +
+        '<div style="display:flex;flex-direction:column;gap:8px;width:100%;margin-top:6px">' +
+        primary +
+        '<button class="btn btn-outline btn-block btn-sm" data-act="go-review">📓 Ver Caderno</button>' +
+        '</div>' +
+        '</div>';
     }
 
     return '<div class="result">' +
@@ -1034,6 +1099,41 @@
       .replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
+  function rKarmaGate() {
+    var wId = S.screenData.world;
+    var prevId = S.screenData.prevWorld || (wId - 1);
+    var karma = getWorldKarma(prevId);
+    var prevW = getWorld(prevId);
+    var nextW = getWorld(wId);
+    var pct = Math.round(karma.ratio * 100);
+
+    var html = '<div class="karma-gate">';
+    html += '<div class="karma-icon">🌳</div>';
+    html += '<h2 class="karma-title">Os anciãos te observam.</h2>';
+    html += '<p class="karma-poem">' +
+      karma.pending + ' enigma' + (karma.pending !== 1 ? "s" : "") + ' do <strong>' + (prevW ? prevW.name : "Mundo " + prevId) + '</strong> ainda sussurram dúvidas no teu Caderno.' +
+      '</p>';
+    html += '<p class="karma-poem">' +
+      '<em>"A sabedoria é uma volta antes da partida.<br>Não se atravessa o rio sem pisar nas pedras."</em>' +
+      '</p>';
+    html += '<div class="karma-meter">';
+    html += '<div class="karma-bar"><div class="karma-fill" style="width:' + pct + '%"></div></div>';
+    html += '<div class="karma-meta">' + pct + '% pendente · limite ' + Math.round(KARMA_BLOCK_RATIO * 100) + '%</div>';
+    html += '</div>';
+
+    html += '<div class="karma-actions">';
+    html += '<button class="btn btn-gold btn-block" data-act="go-review">📓 Voltar e revisar</button>';
+    html += '<button class="btn btn-ghost btn-block btn-sm" data-act="karma-insist" data-w="' + wId + '">Insistir mesmo assim · −50 cauris</button>';
+    html += '<button class="btn btn-ghost btn-block btn-sm" data-act="go-map">← Mapa</button>';
+    html += '</div>';
+
+    if (nextW) {
+      html += '<p class="karma-foot">A entrada do <strong>' + nextW.name + '</strong> espera por ti.</p>';
+    }
+    html += '</div>';
+    return html;
+  }
+
   function rReview() {
     var errored = (S.errored || []).slice();
     var solvedAfterError = (S.solvedAfterError || []).slice();
@@ -1247,6 +1347,15 @@
           showToast("🔒", "Mundo bloqueado", "Resolva " + needX + "/" + prevPx.total + " do Mundo " + (wId - 1) + " (faltam " + Math.max(0, needX - prevPx.done) + ").");
           break;
         }
+        // Karma gate: se mundo anterior tem muito pendente no Caderno, mostra tela dos Anciãos
+        if (wId > 1) {
+          var karma = getWorldKarma(wId - 1);
+          if (karma.level === "block" && !S.screenData.karmaWaved) {
+            sfx("navigate");
+            goTo("karma-gate", { world: wId, prevWorld: wId - 1 });
+            break;
+          }
+        }
         sfx("navigate"); S.lastWorldPlayed = wId; save();
         goTo("world", { world: wId });
         break;
@@ -1260,6 +1369,25 @@
         break;
       case "open-mosaic": sfx("fragment"); goTo("mosaic", { world: parseInt(el.getAttribute("data-w"), 10) }); break;
       case "pick": handlePick(parseInt(el.getAttribute("data-i"), 10)); break;
+      case "skip-enigma": handleSkipEnigma(el.getAttribute("data-e")); break;
+      case "karma-insist": {
+        var iw = parseInt(el.getAttribute("data-w"), 10);
+        var cost = 50;
+        if ((S.cauris || 0) < cost) {
+          showToast("◉", "Cauris insuficientes", "Faltam " + (cost - (S.cauris || 0)) + " cauris pra insistir. Resolva 1 do Caderno.");
+          break;
+        }
+        S.cauris = (S.cauris || 0) - cost;
+        sfx("achievement");
+        save();
+        showToast("🌳", "Os anciãos suspiram", "−" + cost + " cauris. Que a sabedoria te alcance no caminho.");
+        // Vai direto pro mundo, ignorando gate desta vez
+        S.lastWorldPlayed = iw;
+        save();
+        S.screenData = { karmaWaved: true };
+        goTo("world", { world: iw, karmaWaved: true });
+        break;
+      }
       case "hint": handleHint(el.getAttribute("data-e")); break;
       case "toggle-context": toggleContext(); break;
       case "start-daily":
@@ -1593,13 +1721,16 @@
       S.lastTryAt = S.lastTryAt || {};
       S.lastTryAt[eid] = new Date().toISOString();
 
-      // Caderno: se estava errado e acertou agora, move para "solvedAfterError"
+      // Caderno: se estava errado/skipped e acertou agora, move para "solvedAfterError"
       S.errored = S.errored || [];
+      S.skipped = S.skipped || [];
       S.solvedAfterError = S.solvedAfterError || [];
       var wasErrored = S.errored.indexOf(eid);
-      if (wasErrored !== -1) {
-        S.errored.splice(wasErrored, 1);
-        if (S.solvedAfterError.indexOf(eid) === -1) S.solvedAfterError.push(eid);
+      if (wasErrored !== -1) S.errored.splice(wasErrored, 1);
+      var wasSkipped = S.skipped.indexOf(eid);
+      if (wasSkipped !== -1) S.skipped.splice(wasSkipped, 1);
+      if ((wasErrored !== -1 || wasSkipped !== -1) && S.solvedAfterError.indexOf(eid) === -1) {
+        S.solvedAfterError.push(eid);
       }
 
       // Cauris: only on first solve of an enigma.
@@ -1791,6 +1922,25 @@
     save();
     sfx("hint");
     goTo("enigma", S.screenData);
+  }
+
+  function handleSkipEnigma(eid) {
+    var en = getEnigma(eid);
+    if (!en) return;
+    if (isSolved(eid)) return;
+    S.skipped = S.skipped || [];
+    if (S.skipped.indexOf(eid) === -1) S.skipped.push(eid);
+    // Mantém em errored também — Caderno mostra ambos
+    S.errored = S.errored || [];
+    if (S.errored.indexOf(eid) === -1) S.errored.push(eid);
+    S.points += SKIP_PITY_POINTS;
+    S.lastTryAt = S.lastTryAt || {};
+    S.lastTryAt[eid] = new Date().toISOString();
+    enigmaLocked = false;
+    save();
+    sfx("navigate");
+    showToast("🌿", "Anotado no Caderno", "Volte quando quiser. +" + SKIP_PITY_POINTS + " pts por tentar.");
+    goTo("result", { enigma: eid, points: SKIP_PITY_POINTS, skipped: true });
   }
 
   /* ---------------- INIT ---------------- */
