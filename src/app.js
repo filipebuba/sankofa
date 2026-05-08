@@ -336,28 +336,37 @@
 
   function applyTextScale(scale) {
     document.documentElement.style.setProperty("--text-scale", scale);
-    var btn = document.getElementById("zoom-toggle");
     var state = document.getElementById("zoom-state");
     var idx = SCALES.indexOf(scale);
     var pct = idx >= 0 ? SCALE_LABELS[idx] : Math.round(scale * 100) + "%";
     if (state) state.textContent = pct;
-    if (btn) {
-      btn.classList.toggle("scale-up", scale > 1);
-      btn.setAttribute("aria-label", "Tamanho do texto " + pct + ". Toque para mudar.");
-      btn.setAttribute("title", "Tamanho do texto: " + pct);
-    }
+
+    var dec = document.getElementById("zoom-decrease");
+    var inc = document.getElementById("zoom-increase");
+    if (dec) dec.disabled = idx <= 0;
+    if (inc) inc.disabled = idx >= SCALES.length - 1;
   }
 
-  function cycleTextScale() {
+  function changeTextScale(delta) {
     var current = getTextScale();
     var idx = SCALES.indexOf(current);
-    if (idx === -1) idx = 1; // default 100%
-    var next = SCALES[(idx + 1) % SCALES.length];
+    if (idx === -1) idx = 1;
+    var nextIdx = Math.max(0, Math.min(SCALES.length - 1, idx + delta));
+    if (nextIdx === idx) return false;
+    var next = SCALES[nextIdx];
     localStorage.setItem(TEXT_SCALE_KEY, String(next));
     applyTextScale(next);
-    var nextIdx = SCALES.indexOf(next);
-    showToast("Aa", "Texto " + SCALE_LABELS[nextIdx], next === 1 ? "Tamanho padrão." : (next > 1 ? "Aumentado para leitura mais confortável." : "Reduzido."));
+    showToast("Aa", "Texto " + SCALE_LABELS[nextIdx],
+      delta > 0 ? "Aumentado." : "Reduzido.");
+    return true;
   }
+
+  function resetTextScale() {
+    localStorage.setItem(TEXT_SCALE_KEY, "1");
+    applyTextScale(1);
+    showToast("Aa", "Texto 100%", "Tamanho padrão restaurado.");
+  }
+
 
   /* ---------------- AUDIO ---------------- */
   function sfx(name) { if (S.soundOn && AUDIO) AUDIO.play(name); }
@@ -1415,6 +1424,16 @@
   }
 
   function handleKey(e) {
+    // Atalhos globais de zoom — funcionam em qualquer tela. Pulam quando há
+    // input/textarea focado para não brigar com digitação.
+    var tgt = e.target;
+    var inField = tgt && (tgt.tagName === "INPUT" || tgt.tagName === "TEXTAREA" || tgt.isContentEditable);
+    if (!inField && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (e.key === "+" || e.key === "=") { e.preventDefault(); changeTextScale(+1); return; }
+      if (e.key === "-" || e.key === "_") { e.preventDefault(); changeTextScale(-1); return; }
+      if (e.key === "0") { e.preventDefault(); resetTextScale(); return; }
+    }
+
     if (S.screen !== "enigma" || enigmaLocked) return;
     var map = { a: 0, b: 1, c: 2, d: 3 };
     var idx = map[e.key.toLowerCase()];
@@ -1534,32 +1553,8 @@
       case "share-wa": handleShareWhatsApp(); break;
       case "share-link": handleShareLink(); break;
       case "tts-toggle": handleTTSToggle(); break;
-      case "text-smaller": {
-        var cur = getTextScale();
-        var i = SCALES.indexOf(cur);
-        if (i > 0) {
-          var nxt = SCALES[i - 1];
-          localStorage.setItem(TEXT_SCALE_KEY, String(nxt));
-          applyTextScale(nxt);
-          sfx("click");
-          showToast("Aa", "Texto " + SCALE_LABELS[i - 1], "Reduzido.");
-          render();
-        }
-        break;
-      }
-      case "text-larger": {
-        var curL = getTextScale();
-        var iL = SCALES.indexOf(curL);
-        if (iL < SCALES.length - 1) {
-          var nxtL = SCALES[iL + 1];
-          localStorage.setItem(TEXT_SCALE_KEY, String(nxtL));
-          applyTextScale(nxtL);
-          sfx("click");
-          showToast("Aa", "Texto " + SCALE_LABELS[iL + 1], "Aumentado para leitura mais confortável.");
-          render();
-        }
-        break;
-      }
+      case "text-smaller": if (changeTextScale(-1)) { sfx("click"); render(); } break;
+      case "text-larger": if (changeTextScale(+1)) { sfx("click"); render(); } break;
       case "speak-enigma": handleSpeakEnigma(el.getAttribute("data-e")); break;
       case "tab-profiles": {
         var t = el.getAttribute("data-tab") || "all";
@@ -2173,8 +2168,10 @@
     if (tb) tb.addEventListener("click", function () { toggleTheme(); sfx("click"); closeMenuDrawer(); });
 
     applyTextScale(getTextScale());
-    var zb = document.getElementById("zoom-toggle");
-    if (zb) zb.addEventListener("click", function () { cycleTextScale(); sfx("click"); /* mantém aberto: deixa o jogador ciclar */ });
+    var zDec = document.getElementById("zoom-decrease");
+    var zInc = document.getElementById("zoom-increase");
+    if (zDec) zDec.addEventListener("click", function (ev) { ev.stopPropagation(); if (changeTextScale(-1)) sfx("click"); });
+    if (zInc) zInc.addEventListener("click", function (ev) { ev.stopPropagation(); if (changeTextScale(+1)) sfx("click"); });
 
     // Hamburger drawer
     var menuBtn = document.getElementById("menu-toggle");

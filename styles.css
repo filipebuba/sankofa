@@ -770,6 +770,22 @@ input { font-family: var(--font-body); }
 .menu-row.zoom-toggle.scale-up .menu-row-state { color: var(--gold); background: var(--gold-dim); }
 .menu-toggle.open .topbar-icon { transform: rotate(90deg); display: inline-block; transition: transform .2s; }
 
+/* Zoom controls — A− [100%] A+ */
+.menu-row-zoom { cursor: default; }
+.menu-row-zoom:hover { background: transparent; } /* row inteira não é clicável; só os botões */
+.zoom-controls { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.zoom-step {
+  background: var(--surface3); border: 1.5px solid transparent; border-radius: 10px;
+  width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text); font-weight: 800; font-size: .92rem; cursor: pointer;
+  font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+  transition: all .15s var(--ease);
+}
+.zoom-step:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+.zoom-step:focus-visible { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); }
+.zoom-step:disabled { opacity: .35; cursor: not-allowed; }
+.zoom-display { min-width: 56px; text-align: center; }
+
 .install-btn {
   background: var(--gold); color: var(--bg); border: none; border-radius: 14px;
   min-height: 44px; padding: 0 14px;

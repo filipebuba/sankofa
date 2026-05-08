@@ -1,6 +1,6 @@
 {
   "name": "sankofa",
-  "version": "1.4.2-dev",
+  "version": "1.4.3-dev",
   "description": "Jogo educativo de enigmas sobre a História Geral da África (UNESCO).",
   "private": true,
   "type": "module",
