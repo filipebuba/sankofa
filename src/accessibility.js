@@ -54,19 +54,57 @@
     return d.textContent || d.innerText || "";
   }
 
+  // Remove emojis e símbolos que viram "smiling face..." ou ruído
+  function stripEmoji(s) {
+    if (!s) return "";
+    return String(s)
+      // Faixas Unicode com pictographs/emojis comuns
+      .replace(/[\u{1F300}-\u{1FAFF}]/gu, " ")
+      .replace(/[\u{1F600}-\u{1F64F}]/gu, " ")
+      .replace(/[\u{2600}-\u{27BF}]/gu, " ")
+      .replace(/[\u{1F900}-\u{1F9FF}]/gu, " ")
+      .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, " ")
+      .replace(/[️‍]/g, " ")
+      // Símbolos textuais que synth lê como palavras estranhas
+      .replace(/[◉◆◈♛♔♕♖♗♘♙△▲▼◀▶★☆]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function clean(s) { return stripEmoji(stripHTML(s)); }
+
+  function _make(text, opts) {
+    opts = opts || {};
+    var u = new SpeechSynthesisUtterance(clean(text));
+    u.lang  = opts.lang  || "pt-BR";
+    u.rate  = opts.rate  != null ? opts.rate  : 0.95;
+    u.pitch = opts.pitch != null ? opts.pitch : 1.0;
+    u.volume = opts.volume != null ? opts.volume : 1.0;
+    var v = pickVoice(u.lang);
+    if (v) u.voice = v;
+    return u;
+  }
+
   function speak(text, opts) {
     if (!available()) return false;
-    opts = opts || {};
+    var t = clean(text);
+    if (!t) return false;
     stop();
-    var clean = stripHTML(text);
-    if (!clean) return false;
-    var utter = new SpeechSynthesisUtterance(clean);
-    utter.lang  = opts.lang  || "pt-BR";
-    utter.rate  = opts.rate  != null ? opts.rate  : 0.95;
-    utter.pitch = opts.pitch != null ? opts.pitch : 1.0;
-    var v = pickVoice(utter.lang);
-    if (v) utter.voice = v;
-    window.speechSynthesis.speak(utter);
+    window.speechSynthesis.speak(_make(t, opts));
+    return true;
+  }
+
+  // Lista de strings, lidas em sequência com pausa natural entre elas.
+  // Cancela qualquer fala em andamento.
+  function speakSequence(parts, opts) {
+    if (!available()) return false;
+    if (!Array.isArray(parts)) return false;
+    var clean_parts = parts.map(clean).filter(function (p) { return p && p.length; });
+    if (!clean_parts.length) return false;
+    stop();
+    clean_parts.forEach(function (p) {
+      window.speechSynthesis.speak(_make(p, opts));
+    });
     return true;
   }
 
@@ -85,6 +123,7 @@
     setEnabled: setEnabled,
     toggle: toggle,
     speak: speak,
+    speakSequence: speakSequence,
     stop: stop
   };
 })();
