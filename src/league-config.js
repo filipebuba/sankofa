@@ -9,4 +9,5 @@ window.SANKOFA_LEAGUE_CONFIG = {
   hasTagColumn: true
 };
 
-window.SANKOFA_ADMIN_PIN = "<PIN-8-CHARS-MIN>";
+// PIN antigo removido — painel admin agora usa Supabase Auth (email + senha).
+// Criar usuário em Studio → Authentication → Users.

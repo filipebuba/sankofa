@@ -1773,7 +1773,7 @@
     html += '<p>Nenhum. Os dados anónimos da Liga Global ficam apenas em base própria (Supabase) e não são vendidos, partilhados ou cedidos.</p>';
 
     html += '<h3>7. Segurança</h3>';
-    html += '<p>HTTPS obrigatório. Banco com Row Level Security (RLS). Service Role nunca exposto ao cliente. Anti-cheat server-side no Torneio.</p>';
+    html += '<p>HTTPS obrigatório. Banco com Row Level Security (RLS). Service Role nunca exposto ao cliente. Anti-cheat server-side no Torneio. Tabela de telemetria é INSERT-only para clientes anônimos (ninguém lê linhas individuais via API pública). Painel administrativo de métricas exige autenticação Supabase Auth (e-mail + senha).</p>';
 
     html += '<h3>8. Mudanças nesta política</h3>';
     html += '<p>Atualizações entram em vigor com a próxima versão pública. A data acima é a referência.</p>';
@@ -3089,6 +3089,11 @@
     S.lastLevel = getLevel().level;
     applyTheme(getTheme());
     updateSoundBtn();
+
+    // Painel admin tem prioridade — desvia render principal
+    if (window.SankofaAdmin && window.SankofaAdmin.isAdminURL()) {
+      S.screen = "admin";
+    }
 
     var tb = document.getElementById("theme-toggle");
     if (tb) tb.addEventListener("click", function () { toggleTheme(); sfx("click"); closeMenuDrawer(); });

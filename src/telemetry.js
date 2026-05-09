@@ -71,9 +71,14 @@
   }
 
   function track(eventType, payload) {
-    if (!enabled || !optedIn()) return;
-    if (!eventType || !payload || typeof payload.enigma_id !== "string") return;
-    if (typeof payload.world !== "number") return;
+    if (!enabled) { console.warn("[telemetry] desabilitada (sem SANKOFA_LEAGUE_CONFIG)"); return; }
+    if (!optedIn()) { console.warn("[telemetry] opt-out — ignorando", eventType); return; }
+    if (!eventType || !payload || typeof payload.enigma_id !== "string") {
+      console.warn("[telemetry] payload inválido", eventType, payload); return;
+    }
+    if (typeof payload.world !== "number") {
+      console.warn("[telemetry] world não é number", payload); return;
+    }
 
     var row = {
       session_id: sessionId(),
@@ -104,6 +109,7 @@
     // sendBeacon é mais seguro no beforeunload — mas Supabase requer Authorization
     // header, e sendBeacon não suporta headers customizados.
     // Fallback: fetch keepalive.
+    console.log("[telemetry] flush →", batch.length, "eventos", batch);
     return fetch(endpoint(), {
       method: "POST",
       headers: headers(),
@@ -111,12 +117,16 @@
       keepalive: true
     }).then(function (r) {
       if (!r.ok) {
-        // Re-enfileira até MAX_BATCH para tentar de novo
-        queue = batch.concat(queue).slice(0, MAX_BATCH);
-        return { ok: false, status: r.status };
+        return r.text().then(function (txt) {
+          console.error("[telemetry] HTTP", r.status, txt);
+          queue = batch.concat(queue).slice(0, MAX_BATCH);
+          return { ok: false, status: r.status, body: txt };
+        });
       }
+      console.log("[telemetry] OK", batch.length, "eventos enviados");
       return { ok: true, count: batch.length };
     }).catch(function (e) {
+      console.error("[telemetry] fetch falhou", e);
       queue = batch.concat(queue).slice(0, MAX_BATCH);
       return { ok: false, error: String(e) };
     });

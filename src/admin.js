@@ -1,57 +1,133 @@
 /*
-  Sankofa — Painel Admin (cliente).
+  Sankofa — Painel Admin (autenticado via Supabase Auth).
 
-  Lê VIEWS agregadas (sem PII) via REST do Supabase.
-  "Senha" é gate cosmético no client (não autenticação real).
-  As views já são públicas-seguras: só agregados, sem session_id ou linha individual.
+  Acesso: /?admin=1 ou /#admin
+  Login: email + senha (criar usuário em Studio → Authentication → Users).
+  Token JWT em sessionStorage (some ao fechar a aba).
 
-  Acesso: /?admin=1 ou link interno (route "admin").
+  Segurança:
+    - Tabela enigma_events: INSERT-only para anon (telemetria), SELECT bloqueado.
+    - Views agregadas (v_*): SELECT só para role 'authenticated'.
+    - Self-signup deve estar desativado em Studio para impedir conta livre.
 
-  Configuração: adiciona ao final de src/league-config.js:
-    window.SANKOFA_ADMIN_PIN = "<seu-pin-de-4-a-12-chars>";
-
-  Sem PIN: painel exige qualquer string >= 4 chars (apenas para ocultar da UI).
-  Para auth real: criar Supabase Auth + RPC SECURITY DEFINER.
+  Pra adicionar novo admin: Studio → Authentication → Users → Invite/Create.
 */
 (function () {
   var cfg = window.SANKOFA_LEAGUE_CONFIG || null;
   var enabled = !!(cfg && cfg.url && cfg.anonKey);
-  var PIN_KEY = "sankofa.adminPinOk";
+  var TOKEN_KEY = "sankofa.adminToken";
+  var REFRESH_KEY = "sankofa.adminRefresh";
+  var EXPIRES_KEY = "sankofa.adminExpires";
 
-  function endpoint(view) { return cfg.url + "/rest/v1/" + view; }
-  function headers() {
+  function authEndpoint(path) { return cfg.url + "/auth/v1/" + path; }
+  function restEndpoint(path) { return cfg.url + "/rest/v1/" + path; }
+
+  function authHeaders() {
     return {
       "apikey": cfg.anonKey,
-      "Authorization": "Bearer " + cfg.anonKey,
       "Content-Type": "application/json"
     };
   }
 
+  function getToken() {
+    try { return sessionStorage.getItem(TOKEN_KEY); } catch (_) { return null; }
+  }
+  function getRefresh() {
+    try { return sessionStorage.getItem(REFRESH_KEY); } catch (_) { return null; }
+  }
+  function getExpires() {
+    try { return parseInt(sessionStorage.getItem(EXPIRES_KEY) || "0", 10); } catch (_) { return 0; }
+  }
+  function setSession(s) {
+    if (!s) {
+      try {
+        sessionStorage.removeItem(TOKEN_KEY);
+        sessionStorage.removeItem(REFRESH_KEY);
+        sessionStorage.removeItem(EXPIRES_KEY);
+      } catch (_) {}
+      return;
+    }
+    try {
+      sessionStorage.setItem(TOKEN_KEY, s.access_token);
+      if (s.refresh_token) sessionStorage.setItem(REFRESH_KEY, s.refresh_token);
+      var expires = Date.now() + ((s.expires_in || 3600) * 1000);
+      sessionStorage.setItem(EXPIRES_KEY, String(expires));
+    } catch (_) {}
+  }
+
+  function isLoggedIn() {
+    var tok = getToken();
+    if (!tok) return false;
+    return getExpires() > Date.now() + 5000; // 5s de margem
+  }
+
+  function login(email, password) {
+    if (!enabled) return Promise.reject(new Error("Supabase não configurado"));
+    return fetch(authEndpoint("token?grant_type=password"), {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({ email: email, password: password })
+    }).then(function (r) {
+      return r.json().then(function (body) {
+        if (!r.ok) throw new Error(body.error_description || body.msg || ("HTTP " + r.status));
+        setSession(body);
+        return body;
+      });
+    });
+  }
+
+  function refreshSession() {
+    var rt = getRefresh();
+    if (!rt) return Promise.reject(new Error("sem refresh token"));
+    return fetch(authEndpoint("token?grant_type=refresh_token"), {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({ refresh_token: rt })
+    }).then(function (r) {
+      return r.json().then(function (body) {
+        if (!r.ok) { setSession(null); throw new Error(body.error_description || "refresh failed"); }
+        setSession(body);
+        return body;
+      });
+    });
+  }
+
+  function logout() {
+    var tok = getToken();
+    setSession(null);
+    if (!tok) return Promise.resolve();
+    return fetch(authEndpoint("logout"), {
+      method: "POST",
+      headers: { "apikey": cfg.anonKey, "Authorization": "Bearer " + tok }
+    }).catch(function () {});
+  }
+
+  function ensureValidToken() {
+    if (isLoggedIn()) return Promise.resolve(getToken());
+    if (getRefresh()) return refreshSession().then(function () { return getToken(); });
+    return Promise.reject(new Error("não autenticado"));
+  }
+
   function fetchView(view, query) {
-    if (!enabled) return Promise.resolve([]);
-    var url = endpoint(view) + (query || "");
-    return fetch(url, { headers: headers() })
-      .then(function (r) { return r.ok ? r.json() : []; })
-      .catch(function () { return []; });
+    return ensureValidToken().then(function (tok) {
+      var url = restEndpoint(view) + (query || "");
+      return fetch(url, {
+        headers: {
+          "apikey": cfg.anonKey,
+          "Authorization": "Bearer " + tok
+        }
+      }).then(function (r) {
+        if (r.status === 401) {
+          // Token rejeitado — força logout
+          setSession(null);
+          throw new Error("sessão expirada");
+        }
+        return r.ok ? r.json() : [];
+      });
+    }).catch(function () { return []; });
   }
 
-  function isUnlocked() {
-    try { return localStorage.getItem(PIN_KEY) === "1"; } catch (_) { return false; }
-  }
-
-  function tryUnlock(input) {
-    if (!input || input.length < 4) return false;
-    var expected = window.SANKOFA_ADMIN_PIN;
-    if (expected && input !== expected) return false;
-    try { localStorage.setItem(PIN_KEY, "1"); } catch (_) {}
-    return true;
-  }
-
-  function lock() {
-    try { localStorage.removeItem(PIN_KEY); } catch (_) {}
-  }
-
-  // CSV download utility (browser-side, no deps).
+  // ---------- CSV ----------
   function toCSV(rows) {
     if (!rows || !rows.length) return "";
     var keys = Object.keys(rows[0]);
@@ -82,6 +158,7 @@
     setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 100);
   }
 
+  // ---------- Render ----------
   function tableHTML(rows, columns) {
     if (!rows || !rows.length) return '<p style="color:var(--text-muted);font-size:.85rem">Sem dados ainda.</p>';
     var cols = columns || Object.keys(rows[0]);
@@ -123,25 +200,30 @@
       '</div>';
   }
 
-  function loginScreen() {
+  function loginScreen(errorMsg) {
     return '<div class="admin-page">' +
       '<h2>Painel Admin · Sankofa</h2>' +
       '<div class="admin-login">' +
-        '<p style="font-size:.85rem;color:var(--text-dim);margin:0 0 12px">Acesso restrito ao mantenedor do projeto. Métricas anônimas para editais e parceiros.</p>' +
-        '<input id="admin-pin-input" type="password" placeholder="PIN" autocomplete="off" />' +
-        '<button class="btn btn-gold btn-block" id="admin-pin-submit" style="margin-top:10px">Entrar</button>' +
-        '<small style="display:block;margin-top:10px;color:var(--text-muted);font-size:.7rem">Configurar PIN: window.SANKOFA_ADMIN_PIN em src/league-config.js</small>' +
+        '<p style="font-size:.85rem;color:var(--text-dim);margin:0 0 12px">Acesso restrito. Entra com a tua conta de mantenedor (Supabase Auth).</p>' +
+        (errorMsg ? '<div style="color:var(--danger,#c33);font-size:.8rem;margin-bottom:8px">' + errorMsg + '</div>' : '') +
+        '<input id="admin-email" type="email" placeholder="E-mail" autocomplete="email" style="margin-bottom:8px" />' +
+        '<input id="admin-password" type="password" placeholder="Senha" autocomplete="current-password" />' +
+        '<button class="btn btn-gold btn-block" id="admin-submit" style="margin-top:10px">Entrar</button>' +
+        '<small style="display:block;margin-top:10px;color:var(--text-muted);font-size:.7rem">Esqueci senha? Studio Supabase → Authentication → Users → reset.</small>' +
       '</div>' +
       '</div>';
   }
 
-  function dashboardShell() {
+  function dashboardShell(userEmail) {
     return '<div class="admin-page">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">' +
         '<h2>Painel Admin · Sankofa</h2>' +
-        '<button class="btn btn-ghost btn-sm" id="admin-logout">Sair</button>' +
+        '<div style="display:flex;gap:8px;align-items:center">' +
+          (userEmail ? '<span style="font-size:.78rem;color:var(--text-muted)">' + userEmail + '</span>' : '') +
+          '<button class="btn btn-ghost btn-sm" id="admin-logout">Sair</button>' +
+        '</div>' +
       '</div>' +
-      '<p style="font-size:.78rem;color:var(--text-muted);margin:-6px 0 14px">Dados anônimos. Sem identificação pessoal. Atualizado em tempo real.</p>' +
+      '<p style="font-size:.78rem;color:var(--text-muted);margin:-6px 0 14px">Dados anônimos agregados. Sem identificação pessoal.</p>' +
       '<div class="admin-section">' +
         '<h3>Visão geral</h3>' +
         '<div id="admin-overview"><p style="color:var(--text-muted)">Carregando...</p></div>' +
@@ -205,7 +287,6 @@
   function renderData() {
     var ov = document.getElementById("admin-overview");
     if (ov) ov.innerHTML = kpisHTML(dataCache.overview) || '<p style="color:var(--text-muted)">Sem dados.</p>';
-
     var sections = {
       "admin-daily":      ["dia","sessoes","enigmas_abertos","acertos"],
       "admin-difficulty": ["enigma_id","world","tentativas","acerto_1tent","acerto_total","sessoes_unicas"],
@@ -235,8 +316,7 @@
     root.addEventListener("click", function (ev) {
       var t = ev.target;
       if (t.id === "admin-logout") {
-        lock();
-        renderRoot();
+        logout().then(function () { renderRoot(); });
         return;
       }
       var exportName = t.getAttribute && t.getAttribute("data-export");
@@ -244,11 +324,11 @@
         var fileMap = {
           daily:      ["sankofa-engajamento-diario.csv",  dataCache.daily],
           difficulty: ["sankofa-dificuldade-enigmas.csv", dataCache.difficulty],
-          timing:     ["sankofa-tempo-enigmas.csv",      dataCache.timing],
-          emotion:    ["sankofa-emocao-enigmas.csv",     dataCache.emotion],
-          clarity:    ["sankofa-clareza-enigmas.csv",    dataCache.clarity],
-          hints:      ["sankofa-dicas-funil.csv",        dataCache.hints],
-          age:        ["sankofa-faixa-etaria.csv",       dataCache.age]
+          timing:     ["sankofa-tempo-enigmas.csv",       dataCache.timing],
+          emotion:    ["sankofa-emocao-enigmas.csv",      dataCache.emotion],
+          clarity:    ["sankofa-clareza-enigmas.csv",     dataCache.clarity],
+          hints:      ["sankofa-dicas-funil.csv",         dataCache.hints],
+          age:        ["sankofa-faixa-etaria.csv",        dataCache.age]
         };
         var f = fileMap[exportName];
         if (f) downloadCSV(f[0], f[1]);
@@ -257,16 +337,41 @@
   }
 
   function attachLoginEvents(root) {
-    var input = root.querySelector("#admin-pin-input");
-    var btn = root.querySelector("#admin-pin-submit");
-    if (!input || !btn) return;
-    input.focus();
+    var emailEl = root.querySelector("#admin-email");
+    var passEl = root.querySelector("#admin-password");
+    var btn = root.querySelector("#admin-submit");
+    if (!emailEl || !passEl || !btn) return;
+    emailEl.focus();
     function trySubmit() {
-      if (tryUnlock(input.value)) renderRoot();
-      else { input.value = ""; input.placeholder = "PIN incorreto"; }
+      var email = emailEl.value.trim();
+      var pw = passEl.value;
+      if (!email || !pw) return;
+      btn.disabled = true;
+      btn.textContent = "Autenticando...";
+      login(email, pw)
+        .then(function () { renderRoot(); })
+        .catch(function (err) {
+          var msg = (err && err.message) || "Falha de autenticação";
+          var root = document.getElementById("app");
+          if (root) {
+            root.innerHTML = loginScreen(msg);
+            attachLoginEvents(root);
+          }
+        });
     }
     btn.addEventListener("click", trySubmit);
-    input.addEventListener("keydown", function (ev) { if (ev.key === "Enter") trySubmit(); });
+    function onKey(ev) { if (ev.key === "Enter") trySubmit(); }
+    emailEl.addEventListener("keydown", onKey);
+    passEl.addEventListener("keydown", onKey);
+  }
+
+  function decodeJWTEmail(token) {
+    try {
+      var parts = token.split(".");
+      if (parts.length !== 3) return null;
+      var payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+      return payload.email || null;
+    } catch (_) { return null; }
   }
 
   function renderRoot() {
@@ -276,12 +381,21 @@
       root.innerHTML = '<div class="admin-page"><h2>Painel Admin</h2><p style="color:var(--text-muted)">Supabase não configurado. Defina window.SANKOFA_LEAGUE_CONFIG.</p></div>';
       return;
     }
-    if (!isUnlocked()) {
+    if (!isLoggedIn()) {
+      // tenta refresh silencioso primeiro
+      if (getRefresh()) {
+        refreshSession().then(function () { renderRoot(); }).catch(function () {
+          root.innerHTML = loginScreen();
+          attachLoginEvents(root);
+        });
+        return;
+      }
       root.innerHTML = loginScreen();
       attachLoginEvents(root);
       return;
     }
-    root.innerHTML = dashboardShell();
+    var email = decodeJWTEmail(getToken());
+    root.innerHTML = dashboardShell(email);
     attachDashboardEvents(root);
     loadAll();
   }
@@ -293,15 +407,10 @@
       var p = new URLSearchParams(location.search);
       return p.get("admin") === "1" || location.hash === "#admin";
     },
-    lock: lock,
-    unlock: tryUnlock
+    logout: logout,
+    isLoggedIn: isLoggedIn
   };
 
-  // Auto-render se URL pedir
-  document.addEventListener("DOMContentLoaded", function () {
-    if (window.SankofaAdmin.isAdminURL()) {
-      // Aguarda um tick para o app principal terminar a inicialização
-      setTimeout(renderRoot, 50);
-    }
-  });
+  // Render é chamado pelo app.js init quando detecta URL admin.
+  // Não precisamos de DOMContentLoaded auto-render aqui.
 })();

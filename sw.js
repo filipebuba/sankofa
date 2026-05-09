@@ -8,28 +8,28 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.5.9-dev";
+const VERSION = "v1.5.11-dev";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 
 const APP_SHELL = [
   "/",
   "/index.html",
-  "/styles.css?v=1.5.9-dev",
+  "/styles.css?v=1.5.11-dev",
   "/manifest.webmanifest",
 
   "/src/audio.js",
   "/src/profiles.js",
   "/src/profile-modal.js",
-  "/src/share.js?v=1.5.9-dev",
+  "/src/share.js?v=1.5.11-dev",
   "/src/accessibility.js",
   "/src/onboarding.js",
   "/src/royalty.js",
-  "/src/league.js?v=1.5.9-dev",
+  "/src/league.js?v=1.5.11-dev",
   "/src/tournament.js",
-  "/src/telemetry.js?v=1.5.9-dev",
-  "/src/admin.js?v=1.5.9-dev",
-  "/src/app.js?v=1.5.9-dev",
+  "/src/telemetry.js?v=1.5.11-dev",
+  "/src/admin.js?v=1.5.11-dev",
+  "/src/app.js?v=1.5.11-dev",
 
   "/data/worlds.js",
   "/data/enigmas.js",
@@ -44,8 +44,8 @@ const APP_SHELL = [
   "/data/hga-names.js",
   "/data/blocklist.js",
   "/data/tournament-config.js",
-  "/data/i18n.js?v=1.5.9-dev",
-  "/src/i18n.js?v=1.5.9-dev",
+  "/data/i18n.js?v=1.5.11-dev",
+  "/src/i18n.js?v=1.5.11-dev",
 
   "/assets/favicon.png",
   "/assets/logo.png",
@@ -100,6 +100,10 @@ self.addEventListener("fetch", function (event) {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
+
+  // Ignora requests de extensões (chrome-extension://, moz-extension://, etc).
+  // Cache.put() rejeita schemes não-HTTP.
+  if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
   // Nunca cachear chamadas Supabase
   if (isSupabase(url)) return;
