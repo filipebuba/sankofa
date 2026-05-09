@@ -109,11 +109,26 @@
     // sendBeacon é mais seguro no beforeunload — mas Supabase requer Authorization
     // header, e sendBeacon não suporta headers customizados.
     // Fallback: fetch keepalive.
-    console.log("[telemetry] flush →", batch.length, "eventos", batch);
+    // PostgREST exige que todas as linhas do batch tenham as MESMAS keys
+    // (PGRST102 "All object keys must match"). Normalizamos preenchendo
+    // chaves ausentes com null.
+    var ALL_KEYS = ["session_id","enigma_id","world","event_type","attempt",
+                    "correct","ms_to_answer","hint_index","emotion","clarity",
+                    "age_band","house","app_version"];
+    var normalized = batch.map(function (row) {
+      var out = {};
+      for (var i = 0; i < ALL_KEYS.length; i++) {
+        var k = ALL_KEYS[i];
+        out[k] = (row[k] === undefined) ? null : row[k];
+      }
+      return out;
+    });
+
+    console.log("[telemetry] flush →", normalized.length, "eventos", normalized);
     return fetch(endpoint(), {
       method: "POST",
       headers: headers(),
-      body: JSON.stringify(batch),
+      body: JSON.stringify(normalized),
       keepalive: true
     }).then(function (r) {
       if (!r.ok) {

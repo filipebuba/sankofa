@@ -8,28 +8,28 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.5.11-dev";
+const VERSION = "v1.5.12-dev";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 
 const APP_SHELL = [
   "/",
   "/index.html",
-  "/styles.css?v=1.5.11-dev",
+  "/styles.css?v=1.5.12-dev",
   "/manifest.webmanifest",
 
   "/src/audio.js",
   "/src/profiles.js",
   "/src/profile-modal.js",
-  "/src/share.js?v=1.5.11-dev",
+  "/src/share.js?v=1.5.12-dev",
   "/src/accessibility.js",
   "/src/onboarding.js",
   "/src/royalty.js",
-  "/src/league.js?v=1.5.11-dev",
+  "/src/league.js?v=1.5.12-dev",
   "/src/tournament.js",
-  "/src/telemetry.js?v=1.5.11-dev",
-  "/src/admin.js?v=1.5.11-dev",
-  "/src/app.js?v=1.5.11-dev",
+  "/src/telemetry.js?v=1.5.12-dev",
+  "/src/admin.js?v=1.5.12-dev",
+  "/src/app.js?v=1.5.12-dev",
 
   "/data/worlds.js",
   "/data/enigmas.js",
@@ -44,8 +44,8 @@ const APP_SHELL = [
   "/data/hga-names.js",
   "/data/blocklist.js",
   "/data/tournament-config.js",
-  "/data/i18n.js?v=1.5.11-dev",
-  "/src/i18n.js?v=1.5.11-dev",
+  "/data/i18n.js?v=1.5.12-dev",
+  "/src/i18n.js?v=1.5.12-dev",
 
   "/assets/favicon.png",
   "/assets/logo.png",
