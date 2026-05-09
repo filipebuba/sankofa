@@ -69,6 +69,7 @@
 - Revisar 71 enigmas com especialista em HGA / educação.
 - Ajustar linguagem, ritmo das dicas e curva de pontos.
 - Auditoria de acessibilidade (contraste AAA, foco visível, leitor de tela).
+- **Diversificação de mecânicas pedagógicas** (sugerido por educadores em 09/05/2026, grupo de WhatsApp da faculdade): intercalar quizzes com formatos complementares — drag-and-drop cronológico (linha do tempo), mapa interativo (geografia + rotas comerciais), áudio-quiz (reconhecer instrumento/idioma), micro-escrita (resposta curta com correção por palavra-chave) e associação imagem-conceito. Objetivo: reduzir fadiga de formato único e atender estilos cognitivos distintos. Implementação faseada — formato por formato, mantendo o quiz como esqueleto. Detalhamento em `docs/PEDAGOGIA-MECANICAS.md` (a redigir).
 
 ## Fase 3 — Sala de Aula (Kahoot-style) 🔜
 

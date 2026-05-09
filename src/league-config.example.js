@@ -14,3 +14,8 @@ window.SANKOFA_LEAGUE_CONFIG = {
   anonKey: "YOUR-ANON-PUBLIC-KEY",
   hasTagColumn: true   // após rodar SETUP_TOURNAMENT.sql + RUN_THIS_FIRST.sql
 };
+
+// Painel admin: autenticação via Supabase Auth (email + senha).
+// Criar usuário em Studio → Authentication → Users.
+// Desativar self-signup em Studio → Authentication → Providers → Email.
+// Acesso: /?admin=1 ou /#admin
