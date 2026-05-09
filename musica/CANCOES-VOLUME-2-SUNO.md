@@ -2,6 +2,7 @@
 
 > 24 prompts complementares ao primeiro volume. Cole no Suno.com Custom Mode.
 > Foco: temas e figuras dos 8 volumes HGA UNESCO ainda não explorados.
+> Style + Exclude Styles em inglês para máxima legibilidade do motor Suno; lyrics permanecem em pt-BR.
 
 ---
 
@@ -11,12 +12,15 @@
 
 **Style**:
 ```
-folk experimental afro pt-BR, kalimba intricada, cordas etéreas pad,
-voz feminina contralto reverente, percussão acústica suave djembé,
-BPM 72, key Am, mood reflexivo cientifico contemplativo
+experimental afro-folk in Portuguese (pt-BR), intricate kalimba ostinato as
+melodic anchor, ethereal string pad with slow attack, soft djembe heartbeat
+pulse, sparse upright bass drone in low register, female contralto vocal —
+reverent, breathy, intimate close-mic delivery, subtle tape saturation,
+wide stereo reverb hall, organic acoustic mix, BPM 72, key A minor,
+4/4 with rubato feel, mood reflective scientific contemplative archaeological
 ```
 **Title**: `Os Ossos de Ishango`
-**Exclude Styles**: `pop, EDM, autotune, distorção, infantil`
+**Exclude Styles**: `pop, commercial radio pop, EDM, dubstep, trap, hyperpop, autotune, vocoder, heavy distortion, electric guitar solos, kids song, nursery rhyme, lo-fi hip-hop, mumble rap, drill, reggaeton`
 
 ---
 
@@ -24,12 +28,15 @@ BPM 72, key Am, mood reflexivo cientifico contemplativo
 
 **Style**:
 ```
-mali traditional pt-BR, flauta tama dolente, ngoni dedilhado,
-percussão djembé suave, voz líder masculina mais coro respondendo,
-BPM 84, key Em, mood místico ancestral cosmológico
+Mali traditional folk in Portuguese (pt-BR), mournful tama talking-flute
+lead, fingerpicked ngoni lute weaving counter-melody, soft hand-played
+djembe with low tonal hits, calabash shaker, male lead baritone vocal —
+griot storytelling timbre, plus call-and-response male chorus answering
+phrase by phrase, deep stereo width, dry analog warmth, BPM 84, key E minor,
+6/8 swing, mood mystical ancestral cosmological starlit nocturnal
 ```
 **Title**: `Dogon Olha Sirius`
-**Exclude Styles**: `pop comercial, EDM, autotune, trap`
+**Exclude Styles**: `commercial pop, western EDM, autotune, trap, drill, reggaeton, electric rock, distorted guitars, dubstep, hyperpop, vocoder, kids choir, christmas, lo-fi beats`
 
 ---
 
@@ -37,13 +44,15 @@ BPM 84, key Em, mood místico ancestral cosmológico
 
 **Style**:
 ```
-san traditional pt-BR, voz feminina jovem com cliques fonéticos,
-arco musical bow, kalimba leve, palmas, BPM 90, key G maior,
-mood brincalhão didático curioso
+San Bushmen traditional in Portuguese (pt-BR), young female lead vocal with
+authentic Khoisan phonetic clicks woven into phrasing, musical bow (gora)
+buzzing drone, light kalimba sparse pattern, communal hand-claps with
+varied timbres, foot stomps on the off-beat, ostrich-eggshell shaker,
+playful intimate group feel as if around evening fire, BPM 90, key G major,
+4/4 with syncopation, mood playful didactic curious child-friendly
 ```
 **Title**: `Khoisan Estala a Língua`
-**Exclude Styles**: `EDM, trap, distorção, autotune extremo`
-
+**Exclude Styles**: `EDM, trap, drill, distortion, extreme autotune, vocoder, dubstep, hyperpop, trance, techno, heavy metal, electric bass, drum machine, 808 kicks`
 ---
 
 # MUNDO 2 — África Antiga
@@ -52,12 +61,16 @@ mood brincalhão didático curioso
 
 **Style**:
 ```
-núbio cinematográfico pt-BR, tar tambor de moldura, flauta nay árabe
-melódica, voz feminina contralto evocativa, cordas em camadas,
-BPM 68, key Dm, mood arqueológico solene reivindicativo
+Nubian cinematic in Portuguese (pt-BR), tar frame-drum with deep bass
+resonance and rim accents, melodic Arabic nay flute lead with breathy
+ornamentation, layered bowed strings building from solo cello to ensemble,
+female contralto vocal — evocative, slightly grainy, mid-range chest voice,
+sparse hand-percussion, deep cinematic reverb, slow-attack pad underneath,
+BPM 68, key D minor, 4/4, mood archaeological solemn vindicating
+proto-Egyptian dignified
 ```
 **Title**: `Kerma Antes do Faraó`
-**Exclude Styles**: `pop, EDM, autotune, infantil, lo-fi`
+**Exclude Styles**: `pop, EDM, dubstep, autotune, kids song, lo-fi, trap, drill, reggaeton, country, rock, modern R&B, vocoder, hyperpop`
 
 ---
 
@@ -65,12 +78,15 @@ BPM 68, key Dm, mood arqueológico solene reivindicativo
 
 **Style**:
 ```
-mediterrâneo norte-africano pt-BR, bendir tambor berbere, ney árabe,
-cordas, voz líder masculina dramática mais coro masculino,
-BPM 100, key Em (capo IV soa F#m), mood épico militar guerreiro
+North-African Mediterranean in Portuguese (pt-BR), bendir Berber frame-drum
+driving martial pulse, Arabic ney flute melodic lead, cinematic strings
+ostinato in lower register, taut male lead vocal — dramatic, declamatory,
+chest-voice belting, plus deep male unison chorus shouting refrains,
+distant war-horn hits, BPM 100, key E minor (capo IV sounds F# minor),
+4/4 march feel, mood epic military warrior defiant Punic
 ```
 **Title**: `Cartago Resiste`
-**Exclude Styles**: `pop comercial, EDM, autotune, infantil`
+**Exclude Styles**: `commercial pop, EDM, dubstep, autotune, kids song, reggaeton, trap, drill, lo-fi, modern R&B, hyperpop, vocoder, christmas`
 
 ---
 
@@ -78,12 +94,15 @@ BPM 100, key Em (capo IV soa F#m), mood épico militar guerreiro
 
 **Style**:
 ```
-etiópico tradicional pt-BR, krar lira de seis cordas, masenqo violino
-de uma corda, percussão kebero, voz feminina jovem mais coro infantil,
-BPM 88, key C maior, mood orgulhoso celebratório
+Ethiopian traditional Habesha in Portuguese (pt-BR), krar six-string lyre
+fingerpicked, masenqo one-string fiddle bowed melodic lead, kebero
+double-headed drum syncopated, light hand-clap pattern, young female lead
+vocal — bright airy folk timbre, joined by warm children's chorus on
+refrain, sparse mix with natural acoustic space, BPM 88, key C major,
+6/8, mood proud celebratory bright Ethiopian-Christian-pre-Islamic
 ```
 **Title**: `Aksum Estela do Céu`
-**Exclude Styles**: `EDM, trap, autotune extremo`
+**Exclude Styles**: `EDM, trap, drill, extreme autotune, dubstep, hyperpop, electric guitar, modern R&B, reggaeton, lo-fi beats, vocoder, distorted bass`
 
 ---
 
@@ -93,12 +112,15 @@ BPM 88, key C maior, mood orgulhoso celebratório
 
 **Style**:
 ```
-igbo cerimonial pt-BR, ekwe gongo de madeira, udu vaso de barro
-percutido, voz líder feminina madura mais coro, BPM 76, key Em,
-mood majestoso ancestral cerimonial
+Igbo ceremonial in Portuguese (pt-BR), ekwe wooden slit-gong as rhythmic
+spine, udu clay-pot percussion with bass thump and finger snaps,
+ogene metal-bell accents, mature female lead vocal — deep alto, regal
+delivery, plus mixed adult chorus answering antiphonally, sparse acoustic
+bass, ceremonial reverb, BPM 76, key E minor, 4/4 ceremonial,
+mood majestic ancestral ceremonial royal-court bronze-age
 ```
 **Title**: `Igbo-Ukwu Bronze`
-**Exclude Styles**: `pop, EDM, autotune, infantil, lo-fi`
+**Exclude Styles**: `pop, EDM, dubstep, autotune, kids song, lo-fi, trap, drill, reggaeton, country, rock, vocoder, hyperpop, modern R&B`
 
 ---
 
@@ -106,12 +128,15 @@ mood majestoso ancestral cerimonial
 
 **Style**:
 ```
-etiópico ortodoxo pt-BR, tsenatsil sistro religioso, kebero tambor
-litúrgico, voz líder masculina sacerdotal mais coro homens em uníssono,
-BPM 72, key Am, mood sagrado litúrgico místico
+Ethiopian Orthodox liturgical in Portuguese (pt-BR), tsenatsil ceremonial
+sistrum, kebero liturgical drum with restrained slow pulse, low drone pad
+evoking rock-hewn church acoustics, sacerdotal male lead baritone vocal —
+intoned chant style, plus male unison chorus in monastic harmony,
+long stone-cathedral reverb, BPM 72, key A minor, free-time chant feel,
+mood sacred liturgical mystic medieval Christian-African
 ```
 **Title**: `Lalibela Cavada na Pedra`
-**Exclude Styles**: `pop, EDM, autotune, secular`
+**Exclude Styles**: `pop, EDM, autotune, secular dance, club, trap, drill, reggaeton, electric guitars, drum machine, dubstep, hyperpop, vocoder, kids music`
 
 ---
 
@@ -119,12 +144,15 @@ BPM 72, key Am, mood sagrado litúrgico místico
 
 **Style**:
 ```
-yorubá clássico pt-BR, bata tambor falante, sekere chocalho, dùndún
-acentos, voz feminina jovem alegre mais coro infantil, BPM 92,
-key D maior, mood orgulhoso reivindicativo bright
+Yoruba classical in Portuguese (pt-BR), bata talking-drum trio leading
+rhythm with tonal phrases, sekere beaded gourd shaker, dùndún
+hourglass-drum melodic accents, young female lead vocal — bright joyful
+mid-range, plus children's chorus brightening refrains, sparse stand-up
+bass, natural acoustic mix with warm reverb, BPM 92, key D major,
+12/8 Yoruba feel, mood proud vindicating bright royal-Ifé sculptural
 ```
 **Title**: `Ifé Cabeça de Bronze`
-**Exclude Styles**: `EDM, trap, autotune, lo-fi`
+**Exclude Styles**: `EDM, trap, drill, autotune, lo-fi, dubstep, hyperpop, vocoder, modern pop, reggaeton, country, electric distortion, drum machine kits`
 
 ---
 
@@ -134,12 +162,16 @@ key D maior, mood orgulhoso reivindicativo bright
 
 **Style**:
 ```
-mali ambient pt-BR, ngoni dedilhado intro 12 compassos, baixo acústico
-profundo, voz líder masculina meditativa, percussão suave sabar,
-BPM 70, key Em (capo III soa Gm), mood arqueológico contemplativo
+Mali ambient folk in Portuguese (pt-BR), 12-bar fingerpicked ngoni intro
+establishing motif, deep upright acoustic bass with slow walking line,
+soft sabar hand-percussion brushed lightly, male lead baritone vocal —
+meditative, half-spoken half-sung, intimate close-mic, distant kora
+shimmer in mid background, BPM 70, key E minor (capo III sounds G minor),
+4/4 with rubato, mood archaeological contemplative pre-colonial-urban
+desert-river
 ```
 **Title**: `Jenne-Jeno Tinha Cidade`
-**Exclude Styles**: `pop comercial, EDM, autotune, infantil`
+**Exclude Styles**: `commercial pop, EDM, autotune, kids song, dubstep, trap, drill, reggaeton, modern R&B, hyperpop, electric rock, vocoder, lo-fi hip-hop, christmas`
 
 ---
 
@@ -147,12 +179,15 @@ BPM 70, key Em (capo III soa Gm), mood arqueológico contemplativo
 
 **Style**:
 ```
-hausa kalangu pt-BR, kalangu tambor de bambu característico, kakaki
-trompete cerimonial, voz líder masculina mais coro respondendo,
-BPM 102, key G (capo II soa A), mood guerreiro confederativo
+Hausa kalangu tradition in Portuguese (pt-BR), kalangu hourglass talking
+bambu-drum as signature rhythmic voice, kakaki ceremonial long-trumpet
+fanfares between verses, goje one-string fiddle melodic line, male lead
+tenor vocal — proclamatory griot delivery, plus male call-and-response
+chorus, hand-clap accents, BPM 102, key G (capo II sounds A), 4/4 driving,
+mood warrior confederative proud Sahel-emirate ceremonial
 ```
 **Title**: `Hausa Sete Cidades`
-**Exclude Styles**: `pop, EDM, autotune, lo-fi`
+**Exclude Styles**: `pop, EDM, autotune, lo-fi, dubstep, trap, drill, reggaeton, modern R&B, hyperpop, vocoder, country, electric guitar shred`
 
 ---
 
@@ -160,12 +195,15 @@ BPM 102, key G (capo II soa A), mood guerreiro confederativo
 
 **Style**:
 ```
-folk infantil afro pt-BR, flauta de bambu doce, djembé suave,
-voz feminina materna mais coro infantil, BPM 88, key G maior,
-mood didático carinhoso curativo
+afro children's folk in Portuguese (pt-BR), sweet bamboo flute lead
+melody, soft djembe heartbeat at low dynamics, light shaker, gentle
+fingerpicked nylon guitar, motherly female lead vocal — warm caring
+mid-range, plus children's chorus brightening every refrain, intimate
+acoustic mix with light room reverb, BPM 88, key G major, 4/4 lullaby
+feel, mood didactic affectionate healing herbal-medicine forest-canopy
 ```
 **Title**: `Farmacopeia da Floresta`
-**Exclude Styles**: `EDM, trap, autotune extremo, distorção`
+**Exclude Styles**: `EDM, trap, drill, extreme autotune, distortion, dubstep, hyperpop, vocoder, electric rock, heavy bass drops, club music, reggaeton`
 
 ---
 
@@ -175,12 +213,15 @@ mood didático carinhoso curativo
 
 **Style**:
 ```
-daomé tradicional pt-BR, assokwé tambor sagrado, agbatsa percussão
-cerimonial, voz líder feminina sacerdotal mais coro,
-BPM 84, key Em, mood ritual sagrado ancestral
+Dahomey traditional in Portuguese (pt-BR), assokwé sacred drum with deep
+ritual pulse, agbatsa ceremonial percussion ensemble layered,
+gankogui double-bell timekeeping, sacerdotal female lead vocal — possessed
+trance-like delivery in mid-low register, plus mixed chorus chanting
+responses, calabash shaker sustaining, ritual reverb, BPM 84, key E minor,
+6/8 ceremonial, mood ritual sacred ancestral pre-Catholic Beninese
 ```
 **Title**: `Vodun Antes do Vodu`
-**Exclude Styles**: `pop, EDM, autotune, infantil, lo-fi`
+**Exclude Styles**: `pop, EDM, autotune, kids song, lo-fi, trap, drill, reggaeton, modern R&B, dubstep, hyperpop, vocoder, country, christmas, halloween clichés`
 
 ---
 
@@ -188,12 +229,16 @@ BPM 84, key Em, mood ritual sagrado ancestral
 
 **Style**:
 ```
-garífuna paranda pt-BR, banda guitar acústica, tambor garaon, maracas,
-voz líder feminina caribenha mais coro garífuna em harmonia,
-BPM 95, key D maior, mood caribenho festivo ancestral
+Garífuna paranda in Portuguese (pt-BR), banda-style fingerpicked
+nylon-string acoustic guitar, primero garaon hand-drum lead, segundo
+garaon answering drum, sisira maracas, claves accenting, Caribbean female
+lead alto vocal — warm folk timbre with slight melisma, plus Garífuna
+chorus harmonizing in thirds and fifths, light upright bass,
+BPM 95, key D major, 4/4 paranda groove, mood Caribbean festive ancestral
+Saint-Vincent-to-Honduras-diaspora
 ```
 **Title**: `Garífuna do Caribe`
-**Exclude Styles**: `EDM, trap, autotune, pop comercial`
+**Exclude Styles**: `EDM, trap, autotune, commercial pop, drill, reggaeton modern, dubstep, hyperpop, vocoder, electric rock, lo-fi beats, K-pop, latin trap`
 
 ---
 
@@ -201,12 +246,16 @@ BPM 95, key D maior, mood caribenho festivo ancestral
 
 **Style**:
 ```
-mestiço afro-latino pt-BR, acordeão zydeco suave, percussão leve
-djembé mais cuíca, voz feminina alegre mais coro infantil,
-BPM 105, key C (capo V soa F), mood culinário festivo brincalhão
+afro-Latin mestiço fusion in Portuguese (pt-BR), soft zydeco accordion
+intro, light percussion combo of djembe + cuíca + güiro, female lead
+soprano vocal — bright joyful storytelling, plus children's chorus
+brightening every food-name refrain, fingerpicked acoustic guitar,
+walking upright bass, sprinkle of triangle, BPM 105, key C
+(capo V sounds F), 4/4 second-line groove, mood culinary festive
+playful diaspora-kitchen
 ```
 **Title**: `Jollof, Feijoada, Gumbo`
-**Exclude Styles**: `EDM, trap, autotune extremo, distorção`
+**Exclude Styles**: `EDM, trap, drill, extreme autotune, distortion, dubstep, hyperpop, vocoder, heavy rock, club music, reggaeton, mumble rap, country`
 
 ---
 
@@ -216,12 +265,16 @@ BPM 105, key C (capo V soa F), mood culinário festivo brincalhão
 
 **Style**:
 ```
-tanzaniano tradicional pt-BR, mtindi tambor dominante, msondo tambor
-de chão, voz líder masculina ancestral mais coro masculino unisson,
-BPM 80, key Am (capo II soa Bm), mood guerreiro espiritual lamento
+Tanzanian traditional in Portuguese (pt-BR), mtindi master-drum dominant
+with deep tonal hits, msondo floor-drum sustaining low pulse, ngoma ensemble
+layering polyrhythm, ancestral male lead baritone vocal — half-cry
+half-sung lament timbre, plus male unison chorus answering with stoic
+weight, distant calabash shaker, dry organic mix, BPM 80, key A minor
+(capo II sounds B minor), 4/4 with cross-rhythm, mood warrior spiritual
+lament colonial-resistance sacred-water
 ```
 **Title**: `Maji Maji Tanzânia`
-**Exclude Styles**: `pop comercial, EDM, autotune, infantil`
+**Exclude Styles**: `commercial pop, EDM, autotune, kids song, dubstep, trap, drill, reggaeton, modern R&B, hyperpop, vocoder, country, electric distortion`
 
 ---
 
@@ -229,12 +282,15 @@ BPM 80, key Am (capo II soa Bm), mood guerreiro espiritual lamento
 
 **Style**:
 ```
-zulu maskandi pt-BR, mbira sansa zulu, guitarra dedilhada estilo
-maskandi, voz líder masculina chamada mais coro masculino zulu,
-BPM 92, key G, mood orgulhoso desafiador
+Zulu maskandi in Portuguese (pt-BR), mbira sansa Zulu plucked motif,
+maskandi-style fingerpicked steel-string guitar with characteristic
+picking pattern, bass guitar walking, male lead tenor vocal — proud
+declamatory imbongi-praise-poet timbre, plus deep Zulu male chorus in
+parallel harmony, light hand-claps and foot-stomp, BPM 92, key G major,
+4/4 maskandi groove, mood proud defiant rural-Natal anti-colonial
 ```
 **Title**: `Bambata Despreza Imposto`
-**Exclude Styles**: `pop, EDM, autotune, lo-fi, trap`
+**Exclude Styles**: `pop, EDM, autotune, lo-fi, trap, drill, dubstep, hyperpop, vocoder, modern pop-rock, reggaeton, kids song, mumble rap, club music`
 
 ---
 
@@ -242,12 +298,15 @@ BPM 92, key G, mood orgulhoso desafiador
 
 **Style**:
 ```
-norte-africano berbere pt-BR, oud árabe melódico, bendir tambor
-de moldura, voz feminina madura amazigh mais coro,
-BPM 88, key Dm (capo I soa Em menor), mood orgulhoso resistente
+North-African Berber Amazigh in Portuguese (pt-BR), oud Arabic lute melodic
+lead with maqam ornamentation, bendir frame-drum with bass thump and
+high-pitch snap, qanun zither shimmer, mature female lead vocal — Amazigh
+matriarchal alto with long sustained notes and micro-tonal slides,
+plus female chorus answering refrains, BPM 88, key D minor (capo I sounds
+E flat minor), 6/8, mood proud resistant warrior-queen Maghrebi-medieval
 ```
 **Title**: `Dahia Berbere Não Cede`
-**Exclude Styles**: `EDM, trap, autotune extremo, infantil`
+**Exclude Styles**: `EDM, trap, drill, extreme autotune, kids song, dubstep, hyperpop, vocoder, modern pop, reggaeton, country, electric guitars, drum machine`
 
 ---
 
@@ -257,13 +316,16 @@ BPM 88, key Dm (capo I soa Em menor), mood orgulhoso resistente
 
 **Style**:
 ```
-pan-asiático e africano pt-BR, cordas violino orquestral, tabla
-indiana sutil, djembé africano, voz lead masculina diplomática
-mais coro misto multi-étnico, BPM 76, key D maior, mood histórico
-solene esperançoso
+pan-Asian-and-African historical fusion in Portuguese (pt-BR), orchestral
+strings violins and cellos in solemn pad, subtle Indian tabla
+syncopation, West-African djembe foundational pulse, gentle pipa or
+guzheng pluck accents, diplomatic male lead baritone vocal — measured
+statesman delivery, plus mixed multi-ethnic chorus blending East-Asian
+and African vocal colors on refrains, BPM 76, key D major, 4/4 cinematic,
+mood historical solemn hopeful third-world-solidarity 1955
 ```
 **Title**: `Bandung Junta a África e a Ásia`
-**Exclude Styles**: `pop comercial, EDM, autotune, infantil`
+**Exclude Styles**: `commercial pop, EDM, autotune, kids song, dubstep, trap, drill, reggaeton, hyperpop, vocoder, lo-fi beats, modern R&B, country`
 
 ---
 
@@ -271,13 +333,16 @@ solene esperançoso
 
 **Style**:
 ```
-moçambicano marrabenta pt-BR, violão dedilhado moçambicano,
-acordeão folk, percussão timbila ligeira, voz líder masculina
-combativa mais coro misto, BPM 110, key C (capo V soa F),
-mood revolucionário celebratório vitorioso
+Mozambican marrabenta in Portuguese (pt-BR), fingerpicked nylon-string
+acoustic guitar in marrabenta style, folk diatonic accordion, light
+timbila xylophone runs, hand-drum percussion with shaker, combative male
+lead tenor vocal — revolutionary chant timbre, plus mixed chorus shouting
+unified refrains, walking acoustic bass, BPM 110, key C (capo V sounds F),
+4/4 marrabenta groove, mood revolutionary celebratory victorious
+1975-independence
 ```
 **Title**: `FRELIMO Liberta Moçambique`
-**Exclude Styles**: `pop ocidental, EDM, autotune, lo-fi`
+**Exclude Styles**: `western commercial pop, EDM, autotune, lo-fi, dubstep, trap, drill, reggaeton, modern R&B, hyperpop, vocoder, country, kids song`
 
 ---
 
@@ -285,12 +350,16 @@ mood revolucionário celebratório vitorioso
 
 **Style**:
 ```
-folk afro-francês pt-BR, violão dedilhado bossa-style, kora discreta,
-voz feminina elegante poética mais coro suave, piano leve,
-BPM 92, key G (capo II soa A), mood literário reflexivo orgulhoso
+afro-French literary folk in Portuguese (pt-BR), bossa-style fingerpicked
+nylon guitar with smooth jazz voicings, discreet kora arpeggios in
+background, soft brushed jazz drums, light upright bass, elegant female
+lead alto vocal — poetic recitation half-sung half-spoken, plus subtle
+mixed chorus on refrains, soft Rhodes-like piano comping, BPM 92,
+key G (capo II sounds A), 4/4 swing, mood literary reflective proud
+Parisian-cafe-1947 black-pride-poets
 ```
 **Title**: `Négritude Senghor Damas`
-**Exclude Styles**: `EDM, trap, autotune extremo, distorção`
+**Exclude Styles**: `EDM, trap, drill, extreme autotune, distortion, dubstep, hyperpop, vocoder, kids song, country, club music, reggaeton, modern pop-rock`
 
 ---
 
@@ -300,13 +369,16 @@ BPM 92, key G (capo II soa A), mood literário reflexivo orgulhoso
 
 **Style**:
 ```
-township jazz pt-BR, saxofone sul-africano lead intro 8 compassos,
-piano gospel acordes maiores, baixo elétrico fender, percussão suave
-shaker, voz líder feminina madura sentida mais coro gospel sul-africano,
-BPM 70, key C (capo V soa F), mood reverente luto esperança
+township jazz in Portuguese (pt-BR), 8-bar South-African saxophone lead
+intro à la Mankunku, gospel piano with rich major-7 voicings, electric
+Fender bass with melodic walking line, soft brushed shaker and hi-hat,
+mature female lead vocal — soulful gospel alto with melisma and grit,
+plus full South-African gospel chorus harmonizing wide, restrained Hammond
+organ swell, BPM 70, key C (capo V sounds F), 4/4 gospel-jazz, mood
+reverent mourning hopeful 1976-student-uprising
 ```
 **Title**: `Soweto 16 de Junho`
-**Exclude Styles**: `pop comercial, EDM, autotune, infantil, distorção`
+**Exclude Styles**: `commercial pop, EDM, autotune, kids song, distortion, dubstep, trap, drill, reggaeton, hyperpop, vocoder, country, lo-fi beats, mumble rap`
 
 ---
 
@@ -314,13 +386,16 @@ BPM 70, key C (capo V soa F), mood reverente luto esperança
 
 **Style**:
 ```
-zulu cappella pt-BR estilo Ladysmith Black Mambazo, vozes masculinas
-em harmonia 4-vozes intro 12 compassos a cappella, palmas suaves,
-percussão sutil, BPM 78, key G maior, mood reverente comunitário
-filosófico
+Zulu a-cappella in Portuguese (pt-BR), Ladysmith-Black-Mambazo style
+isicathamiya, four-part male vocal harmony with deep bass, baritone, tenor,
+high-tenor, 12-bar a-cappella intro establishing harmonic motif, soft
+hand-claps at low dynamics, gentle foot-shuffle percussion, no melodic
+instruments, intimate close-mic group with natural room reverb, BPM 78,
+key G major, 4/4 isicathamiya feel, mood reverent communal philosophical
+post-apartheid humanism
 ```
 **Title**: `Ubuntu — Eu Sou Porque Tu És`
-**Exclude Styles**: `pop, EDM, autotune, infantil, instrumentos pesados`
+**Exclude Styles**: `pop, EDM, autotune, kids song, heavy instruments, electric guitars, drum machine, dubstep, trap, drill, reggaeton, modern R&B production, vocoder, hyperpop, club`
 
 ---
 
@@ -328,13 +403,16 @@ filosófico
 
 **Style**:
 ```
-afrobeats moderno pt-BR, 808 sub-bass suave, percussão acústica
-djembé e talking drum, voz feminina jovem rap-melódica mais coro,
-guitarra elétrica limpa highlife, BPM 100, key Em, mood urbano
-ancestral conectado contemporâneo
+modern afrobeats in Portuguese (pt-BR), warm 808 sub-bass with restrained
+attack, acoustic djembe + talking-drum layering polyrhythm under
+programmed kit, clean highlife-style electric guitar arpeggio, young female
+lead vocal — rap-melodic flow with West-African inflection, plus afro-pop
+chorus on hook, light shekere shaker, contemporary hybrid mix balancing
+acoustic and electronic, BPM 100, key E minor, 4/4 afrobeats groove,
+mood urban ancestral connected contemporary diaspora-roots
 ```
 **Title**: `Hip Hop África Volta`
-**Exclude Styles**: `trap pesado, distorção, autotune extremo, mumble rap`
+**Exclude Styles**: `heavy trap, distortion, extreme autotune, mumble rap, drill, dubstep, hyperpop, screamo, hard rock, country, K-pop, EDM festival drops, vocoder leads`
 
 ---
 
