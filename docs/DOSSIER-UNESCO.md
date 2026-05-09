@@ -154,6 +154,18 @@ historiadores brasileiros e africanos da UNILAB, UFRRJ, UFBA, USP
 e da diáspora. Este dossier inclui pedido formal de **indicação,
 pela UNESCO, de revisores adequados**.
 
+**Primeira rodada de feedback docente — 09/05/2026.** O protótipo
+foi compartilhado com um grupo de educadores em formação (faculdade
+de pedagogia/licenciaturas). Retorno consolidado: o formato "quiz +
+dicas progressivas + caderno de revisão" é pedagogicamente sólido,
+mas há recomendação consensual de **diversificar mecânicas** ao
+longo das fases — intercalar quizzes com formatos complementares
+(linha do tempo arrastável, mapa interativo, áudio-quiz, micro-
+escrita, associação imagem-conceito) para reduzir fadiga de formato
+único e contemplar diferentes estilos cognitivos. Esta orientação
+foi incorporada ao roadmap (Fase 2, ver §7) e será detalhada em
+documento próprio (`docs/PEDAGOGIA-MECANICAS.md`).
+
 ## 4.4. Acessibilidade WCAG 2.1 AA
 
 - Tamanho do texto regulável em 5 níveis (90% a 150%).
@@ -285,8 +297,9 @@ ensino de HGA.
 
 | Mês | Marco |
 |---|---|
-| **Mai 2026** (atual) | Submissão Edital 04 PNAB-SP. Envio deste dossier à UNESCO Brasil. |
-| **Jun 2026** | Início de validação acadêmica formal dos 71 enigmas. |
+| **Mai 2026** (atual) | Submissão Edital 04 PNAB-SP. Envio deste dossier à UNESCO Brasil. Primeira rodada de feedback docente (09/05) — recomendação de diversificação de mecânicas incorporada ao planejamento. |
+| **Jun 2026** | Início de validação acadêmica formal dos 71 enigmas. Especificação técnica de mecânicas complementares (linha do tempo, mapa, áudio-quiz, micro-escrita). |
+| **Jul–Ago 2026** | Implementação faseada das novas mecânicas — uma por sprint, mantendo o quiz como esqueleto. |
 | **Jul 2026** | Tradução completa da interface para EN e ES. |
 | **Ago 2026** | Piloto pedagógico em 5 escolas (SP capital). Início Modo Sala de Aula (Kahoot-style). |
 | **Set 2026** | Tradução de 30 enigmas para EN. Apresentação em Games for Change (NY) ou A MAZE. (Berlin), se aprovado. |

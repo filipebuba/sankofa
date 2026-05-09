@@ -1795,3 +1795,152 @@ input { font-family: var(--font-body); }
   margin-top: 14px;
   font-style: italic;
 }
+
+/* ============ Emotion / Clarity feedback (telemetria pedagógica) ============ */
+.emotion-block {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+.emotion-q, .clarity-q {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.clarity-q { margin-top: 12px; }
+.emotion-row, .clarity-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.emo-btn {
+  font-size: 1.6rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: transform .15s, border-color .15s, background .15s;
+}
+.emo-btn:hover, .emo-btn:focus-visible {
+  transform: scale(1.08);
+  border-color: var(--gold);
+  outline: none;
+}
+.emo-btn.selected {
+  background: var(--gold-glow);
+  border-color: var(--gold);
+}
+.clarity-star {
+  font-size: 1.4rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color .15s, transform .15s;
+}
+.clarity-star:hover, .clarity-star:focus-visible {
+  color: var(--gold);
+  transform: scale(1.12);
+  outline: none;
+}
+.clarity-star.on { color: var(--gold); }
+.emotion-hint {
+  display: block;
+  margin-top: 10px;
+  font-size: .7rem;
+  color: var(--text-muted);
+}
+
+/* ============ Painel admin ============ */
+.admin-page {
+  padding: 14px 0;
+}
+.admin-page h2 { margin: 0 0 10px; color: var(--gold); }
+.admin-login {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  max-width: 360px;
+  margin: 30px auto;
+}
+.admin-login input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 1rem;
+}
+.admin-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.admin-section h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  color: var(--terra);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+  overflow-x: auto;
+  display: block;
+}
+.admin-table th, .admin-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+.admin-table th { color: var(--text-dim); font-weight: 600; }
+.admin-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+.admin-kpi {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.admin-kpi-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+.admin-kpi-label {
+  font-size: .72rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.admin-export {
+  font-size: .72rem;
+  padding: 4px 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-dim);
+}
+.admin-export:hover { background: var(--gold-glow); color: var(--gold); }

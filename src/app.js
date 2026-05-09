@@ -693,6 +693,15 @@
       case "enigma":
         app.innerHTML = rEnigma();
         enigmaStartTime = Date.now();
+        if (window.SankofaTelemetry) {
+          var _eidT = S.screenData.enigma;
+          var _eT = getEnigma(_eidT);
+          if (_eT) window.SankofaTelemetry.track("view", {
+            enigma_id: _eidT, world: _eT.world,
+            age_band: S.ageBand || undefined,
+            house: (S.house && S.house.id) || undefined
+          });
+        }
         if (window.SankofaTTS && window.SankofaTTS.available() && window.SankofaTTS.enabled()) {
           var _eid = S.screenData.enigma;
           setTimeout(function () { handleSpeakEnigma(_eid); }, 250);
@@ -720,6 +729,10 @@
       case "accessibility": app.innerHTML = rAccessibility(); break;
       case "feedback": app.innerHTML = rFeedback(); break;
       case "contribute": app.innerHTML = rContribute(); break;
+      case "admin":
+        if (window.SankofaAdmin) { window.SankofaAdmin.render(); attachEvents(); updateSoundBtn(); return; }
+        app.innerHTML = rLanding();
+        break;
       default: app.innerHTML = rLanding();
     }
     attachEvents();
@@ -1115,10 +1128,34 @@
       '<div style="background:var(--surface2);padding:14px;border-radius:var(--radius);width:100%;text-align:left;font-size:.88rem;color:var(--text-dim);border-left:3px solid var(--terra)">' +
       '<strong style="color:var(--terra)">Curiosidade:</strong> ' + e.curiosity + '</div>' +
       (e.source ? '<div style="font-size:.72rem;color:var(--text-muted)">' + e.source + '</div>' : '') +
+      rEmotionBlock(eid, e.world) +
       '<div style="display:flex;flex-direction:column;gap:8px;width:100%;margin-top:6px">' +
       primary +
       '<button class="btn btn-ghost btn-block btn-sm" data-act="open-world" data-w="' + e.world + '">Ver lista do Mundo</button>' +
       '</div>' +
+      '</div>';
+  }
+
+  function rEmotionBlock(eid, world) {
+    if (!window.SankofaTelemetry || !window.SankofaTelemetry.optedIn()) return "";
+    S._emotionGiven = S._emotionGiven || {};
+    if (S._emotionGiven[eid]) return "";
+    return '<div class="emotion-block" role="group" aria-label="Como foi este enigma?">' +
+      '<div class="emotion-q">Como foi este enigma?</div>' +
+      '<div class="emotion-row">' +
+        '<button class="emo-btn" data-act="emo" data-e="' + eid + '" data-w="' + world + '" data-emo="happy"   aria-label="Gostei">😀</button>' +
+        '<button class="emo-btn" data-act="emo" data-e="' + eid + '" data-w="' + world + '" data-emo="neutral" aria-label="Neutro">😐</button>' +
+        '<button class="emo-btn" data-act="emo" data-e="' + eid + '" data-w="' + world + '" data-emo="sad"     aria-label="Difícil ou frustrante">😞</button>' +
+      '</div>' +
+      '<div class="clarity-q">Clareza da pergunta?</div>' +
+      '<div class="clarity-row" role="radiogroup" aria-label="Clareza de 1 a 5">' +
+        '<button class="clarity-star" data-act="clarity" data-e="' + eid + '" data-w="' + world + '" data-c="1" aria-label="1 estrela">★</button>' +
+        '<button class="clarity-star" data-act="clarity" data-e="' + eid + '" data-w="' + world + '" data-c="2" aria-label="2 estrelas">★</button>' +
+        '<button class="clarity-star" data-act="clarity" data-e="' + eid + '" data-w="' + world + '" data-c="3" aria-label="3 estrelas">★</button>' +
+        '<button class="clarity-star" data-act="clarity" data-e="' + eid + '" data-w="' + world + '" data-c="4" aria-label="4 estrelas">★</button>' +
+        '<button class="clarity-star" data-act="clarity" data-e="' + eid + '" data-w="' + world + '" data-c="5" aria-label="5 estrelas">★</button>' +
+      '</div>' +
+      '<small class="emotion-hint">Anônimo. Ajuda-nos a melhorar.</small>' +
       '</div>';
   }
 
@@ -1716,6 +1753,7 @@
     html += '<ul>';
     html += '<li><strong>No teu dispositivo</strong> (<code>localStorage</code>): tudo, por padrão. Não sai daí.</li>';
     html += '<li><strong>No servidor (Supabase)</strong>: <em>somente</em> se ativares a Liga Global. Envia apenas o teu apelido, cauris da semana, casa, e tag de grupo. Sem PII.</li>';
+    html += '<li><strong>Telemetria pedagógica anônima (opt-in)</strong>: registramos eventos do jogo (enigma aberto, resposta correta/errada, dica usada, pulo, reação 😀😐😞, clareza ★1-5) com um identificador local aleatório (UUID), sem nome ou contato. Serve para melhorar enigmas e gerar relatórios para editais e parceiros. Podes desativar a qualquer momento no menu lateral → <em>Telemetria anônima</em>.</li>';
     html += '</ul>';
 
     html += '<h3>3. Cookies</h3>';
@@ -2195,6 +2233,8 @@
         break;
       }
       case "hint": handleHint(el.getAttribute("data-e")); break;
+      case "emo": handleEmotion(el); break;
+      case "clarity": handleClarity(el); break;
       case "toggle-context": toggleContext(); break;
       case "start-daily":
         sfx("select");
@@ -2586,6 +2626,11 @@
           if (picked) S.house = { id: picked.id, worldId: picked.worldId, chosenAt: new Date().toISOString() };
         }
         S.consent = true;
+        // Telemetria: default opt-out para menores (8-12, 13-17). 18+ ou prefiro-nao-dizer = opt-in.
+        if (window.SankofaTelemetry) {
+          var isMinor = (data.ageBand === "8-12" || data.ageBand === "13-17");
+          if (isMinor) window.SankofaTelemetry.setOptIn(false);
+        }
         save();
         sfx("achievement");
         resubmitToLeagueIfOptedIn();
@@ -2642,6 +2687,10 @@
           S.tag = data.tag;
           S.house = data.house || S.house;
           S.consent = true;
+          if (window.SankofaTelemetry) {
+            var isMinor = (data.ageBand === "8-12" || data.ageBand === "13-17");
+            if (isMinor) window.SankofaTelemetry.setOptIn(false);
+          }
           updateStreak();
           save();
           sfx("levelUp");
@@ -2863,6 +2912,15 @@
       // Sync to weekly tournament (opt-in via league config; fire-and-forget)
       submitToTournamentIfApplicable(eid, idx, attempts, hu, Date.now() - enigmaStartTime, true);
 
+      // Telemetria pedagógica (opt-in, fire-and-forget)
+      if (window.SankofaTelemetry) window.SankofaTelemetry.track("answer", {
+        enigma_id: eid, world: e.world,
+        attempt: attempts, correct: true,
+        ms_to_answer: Date.now() - enigmaStartTime,
+        age_band: S.ageBand || undefined,
+        house: (S.house && S.house.id) || undefined
+      });
+
       setTimeout(function () {
         sfx("fragment");
         enigmaLocked = false;
@@ -2891,6 +2949,15 @@
 
       // Tournament: registra também a tentativa errada (até MAX_ATTEMPTS)
       submitToTournamentIfApplicable(eid, idx, attempts, S.hintsUsed[eid] || 0, Date.now() - enigmaStartTime, false);
+
+      // Telemetria — resposta errada
+      if (window.SankofaTelemetry) window.SankofaTelemetry.track("answer", {
+        enigma_id: eid, world: e.world,
+        attempt: attempts, correct: false,
+        ms_to_answer: Date.now() - enigmaStartTime,
+        age_band: S.ageBand || undefined,
+        house: (S.house && S.house.id) || undefined
+      });
       save();
       setTimeout(function () {
         selectedEl.classList.remove("wrong", "selected");
@@ -2938,7 +3005,57 @@
     if (used > 0) S.points = Math.max(0, S.points - 10);
     save();
     sfx("hint");
+    if (window.SankofaTelemetry) {
+      var _eH = getEnigma(eid);
+      if (_eH) window.SankofaTelemetry.track("hint", {
+        enigma_id: eid, world: _eH.world, hint_index: used,
+        age_band: S.ageBand || undefined,
+        house: (S.house && S.house.id) || undefined
+      });
+    }
     goTo("enigma", S.screenData);
+  }
+
+  function handleEmotion(el) {
+    var eid = el.getAttribute("data-e");
+    var w = parseInt(el.getAttribute("data-w"), 10);
+    var emo = el.getAttribute("data-emo");
+    if (!eid || !emo) return;
+    if (window.SankofaTelemetry) window.SankofaTelemetry.track("emotion", {
+      enigma_id: eid, world: w, emotion: emo,
+      age_band: S.ageBand || undefined,
+      house: (S.house && S.house.id) || undefined
+    });
+    var row = el.parentNode;
+    if (row) {
+      var btns = row.querySelectorAll(".emo-btn");
+      for (var i = 0; i < btns.length; i++) btns[i].classList.remove("selected");
+      el.classList.add("selected");
+    }
+    sfx("click");
+  }
+
+  function handleClarity(el) {
+    var eid = el.getAttribute("data-e");
+    var w = parseInt(el.getAttribute("data-w"), 10);
+    var c = parseInt(el.getAttribute("data-c"), 10);
+    if (!eid || !c) return;
+    if (window.SankofaTelemetry) window.SankofaTelemetry.track("emotion", {
+      enigma_id: eid, world: w, clarity: c,
+      age_band: S.ageBand || undefined,
+      house: (S.house && S.house.id) || undefined
+    });
+    var row = el.parentNode;
+    if (row) {
+      var stars = row.querySelectorAll(".clarity-star");
+      for (var i = 0; i < stars.length; i++) {
+        if (i < c) stars[i].classList.add("on"); else stars[i].classList.remove("on");
+      }
+    }
+    S._emotionGiven = S._emotionGiven || {};
+    S._emotionGiven[eid] = true;
+    save();
+    sfx("click");
   }
 
   function handleSkipEnigma(eid) {
@@ -2956,6 +3073,12 @@
     enigmaLocked = false;
     save();
     sfx("navigate");
+    if (window.SankofaTelemetry) window.SankofaTelemetry.track("skip", {
+      enigma_id: eid, world: en.world,
+      ms_to_answer: Date.now() - enigmaStartTime,
+      age_band: S.ageBand || undefined,
+      house: (S.house && S.house.id) || undefined
+    });
     showToast("🌿", "Anotado no Caderno", "Volte quando quiser. +" + SKIP_PITY_POINTS + " pts por tentar.");
     goTo("result", { enigma: eid, points: SKIP_PITY_POINTS, skipped: true });
   }
@@ -3007,6 +3130,26 @@
         sfx("navigate");
         closeMenuDrawer();
         goTo("info-hub");
+      });
+    }
+
+    // Telemetria opt-in toggle
+    var teleBtn = document.getElementById("telemetry-toggle");
+    var teleState = document.getElementById("telemetry-state");
+    function updateTeleState() {
+      if (!teleState || !window.SankofaTelemetry) return;
+      teleState.textContent = window.SankofaTelemetry.optedIn() ? "Ligada" : "Desligada";
+    }
+    if (teleBtn && window.SankofaTelemetry) {
+      updateTeleState();
+      teleBtn.addEventListener("click", function () {
+        var nv = !window.SankofaTelemetry.optedIn();
+        window.SankofaTelemetry.setOptIn(nv);
+        updateTeleState();
+        sfx("click");
+        showToast(nv ? "📊" : "🔕",
+          nv ? "Telemetria ligada" : "Telemetria desligada",
+          nv ? "Eventos anônimos ajudam a melhorar o jogo." : "Nenhum evento será enviado.");
       });
     }
 

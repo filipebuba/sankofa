@@ -47,6 +47,7 @@ pandoc docs/EDITAL-04-SP-PNAB.md       -o word/Edital-04-SP-PNAB.docx           
 pandoc docs/EMAIL-UNESCO-COMISSAO-NACIONAL.md -o word/Email-UNESCO-Comissao-Nacional.docx --from markdown --to docx --standalone
 pandoc docs/DOSSIER-UNESCO.md          -o word/Dossier-UNESCO.docx                  --from markdown --to docx --standalone --toc --toc-depth=2
 pandoc docs/PITCH-DECK-UNESCO.md       -o word/Pitch-Deck-UNESCO.docx               --from markdown --to docx --standalone --toc --toc-depth=2
+pandoc docs/PEDAGOGIA-MECANICAS.md     -o word/Pedagogia-Mecanicas.docx             --from markdown --to docx --standalone --toc --toc-depth=2
 
 # Cópias docx em pastas-irmãs com nomes alternativos (para envios diretos)
 pandoc empresa/ALTERACAO-CONTRATUAL.md -o empresa/Alteracao-Contratual-Datacenter-Vision.docx --from markdown --to docx --standalone

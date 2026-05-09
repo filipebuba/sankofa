@@ -14,3 +14,8 @@ window.SANKOFA_LEAGUE_CONFIG = {
   anonKey: "YOUR-ANON-PUBLIC-KEY",
   hasTagColumn: true   // após rodar SETUP_TOURNAMENT.sql + RUN_THIS_FIRST.sql
 };
+
+// PIN do painel admin (acesso por /?admin=1 ou /#admin).
+// Apenas gate cosmético — as views já são agregadas (sem PII).
+// Use 8+ caracteres. Para auth real: Supabase Auth + RPC SECURITY DEFINER.
+window.SANKOFA_ADMIN_PIN = "REPLACE-ME-8CHARS-MIN";
