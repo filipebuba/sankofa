@@ -2,25 +2,40 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0c0a06">
 <title>Sankofa Kids: Rift Memories</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{overflow:hidden;background:#0c0a06;font-family:Georgia,serif;touch-action:none}
-canvas{display:block;width:100vw;height:100vh}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;height:100dvh;width:100%;overscroll-behavior:none}
+body{overflow:hidden;background:#0c0a06;font-family:Georgia,serif;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+canvas{display:block;width:100vw;height:100vh;height:100dvh}
 
-#hud{position:fixed;top:0;left:0;right:0;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;pointer-events:none;z-index:10}
+#hud{position:fixed;top:0;left:0;right:0;padding:max(14px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 14px max(20px,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:center;pointer-events:none;z-index:10;gap:8px}
 .hi{display:flex;align-items:center;gap:8px;color:#f5efe0;font-size:18px;font-weight:700;text-shadow:0 2px 6px rgba(0,0,0,.6)}
-.hi .ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
+.hi .ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .ico-c{background:#c9a84c;color:#0c0a06}
 .ico-m{background:#b85a3a;color:#f5efe0}
 .hi-mid{font-size:22px;color:#b85a3a;letter-spacing:.05em;text-shadow:0 0 10px rgba(184,90,58,.6),0 2px 4px rgba(0,0,0,.85);background:rgba(12,10,6,.55);padding:6px 14px;border-radius:10px;display:flex;align-items:center;gap:8px;border:1px solid rgba(184,90,58,.4)}
 .hi-mid.low{color:#c9a84c;animation:hShake .4s ease}
 .hi-mid .lives-lbl{font-size:11px;color:#9a8e7a;letter-spacing:.15em;font-weight:700}
+@media(max-width:480px){
+  #hud{padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left))}
+  .hi{font-size:15px;gap:5px}
+  .hi .ico{width:26px;height:26px;font-size:13px}
+  .hi-mid{font-size:17px;padding:4px 10px;gap:5px}
+  .hi-mid .lives-lbl{display:none}
+}
 @keyframes hShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
 #title-card{position:fixed;bottom:54px;left:50%;transform:translateX(-50%);color:#f5efe0;font-size:15px;text-align:center;pointer-events:none;z-index:10;font-style:italic;text-shadow:0 2px 4px rgba(12,10,6,.95),0 0 12px rgba(12,10,6,.7);background:rgba(12,10,6,.55);padding:6px 16px;border-radius:8px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);max-width:90vw}
 #controls{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);color:#ede5d5;font-size:13px;text-align:center;pointer-events:none;z-index:10;text-shadow:0 2px 4px rgba(12,10,6,.95),0 0 8px rgba(12,10,6,.6);background:rgba(12,10,6,.45);padding:5px 14px;border-radius:8px;font-weight:600;letter-spacing:.02em}
+@media(pointer:coarse){
+  #title-card{bottom:auto;top:max(64px,calc(env(safe-area-inset-top) + 50px));font-size:12px;padding:4px 10px;max-width:80vw}
+}
 
 #intro{position:fixed;inset:0;background:#0c0a06;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;cursor:pointer;transition:opacity 1s ease}
 #intro.out{opacity:0;pointer-events:none}
@@ -46,11 +61,23 @@ canvas{display:block;width:100vw;height:100vh}
 #win #win-title.perf{color:#6a8530;font-size:42px;animation:glow 1.5s ease infinite}
 @keyframes glow{0%,100%{text-shadow:0 0 8px rgba(106,133,48,.5)}50%{text-shadow:0 0 24px rgba(106,133,48,.9)}}
 
-#touch{position:fixed;bottom:0;left:0;right:0;height:100px;display:none;justify-content:space-between;align-items:flex-end;padding:0 16px 16px;pointer-events:none;z-index:20}
+#touch{position:fixed;bottom:0;left:0;right:0;display:none;justify-content:space-between;align-items:flex-end;padding:0 max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));pointer-events:none;z-index:20;gap:12px}
 @media(pointer:coarse){#touch{display:flex}#controls{display:none}}
-.tb{width:60px;height:60px;border-radius:50%;background:rgba(201,168,76,.18);border:2px solid rgba(201,168,76,.35);color:#c9a84c;font-size:22px;display:flex;align-items:center;justify-content:center;pointer-events:auto;-webkit-user-select:none;user-select:none}
-.tb:active{background:rgba(201,168,76,.35)}
-.td{display:flex;gap:8px}
+.tb{width:72px;height:72px;border-radius:50%;background:rgba(201,168,76,.22);border:2px solid rgba(201,168,76,.45);color:#c9a84c;font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;pointer-events:auto;-webkit-user-select:none;user-select:none;touch-action:none;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.tb.down,.tb:active{background:rgba(201,168,76,.55);border-color:#c9a84c;color:#0c0a06;transform:scale(.92)}
+.tb-jump{width:84px;height:84px;font-size:30px;background:rgba(106,133,48,.28);border-color:rgba(106,133,48,.55);color:#c5e090}
+.tb-jump.down,.tb-jump:active{background:rgba(106,133,48,.6);border-color:#6a8530;color:#0c0a06}
+.tb-act{width:64px;height:64px;font-size:22px}
+.td{display:flex;gap:12px;align-items:flex-end}
+@media(max-width:380px){
+  .tb{width:62px;height:62px;font-size:22px}
+  .tb-jump{width:72px;height:72px;font-size:26px}
+  .tb-act{width:56px;height:56px;font-size:19px}
+  .td{gap:8px}
+}
+@media(orientation:portrait) and (pointer:coarse){
+  .td-acts{flex-direction:column-reverse}
+}
 
 #toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(31,20,8,.92);color:#c9a84c;padding:18px 30px;border-radius:12px;border:2px solid #c9a84c;font-size:18px;font-weight:700;text-align:center;z-index:50;opacity:0;pointer-events:none;transition:opacity .4s ease;text-shadow:0 1px 3px rgba(0,0,0,.6);max-width:80vw}
 #toast.show{opacity:1}
@@ -90,6 +117,27 @@ canvas{display:block;width:100vw;height:100vh}
 #griot .g-icon{font-size:32px;margin-bottom:8px}
 #griot .g-text{color:#ede5d5;font-size:17px;font-style:italic;line-height:1.5;margin-bottom:10px}
 #griot .g-hint{color:#9a8e7a;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+@media(pointer:coarse){
+  #griot{bottom:auto;top:50%;transform:translate(-50%,-50%);padding:16px 20px;max-width:min(560px,92vw)}
+  #griot .g-text{font-size:15px}
+  #beacon{top:auto;bottom:max(120px,calc(env(safe-area-inset-bottom) + 120px));right:16px;transform:none}
+  #beacon.left{left:16px}
+  #stage{top:max(60px,env(safe-area-inset-top));padding:10px 18px}
+  #stage .s-text{font-size:14px}
+  #stage .s-icon{font-size:18px}
+}
+
+#rotate{position:fixed;inset:0;background:#0c0a06;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:300;color:#c9a84c;text-align:center;padding:20px}
+#rotate.show{display:flex}
+#rotate .r-icon{font-size:64px;margin-bottom:20px;animation:rotIco 2s ease-in-out infinite}
+@keyframes rotIco{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(75deg)}}
+#rotate h2{font-size:22px;color:#c9a84c;margin-bottom:10px;letter-spacing:.1em}
+#rotate p{color:#9a8e7a;font-size:15px;font-style:italic;max-width:300px;line-height:1.5}
+@media(orientation:portrait) and (max-width:600px) and (pointer:coarse){
+  #rotate{display:flex}
+  body.allow-portrait #rotate{display:none}
+  #rotate .r-skip{margin-top:24px;color:#5a5245;font-size:12px;text-decoration:underline;cursor:pointer;pointer-events:auto}
+}
 </style>
 </head>
 <body>
@@ -119,8 +167,19 @@ canvas{display:block;width:100vw;height:100vh}
 <div id="controls">← → Mover &nbsp;|&nbsp; ESPAÇO Saltar &nbsp;|&nbsp; <b>B Escanear</b> &nbsp;|&nbsp; E Ouvir griot</div>
 
 <div id="touch">
-  <div class="td"><button class="tb" id="bl">←</button><button class="tb" id="br">→</button></div>
-  <div class="td"><button class="tb" id="be">🎙</button><button class="tb" id="bs">✦</button><button class="tb" id="bj">↑</button></div>
+  <div class="td"><button class="tb" id="bl" aria-label="Esquerda">←</button><button class="tb" id="br" aria-label="Direita">→</button></div>
+  <div class="td td-acts">
+    <button class="tb tb-act" id="be" aria-label="Ouvir griot">🎙</button>
+    <button class="tb tb-act" id="bs" aria-label="Escanear">✦</button>
+    <button class="tb tb-jump" id="bj" aria-label="Saltar">↑</button>
+  </div>
+</div>
+
+<div id="rotate">
+  <div class="r-icon">📱</div>
+  <h2>RODA O TELEFONE</h2>
+  <p>Este jogo é melhor jogado em paisagem (horizontal)</p>
+  <div class="r-skip">Jogar assim mesmo</div>
 </div>
 
 <div id="toast"></div>
@@ -205,12 +264,14 @@ function initScene(){
   scene.background=new THREE.Color(P.lt);
   scene.fog=new THREE.Fog(P.lt,25,55);
 
-  cam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,.1,100);
+  var isMobile=matchMedia('(pointer:coarse)').matches;
+  var fov=isMobile?(innerWidth<innerHeight?72:62):50;
+  cam=new THREE.PerspectiveCamera(fov,innerWidth/innerHeight,.1,100);
   cam.position.set(0,4,12);cam.lookAt(0,1.5,0);
 
-  ren=new THREE.WebGLRenderer({antialias:true});
+  ren=new THREE.WebGLRenderer({antialias:!isMobile,powerPreference:'high-performance'});
   ren.setSize(innerWidth,innerHeight);
-  ren.setPixelRatio(Math.min(devicePixelRatio,2));
+  ren.setPixelRatio(Math.min(devicePixelRatio,isMobile?1.5:2));
   ren.shadowMap.enabled=true;
   ren.shadowMap.type=THREE.PCFSoftShadowMap;
   ren.toneMapping=THREE.ACESFilmicToneMapping;
@@ -228,10 +289,15 @@ function initScene(){
   scene.add(new THREE.HemisphereLight(P.lt,P.ea,.5));
   scene.add(new THREE.AmbientLight(P.sa,.25));
 
-  window.addEventListener('resize',function(){
-    cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();
+  function onResize(){
+    var mob=matchMedia('(pointer:coarse)').matches;
+    cam.aspect=innerWidth/innerHeight;
+    cam.fov=mob?(innerWidth<innerHeight?72:62):50;
+    cam.updateProjectionMatrix();
     ren.setSize(innerWidth,innerHeight);
-  });
+  }
+  window.addEventListener('resize',onResize);
+  window.addEventListener('orientationchange',function(){setTimeout(onResize,200);});
 }
 
 // === LUCINHA (2D sprite — bíblia visual Kirikou) ===
@@ -447,6 +513,20 @@ function snd(type){
   }
 }
 
+// === MOBILE ===
+function setupMobile(){
+  var skip=document.querySelector('#rotate .r-skip');
+  if(skip){
+    skip.addEventListener('click',function(){document.body.classList.add('allow-portrait');});
+    skip.addEventListener('pointerdown',function(e){e.preventDefault();document.body.classList.add('allow-portrait');});
+  }
+  // Try lock orientation (best effort — fails silently on iOS)
+  if(screen.orientation&&screen.orientation.lock){
+    var tryLock=function(){screen.orientation.lock('landscape').catch(function(){});};
+    document.getElementById('intro').addEventListener('click',tryLock,{once:true});
+  }
+}
+
 // === INPUT ===
 function setupInput(){
   document.addEventListener('keydown',function(e){
@@ -463,17 +543,31 @@ function setupInput(){
     if(e.key==='b'||e.key==='B')I.sc=false;
     if(e.key==='e'||e.key==='E')I.ec=false;
   });
-  function tBtn(id,key){
+  function tBtn(id,key,onPress){
     var el=document.getElementById(id);if(!el)return;
-    el.addEventListener('touchstart',function(e){e.preventDefault();I[key]=true;if(key==='jh'){if(!I.jh)I.jp=true;I.jh=true}if(key==='sc')triggerScan();});
-    el.addEventListener('touchend',function(e){e.preventDefault();I[key]=false;if(key==='jh')I.jh=false});
+    function down(e){
+      e.preventDefault();
+      el.classList.add('down');
+      I[key]=true;
+      if(key==='jh'){if(!I.jh)I.jp=true;I.jh=true;}
+      if(onPress)onPress();
+    }
+    function up(e){
+      if(e)e.preventDefault();
+      el.classList.remove('down');
+      I[key]=false;
+    }
+    el.addEventListener('pointerdown',down);
+    el.addEventListener('pointerup',up);
+    el.addEventListener('pointercancel',up);
+    el.addEventListener('pointerleave',function(e){if(I[key])up(e);});
+    el.addEventListener('contextmenu',function(e){e.preventDefault();});
   }
-  tBtn('bl','l');tBtn('br','r');tBtn('bj','jh');tBtn('bs','sc');
-  var be=document.getElementById('be');
-  if(be){
-    be.addEventListener('touchstart',function(e){e.preventDefault();if(!I.ec)triggerGriot();I.ec=true;});
-    be.addEventListener('touchend',function(e){e.preventDefault();I.ec=false;});
-  }
+  tBtn('bl','l');
+  tBtn('br','r');
+  tBtn('bj','jh');
+  tBtn('bs','sc',triggerScan);
+  tBtn('be','ec',triggerGriot);
 }
 
 // === GRIOT (OUVIR) VERB ===
@@ -756,7 +850,8 @@ function updateCamera(dt){
   var tx=S.x+S.face*2.5;
   var ty=Math.max(S.y+2.5,3.5);
   S.cx+=(tx-S.cx)*.06;S.cy+=(ty-S.cy)*.06;
-  cam.position.set(S.cx,S.cy,12);
+  var cz=innerWidth<innerHeight?16:12;
+  cam.position.set(S.cx,S.cy,cz);
   cam.lookAt(S.cx,S.cy-1.8,0);
 }
 
@@ -931,6 +1026,7 @@ function init(){
   buildLevel();
   buildBackground();
   setupInput();
+  setupMobile();
 
   S.cx=0;S.cy=3.5;
 

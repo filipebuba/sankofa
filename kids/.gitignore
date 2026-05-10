@@ -27,11 +27,6 @@ exports/youtube-16x9/*.mp4
 exports/reels-9x16/*.mp4
 exports/tiktok-9x16/*.mp4
 
-# Game prototype build artifacts
-game/web-prototype/node_modules/
-game/web-prototype/dist/
-game/web-prototype/.vite/
-
 # Misc
 *.log
 .DS_Store
