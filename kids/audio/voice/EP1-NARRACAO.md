@@ -63,7 +63,7 @@
 
 ---
 
-### 00:50 → 01:25 — CENA 4 (caminhar ereta — clímax)
+### 00:50 → 01:25 — CENA 4 (caminhar ereta — clímax) — CORRIGIDO HGA
 
 **[entusiasmada, mas calma]**
 > Olha! Olha bem!
@@ -72,18 +72,22 @@
 > Sobre os dois pés!
 > Caminhando!
 >
-> **[explicativa, tom professorinha boa]**
-> Antes da Lucinha, todo mundo da família dela andava de quatro,
-> ou subia em árvores como os macacos.
+> **[carinhosa, contando segredo]**
+> Lucinha é uma das primeiras meninas que conhecemos
+> que andou em pé na nossa família grande e antiga.
 >
-> Mas a Lucinha foi diferente.
-> Ela ficou em pé.
-> Ela caminhou.
+> Antes dela, há muitos milhões de anos,
+> outras crianças também andavam em pé —
+> em Chade, em Quénia, na Etiópia.
 >
-> **[orgulhosa]**
-> A primeira menina a caminhar de pé!
+> **[orgulhosa, com peso]**
+> Mas a Lucinha é a mais famosa de todas.
+> Uma menina pequenininha,
+> há três milhões de anos,
+> caminhando na savana africana!
 
-**Direção**: "primeira" com peso. Pausa dramática antes.
+**Direção**: "famosa" com peso. Pausa antes de "três milhões".
+**Nota HGA**: bipedismo é muito anterior a Lucy (Sahelanthropus ~7Ma, Ardipithecus ~4.4Ma). Homo erectus (~2Ma) foi o primeiro com gait moderno de longa distância.
 
 ---
 

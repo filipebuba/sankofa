@@ -607,7 +607,54 @@ input { font-family: var(--font-body); }
 .fp-kandake,
 .fp-axum,
 .fp-cruz,
-.fp-mansa {
+.fp-mansa,
+.fp-benin,
+.fp-kongo,
+.fp-ife,
+.fp-asante,
+.fp-oyo,
+.fp-lunda,
+.fp-nzinga-w5,
+.fp-floresta,
+.fp-sundiata,
+.fp-tombuctu,
+.fp-songhai,
+.fp-gana,
+.fp-ibn-battuta,
+.fp-ahmed-baba,
+.fp-gana-imp,
+.fp-kilwa,
+.fp-zimbabwe,
+.fp-suaili,
+.fp-zanzibar,
+.fp-sofala,
+.fp-monsoon,
+.fp-madagascar,
+.fp-mombasa,
+.fp-palmares,
+.fp-zumbi,
+.fp-dandara,
+.fp-aqualtune,
+.fp-haiti,
+.fp-tereza,
+.fp-yaa,
+.fp-toussaint,
+.fp-candomble,
+.fp-capoeira,
+.fp-samba,
+.fp-terreiro,
+.fp-orixa,
+.fp-vatapa,
+.fp-jongo,
+.fp-pixinguinha,
+.fp-au,
+.fp-lumumba,
+.fp-cabral,
+.fp-nkrumah,
+.fp-neto,
+.fp-biko,
+.fp-mandela,
+.fp-pan {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -636,6 +683,53 @@ input { font-family: var(--font-body); }
 .fp-axum { background-image: url('assets/frag_axum.png'); }
 .fp-cruz { background-image: url('assets/frag_cruz.png'); }
 .fp-mansa { background-image: url('assets/frag_mansa.png'); }
+.fp-benin { background-image: url('assets/frag_benin.png'); }
+.fp-kongo { background-image: url('assets/frag_kongo.png'); }
+.fp-ife { background-image: url('assets/frag_ife.png'); }
+.fp-asante { background-image: url('assets/frag_asante.png'); }
+.fp-oyo { background-image: url('assets/frag_oyo.png'); }
+.fp-lunda { background-image: url('assets/frag_lunda.png'); }
+.fp-nzinga-w5 { background-image: url('assets/frag_nzinga_w5.png'); }
+.fp-floresta { background-image: url('assets/frag_floresta.png'); }
+.fp-sundiata { background-image: url('assets/frag_sundiata.png'); }
+.fp-tombuctu { background-image: url('assets/frag_tombuctu.png'); }
+.fp-songhai { background-image: url('assets/frag_songhai.png'); }
+.fp-gana { background-image: url('assets/frag_gana.png'); }
+.fp-ibn-battuta { background-image: url('assets/frag_ibn-battuta.png'); }
+.fp-ahmed-baba { background-image: url('assets/frag_ahmed-baba.png'); }
+.fp-gana-imp { background-image: url('assets/frag_gana-imp.png'); }
+.fp-kilwa { background-image: url('assets/frag_kilwa.png'); }
+.fp-zimbabwe { background-image: url('assets/frag_zimbabwe.png'); }
+.fp-suaili { background-image: url('assets/frag_suaili.png'); }
+.fp-zanzibar { background-image: url('assets/frag_zanzibar.png'); }
+.fp-sofala { background-image: url('assets/frag_sofala.png'); }
+.fp-monsoon { background-image: url('assets/frag_monsoon.png'); }
+.fp-madagascar { background-image: url('assets/frag_madagascar.png'); }
+.fp-mombasa { background-image: url('assets/frag_mombasa.png'); }
+.fp-palmares { background-image: url('assets/frag_palmares.png'); }
+.fp-zumbi { background-image: url('assets/frag_zumbi.png'); }
+.fp-dandara { background-image: url('assets/frag_dandara.png'); }
+.fp-aqualtune { background-image: url('assets/frag_aqualtune.png'); }
+.fp-haiti { background-image: url('assets/frag_haiti.png'); }
+.fp-tereza { background-image: url('assets/frag_tereza.png'); }
+.fp-yaa { background-image: url('assets/frag_yaa.png'); }
+.fp-toussaint { background-image: url('assets/frag_toussaint.png'); }
+.fp-candomble { background-image: url('assets/frag_candomble.png'); }
+.fp-capoeira { background-image: url('assets/frag_capoeira.png'); }
+.fp-samba { background-image: url('assets/frag_samba.png'); }
+.fp-terreiro { background-image: url('assets/frag_terreiro.png'); }
+.fp-orixa { background-image: url('assets/frag_orixa.png'); }
+.fp-vatapa { background-image: url('assets/frag_vatapa.png'); }
+.fp-jongo { background-image: url('assets/frag_jongo.png'); }
+.fp-pixinguinha { background-image: url('assets/frag_pixinguinha.png'); }
+.fp-au { background-image: url('assets/frag_au.png'); }
+.fp-lumumba { background-image: url('assets/frag_lumumba.png'); }
+.fp-cabral { background-image: url('assets/frag_cabral.png'); }
+.fp-nkrumah { background-image: url('assets/frag_nkrumah.png'); }
+.fp-neto { background-image: url('assets/frag_neto.png'); }
+.fp-biko { background-image: url('assets/frag_biko.png'); }
+.fp-mandela { background-image: url('assets/frag_mandela.png'); }
+.fp-pan { background-image: url('assets/frag_pan.png'); }
 
 /* Fragment images available in assets override the fallback gradients above. */
 
@@ -663,7 +757,7 @@ input { font-family: var(--font-body); }
 .world-card { background: var(--surface); border: 1px solid var(--surface3); border-radius: var(--radius); padding: 16px; text-align: center; transition: all .25s; position: relative; overflow: hidden; min-height: 170px; }
 .world-card .world-art { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .55; transition: opacity .3s var(--ease); z-index: 0; }
 .world-card.unlocked:hover .world-art { opacity: .75; }
-.world-card.locked .world-art { filter: grayscale(.55) brightness(.85); opacity: .42; }
+.world-card.locked .world-art { filter: grayscale(.24) brightness(.98) contrast(1.06); opacity: .62; }
 .world-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--overlay-top) 0%, var(--overlay-bot) 100%); z-index: 1; pointer-events: none; }
 .world-card.locked::before { background: linear-gradient(180deg, var(--overlay-top) 0%, var(--overlay-bot) 100%); }
 .world-card > * { position: relative; z-index: 2; }

@@ -1,16 +1,37 @@
 # Sankofa Soa — Roteiros piloto
 
-> 4 primeiros episódios prontos para gravar.
+> 4 primeiros episódios em desenvolvimento. Versão editorial enxugada para gravação.
 > Estrutura padrão: hook → enigma → contexto → entrevista → drop musical → curiosidade → cliffhanger.
-> Duração total: 25–35 min cada. Voz principal: tu (host).
+> Duração recomendada na fase 1: 18–24 min por episódio. Voz principal: tu (host).
 
 ---
 
-## EPISÓDIO 0 — Trailer (8 min)
+## EPISÓDIO 0 — Trailer curto (90s) + Manifesto (8 min)
 
 **Tema**: Apresentação do podcast e do universo Sankofa.
+**Uso recomendado**: publicar primeiro o trailer curto. Guardar o roteiro longo como episódio manifesto.
 
-### Roteiro completo
+### Trailer curto — versão pronta (90s)
+
+**[00:00–00:08]** Som de djembé + kalimba. Vinheta curta.
+
+> "Sankofa Soa. O podcast onde a história africana volta para te buscar."
+
+**[00:08–00:45]** Voz direta.
+
+> "Eu sou Filipe Buba. Criei o Sankofa, um jogo educativo baseado na *História Geral da África* da UNESCO. O jogo transforma os 8 volumes em enigmas, mundos, músicas e fragmentos de memória.
+>
+> Agora essa história ganha voz. A cada episódio: uma pergunta, um mundo, uma história que a escola quase sempre deixou pela metade."
+
+**[00:45–01:15]** Montagem de temas.
+
+> "Vamos passar pelo Vale do Rift, por Kemet, por Mansa Musa, pelas cidades suaíli, pelos bronzes do Benin, por Palmares, pelo candomblé, pela capoeira, por Cabral, Lumumba, Mandela e pela África que ainda está sendo feita."
+
+**[01:15–01:30]** CTA.
+
+> "Sankofa Soa. Volta. Busca. Conta. Em breve no YouTube, Spotify, Apple Podcasts, Deezer, Amazon Music e demais apps via RSS."
+
+### Manifesto — roteiro completo (8 min)
 
 **[00:00–00:15]** Som de djembé pesado. Vinheta cantada (4 segundos).
 
@@ -44,9 +65,9 @@
 >
 > No episódio 4: Suaíli. A língua que mistura bantu, árabe e persa. 200 milhões de pessoas falam. Convidada: pesquisadora de Moçambique.
 >
-> Toda quinta-feira, 7h da manhã. Em todas as plataformas: Spotify, Apple, Google, Deezer, Amazon. E também no YouTube como vídeo-cast.
+> Cadência inicial: quinzenal, para começar bem feito. Distribuição por RSS em Spotify, Apple Podcasts, Deezer, Amazon Music, Pocket Casts e YouTube/YouTube Music.
 >
-> Cada episódio termina com um código secreto. Você cola no jogo Sankofa e ganha cauris — a moeda do jogo. Quanto mais episódios ouvir, mais alto sobe sua patente."
+> Quando o resgate estiver implementado no jogo, alguns episódios podem trazer desafios ou códigos de cauris. Enquanto isso, cada episódio aponta para o mundo correspondente no Sankofa."
 
 **[06:00–07:30]** Por que isso importa.
 
@@ -82,7 +103,7 @@
 18:00–19:00  DROP MUSICAL (30s)
 19:00–24:00  CURIOSIDADES
 24:00–28:00  CONEXÃO COM BRASIL/DIÁSPORA
-28:00–30:00  CLIFFHANGER + CTA + CÓDIGO CAURIS
+28:00–30:00  CLIFFHANGER + CTA + DESAFIO NO JOGO
 30:00–32:00  Outro + bastidores
 ```
 
@@ -160,11 +181,11 @@ Volta voz over:
 >
 > Sankofa diz: volte e busque. É essa volta que esse podcast tenta fazer."
 
-**[28:00 — CTA + Código]**
+**[28:00 — CTA]**
 
 > "Próxima quinta: Kemet. A terra negra. Por que o Egito é africano — e por que essa frase ainda incomoda muita gente.
 >
-> O código secreto desse episódio é: VALERIFT70 — sete zero. Cole no jogo Sankofa em www.sankofahga.com. Você ganha 30 cauris.
+> Entre no jogo Sankofa em www.sankofahga.com e jogue o Mundo 1: Origens. Quando a mecânica de resgate estiver pronta, este episódio pode ganhar um desafio de cauris.
 >
 > Comente com a tag #sankofasoa onde você está ouvindo agora. E mande o nome de alguém que precisa ouvir esse episódio.
 >
@@ -215,13 +236,13 @@ Volta voz over:
 
 ### Curiosidade-bomba
 
-> "Em 2017, descobriram em Saqqara um sarcófago de 4.500 anos com restos de uma mulher de elite. DNA confirmou ascendência subsaariana — não mediterrânea. Vinte e seis sítios egípcios analisados em estudos genéticos recentes mostram fluxo contínuo de populações da Núbia, do Sudão e do Chifre da África para o vale do Nilo.
+> "A genética antiga não autoriza uma frase simples. Um estudo de 2017 com múmias de Abusir el-Meleq analisou amostras de uma região específica do Médio Egito, do Novo Reino ao período romano, e encontrou conexões fortes com populações antigas do Mediterrâneo oriental e do Oriente Próximo, além de aumento de ancestralidade subsaariana em períodos mais recentes.
 >
-> Não é debate. É genética."
+> Em 2025, um genoma do Antigo Império também mostrou um quadro misto: maioria de ancestralidade norte-africana neolítica e uma parcela ligada ao Crescente Fértil oriental. Ou seja: Kemet era africano por geografia, cultura, história e relação com o Nilo, a Núbia e o Saara; mas DNA não deve virar bordão de guerra. Ele mostra mobilidade, mistura e complexidade."
 
-### Código cauris
+### Desafio no jogo
 
-`KEMET40` (40 cauris)
+Jogar Mundo 2: Reinos do Nilo. Código de cauris só entra quando o resgate existir no app.
 
 ---
 
@@ -260,9 +281,9 @@ Volta voz over:
 >
 > A herança continua viva. Não graças aos governos. Graças a 350 pessoas anônimas com tração."
 
-### Código cauris
+### Desafio no jogo
 
-`MANSAMUSA50` (50 cauris)
+Jogar Mundo 3: Impérios do Sahel. Código de cauris só entra quando o resgate existir no app.
 
 ---
 
@@ -300,9 +321,9 @@ Volta voz over:
 
 > "A palavra 'safári' é suaíli. Significa 'viagem'. 'Bibi' significa senhora. 'Mzungu' significa estrangeiro branco. 'Hakuna matata' é frase real, virou Disney. 'Jambo' é olá. Você fala mais suaíli do que pensa."
 
-### Código cauris
+### Desafio no jogo
 
-`KILWA60` (60 cauris)
+Jogar Mundo 4: Costas e Rotas. Código de cauris só entra quando o resgate existir no app.
 
 ---
 
@@ -324,13 +345,13 @@ Volta voz over:
 
 | Semana | Atividade                                     |
 |--------|-----------------------------------------------|
-| 1      | Gravar trailer + Ep 1 (sem convidado)         |
-| 2      | Convidar professor Renato Noguera (Ep 2)      |
-| 3      | Gravar Ep 2 + edição                          |
-| 4      | Lançar trailer + Ep 1 (mesmo dia)             |
-| 5      | Lançar Ep 2 + convite Ep 3                    |
-| 6      | Gravar Ep 3                                    |
-| 7      | Lançar Ep 3 + iniciar agendamento Ep 4-12     |
+| 1      | Fechar trailer curto + manifesto              |
+| 2      | Gravar trailer curto + Ep 1 sem convidado     |
+| 3      | Revisar fatos do Ep 2 + convidar 1 pessoa     |
+| 4      | Lançar trailer curto                           |
+| 5      | Lançar Ep 1                                    |
+| 7      | Lançar Ep 2                                    |
+| 9      | Lançar Ep 3                                    |
 
 ### Como trazer convidados
 

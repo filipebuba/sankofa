@@ -25,7 +25,7 @@
 | **Música**      | Spotify, Deezer, Apple| 1 single/mês  | Cada música = 1 mundo. Letra cita personagens. Refrão = enigma     |
 | **YouTube**     | youtube.com/@sankofa  | 2 vídeos/sem  | Cada vídeo gera código de cauris no jogo. Playlist = mundo         |
 | **YouTube Kids**| youtube.com/@sankofa-kids | 1/sem    | Animação 4-9 anos. Personagens são as Casas Reais                  |
-| **Podcast**     | Spotify, Apple, RSS   | 1 ep/sem      | Episódio = 1 enigma expandido. Ouvinte ganha cauris ao responder   |
+| **Podcast**     | Spotify, Apple, YouTube Music, RSS | quinzenal | Episódio = 1 enigma expandido. Desafio aponta para o mundo do jogo |
 | **Lives**       | YouTube + TikTok      | 1/mês         | "Audiência Real" ao vivo. Comunidade desafia                       |
 | **Shorts/Reels**| TikTok, IG, YouTube   | 3-5/dia       | Curiosidades de 30s. Cada um é fragmento                            |
 | **Livros**      | Editora + e-pub livre | 1/ano         | Conto por mundo. Termina com QR para enigma in-game                |
@@ -202,7 +202,7 @@ Mas a luta — ainda não terminou
 - Versões: original + instrumental (karaokê educativo) + acapella + lo-fi
 
 **Cross-funnel para o jogo**:
-- Cada música tem código secreto na descrição: jogador insere no jogo, ganha 50 cauris
+- Quando a mecânica existir, cada música pode ter desafio/código de cauris. Antes disso, a descrição aponta para o mundo correspondente no jogo.
 - Capa da música = arte do mundo correspondente
 - Letras publicadas em **Genius** com anotações históricas
 
@@ -290,8 +290,8 @@ Repertório-piloto:
 ### 5.1. Conceito
 
 **Nome**: *Sankofa Soa* (jogo: Sankofa+ressoa+soundtrack)
-**Duração**: 25-35 min por episódio
-**Frequência**: 1/sem
+**Duração**: 18-24 min por episódio na fase 1
+**Frequência**: quinzenal no lançamento
 **Estrutura**: Pergunta-enigma → contexto → 1 entrevista 12-15min → curiosidade → drop musical → fragmento desbloqueado
 
 ### 5.2. Roteiro modelo (episódio Mansa Musa)
@@ -305,8 +305,8 @@ Repertório-piloto:
 07:00–18:00  ENTREVISTA com prof. Renato Noguera ou Munanga ou similar
 18:00–22:00  Drop musical do single "Mansa Musa"
 22:00–28:00  Curiosidades + impacto na cultura atual
-28:00–30:00  Fragmento desbloqueado + código cauris
-30:00–32:00  Trailer próximo episódio + CTA jogo
+22:00–24:00  Desafio no jogo + CTA
+24:00–25:00  Trailer próximo episódio
 ```
 
 ### 5.3. Convidados-alvo (32 episódios = primeiro ano)
@@ -321,7 +321,7 @@ Repertório-piloto:
 | **Conceição Evaristo**                     | Escrevivências                       |
 | **Achille Mbembe** (entrevista remota)     | Necropolítica                        |
 | **Boaventura de Sousa Santos**             | Epistemologias do Sul                |
-| **Mãe Beata de Yemonjá**                   | Candomblé como saber                 |
+| **Mãe Beata de Yemonjá** (in memoriam)     | Legado do candomblé como saber       |
 | **Leda Maria Martins**                     | Performances afro-brasileiras        |
 | **Ana Maria Gonçalves** (Um Defeito de Cor)| Literatura afro-brasileira           |
 | **Bell Hooks** (leitura/audiopost)         | Educação como prática da liberdade   |
@@ -330,7 +330,7 @@ Repertório-piloto:
 
 ### 5.4. Distribuição
 
-- **Spotify, Apple Podcasts, Google Podcasts, Amazon Music, Deezer, Pocket Casts**
+- **Spotify, Apple Podcasts, YouTube Music/YouTube, Amazon Music, Deezer, Pocket Casts**
 - Hospedagem: **Spotify for Podcasters** (gratuito) ou **Anchor** (gratuito)
 - RSS público para sindicação
 
@@ -458,16 +458,16 @@ Conteúdo:
 
 ## 11. Lógica de jogo aplicada — sistema de cauris cross-mídia
 
-> **O jogador acumula cauris em qualquer formato. Vê-los no jogo final.**
+> **Visão futura**: o jogador acumula cauris em qualquer formato. No MVP atual, cauris existem no jogo, mas códigos cross-mídia só devem ser prometidos depois da mecânica de resgate.
 
 | Ação                                          | Cauris  |
 |-----------------------------------------------|---------|
 | Resolver enigma no jogo                       | 5-25    |
-| Insere código secreto da música do mês       | 50      |
-| Insere código do vídeo da semana             | 30      |
-| Termina episódio do podcast (autoreport)      | 20      |
-| Lê 1 livro Sankofa (declara via formulário)   | 100     |
-| Comenta com tag #sankofa em rede             | 5/dia   |
+| Resgata desafio da música do mês             | Futuro  |
+| Resgata desafio do vídeo da semana           | Futuro  |
+| Termina episódio do podcast (autoreport)      | Futuro  |
+| Lê 1 livro Sankofa (declara via formulário)   | Futuro  |
+| Comenta com tag #sankofa em rede             | Futuro  |
 | Compartilha selo real                         | 10      |
 | Termina curso aberto                           | 200     |
 | Comparece evento físico (QR check-in)         | 75      |

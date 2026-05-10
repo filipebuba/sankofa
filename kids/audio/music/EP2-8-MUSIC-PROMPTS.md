@@ -84,10 +84,10 @@ golden-pilgrimage warm-sand-dune
 **Lyrics**:
 ```
 [Verse]
-Mu-sa! Mu-sa!
+Man-sa Mu-sa! Man-sa Mu-sa!
 60 mil pessoas comigo!
-Mu-sa! Mu-sa!
-Cairo recebeu meu ouro!
+Man-sa Mu-sa! Man-sa Mu-sa!
+Cairo recebeu o ouro!
 
 [Chorus]
 Tom-buc-tu! Es-co-la!
