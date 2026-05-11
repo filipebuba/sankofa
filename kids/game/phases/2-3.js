@@ -128,7 +128,7 @@ window.PHASE_2_3 = {
   npcs: [
     {
       x: 8, scale: [1.7, 2.3], tint: 0x2a5a9a,
-      avatar: '🧑🏿‍💼', emoji: '🧑🏿‍💼',
+      img: 'assets/world2-3/mercador.jpg', avatar: '🧑🏿‍💼', emoji: '🧑🏿‍💼',
       name: 'Mercador Adulis', diff: 'fácil', unlock: 0,
       role: 'Comercio marfim, ouro e incenso. Navego do Mar Vermelho à Índia.',
       scene: 'Cesto de especiarias + balança de prata. Navio de vela latina ancorado em Adulis.',
@@ -144,7 +144,7 @@ window.PHASE_2_3 = {
     },
     {
       x: 42, scale: [1.7, 2.4], tint: 0xc9a84c,
-      avatar: '👑', emoji: '👑',
+      img: 'assets/world2-3/ezana.jpg', avatar: '👑', emoji: '👑',
       name: 'Rei Ezana', diff: 'médio', unlock: 1,
       role: 'Sou Ezana. Convertemos Aksum ao cristianismo entre 330 e 340 d.C.',
       scene: 'Coroa em metal + cruz copta. Moeda na palma — primeiras com cruz, antes símbolos pagãos.',
@@ -160,7 +160,7 @@ window.PHASE_2_3 = {
     },
     {
       x: 56, scale: [1.7, 2.3], tint: 0x6a4a30,
-      avatar: '🧙🏿‍♂️', emoji: '🧙🏿‍♂️',
+      img: 'assets/world2-3/monge.jpg', avatar: '🧙🏿‍♂️', emoji: '🧙🏿‍♂️',
       name: 'Monge Ge\'ez', diff: 'difícil', unlock: 2,
       role: 'Escrevo em Ge\'ez. Cada símbolo é uma sílaba: consoante + vogal.',
       scene: 'Manuscrito de pele aberto, caneta de junco. Símbolos em colunas, cada consoante com 7 formas modificadas.',

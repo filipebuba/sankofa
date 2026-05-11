@@ -1,4 +1,4 @@
-const CACHE='sankofa-rift-v27';
+const CACHE='sankofa-rift-v28';
 const ASSETS=[
   './',
   'index.html',
@@ -26,10 +26,23 @@ const ASSETS=[
   'assets/world1-2/griot/bovino.mp3',
   'assets/world1-2/griot/mao.mp3',
   'assets/world1-2/griot/caca.mp3',
+  'assets/world1-2/pastor.jpg',
+  'assets/world1-2/pintora.png',
   'assets/world1-3/bg-music.mp3',
   'assets/world1-3/griot/forno.mp3',
   'assets/world1-3/griot/enxada.mp3',
   'assets/world1-3/griot/canoa.mp3',
+  'assets/world1-3/ferreiro.jpg',
+  'assets/world1-3/linguista.jpg',
+  'assets/world1-3/pescador.jpg',
+  'assets/world2-1/faraonubia.jpg',
+  'assets/world2-1/sacerdotisa.jpg',
+  'assets/world2-2/kandake.jpg',
+  'assets/world2-2/ferreiro-meroe.jpg',
+  'assets/world2-2/escriba-meroe.jpg',
+  'assets/world2-3/mercador.jpg',
+  'assets/world2-3/ezana.jpg',
+  'assets/world2-3/monge.jpg',
   'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
 ];
 

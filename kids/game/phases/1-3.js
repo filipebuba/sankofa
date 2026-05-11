@@ -107,7 +107,7 @@ window.PHASE_1_3 = {
   npcs: [
     {
       x: 3, scale: [1.7, 2.3], tint: 0xff6a2a,
-      img: 'assets/world1-3/ferreiro.png', avatar: '🧑🏿‍🏭',
+      img: 'assets/world1-3/ferreiro.jpg', avatar: '🧑🏿‍🏭',
       name: 'Ferreiro Nok', diff: 'fácil', unlock: 0,
       role: 'Bate no ferro enquanto quente — primeira tecnologia que mudou África.',
       scene: 'Ele mostra terracota, carvão e uma lâmina recém-batida.',
@@ -118,7 +118,7 @@ window.PHASE_1_3 = {
     },
     {
       x: 22, scale: [1.7, 2.3], tint: 0x5a8a3a,
-      img: 'assets/world1-3/linguista.png', avatar: '👨🏿‍🏫',
+      img: 'assets/world1-3/linguista.jpg', avatar: '👨🏿‍🏫',
       name: 'Linguista Bantu', diff: 'médio', unlock: 1,
       role: 'Uma língua, mil filhas — sigo as palavras pela floresta.',
       scene: 'Ele repete palavras parecidas em aldeias distantes, como ecos da mesma árvore.',
@@ -129,7 +129,7 @@ window.PHASE_1_3 = {
     },
     {
       x: 42, scale: [1.7, 2.3], tint: 0x3a6a7a,
-      img: 'assets/world1-3/pescador.png', avatar: '🧑🏿‍🌾',
+      img: 'assets/world1-3/pescador.jpg', avatar: '🧑🏿‍🌾',
       name: 'Pescador Canoeiro', diff: 'difícil', unlock: 2,
       role: 'Machado fez canoa, canoa levou-nos a sul.',
       scene: 'Ele toca a canoa, a enxada e o machado: três ferramentas para uma longa viagem.',

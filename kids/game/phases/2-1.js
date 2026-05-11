@@ -142,7 +142,7 @@ window.PHASE_2_1 = {
     },
     {
       x: 28, scale: [1.7, 2.4], tint: 0xb85a3a,
-      avatar: '👑', emoji: '👑',
+      img: 'assets/world2-1/faraonubia.jpg', avatar: '👑', emoji: '👑',
       name: 'Faraó Núbio Pianí', diff: 'médio', unlock: 1,
       role: 'Reinei em Tebas e em Napata. A minha pele é negra como o solo do Kush.',
       scene: 'Coroa dupla na cabeça (Alto + Baixo Egipto unidos). Atrás dele, exército com elefantes de guerra.',
@@ -155,7 +155,7 @@ window.PHASE_2_1 = {
     },
     {
       x: 44, scale: [1.7, 2.3], tint: 0x4a7a50,
-      avatar: '🧙🏿‍♀️', emoji: '🧙🏿‍♀️',
+      img: 'assets/world2-1/sacerdotisa.jpg', avatar: '🧙🏿‍♀️', emoji: '🧙🏿‍♀️',
       name: 'Sacerdotisa de Ísis', diff: 'difícil', unlock: 2,
       role: 'Guardo a memória da deusa Ísis e a astronomia do Nilo.',
       scene: 'Aponta para o céu noturno onde Sírio brilha.',

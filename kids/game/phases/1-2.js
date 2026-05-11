@@ -97,7 +97,7 @@ window.PHASE_1_2 = {
   npcs: [
     {
       x: 10, scale: [1.7, 2.2], tint: 0x2a4570,
-      img: 'assets/world1-2/pastor.png', avatar: '🧔🏾',
+      img: 'assets/world1-2/pastor.jpg', avatar: '🧔🏾',
       name: 'Pastor Saariano', diff: 'fácil', unlock: 0,
       role: 'Levei vacas onde hoje é só areia.',
       scene: 'Ele segura uma corda de pastoreio e aponta para uma pintura de bois.',

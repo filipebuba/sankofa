@@ -115,7 +115,7 @@ window.PHASE_2_2 = {
   npcs: [
     {
       x: 5, scale: [1.7, 2.4], tint: 0x8a3a3a,
-      avatar: '⚔️', emoji: '⚔️',
+      img: 'assets/world2-2/kandake.jpg', avatar: '⚔️', emoji: '⚔️',
       name: 'Kandake Amanirenas', diff: 'fácil', unlock: 0,
       role: 'Sou rainha do Kush. Perdi um olho a guerrear contra os romanos de Petronius.',
       scene: 'Bastão real numa mão, lança noutra, capa de couro. Olho esquerdo coberto por venda.',
@@ -131,7 +131,7 @@ window.PHASE_2_2 = {
     },
     {
       x: 25, scale: [1.7, 2.3], tint: 0xff6a2a,
-      avatar: '🧑🏿‍🏭', emoji: '🧑🏿‍🏭',
+      img: 'assets/world2-2/ferreiro-meroe.jpg', avatar: '🧑🏿‍🏭', emoji: '🧑🏿‍🏭',
       name: 'Ferreiro Meroé', diff: 'médio', unlock: 1,
       role: 'Faço ferro em fornos de redução direta (bloomery). Toneladas quando Roma ainda usava bronze.',
       scene: 'Fornalha com camadas de oolitic ironstone e carvão. Temperatura interna >700°C.',
@@ -147,7 +147,7 @@ window.PHASE_2_2 = {
     },
     {
       x: 48, scale: [1.7, 2.3], tint: 0xc9a84c,
-      avatar: '🧑🏿‍🎨', emoji: '🧑🏿‍🎨',
+      img: 'assets/world2-2/escriba-meroe.jpg', avatar: '🧑🏿‍🎨', emoji: '🧑🏿‍🎨',
       name: 'Escriba Meroítico', diff: 'difícil', unlock: 2,
       role: 'Escrevo numa língua que poucos hoje sabem ler.',
       scene: 'Grava símbolos próprios numa estela — não são hieróglifos egípcios.',
