@@ -150,6 +150,15 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
   #griot .g-text,#toast,#stage .s-text{font-size:12px}
 }
 
+#installModal{position:fixed;inset:0;background:rgba(12,10,6,.92);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:250;padding:24px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#installModal.show{display:flex}
+#installModal .im-box{background:rgba(31,20,8,.95);border:2px solid #c9a84c;border-radius:16px;padding:24px;max-width:min(420px,92vw);text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#installModal h3{color:#c9a84c;font-size:18px;margin-bottom:14px;letter-spacing:.05em}
+#installModal ol{text-align:left;color:#ede5d5;font-size:14px;line-height:1.7;padding-left:20px;margin-bottom:18px}
+#installModal ol b{color:#c9a84c}
+#installModal .im-icon{font-size:42px;margin-bottom:8px}
+#installModal button{padding:10px 22px;background:#c9a84c;color:#0c0a06;border:none;border-radius:8px;font-family:Georgia,serif;font-weight:700;cursor:pointer;font-size:14px}
+
 #rotate{position:fixed;inset:0;background:#0c0a06;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:300;color:#c9a84c;text-align:center;padding:20px}
 #rotate.show{display:flex}
 #rotate .r-icon{font-size:64px;margin-bottom:20px;animation:rotIco 2s ease-in-out infinite}
@@ -199,6 +208,15 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
     <button class="tb tb-act" id="be" aria-label="Ouvir griot">🎙</button>
     <button class="tb tb-act" id="bs" aria-label="Escanear">✦</button>
     <button class="tb tb-jump" id="bj" aria-label="Saltar">↑</button>
+  </div>
+</div>
+
+<div id="installModal">
+  <div class="im-box">
+    <div class="im-icon">📲</div>
+    <h3 id="im-title">INSTALAR NO TELEMÓVEL</h3>
+    <ol id="im-steps"></ol>
+    <button id="im-close">OK, percebi</button>
   </div>
 </div>
 
@@ -610,10 +628,12 @@ function setupInput(){
       el.classList.remove('down');
       I[key]=false;
     }
-    el.addEventListener('pointerdown',down);
-    el.addEventListener('pointerup',up);
-    el.addEventListener('pointercancel',up);
-    el.addEventListener('pointerleave',function(e){if(I[key])up(e);});
+    el.addEventListener('touchstart',down,{passive:false});
+    el.addEventListener('touchend',up,{passive:false});
+    el.addEventListener('touchcancel',up,{passive:false});
+    el.addEventListener('mousedown',down);
+    el.addEventListener('mouseup',up);
+    el.addEventListener('mouseleave',function(e){if(I[key]||I.jh)up(e);});
     el.addEventListener('contextmenu',function(e){e.preventDefault();});
   }
   tBtn('bl','l');
@@ -1102,29 +1122,86 @@ function loop(t){
 
 // === PWA INSTALL ===
 var deferredInstall=null;
+function isStandalone(){
+  return matchMedia('(display-mode:standalone)').matches||matchMedia('(display-mode:fullscreen)').matches||navigator.standalone===true;
+}
+function detectPlatform(){
+  var ua=navigator.userAgent;
+  var iOS=/iPad|iPhone|iPod/.test(ua)&&!window.MSStream;
+  var safari=iOS&&/Safari/.test(ua)&&!/CriOS|FxiOS|EdgiOS/.test(ua);
+  var android=/Android/.test(ua);
+  var chromeAndroid=android&&/Chrome/.test(ua);
+  return {iOS:iOS,safari:safari,android:android,chromeAndroid:chromeAndroid,mobile:iOS||android,desktop:!iOS&&!android};
+}
 window.addEventListener('beforeinstallprompt',function(e){
   e.preventDefault();
   deferredInstall=e;
-  var btn=document.getElementById('install');
-  if(btn)btn.style.display='flex';
 });
 window.addEventListener('appinstalled',function(){
   deferredInstall=null;
   var btn=document.getElementById('install');
   if(btn)btn.style.display='none';
+  try{localStorage.setItem('sankofa_installed','1')}catch(e){}
 });
+function showInstallInstructions(){
+  var p=detectPlatform();
+  var title='INSTALAR APP',steps=[];
+  if(p.iOS){
+    title='INSTALAR NO IPHONE/IPAD';
+    steps=[
+      'Toca no botão <b>Partilhar</b> (caixa com seta ↑) em baixo no Safari',
+      'Desliza e toca em <b>"Adicionar ao Ecrã Principal"</b>',
+      'Toca <b>"Adicionar"</b> no canto superior direito',
+      'Pronto! Abre o jogo pelo ícone no ecrã'
+    ];
+  }else if(p.chromeAndroid){
+    title='INSTALAR NO ANDROID';
+    steps=[
+      'Toca no <b>menu ⋮</b> do Chrome (canto superior direito)',
+      'Toca em <b>"Instalar app"</b> ou <b>"Adicionar ao ecrã"</b>',
+      'Confirma <b>"Instalar"</b>',
+      'Pronto! Abre pelo ícone Sankofa no ecrã'
+    ];
+  }else{
+    title='INSTALAR APP';
+    steps=[
+      'Procura o ícone de <b>instalar ⬇</b> na barra de endereço do browser',
+      'OU abre o <b>menu do browser</b> (⋮ ou ≡)',
+      'Toca em <b>"Instalar Sankofa Rift"</b>',
+      'Pronto! Abre como app sem browser'
+    ];
+  }
+  document.getElementById('im-title').textContent=title;
+  var ol=document.getElementById('im-steps');
+  ol.innerHTML='';
+  steps.forEach(function(s){var li=document.createElement('li');li.innerHTML=s;ol.appendChild(li);});
+  document.getElementById('installModal').classList.add('show');
+}
 function setupInstall(){
   var btn=document.getElementById('install');
+  var modal=document.getElementById('installModal');
+  var close=document.getElementById('im-close');
   if(!btn)return;
+  // Hide if already installed/standalone
+  if(isStandalone()){btn.style.display='none';return;}
+  try{if(localStorage.getItem('sankofa_installed')==='1'&&!deferredInstall){/* show anyway in case uninstalled */}}catch(e){}
+  // Always show on mobile (Chrome heuristic may delay prompt; iOS has no prompt)
+  var p=detectPlatform();
+  if(p.mobile||p.desktop){btn.style.display='flex';}
   btn.addEventListener('click',function(e){
     e.stopPropagation();
-    if(!deferredInstall)return;
-    deferredInstall.prompt();
-    deferredInstall.userChoice.then(function(){
-      deferredInstall=null;
-      btn.style.display='none';
-    });
+    if(deferredInstall){
+      deferredInstall.prompt();
+      deferredInstall.userChoice.then(function(c){
+        if(c&&c.outcome==='accepted'){btn.style.display='none';}
+        deferredInstall=null;
+      });
+    }else{
+      showInstallInstructions();
+    }
   });
+  if(close){close.addEventListener('click',function(){modal.classList.remove('show');});}
+  if(modal){modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('show');});}
 }
 if('serviceWorker' in navigator){
   window.addEventListener('load',function(){
