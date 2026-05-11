@@ -12,13 +12,39 @@ ou pressiona **E** perto de mem revelada.
 - **Sample rate**: 44.1 kHz mono, mp3 128 kbps.
 - **Output**: `kids/game/assets/world1-X/griot/<type>.mp3`.
 
-## Existentes (Fase 1.1 — não tocar)
+## Fase 1.1 — Rift Memories
 
-| Type      | Path                                 | Status |
-| --------- | ------------------------------------ | ------ |
-| fossil    | `assets/griot/fossil.mp3`            | ✓      |
-| chopper   | `assets/griot/chopper.mp3`           | ✓      |
-| rupestre  | `assets/griot/rupestre.mp3`          | ✓      |
+Existem 3 mp3 já gravados em `assets/griot/`. Scripts canónicos abaixo
+para referência / re-gravação se quiseres voz mais consistente com 1.2/1.3.
+
+### `fossil.mp3` — Fóssil de Lúcia
+
+> "A Lúcia caminhou aqui há mais de três milhões de anos, criança. Os
+> ossos dela contam que já éramos bípedes. Já éramos gente. Antes de
+> tudo o resto."
+
+### `chopper.mp3` — Pedra-ferramenta
+
+> "Pedra contra pedra. Foi assim que começou a tecnologia humana. Bater,
+> lascar, afiar. Antes do ferro, antes do fogo controlado, a pedra
+> lascada já cortava, já raspava, já criava."
+
+### `rupestre.mp3` — Pintura rupestre
+
+> "Olha a parede. Mãos sopradas com ocre. Animais desenhados à luz da
+> fogueira. Era assim que os ancestrais guardavam histórias — antes da
+> escrita, antes do papel. Pintura e voz: as duas memórias mais antigas."
+
+### Status
+
+| Type      | Path                                 | Status                 |
+| --------- | ------------------------------------ | ---------------------- |
+| fossil    | `assets/griot/fossil.mp3`            | ✓ gravado              |
+| chopper   | `assets/griot/chopper.mp3`           | ✓ gravado              |
+| rupestre  | `assets/griot/rupestre.mp3`          | ✓ gravado              |
+
+Os 3 atuais podem ser substituídos se quiseres uniformizar a voz com a
+das fases 1.2 e 1.3 quando essas estiverem prontas.
 
 ## Pendentes — Fase 1.2 Saara Verde
 
@@ -118,6 +144,11 @@ Quando ficheiros existirem, automaticamente carregam via `initAudio()`
 em `game.js`. Nenhuma mudança de código necessária.
 
 ## Checklist
+
+### Fase 1.1 (opcional — substituir existentes)
+- [x] `fossil.mp3` (Lúcia bípede)
+- [x] `chopper.mp3` (pedra lascada)
+- [x] `rupestre.mp3` (pintura ocre)
 
 ### Fase 1.2
 - [ ] `bovino.mp3` (lago/boi)
