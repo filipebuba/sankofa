@@ -141,11 +141,23 @@ function emojiTexture(emoji,size){
 function buildNPCs(){
   NPCS.forEach(function(n){
     var tex;
+    var fallbackEmoji = n.avatar || n.emoji || '👤';
     if(n.img){
-      tex=new THREE.TextureLoader().load(n.img);
-      tex.magFilter=THREE.NearestFilter;tex.minFilter=THREE.LinearFilter;
+      // Try png; on 404/load error, swap to emoji texture in-place.
+      tex = new THREE.TextureLoader().load(
+        n.img,
+        function(){ /* loaded ok */ },
+        undefined,
+        function(){
+          console.warn('[npc] img load failed, fallback emoji', n.img);
+          var fb = emojiTexture(fallbackEmoji);
+          mat.map = fb;
+          mat.needsUpdate = true;
+        }
+      );
+      tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.LinearFilter;
     }else{
-      tex=emojiTexture(n.emoji);
+      tex = emojiTexture(n.emoji || fallbackEmoji);
     }
     var mat=new THREE.SpriteMaterial({map:tex,transparent:true,alphaTest:.05});
     var spr=new THREE.Sprite(mat);

@@ -293,8 +293,8 @@ Substituir `intro` por menu pós-clique com 3 botões:
   - 1.1: atual ~50% obs / ~50% comp / 0% inf (spec pede 70/30/0).
   - 1.2: atual 25/50/25 (spec 30/50/20) — próximo.
   - 1.3: atual 25/25/50 (spec 20/40/40).
-- [ ] Assets 1.2 (4 sprite + 4 pintura + 3 griot + bg-music).
-- [ ] Assets 1.3 (3 NPC + bigorna + forno/enxada/canoa + cipó + parallax + bg-music).
+- [ ] Assets 1.2 (4 sprite + 4 pintura + 3 griot + ~~bg-music~~). Sprites NPC: ver `NPC-ASSETS.md`. Griot voices: ver `musica/songs/griot-voices/README.md`. Fallback emoji automático em `buildNPCs()` (img 404 → emoji texture sem crash).
+- [ ] Assets 1.3 (3 NPC + bigorna + forno/enxada/canoa + cipó + parallax + ~~bg-music~~). Idem.
 
 ### Notas técnicas
 
