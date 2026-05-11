@@ -1,4 +1,4 @@
-const CACHE='sankofa-rift-v6';
+const CACHE='sankofa-rift-v7';
 const ASSETS=[
   './',
   'index.html',
@@ -10,7 +10,6 @@ const ASSETS=[
   'assets/icon-512.png',
   'assets/lucinha.png',
   'assets/vovo.png',
-  'assets/fred.png',
   'assets/bg-music.mp3',
   'assets/intro-clip.mp4',
   'assets/vovo-perfect.mp3',

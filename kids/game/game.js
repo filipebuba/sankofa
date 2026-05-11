@@ -36,19 +36,7 @@ var I={l:false,r:false,jp:false,jh:false,sc:false,ec:false};
 // unlock: número de NPCs anteriores que devem estar 'done' antes deste aparecer
 // role: descrição curta — explica papel da personagem ao jogador
 var NPCS=[
-  {x:5,scale:[1.4,2.1],img:'assets/fred.png',avatar:'🦴',name:'Fred Fóssil',diff:'fácil',unlock:0,
-   role:'Paleontólogo do Rift — encontrou os ossos da Lúcia',
-   q:'Onde fica o Vale do Rift, onde a Lúcia foi encontrada?',
-   o:['África Oriental','Europa'],c:0,
-   r:'+5 cauris',rfn:function(){S.cc+=5;},
-   ok:'Boa! O Rift atravessa Etiópia, Quénia e Tanzânia.'},
-  {x:18,scale:[2.0,2.0],emoji:'🐒',avatar:'🐒',name:'Macaco Curioso',diff:'médio',unlock:1,
-   role:'Conhece os ancestrais que andaram em pé pela primeira vez',
-   q:'Qual destes andou em duas pernas primeiro, antes da Lúcia?',
-   o:['Sahelanthropus tchadensis','Tigre dente-de-sabre','Mamute lanudo'],c:0,
-   r:'revela memória',rfn:function(){for(var i=0;i<mems.length;i++){if(!mems[i].revealed&&!mems[i].got){mems[i].revealed=true;mems[i].m.material.opacity=1;mems[i].m.material.emissiveIntensity=.5;showToast('✦ '+mems[i].label+' revelada!');break;}}},
-   ok:'Certo! Sahelanthropus viveu há 7 milhões de anos no Chade.'},
-  {x:32,scale:[1.8,2.4],emoji:'🧙🏿',avatar:'🧙🏿',name:'Velho Griot',diff:'difícil',unlock:2,
+  {x:18,scale:[1.8,2.4],emoji:'🧙🏿',avatar:'🧙🏿',name:'Velho Griot',diff:'difícil',unlock:0,
    role:'Guardião das memórias antigas do Sankofa',
    q:'O Saara já foi verde com lagos. Quando foi o "Saara Verde"?',
    o:['Entre 11 mil e 5 mil anos atrás','100 anos atrás','3 milhões de anos atrás','Nunca foi verde'],c:0,
@@ -1164,7 +1152,7 @@ function init(){
         showStage('Usa o cajado <b>(B)</b> para revelar memórias do Rift',6000);
       },7000);
       setTimeout(function(){
-        showStage('Encontra <b>Fred Fóssil</b> 🦴 à direita — ele dá dicas e recompensas!',6000);
+        showStage('Encontra o <b>Velho Griot</b> 🧙🏿 à direita — ele dá dicas e recompensas!',6000);
       },13500);
     },3500);
   });
