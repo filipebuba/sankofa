@@ -255,12 +255,48 @@ Substituir `intro` por menu pós-clique com 3 botões:
 
 ---
 
-## Status
+## Status (atualizado 2026-05-11)
 
-- [ ] Confirmar paleta/mecânicas
-- [ ] Scaffolding `phases/1-2.js` e `phases/1-3.js`
-- [ ] Implementar refactor selector
-- [ ] Produzir assets 1.2
-- [ ] Implementar 1.2
-- [ ] Produzir assets 1.3
-- [ ] Implementar 1.3
+### Feito
+
+- [x] Scaffolding `phases/1-1.js`, `1-2.js`, `1-3.js` — data layer completa.
+- [x] Refactor `game.js` para consumir `window.PHASE_X_Y` dinamicamente.
+- [x] Loader: `?phase=1.2` query → localStorage `sankofa_kids_progress` → fallback `1.1`.
+- [x] `markPhaseDone()` persiste win + perfect em localStorage.
+- [x] Selector UI no `#intro` (3 cards: current/done/locked/available).
+- [x] Click em card unlocked recarrega com `?phase=X.Y`.
+- [x] `setupPhaseSelector()` lê progress + bloqueia phases conforme `prevDone`.
+- [x] Renderer enigma com `scene` + `diff` + `type` (`.e-meta`, `.e-scene`).
+- [x] Renderer NPC com `scene` (`.nd-scene`).
+- [x] `shuffledOptions(o, c)` randomiza alternativas em runtime (enigma + NPC).
+- [x] `escapeHTML()` em texto user-supplied.
+- [x] 4+ alternativas suportadas.
+- [x] Enigmas reescritos formato game-first em 1.1/1.2/1.3 (cena → pergunta interpretativa).
+
+### Pendente
+
+- [ ] Mecânica **soprar areia** (1.2) — `sandWalls[]` definido mas não consumido.
+- [ ] Mecânica **forja QTE** (1.3) — `interactables[].type='anvil'` pendente.
+- [ ] Mecânica **corte cipó** (1.3) — `vines[]` pendente, requer `S.axe`.
+- [ ] **Canoa móvel** (1.3) — `movingPlats[]` pendente.
+- [ ] **Hazards** novos: hippo/croc (1.2), snake vertical (1.3).
+- [ ] **Water-gap respawn** (1.2/1.3) — `waterGaps[]` precisa loop de detecção.
+- [ ] **Bonus mem** "Árvore Bantu" (1.3) — `bonusMems[]` ainda não construído.
+- [ ] `reward` switch em `showEnigma` (sempre +1 vida; spec define `'vida'|'passagem'|'cauris'|'ferramenta'`).
+- [ ] `S.hpCap` consistente — Pintora hardcoda `< 3`, Pescador define cap 5.
+- [ ] HUD label fase ("1.2 · SAARA VERDE").
+- [ ] Strings hardcoded em `index.html` (`#title-card`, `#win-msg`) ainda 1.1-only.
+- [ ] Mix dificuldade enigmas vs spec:
+  - 1.1: atual ~50% obs / ~50% comp / 0% inf (spec pede 70/30/0).
+  - 1.2: atual 25/50/25 (spec 30/50/20) — próximo.
+  - 1.3: atual 25/25/50 (spec 20/40/40).
+- [ ] Assets 1.2 (4 sprite + 4 pintura + 3 griot + bg-music).
+- [ ] Assets 1.3 (3 NPC + bigorna + forno/enxada/canoa + cipó + parallax + bg-music).
+
+### Notas técnicas
+
+- `S.axe` flag adicionado pelo `rfn` do Ferreiro Nok — pendente uso em corte cipó.
+- `S.anvilUnlocked` flag pendente uso para abrir mini-QTE bigorna.
+- `S.passageOpen` proposto para reward `'passagem'`.
+- Phase scripts carregam sync antes de `game.js` (defer); ordem 1-1 → 1-2 → 1-3.
+- SW precache em `sankofa-rift-v9` (bump cada vez que ficheiros mudam).
