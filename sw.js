@@ -8,7 +8,7 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.5.12-dev";
+const VERSION = "v1.5.13-dev";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 

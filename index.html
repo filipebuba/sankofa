@@ -264,7 +264,27 @@
       var btn = document.getElementById("install-btn");
       if (btn) btn.style.display = "none";
       window.__sankofaInstall = null;
+      try { localStorage.setItem("sankofa_install_done_v1", "1"); } catch (e) {}
     });
+
+    // Força mostrar botão install em iOS/desktop (Chrome dispara beforeinstallprompt e seta flex acima)
+    (function showInstallBtnIfNeeded(){
+      function isStandalone() {
+        return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+          window.navigator.standalone === true;
+      }
+      function check() {
+        var btn = document.getElementById("install-btn");
+        if (!btn) return;
+        // Só esconde se está a rodar como PWA standalone (instalado + aberto pelo ícone)
+        if (!isStandalone()) btn.style.display = "flex";
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", check);
+      } else {
+        check();
+      }
+    })();
   </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 > Canal Sankofa Kids — animação 2D educativa para 4–9 anos.
 > Episódios de 3:30 min em pt-BR, exportados 16:9 (YouTube Kids) e 9:16 (Reels/Shorts/TikTok).
-> 8 episódios planeados (EP1 piloto pronto em `STORYBOARD-EP1.md`).
+> 8 episódios planejados, com roteiros EP1-EP8, narrações, masters de arte e exports MVP em `exports/youtube-16x9/`.
 
 ---
 
@@ -19,7 +19,8 @@ kids/
 ├── art/
 │   ├── palette/               # Swatches paleta oficial (hex + .ase)
 │   ├── characters/            # Lucinha, Vovó Sankofa, Tropa, Fred Fóssil — turnaround + expressões
-│   ├── backgrounds/           # Cenários (savana, baobá, fundo céu)
+│   ├── backgrounds/           # Cenários masters
+│   ├── production/            # Derivados prontos: fundos 16:9 + personagens 1024
 │   └── props/                 # Frutos, ossos, lascas de pedra, ferramentas
 │
 ├── animation/
@@ -193,14 +194,11 @@ Salvar em `art/palette/sankofa-kids.ase` (Adobe Swatch Exchange) + `palette.png`
 
 ## Próximos passos
 
-1. Pintar paleta oficial → `art/palette/sankofa-kids.ase`
-2. Turnaround Lucinha (frente/lado/costas + 4 expressões) → `art/characters/lucinha/`
-3. Turnaround Vovó Sankofa pássaro → `art/characters/vovo-sankofa/`
-4. Background savana + baobá → `art/backgrounds/ep1-savana.png`
-5. Gerar narração EP1 com ElevenLabs → `audio/voice/ep1-narracao.wav`
-6. Gerar trilha + cantiga refrão Suno → `audio/music/ep1-trilha.wav`
-7. Animar cena 1 (Vovó Sankofa voa + pisca) em Moho → validar workflow
-8. Render + master → primeiro export 16:9 de teste
+1. Usar `art/production/backgrounds-16x9/` como base dos masters 16:9.
+2. Usar `art/production/characters-1024/` para composições, thumbnails e testes de animação.
+3. Revisar legendas pt-BR dos exports MVP e gerar versões EN/Kriol quando a edição final estiver fechada.
+4. Escolher o export final por episódio em `exports/youtube-16x9/` e criar as versões 9:16.
+5. Validar factualidade histórica e linguagem 4-9 anos antes da gravação final.
 
 ---
 

@@ -3251,10 +3251,33 @@
     updateProfileBtn();
 
     var ib = document.getElementById("install-btn");
-    if (ib) ib.addEventListener("click", function () {
-      sfx("achievement");
-      triggerInstallPrompt(function () { ib.style.display = "none"; });
-    });
+    if (ib) {
+      // Força mostrar sempre que ainda não foi instalado (dismiss do banner não afeta o botão da top-bar)
+      var alreadyInstalled = isStandalone() || localStorage.getItem(INSTALL_DONE_KEY) === "1";
+      if (!alreadyInstalled) ib.style.display = "flex";
+      ib.addEventListener("click", function () {
+        sfx("achievement");
+        // Se prompt nativo disponível → usa
+        if (!triggerInstallPrompt(function () { ib.style.display = "none"; })) {
+          // Fallback: mostra banner com instruções platform-specific
+          var banner = document.getElementById("install-banner");
+          if (banner) {
+            // Limpa flag dismiss temporariamente para mostrar
+            localStorage.removeItem(INSTALL_DISMISS_KEY);
+            var msg = document.getElementById("install-banner-msg");
+            var btnYes = document.getElementById("install-banner-yes");
+            if (isIOSDevice()) {
+              if (msg) msg.innerHTML = "No iPhone/iPad: toque em <strong>Compartilhar</strong> abaixo e escolha <strong>“Adicionar à Tela de Início”</strong>.";
+              if (btnYes) btnYes.style.display = "none";
+            } else {
+              if (msg) msg.innerHTML = "No menu do browser (⋮): toque em <strong>“Instalar app”</strong> ou <strong>“Adicionar à Tela Inicial”</strong>.";
+              if (btnYes) btnYes.style.display = "none";
+            }
+            banner.hidden = false;
+          }
+        }
+      });
+    }
 
     setupInstallBanner();
 
