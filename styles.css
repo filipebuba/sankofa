@@ -875,7 +875,7 @@ input { font-family: var(--font-body); }
 }
 .topbar-left, .topbar-right { display: flex; align-items: center; gap: 6px; pointer-events: auto; }
 
-.topbar-btn, .profile-btn {
+.topbar-btn, .profile-btn, .install-btn {
   background: var(--surface2); border: 1.5px solid var(--surface3); border-radius: 14px;
   min-width: 44px; min-height: 44px; padding: 4px 8px;
   display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
@@ -884,11 +884,16 @@ input { font-family: var(--font-body); }
   cursor: pointer; transition: all .18s var(--ease);
   font-family: inherit;
 }
-.topbar-btn:hover, .profile-btn:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
-.topbar-btn:focus-visible, .profile-btn:focus-visible {
+.topbar-btn:hover, .profile-btn:hover, .install-btn:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
+.topbar-btn:focus-visible, .profile-btn:focus-visible, .install-btn:focus-visible {
   outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim);
 }
-.topbar-btn:active, .profile-btn:active { transform: translateY(0); }
+.topbar-btn:active, .profile-btn:active, .install-btn:active { transform: translateY(0); }
+.install-btn { background: linear-gradient(135deg, rgba(106,138,80,.35), rgba(106,138,80,.18)); border-color: rgba(106,138,80,.6); color: var(--gold); animation: installPulse 2.4s var(--ease) infinite }
+.install-btn:hover { background: linear-gradient(135deg, rgba(106,138,80,.55), rgba(106,138,80,.3)); border-color: var(--gold); }
+.install-btn-text { font-size: .56rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: inherit; line-height: 1; }
+@keyframes installPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(106,138,80,.5); } 50% { box-shadow: 0 0 0 6px rgba(106,138,80,0); } }
+@media (max-width: 560px) { .install-btn-text { display: none; } }
 
 .topbar-icon { font-size: 1.05rem; line-height: 1; }
 .topbar-label {

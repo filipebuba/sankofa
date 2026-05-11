@@ -64,7 +64,7 @@
 ### Cliffhanger (entra antes do logo)
 > Próximo episódio: vamos pra um homem que carregou tanto ouro que quebrou um banco. **Mansa Musa do Mali!**
 
-### Código cauris
+### Desafio no jogo
 > `HATSHEPSUT60`
 
 ---
@@ -98,7 +98,7 @@
 ### Cliffhanger
 > Próximo: uma cidade construída de pedra, sem cimento, sem cola, sem nada. E os europeus se recusaram a acreditar. **Grande Zimbabwe!**
 
-### Código
+### Desafio no jogo
 > `MUSINHO40`
 
 ---
@@ -130,7 +130,7 @@
 ### Cliffhanger
 > Próximo: cabeças de bronze que ainda falam. **Bronzes do Benin!**
 
-### Código
+### Desafio no jogo
 > `ZIMBABWE50`
 
 ---
@@ -162,7 +162,7 @@
 ### Cliffhanger
 > Próximo: uma rainha que se recusou a sentar no chão. **Nzinga!**
 
-### Código
+### Desafio no jogo
 > `ADESUA45`
 
 ---
@@ -192,7 +192,7 @@
 ### Cliffhanger
 > Próximo: uma montanha onde 20 mil pessoas viveram livres por 100 anos. **Quilombo dos Palmares!**
 
-### Código
+### Desafio no jogo
 > `NZINGA75`
 
 ---
@@ -228,7 +228,7 @@
 ### Cliffhanger
 > Próximo: o último herói. O homem que disse "libertar a mente vem primeiro". **Amílcar Cabral!**
 
-### Código
+### Desafio no jogo
 > `PALMARES85`
 
 ---
@@ -247,10 +247,10 @@
 > Quer dizer: antes de libertar país, libertar a forma de pensar. **Antes de tirar bandeira estrangeira — tirar ideia estrangeira.**
 
 ### Cena 6
-> Em 1973, tio Amílcar foi morto. Traído. Aos 49 anos. Faltavam dois para a independência. **Não viu.**
+> Em 1973, tio Amílcar foi morto. Traído. Aos 49 anos. A Guiné-Bissau declarou independência naquele mesmo ano; Portugal reconheceu em 1974. **Ele não viu.**
 >
 > Mas a luta continuou:
-> Guiné independente em **1974**. Cabo Verde, Moçambique, Angola, São Tomé — todos em **1975**.
+> Cabo Verde, Moçambique, Angola e São Tomé chegaram à independência em **1975**.
 
 ### Cena 7
 > Cada vez que você pergunta "por que é assim?" em vez de aceitar... **você está libertando a tua mente.** Igual o tio Amílcar ensinou.
@@ -264,7 +264,7 @@
 ### Cliffhanger
 > Próxima temporada: vamos voltar pro Mundo 1 com novas histórias. E pro **Mundo 9 — o futuro!**
 
-### Código
+### Desafio no jogo
 > `CABRALZINHO95`
 
 ---
