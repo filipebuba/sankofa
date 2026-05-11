@@ -276,8 +276,8 @@ Substituir `intro` por menu pós-clique com 3 botões:
 ### Pendente
 
 - [x] ~~Mecânica **soprar areia** (1.2)~~ — `buildSandWalls()` cria placas sand color em z:+0.3; `triggerScan` chama `clearSandWall(type)` quando revela mem do mesmo type; fade 800ms + bonus +3 cauris + dust. Posições alinhadas com mems em phase data.
-- [ ] Mecânica **forja QTE** (1.3) — `interactables[].type='anvil'` pendente.
-- [ ] Mecânica **corte cipó** (1.3) — `vines[]` pendente, requer `S.axe`.
+- [x] ~~Mecânica **forja QTE** (1.3)~~ — `buildInteractables()` cria mesh bigorna (base+top+horn+ring pulsante); `triggerInteract` perto da bigorna abre `#forgeQTE` overlay (3 toques no ritmo, marker slide 1.2s, zona central 20%); 3 hits → `S.axe=true` + showStage; bloqueado se Ferreiro Nok ainda não falado (`S.anvilUnlocked`).
+- [ ] Mecânica **corte cipó** (1.3) — `vines[]` pendente, requer `S.axe` (flag já existe).
 - [ ] **Canoa móvel** (1.3) — `movingPlats[]` pendente.
 - [ ] **Hazards** novos: hippo/croc (1.2), snake vertical (1.3).
 - [ ] **Water-gap respawn** (1.2/1.3) — `waterGaps[]` precisa loop de detecção.

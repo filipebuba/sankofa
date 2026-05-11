@@ -91,6 +91,24 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
 #toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(31,20,8,.92);color:#c9a84c;padding:18px 30px;border-radius:12px;border:2px solid #c9a84c;font-size:18px;font-weight:700;text-align:center;z-index:50;opacity:0;pointer-events:none;transition:opacity .4s ease;text-shadow:0 1px 3px rgba(0,0,0,.6);max-width:80vw}
 #toast.show{opacity:1}
 
+#forgeQTE{position:fixed;inset:0;background:rgba(12,10,6,.85);display:none;align-items:center;justify-content:center;z-index:210;padding:24px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+#forgeQTE.show{display:flex}
+#forgeQTE .fq-box{background:rgba(31,20,8,.96);border:2px solid #c9a84c;border-radius:14px;padding:24px 28px;max-width:520px;width:90vw;text-align:center;box-shadow:0 8px 32px rgba(201,168,76,.4);position:relative}
+#forgeQTE .fq-title{color:#ff6a2a;font-size:clamp(18px,4vw,24px);letter-spacing:.18em;font-weight:700;margin-bottom:8px;text-shadow:0 0 12px rgba(255,106,42,.5)}
+#forgeQTE .fq-hint{color:#9a8e7a;font-size:13px;margin-bottom:18px;font-style:italic}
+#forgeQTE .fq-track{position:relative;width:100%;height:48px;background:rgba(12,10,6,.7);border:2px solid #5c3d28;border-radius:24px;margin-bottom:14px;overflow:hidden}
+#forgeQTE .fq-zone{position:absolute;top:0;bottom:0;left:40%;width:20%;background:linear-gradient(90deg,rgba(255,106,42,0),rgba(255,106,42,.45),rgba(255,106,42,0));border-left:2px solid rgba(255,217,122,.8);border-right:2px solid rgba(255,217,122,.8)}
+#forgeQTE .fq-marker{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);font-size:30px;line-height:1;filter:drop-shadow(0 0 8px rgba(255,217,122,.7));animation:fqSlide 1.2s linear infinite}
+@keyframes fqSlide{0%,100%{left:0%}50%{left:100%}}
+#forgeQTE .fq-marker.hit{animation:none;transform:translate(-50%,-50%) scale(1.4);filter:drop-shadow(0 0 18px #ffd97a)}
+#forgeQTE .fq-score{display:flex;gap:10px;justify-content:center;margin-bottom:18px}
+#forgeQTE .fq-hit{width:22px;height:22px;border-radius:50%;border:2px solid #5c3d28;background:rgba(12,10,6,.5);transition:background .25s ease,box-shadow .25s ease,transform .2s ease}
+#forgeQTE .fq-hit.on{background:#ff6a2a;border-color:#ffd97a;box-shadow:0 0 12px rgba(255,106,42,.7);transform:scale(1.2)}
+#forgeQTE .fq-tap{padding:14px 32px;background:#c9a84c;color:#0c0a06;border:none;border-radius:10px;font-family:Georgia,serif;font-size:18px;font-weight:700;cursor:pointer;letter-spacing:.08em;box-shadow:0 4px 16px rgba(201,168,76,.4);transition:transform .1s ease}
+#forgeQTE .fq-tap:active{transform:scale(.94)}
+#forgeQTE .fq-cancel{position:absolute;top:8px;right:12px;background:transparent;border:none;color:#9a8e7a;font-size:24px;cursor:pointer;padding:4px 10px;line-height:1}
+#forgeQTE .fq-cancel:hover{color:#c9a84c}
+
 #stage{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-30px);background:rgba(12,10,6,.88);color:#f5efe0;padding:14px 28px;border-radius:14px;border:2px solid #c9a84c;text-align:center;z-index:40;opacity:0;pointer-events:none;transition:opacity .6s ease,transform .6s ease;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:min(560px,90vw)}
 #stage.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #stage .s-icon{font-size:24px;color:#c9a84c;margin-bottom:4px;animation:gPulse 1.6s ease infinite}

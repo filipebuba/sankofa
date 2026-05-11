@@ -275,6 +275,150 @@ function buildLevel(){
   });
 }
 
+// === INTERACTABLES (Phase 1.3 — anvil + future) ===
+var interactables=[];
+
+function buildInteractables(){
+  var defs = PHASE.interactables || [];
+  defs.forEach(function(d){
+    if(d.type === 'anvil'){
+      var grp = new THREE.Group();
+      // Base (dark wood block)
+      var base = new THREE.Mesh(
+        new THREE.BoxGeometry(.6, .35, .5),
+        new THREE.MeshLambertMaterial({ color: P.dk || 0x2a1f14, flatShading: true })
+      );
+      base.position.y = .175;
+      grp.add(base);
+      // Anvil top (iron)
+      var top = new THREE.Mesh(
+        new THREE.BoxGeometry(.85, .25, .35),
+        new THREE.MeshLambertMaterial({ color: P.fe || 0x8a8a8a, emissive: 0x331100, emissiveIntensity: .25, flatShading: true })
+      );
+      top.position.y = .47;
+      grp.add(top);
+      // Horn
+      var horn = new THREE.Mesh(
+        new THREE.ConeGeometry(.13, .35, 5),
+        new THREE.MeshLambertMaterial({ color: P.fe || 0x8a8a8a, flatShading: true })
+      );
+      horn.position.set(.55, .47, 0);
+      horn.rotation.z = -Math.PI/2;
+      grp.add(horn);
+      // Glow ring around base
+      var ring = new THREE.Mesh(
+        new THREE.RingGeometry(.55, .85, 24),
+        new THREE.MeshBasicMaterial({ color: P.br || 0xff6a2a, transparent: true, opacity: .55, side: THREE.DoubleSide })
+      );
+      ring.rotation.x = -Math.PI/2;
+      ring.position.y = .01;
+      grp.add(ring);
+      grp.position.set(d.x, d.y - .35, 0);
+      scene.add(grp);
+      interactables.push({ data: d, mesh: grp, ring: ring, used: false });
+    }
+  });
+}
+
+function updateInteractables(){
+  var t = performance.now()/1000;
+  interactables.forEach(function(it){
+    if(it.ring){
+      var puls = it.used ? .2 : (.55 + Math.sin(t*3)*.25);
+      it.ring.material.opacity = puls;
+    }
+  });
+}
+
+function nearestAnvil(){
+  for(var i = 0; i < interactables.length; i++){
+    var it = interactables[i];
+    if(it.used) continue;
+    if(it.data.type !== 'anvil') continue;
+    if(Math.abs(S.x - it.data.x) < 2.0) return it;
+  }
+  return null;
+}
+
+// === FORGE QTE (Phase 1.3) ===
+var FQE = { active: false, hits: 0, target: 3, anvil: null };
+
+function openForgeQTE(anvil){
+  if(FQE.active) return;
+  if(S.axe){ showToast('Já forjaste o machado!'); return; }
+  // Need to talk to Ferreiro Nok first (unlocks anvil)
+  if(!S.anvilUnlocked){
+    showToast('Fala com o Ferreiro Nok primeiro — ele ensina a forja.');
+    return;
+  }
+  FQE.active = true;
+  FQE.hits = 0;
+  FQE.anvil = anvil;
+  S.paused = true;
+  var el = document.getElementById('forgeQTE');
+  if(!el) return;
+  // Reset score dots
+  Array.prototype.forEach.call(el.querySelectorAll('.fq-hit'), function(d){ d.classList.remove('on'); });
+  var marker = el.querySelector('.fq-marker');
+  if(marker) marker.classList.remove('hit');
+  el.classList.add('show');
+}
+
+function closeForgeQTE(success){
+  var el = document.getElementById('forgeQTE');
+  if(el) el.classList.remove('show');
+  FQE.active = false;
+  S.paused = false;
+  if(success && FQE.anvil){
+    FQE.anvil.used = true;
+    S.axe = true;
+    showStage('🪓 <b>Machado de ferro forjado!</b><br>Usa <b>B</b> para cortar cipós e árvores.', 5500);
+    snd('w');
+  }
+  FQE.anvil = null;
+}
+
+function forgeQTETap(){
+  if(!FQE.active) return;
+  var el = document.getElementById('forgeQTE');
+  if(!el) return;
+  var marker = el.querySelector('.fq-marker');
+  if(!marker) return;
+  // Read marker computed position relative to track width.
+  var rect = marker.getBoundingClientRect();
+  var track = el.querySelector('.fq-track').getBoundingClientRect();
+  var center = (rect.left + rect.right) / 2;
+  var trackCenter = (track.left + track.right) / 2;
+  var trackHalf = (track.right - track.left) / 2;
+  // Hit zone = central 20% of track
+  var inZone = Math.abs(center - trackCenter) < trackHalf * 0.20;
+  if(inZone){
+    FQE.hits++;
+    var dots = el.querySelectorAll('.fq-hit');
+    if(dots[FQE.hits - 1]) dots[FQE.hits - 1].classList.add('on');
+    marker.classList.add('hit');
+    setTimeout(function(){ marker.classList.remove('hit'); }, 200);
+    snd('c');
+    if(FQE.hits >= FQE.target){
+      setTimeout(function(){ closeForgeQTE(true); }, 600);
+    }
+  }else{
+    snd('l');
+    var dots = el.querySelectorAll('.fq-hit');
+    if(dots[0]) dots[0].style.animation = 'hShake .3s';
+    setTimeout(function(){ if(dots[0]) dots[0].style.animation = ''; }, 320);
+  }
+}
+
+function setupForgeQTE(){
+  var el = document.getElementById('forgeQTE');
+  if(!el) return;
+  var tap = el.querySelector('.fq-tap');
+  var cancel = el.querySelector('.fq-cancel');
+  if(tap) tap.addEventListener('click', function(e){ e.stopPropagation(); forgeQTETap(); });
+  if(cancel) cancel.addEventListener('click', function(e){ e.stopPropagation(); closeForgeQTE(false); });
+}
+
 // === SAND WALLS (Phase 1.2 mechanic) ===
 // Sand-covered rock walls hiding rupestre paintings.
 // Scan within range fades sand AND reveals matching mem.
@@ -597,9 +741,15 @@ function closeNPC(){
   S.paused=false;
 }
 
-// === INTERACT VERB (E key / 🎙 btn) — NPC first, depois griot fragment ===
+// === INTERACT VERB (E key / 🎙 btn) — anvil → NPC → griot ===
 function triggerInteract(){
-  if(!S.on||S.paused)return;
+  if(!S.on)return;
+  // QTE active → tap = forge hit
+  if(FQE.active){ forgeQTETap(); return; }
+  if(S.paused) return;
+  // Anvil nearby? (Phase 1.3)
+  var anvil = nearestAnvil();
+  if(anvil){ openForgeQTE(anvil); return; }
   // NPC nearby?
   var n=null,nd=99;
   for(var i=0;i<NPCS.length;i++){
@@ -903,6 +1053,7 @@ function update(dt){
   });
 
   updateParts(dt);
+  updateInteractables();
   updateLucinha();
   updateNPCs(dt);
   updateCamera(dt);
@@ -1305,8 +1456,10 @@ function init(){
   scene.add(luci);
   buildLevel();
   buildSandWalls();
+  buildInteractables();
   buildBackground();
   buildNPCs();
+  setupForgeQTE();
   setupInput();
   setupMobile();
   setupMute();
