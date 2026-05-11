@@ -898,7 +898,16 @@ function initAudio(){
   var bgSrc = (PHASE.audio && PHASE.audio.bg) || 'assets/bg-music.mp3';
   bgAudio = new Audio(bgSrc);
   bgAudio.loop=true;bgAudio.volume=.35;
-  bgAudio.play().catch(function(){});
+  bgAudio.addEventListener('error', function(){
+    console.warn('[audio] bg load error', bgSrc, bgAudio.error);
+    showToast('⚠ Falha música: ' + bgSrc);
+  });
+  bgAudio.addEventListener('canplay', function(){
+    console.log('[audio] bg ready', bgSrc);
+  });
+  bgAudio.play().catch(function(err){
+    console.warn('[audio] bg play rejected', err && err.name, err && err.message);
+  });
   var griotMap = (PHASE.audio && PHASE.audio.griot) || {};
   Object.keys(griotMap).forEach(function(t){
     griotAudios[t] = new Audio(griotMap[t]);

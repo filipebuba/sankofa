@@ -1,4 +1,4 @@
-const CACHE='sankofa-rift-v15';
+const CACHE='sankofa-rift-v16';
 const ASSETS=[
   './',
   'index.html',
@@ -42,6 +42,9 @@ self.addEventListener('activate',e=>{
 
 self.addEventListener('fetch',e=>{
   if(e.request.method!=='GET')return;
+  const url=new URL(e.request.url);
+  const isHTML=(e.request.mode==='navigate')||
+               (e.request.headers.get('accept')||'').indexOf('text/html')!==-1;
   e.respondWith(
     caches.match(e.request).then(hit=>{
       if(hit)return hit;
@@ -50,7 +53,13 @@ self.addEventListener('fetch',e=>{
         const clone=res.clone();
         caches.open(CACHE).then(c=>c.put(e.request,clone)).catch(()=>{});
         return res;
-      }).catch(()=>caches.match('index.html'));
+      }).catch(()=>{
+        // Only fallback to index.html for HTML requests — otherwise return
+        // a 504 so non-HTML resources (audio, images, JS) fail explicitly
+        // instead of being silently replaced by the HTML shell.
+        if(isHTML)return caches.match('index.html');
+        return new Response('',{status:504,statusText:'Network error'});
+      });
     })
   );
 });
