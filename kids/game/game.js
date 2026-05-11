@@ -1,0 +1,1176 @@
+(function(){
+'use strict';
+
+// === CONFIG ===
+var G=28,RUN=7,MAX=9,ACC=35,DEC=25,AIR=.55,JF=13,JC=.45,COY=.1,JB=.12;
+var CW=.22;
+
+// === PALETTE ===
+var P={sh:0x0c0a06,dk:0x2a1f14,ea:0x5c3d28,sk:0x8b5e3c,tr:0xb85a3a,gd:0xc9a84c,sa:0xd4b896,lt:0xe8d5b7,wh:0xf5efe0,gn:0x4a7a50,lf:0x6b8f3a,nt:0x2a4570,dp:0x7a3520};
+
+// === STATE ===
+var S={on:false,x:0,y:.5,vx:0,vy:0,gnd:false,face:1,lgt:0,jb:0,at:0,py:.5,
+  sx:1,sy:1,svx:0,svy:0,cc:0,mc:0,ls:0,won:false,cx:0,cy:0,scan:0,beaconOn:false,hp:3,paused:false,perfect:true};
+
+// === ENIGMAS (HGA Vol. I — Mundo 1) ===
+var ENIGMAS=[
+  {q:'Onde foi encontrada a Lúcia, a hominínea bípede mais famosa de África?',
+   o:['Vale do Rift, Etiópia','Monte Kilimanjaro, Tanzânia'],c:0,
+   e:'O Vale do Rift é uma cicatriz geográfica no leste de África — Etiópia, Quénia, Tanzânia. Os ossos da Lúcia foram encontrados em Hadar (Etiópia) em 1974.'},
+  {q:'Há quantos milhões de anos a Lúcia caminhou na savana?',
+   o:['3,2 milhões de anos','30 mil anos'],c:0,
+   e:'A Lúcia viveu há 3,2 milhões de anos. Mas antes dela houve outros bípedes ainda mais antigos: Sahelanthropus, Orrorin, Ardipithecus.'},
+  {q:'O Saara já foi verde com lagos e girafas. Foi o "Saara Verde" há quantos anos?',
+   o:['Entre 11 mil e 5 mil anos','100 anos atrás'],c:0,
+   e:'Entre 11.000 e 5.000 anos atrás o Saara era verde. As pinturas de Tassili n\'Ajjer mostram nadadores e hipopótamos onde hoje só há areia.'},
+  {q:'Qual foi a primeira tecnologia da humanidade?',
+   o:['Pedra lascada (chopper)','Fogo controlado'],c:0,
+   e:'O chopper — pedra lascada com pancadas — foi a primeira tecnologia, há mais de 2,5 milhões de anos. O fogo veio bem depois.'},
+  {q:'Como os ancestrais contavam histórias antes da escrita?',
+   o:['Pinturas rupestres + tradição oral','Apenas escrevendo em pedra'],c:0,
+   e:'Tradição oral (griot) + pinturas nas paredes (mãos sopradas com ocre) — assim os ancestrais guardavam a memória.'},
+];
+var I={l:false,r:false,jp:false,jh:false,sc:false,ec:false};
+
+// === NPCs (dificuldade crescente, desbloqueio sequencial) ===
+// unlock: número de NPCs anteriores que devem estar 'done' antes deste aparecer
+// role: descrição curta — explica papel da personagem ao jogador
+var NPCS=[
+  {x:5,scale:[1.4,2.1],img:'assets/fred.png',avatar:'🦴',name:'Fred Fóssil',diff:'fácil',unlock:0,
+   role:'Paleontólogo do Rift — encontrou os ossos da Lúcia',
+   q:'Onde fica o Vale do Rift, onde a Lúcia foi encontrada?',
+   o:['África Oriental','Europa'],c:0,
+   r:'+5 cauris',rfn:function(){S.cc+=5;},
+   ok:'Boa! O Rift atravessa Etiópia, Quénia e Tanzânia.'},
+  {x:18,scale:[2.0,2.0],emoji:'🐒',avatar:'🐒',name:'Macaco Curioso',diff:'médio',unlock:1,
+   role:'Conhece os ancestrais que andaram em pé pela primeira vez',
+   q:'Qual destes andou em duas pernas primeiro, antes da Lúcia?',
+   o:['Sahelanthropus tchadensis','Tigre dente-de-sabre','Mamute lanudo'],c:0,
+   r:'revela memória',rfn:function(){for(var i=0;i<mems.length;i++){if(!mems[i].revealed&&!mems[i].got){mems[i].revealed=true;mems[i].m.material.opacity=1;mems[i].m.material.emissiveIntensity=.5;showToast('✦ '+mems[i].label+' revelada!');break;}}},
+   ok:'Certo! Sahelanthropus viveu há 7 milhões de anos no Chade.'},
+  {x:32,scale:[1.8,2.4],emoji:'🧙🏿',avatar:'🧙🏿',name:'Velho Griot',diff:'difícil',unlock:2,
+   role:'Guardião das memórias antigas do Sankofa',
+   q:'O Saara já foi verde com lagos. Quando foi o "Saara Verde"?',
+   o:['Entre 11 mil e 5 mil anos atrás','100 anos atrás','3 milhões de anos atrás','Nunca foi verde'],c:0,
+   r:'+1 vida',rfn:function(){if(S.hp<3)S.hp++;},
+   ok:'Exato! Tassili n\'Ajjer mostra pinturas de hipopótamos no Saara.'}
+];
+
+function npcDonesCount(){var n=0;for(var i=0;i<NPCS.length;i++)if(NPCS[i].done)n++;return n;}
+function refreshNPCVisibility(){
+  var done=npcDonesCount();
+  NPCS.forEach(function(n){
+    var visible=done>=n.unlock;
+    if(n.spr)n.spr.visible=visible;
+    if(n.ring)n.ring.visible=visible;
+  });
+}
+
+// === LEVEL ===
+var plats=[],cauris=[],mems=[];
+
+function defPlat(cx,cy,w,h,tp){plats.push({cx:cx,cy:cy,w:w,h:h,tp:tp||'ground',l:cx-w/2,r:cx+w/2,t:cy+h/2});}
+
+// === THREE ===
+var scene,cam,ren,luci,lp={};
+
+function initScene(){
+  scene=new THREE.Scene();
+  scene.background=new THREE.Color(P.lt);
+  scene.fog=new THREE.Fog(P.lt,25,55);
+
+  var isMobile=matchMedia('(pointer:coarse)').matches;
+  var fov=isMobile?(innerWidth<innerHeight?72:62):50;
+  cam=new THREE.PerspectiveCamera(fov,innerWidth/innerHeight,.1,100);
+  cam.position.set(0,4,12);cam.lookAt(0,1.5,0);
+
+  ren=new THREE.WebGLRenderer({antialias:!isMobile,powerPreference:'high-performance'});
+  ren.setSize(innerWidth,innerHeight);
+  ren.setPixelRatio(Math.min(devicePixelRatio,isMobile?1.5:2));
+  ren.shadowMap.enabled=true;
+  ren.shadowMap.type=THREE.PCFSoftShadowMap;
+  ren.toneMapping=THREE.ACESFilmicToneMapping;
+  ren.toneMappingExposure=1.3;
+  document.body.insertBefore(ren.domElement,document.body.firstChild);
+
+  var sun=new THREE.DirectionalLight(0xffe4c4,1.6);
+  sun.position.set(10,15,8);sun.castShadow=true;
+  sun.shadow.mapSize.set(1024,1024);
+  sun.shadow.camera.near=.5;sun.shadow.camera.far=60;
+  sun.shadow.camera.left=-30;sun.shadow.camera.right=30;
+  sun.shadow.camera.top=15;sun.shadow.camera.bottom=-5;
+  scene.add(sun);
+
+  scene.add(new THREE.HemisphereLight(P.lt,P.ea,.5));
+  scene.add(new THREE.AmbientLight(P.sa,.25));
+
+  function onResize(){
+    var mob=matchMedia('(pointer:coarse)').matches;
+    cam.aspect=innerWidth/innerHeight;
+    cam.fov=mob?(innerWidth<innerHeight?72:62):50;
+    cam.updateProjectionMatrix();
+    ren.setSize(innerWidth,innerHeight);
+  }
+  window.addEventListener('resize',onResize);
+  window.addEventListener('orientationchange',function(){setTimeout(onResize,200);});
+}
+
+// === EMOJI SPRITE HELPER ===
+function emojiTexture(emoji,size){
+  size=size||256;
+  var canvas=document.createElement('canvas');
+  canvas.width=size;canvas.height=size;
+  var ctx=canvas.getContext('2d');
+  ctx.font=Math.floor(size*0.78)+'px Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(emoji,size/2,size/2+size*0.04);
+  var tex=new THREE.CanvasTexture(canvas);
+  tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;
+  return tex;
+}
+
+// === NPCs build + glow ===
+function buildNPCs(){
+  NPCS.forEach(function(n){
+    var tex;
+    if(n.img){
+      tex=new THREE.TextureLoader().load(n.img);
+      tex.magFilter=THREE.NearestFilter;tex.minFilter=THREE.LinearFilter;
+    }else{
+      tex=emojiTexture(n.emoji);
+    }
+    var mat=new THREE.SpriteMaterial({map:tex,transparent:true,alphaTest:.05});
+    var spr=new THREE.Sprite(mat);
+    spr.scale.set(n.scale[0],n.scale[1],1);
+    spr.center.set(.5,0);
+    spr.position.set(n.x,0,0);
+    scene.add(spr);
+    n.spr=spr;
+    // Glow ring (ground) — double ring for visibility
+    var ringGrp=new THREE.Group();
+    var rIn=new THREE.Mesh(
+      new THREE.RingGeometry(.55,.85,24),
+      new THREE.MeshBasicMaterial({color:0xc9a84c,transparent:true,opacity:.85,side:THREE.DoubleSide})
+    );
+    rIn.rotation.x=-Math.PI/2;
+    ringGrp.add(rIn);
+    var rOut=new THREE.Mesh(
+      new THREE.RingGeometry(.95,1.15,24),
+      new THREE.MeshBasicMaterial({color:0xffd97a,transparent:true,opacity:.5,side:THREE.DoubleSide})
+    );
+    rOut.rotation.x=-Math.PI/2;
+    ringGrp.add(rOut);
+    // Filled disc base for contrast
+    var disc=new THREE.Mesh(
+      new THREE.CircleGeometry(.55,24),
+      new THREE.MeshBasicMaterial({color:0x4a3520,transparent:true,opacity:.45,side:THREE.DoubleSide})
+    );
+    disc.rotation.x=-Math.PI/2;
+    disc.position.y=-.001;
+    ringGrp.add(disc);
+    ringGrp.position.set(n.x,.06,0);
+    scene.add(ringGrp);
+    n.ring=ringGrp;n.ringIn=rIn;n.ringOut=rOut;
+    n.done=false;
+  });
+  refreshNPCVisibility();
+}
+
+function updateNPCs(dt){
+  var t=performance.now()/1000;
+  NPCS.forEach(function(n){
+    if(!n.spr||!n.spr.visible)return;
+    var d=Math.abs(S.x-n.x);
+    var near=d<2.5;
+    // Bobbing
+    n.spr.position.y=Math.sin(t*1.5+n.x)*.08;
+    // Ring pulse
+    if(n.ring){
+      var puls=1+Math.sin(t*2.5+n.x)*.18;
+      n.ring.scale.setScalar(puls);
+      var baseIn=n.done?.15:(near?1.0:.85);
+      var baseOut=n.done?.05:(near?.7:.5);
+      if(n.ringIn)n.ringIn.material.opacity=baseIn;
+      if(n.ringOut)n.ringOut.material.opacity=baseOut;
+    }
+    // Auto-prompt when near and not done — mostra papel da personagem
+    if(near&&!n.done&&!n.promptedOnce){
+      n.promptedOnce=true;
+      showStage('<b>'+n.name+'</b> — '+n.role+'.<br>Toca <b>E</b> ou 🎙 para falar',4500);
+    }
+    if(!near)n.promptedOnce=false;
+  });
+}
+
+// === LUCINHA (2D sprite — bíblia visual Kirikou) ===
+function createLucinha(){
+  var tex=new THREE.TextureLoader().load('assets/lucinha.png');
+  tex.magFilter=THREE.NearestFilter;tex.minFilter=THREE.LinearFilter;
+  var mat=new THREE.SpriteMaterial({map:tex,transparent:true,alphaTest:.1});
+  var spr=new THREE.Sprite(mat);
+  spr.scale.set(1.8,2.6,1);
+  spr.center.set(.5,0); // pivot at feet
+  lp.sprite=spr;
+  return spr;
+}
+
+// === LEVEL ===
+function buildLevel(){
+  // Ground segments
+  defPlat(2,0,14,1);    // start: -5 to 9
+  defPlat(14,0,6,1);    // 11 to 17
+  defPlat(24.5,0,9,1);  // 20 to 29
+  defPlat(34,0,8,1);    // 30 to 38
+
+  // Floating platforms
+  defPlat(10,2,2.8,.35,'float');
+  defPlat(19.5,2.5,2.5,.35,'float');
+  defPlat(22.5,4.2,2.5,.35,'float');
+  defPlat(27,5.8,2.2,.35,'float');
+  defPlat(31.5,3.2,3,.35,'float');
+
+  // Ground meshes
+  plats.forEach(function(p){
+    var h2=p.h;var geo=new THREE.BoxGeometry(p.w,h2,5);
+    var col=p.tp==='float'?P.tr:P.ea;
+    var mat=new THREE.MeshLambertMaterial({color:col,flatShading:true});
+    var m=new THREE.Mesh(geo,mat);
+    m.position.set(p.cx,p.cy-h2/2,0);m.receiveShadow=true;m.castShadow=true;
+    scene.add(m);
+
+    if(p.tp!=='float'){
+      var topGeo=new THREE.BoxGeometry(p.w,.12,5);
+      var topMat=new THREE.MeshLambertMaterial({color:P.sk,flatShading:true});
+      var top=new THREE.Mesh(topGeo,topMat);
+      top.position.set(p.cx,p.cy+.06,0);top.receiveShadow=true;
+      scene.add(top);
+    }
+  });
+
+  // Cauris
+  var cauriPositions=[
+    [1,1.2],[3,1.2],[5.5,1.2],[10,3.5],[13,1.2],[15,1.2],
+    [19.5,4],[22.5,5.7],[25,1.2],[27,7.3],[31.5,4.7],[35,1.2],[37,1.2]
+  ];
+  cauriPositions.forEach(function(c){
+    var geo=new THREE.TorusGeometry(.15,.05,8,12);
+    var mat=new THREE.MeshLambertMaterial({color:P.gd,emissive:P.gd,emissiveIntensity:.2,flatShading:true});
+    var m=new THREE.Mesh(geo,mat);
+    m.position.set(c[0],c[1],0);m.rotation.x=Math.PI/4;
+    scene.add(m);cauris.push({m:m,x:c[0],y:c[1],got:false});
+  });
+
+  // Memory fragments — 3 tipos diferenciados (HGA Vol. I)
+  // 1: Fóssil de Lúcia (osso branco), 2: Chopper (pedra lascada), 3: Pintura rupestre (ocre)
+  var memDefs=[
+    {pos:[27,7.3],type:'fossil',col:P.wh,emCol:P.lt,label:'Fóssil de Lúcia',
+     griot:'A Lúcia caminhou aqui há 3 milhões de anos. Seus ossos contam a história dos primeiros que andaram em pé.'},
+    {pos:[31.5,4.7],type:'chopper',col:P.dk,emCol:P.ea,label:'Pedra-ferramenta (Chopper)',
+     griot:'Pedra contra pedra. Esta foi a primeira tecnologia da humanidade. Lascar pedra para cortar, raspar, criar.'},
+    {pos:[37,1.2],type:'rupestre',col:P.tr,emCol:P.gd,label:'Pintura rupestre',
+     griot:'Os ancestrais desenhavam nas paredes. Mãos sopradas com ocre. Histórias antes da escrita.'}
+  ];
+  memDefs.forEach(function(d){
+    var geo;
+    if(d.type==='fossil'){
+      // Bone-like: elongated octahedron
+      geo=new THREE.OctahedronGeometry(.22,0);
+    }else if(d.type==='chopper'){
+      // Stone chip: irregular dodecahedron
+      geo=new THREE.DodecahedronGeometry(.22,0);
+    }else{
+      // Rock painting: flat tablet
+      geo=new THREE.BoxGeometry(.4,.32,.06);
+    }
+    var mat=new THREE.MeshLambertMaterial({color:d.col,emissive:d.emCol,emissiveIntensity:.0,flatShading:true,transparent:true,opacity:.0});
+    var m=new THREE.Mesh(geo,mat);
+    m.position.set(d.pos[0],d.pos[1],0);
+    scene.add(m);
+    mems.push({m:m,x:d.pos[0],y:d.pos[1],got:false,revealed:false,type:d.type,label:d.label,griot:d.griot});
+  });
+}
+
+// === BACKGROUND ===
+function buildBackground(){
+  // Mountains
+  var mColors=[P.dp,P.dk,P.ea,P.dp,P.dk,P.ea,P.dp];
+  var mPositions=[[-15,-25,18],[-8,-22,25],[5,-28,15],[18,-24,22],[30,-26,20],[42,-23,16],[55,-27,12]];
+  mPositions.forEach(function(mp,i){
+    var geo=new THREE.ConeGeometry(mp[2]*.45,mp[2],6);
+    var mat=new THREE.MeshLambertMaterial({color:mColors[i%mColors.length],flatShading:true});
+    var m=new THREE.Mesh(geo,mat);
+    m.position.set(mp[0],mp[2]/2-1,mp[1]);
+    m.userData.parallax=.15;m.userData.origX=mp[0];
+    scene.add(m);
+  });
+
+  // Acacia trees
+  var treePositions=[[-3,-6],[8,-8],[16,-7],[26,-9],[35,-6],[44,-8]];
+  treePositions.forEach(function(tp){
+    var grp=new THREE.Group();
+    var trunk=new THREE.Mesh(new THREE.CylinderGeometry(.08,.12,2.2,6),
+      new THREE.MeshLambertMaterial({color:P.ea,flatShading:true}));
+    trunk.position.y=1.1;grp.add(trunk);
+    var canopy=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.2,.25,8),
+      new THREE.MeshLambertMaterial({color:P.gn,flatShading:true}));
+    canopy.position.y=2.5;grp.add(canopy);
+    grp.position.set(tp[0],0,tp[1]);
+    grp.userData.parallax=.3;grp.userData.origX=tp[0];
+    scene.add(grp);
+  });
+
+  // Grass tufts
+  for(var i=-5;i<40;i+=1.5+Math.random()*2){
+    var gGrp=new THREE.Group();
+    for(var b=0;b<3;b++){
+      var blade=new THREE.Mesh(new THREE.ConeGeometry(.04,.25+Math.random()*.15,4),
+        new THREE.MeshLambertMaterial({color:P.gn,flatShading:true}));
+      blade.position.set(b*.07-.07,.12,0);blade.rotation.z=(b-1)*.2;
+      gGrp.add(blade);
+    }
+    gGrp.position.set(i,0,1.5+Math.random()*.5);
+    scene.add(gGrp);
+  }
+
+  // Far ground plane
+  var farGround=new THREE.Mesh(
+    new THREE.PlaneGeometry(120,40),
+    new THREE.MeshLambertMaterial({color:P.sa})
+  );
+  farGround.rotation.x=-Math.PI/2;farGround.position.set(15,-.02,-5);
+  farGround.receiveShadow=true;scene.add(farGround);
+}
+
+// === PARTICLES ===
+var parts=[];
+function spawnDust(x,y,intensity){
+  for(var i=0;i<Math.floor(6*intensity)+3;i++){
+    var geo=new THREE.BoxGeometry(.06+Math.random()*.06,.06+Math.random()*.06,.06);
+    var mat=new THREE.MeshLambertMaterial({color:P.sa,transparent:true,opacity:.7});
+    var m=new THREE.Mesh(geo,mat);
+    m.position.set(x+Math.random()*.4-.2,y+.05,Math.random()*.5-.25);
+    scene.add(m);
+    parts.push({m:m,vx:Math.random()*3-1.5,vy:Math.random()*4+2,vz:Math.random()*2-1,life:1,decay:2+Math.random()});
+  }
+}
+
+function spawnCollectEffect(x,y,col){
+  for(var i=0;i<10;i++){
+    var geo=new THREE.BoxGeometry(.05,.05,.05);
+    var mat=new THREE.MeshLambertMaterial({color:col,emissive:col,emissiveIntensity:.5,transparent:true,opacity:1});
+    var m=new THREE.Mesh(geo,mat);
+    m.position.set(x,y,0);scene.add(m);
+    var a=Math.random()*Math.PI*2;
+    parts.push({m:m,vx:Math.cos(a)*4,vy:Math.sin(a)*4+3,vz:Math.random()*2-1,life:1,decay:1.8+Math.random()*.5});
+  }
+}
+
+function updateParts(dt){
+  for(var i=parts.length-1;i>=0;i--){
+    var p=parts[i];
+    p.vy-=15*dt;p.m.position.x+=p.vx*dt;p.m.position.y+=p.vy*dt;
+    p.m.position.z+=p.vz*dt;p.life-=p.decay*dt;
+    p.m.material.opacity=Math.max(0,p.life);p.m.scale.setScalar(Math.max(.1,p.life));
+    if(p.life<=0){scene.remove(p.m);p.m.geometry.dispose();p.m.material.dispose();parts.splice(i,1);}
+  }
+}
+
+// === AUDIO ===
+var actx=null,bgAudio=null,griotAudios={};
+var MUTED=false;
+try{MUTED=localStorage.getItem('sankofa_muted')==='1'}catch(e){}
+function applyMute(){
+  if(bgAudio)bgAudio.muted=MUTED;
+  Object.values(griotAudios).forEach(function(a){a.muted=MUTED;});
+  var btn=document.getElementById('mute');
+  if(btn){btn.textContent=MUTED?'🔇':'🔊';btn.classList.toggle('muted',MUTED);btn.title=MUTED?'Desmutar música':'Mutar música';}
+}
+function toggleMute(){
+  MUTED=!MUTED;
+  try{localStorage.setItem('sankofa_muted',MUTED?'1':'0')}catch(e){}
+  applyMute();
+}
+function initAudio(){
+  if(actx)return;
+  try{actx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}
+  bgAudio=new Audio('assets/bg-music.mp3');
+  bgAudio.loop=true;bgAudio.volume=.35;
+  bgAudio.play().catch(function(){});
+  ['fossil','chopper','rupestre'].forEach(function(t){
+    griotAudios[t]=new Audio('assets/griot/'+t+'.mp3');
+    griotAudios[t].volume=.95;
+    griotAudios[t].load();
+  });
+  applyMute();
+}
+function playGriot(type){
+  var a=griotAudios[type];if(!a)return;
+  Object.values(griotAudios).forEach(function(o){o.pause();o.currentTime=0;});
+  if(bgAudio){bgAudio.volume=.12;}
+  a.currentTime=0;a.play().catch(function(){});
+  a.onended=function(){if(bgAudio)bgAudio.volume=.35;};
+}
+function snd(type){
+  if(!actx||MUTED)return;var t=actx.currentTime;
+  function mk(f,w,v,d,fe){
+    var o=actx.createOscillator(),g=actx.createGain();
+    o.connect(g);g.connect(actx.destination);o.type=w;
+    o.frequency.setValueAtTime(f,t);if(fe)o.frequency.exponentialRampToValueAtTime(fe,t+d);
+    g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d);
+  }
+  switch(type){
+    case'j':mk(280,'sine',.1,.16,520);break;
+    case'l':mk(120,'triangle',.06,.1,60);break;
+    case'c':mk(880,'sine',.09,.22,1200);break;
+    case'm':mk(523,'sine',.1,.4,null);setTimeout(function(){mk(659,'sine',.08,.3,null)},100);break;
+    case's':mk(440,'sine',.08,.5,1320);break;
+    case'g':mk(220,'triangle',.08,.6,330);setTimeout(function(){mk(165,'sine',.05,.8,247)},200);break;
+    case'w':mk(523,'sine',.1,.3,null);setTimeout(function(){mk(659,'sine',.08,.3,null)},150);setTimeout(function(){mk(784,'sine',.1,.45,null)},300);break;
+  }
+}
+
+// === MUTE BUTTON ===
+function setupMute(){
+  var btn=document.getElementById('mute');
+  if(!btn)return;
+  applyMute();
+  btn.addEventListener('click',function(e){e.stopPropagation();toggleMute();});
+}
+
+// === MOBILE ===
+function setupMobile(){
+  var skip=document.querySelector('#rotate .r-skip');
+  if(skip){
+    skip.addEventListener('click',function(){document.body.classList.add('allow-portrait');});
+    skip.addEventListener('pointerdown',function(e){e.preventDefault();document.body.classList.add('allow-portrait');});
+  }
+  // Try lock orientation (best effort — fails silently on iOS)
+  if(screen.orientation&&screen.orientation.lock){
+    var tryLock=function(){screen.orientation.lock('landscape').catch(function(){});};
+    document.getElementById('intro').addEventListener('click',tryLock,{once:true});
+  }
+}
+
+// === INPUT ===
+function setupInput(){
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowLeft'||e.key==='a'){I.l=true;e.preventDefault()}
+    if(e.key==='ArrowRight'||e.key==='d'){I.r=true;e.preventDefault()}
+    if(e.key===' '||e.key==='ArrowUp'){if(!I.jh)I.jp=true;I.jh=true;e.preventDefault()}
+    if(e.key==='b'||e.key==='B'){if(!I.sc)triggerScan();I.sc=true;e.preventDefault()}
+    if(e.key==='e'||e.key==='E'){if(!I.ec)triggerInteract();I.ec=true;e.preventDefault()}
+  });
+  document.addEventListener('keyup',function(e){
+    if(e.key==='ArrowLeft'||e.key==='a')I.l=false;
+    if(e.key==='ArrowRight'||e.key==='d')I.r=false;
+    if(e.key===' '||e.key==='ArrowUp')I.jh=false;
+    if(e.key==='b'||e.key==='B')I.sc=false;
+    if(e.key==='e'||e.key==='E')I.ec=false;
+  });
+  function tBtn(id,key,onPress){
+    var el=document.getElementById(id);if(!el)return;
+    function down(e){
+      e.preventDefault();
+      el.classList.add('down');
+      if(key==='jh'){
+        if(!I.jh)I.jp=true;
+        I.jh=true;
+      }else{
+        I[key]=true;
+      }
+      if(onPress)onPress();
+    }
+    function up(e){
+      if(e)e.preventDefault();
+      el.classList.remove('down');
+      I[key]=false;
+    }
+    el.addEventListener('touchstart',down,{passive:false});
+    el.addEventListener('touchend',up,{passive:false});
+    el.addEventListener('touchcancel',up,{passive:false});
+    el.addEventListener('mousedown',down);
+    el.addEventListener('mouseup',up);
+    el.addEventListener('mouseleave',function(e){if(I[key]||I.jh)up(e);});
+    el.addEventListener('contextmenu',function(e){e.preventDefault();});
+  }
+  tBtn('bl','l');
+  tBtn('br','r');
+  tBtn('bj','jh');
+  tBtn('bs','sc',triggerScan);
+  tBtn('be','ec',triggerInteract);
+}
+
+// === NPC DIALOG ===
+function openNPC(n){
+  S.paused=true;
+  var el=document.getElementById('npcDialog');
+  document.getElementById('nd-avatar').textContent=n.avatar;
+  document.getElementById('nd-name').textContent=n.name;
+  var df=document.getElementById('nd-diff');
+  df.textContent=n.diff.toUpperCase();
+  df.className='nd-diff '+(n.diff==='médio'?'med':n.diff==='difícil'?'hard':'');
+  document.getElementById('nd-q').textContent=n.q;
+  var opts=document.getElementById('nd-opts');opts.innerHTML='';
+  var fb=document.getElementById('nd-fb');fb.textContent='';
+  n.o.forEach(function(opt,i){
+    var b=document.createElement('button');
+    b.textContent=opt;
+    b.onclick=function(){
+      Array.prototype.forEach.call(opts.children,function(x){x.disabled=true;});
+      if(i===n.c){
+        b.classList.add('correct');
+        fb.textContent='✦ '+n.ok+' Recompensa: '+n.r;
+        snd('c');
+        n.done=true;
+        n.rfn();
+        refreshNPCVisibility();
+        // Anuncia próximo NPC desbloqueado
+        var done=npcDonesCount();
+        var nxt=null;
+        for(var j=0;j<NPCS.length;j++)if(!NPCS[j].done&&NPCS[j].unlock===done){nxt=NPCS[j];break;}
+        if(nxt){
+          setTimeout(function(){showStage('🌟 Novo amigo desbloqueado: <b>'+nxt.name+'</b>!<br>Continua a explorar...',5000);},2900);
+        }
+        setTimeout(closeNPC,2800);
+      }else{
+        b.classList.add('wrong');
+        fb.textContent='Não é isso... tenta outra resposta.';
+        snd('l');
+        setTimeout(function(){
+          Array.prototype.forEach.call(opts.children,function(x){x.disabled=false;x.classList.remove('wrong');});
+          fb.textContent='';
+        },1400);
+      }
+    };
+    opts.appendChild(b);
+  });
+  el.classList.add('show');
+}
+function closeNPC(){
+  document.getElementById('npcDialog').classList.remove('show');
+  S.paused=false;
+}
+
+// === INTERACT VERB (E key / 🎙 btn) — NPC first, depois griot fragment ===
+function triggerInteract(){
+  if(!S.on||S.paused)return;
+  // NPC nearby?
+  var n=null,nd=99;
+  for(var i=0;i<NPCS.length;i++){
+    var npc=NPCS[i];if(npc.done)continue;
+    var d=Math.abs(S.x-npc.x);
+    if(d<nd&&d<2.0){nd=d;n=npc;}
+  }
+  if(n){openNPC(n);return;}
+  triggerGriot();
+}
+
+// === GRIOT (OUVIR) VERB ===
+function triggerGriot(){
+  if(!S.on)return;
+  // Find closest fragment within 4 units (proximity required)
+  var near=null,nd=99;
+  mems.forEach(function(m){
+    var d=Math.sqrt((S.x-m.x)*(S.x-m.x)+(S.y-m.y)*(S.y-m.y));
+    if(d<nd&&d<4.5){nd=d;near=m;}
+  });
+  if(!near){
+    showToast('O griot está em silêncio... aproxima-te de uma memória.');
+    return;
+  }
+  if(!near.revealed&&!near.got){
+    showToast('Memória oculta — usa o cajado (B) primeiro.');
+    return;
+  }
+  snd('g');
+  playGriot(near.type);
+  showGriot(near.griot);
+  // Pulsing glow on fragment
+  if(!near.got){
+    var orig=near.m.material.emissiveIntensity;
+    var pulses=0;
+    var iv=setInterval(function(){
+      near.m.material.emissiveIntensity=pulses%2===0?1.3:orig;
+      pulses++;
+      if(pulses>=6){clearInterval(iv);near.m.material.emissiveIntensity=orig;}
+    },200);
+  }
+}
+
+// === SCAN VERB — revela fragmentos escondidos ===
+function triggerScan(){
+  if(!S.on||S.scan>0)return;
+  S.scan=1.0;
+  snd('s');
+  var revealed=0,closeFar=null,fd=99;
+  mems.forEach(function(m){
+    if(m.got)return;
+    // Use x-distance primarily (side-scroller); add y-penalty if fragment unreachable from current y
+    var dx=Math.abs(S.x-m.x);
+    var dy=Math.abs(S.y-m.y);
+    // Reveal range: 8 units in x, regardless of y (forgive verticality)
+    if(dx<8&&dy<8&&!m.revealed){
+      m.revealed=true;
+      var t0=performance.now();
+      var anim=setInterval(function(){
+        var k=Math.min(1,(performance.now()-t0)/600);
+        m.m.material.opacity=k;
+        m.m.material.emissiveIntensity=k*.5;
+        if(k>=1)clearInterval(anim);
+      },16);
+      revealed++;
+      var vh=m.y-S.y>1.5?' (lá em cima ↑)':'';
+      showToast('✦ '+m.label+' revelado!'+vh);
+    }else if(!m.revealed){
+      // Closeness measured by x for direction, but consider both for ranking
+      var dTotal=dx+dy*.6;
+      if(dTotal<fd){fd=dTotal;closeFar=m;}
+    }
+  });
+  if(revealed===0){
+    if(closeFar){
+      var dxF=closeFar.x-S.x;
+      var dyF=closeFar.y-S.y;
+      var arrow=Math.abs(dxF)<2?(dyF>0?'↑':'↓'):(dxF>0?'→':'←');
+      var steps=Math.round(Math.abs(dxF));
+      var vert=dyF>1.5?' e mais alto ↑':(dyF<-1.5?' e mais baixo ↓':'');
+      showToast('Sinto algo '+arrow+' a '+steps+' passos'+vert);
+    }else{
+      showToast('Nada por perto... explora mais.');
+    }
+  }
+  // Scan ring particles
+  for(var i=0;i<14;i++){
+    var a=(i/14)*Math.PI*2;
+    var geo=new THREE.BoxGeometry(.06,.06,.06);
+    var mat=new THREE.MeshLambertMaterial({color:P.gd,emissive:P.gd,emissiveIntensity:.8,transparent:true,opacity:1});
+    var m=new THREE.Mesh(geo,mat);
+    m.position.set(S.x,S.y+.5,0);scene.add(m);
+    parts.push({m:m,vx:Math.cos(a)*6,vy:Math.sin(a)*6,vz:0,life:1,decay:1.5});
+  }
+  S.beaconOn=true;
+}
+
+function updateBeacon(){
+  var el=document.getElementById('beacon');
+  if(!el||!S.beaconOn)return;
+  // Find nearest non-collected memory
+  var nearest=null,nd=99;
+  mems.forEach(function(m){
+    if(m.got)return;
+    var dx=Math.abs(S.x-m.x);
+    if(dx<nd){nd=dx;nearest=m;}
+  });
+  if(!nearest){el.classList.remove('show');return;}
+  var dxF=nearest.x-S.x;
+  var dyF=nearest.y-S.y;
+  var steps=Math.round(Math.abs(dxF));
+  var label=Math.abs(dxF)<1.5?(dyF>1?'↑ Olha pra cima':'Aqui!'):steps+' passos';
+  if(dyF>1.5&&Math.abs(dxF)>=1.5)label+=' ↑';
+  el.querySelector('.b-label').textContent=label;
+  if(dxF<0)el.classList.add('left');else el.classList.remove('left');
+  el.classList.add('show');
+}
+
+// === PHYSICS ===
+function getGround(px,py){
+  var best=-999;
+  for(var i=0;i<plats.length;i++){
+    var p=plats[i];
+    if(px>=p.l&&px<=p.r&&p.t<=py+.6){if(p.t>best)best=p.t;}
+  }
+  return best;
+}
+
+function getPlatBelow(px,py){
+  var best=-999;
+  for(var i=0;i<plats.length;i++){
+    var p=plats[i];
+    if(px>=p.l&&px<=p.r){if(p.t<=py+.6&&p.t>best)best=p.t;}
+  }
+  return best;
+}
+
+function update(dt){
+  if(!S.on||S.won||S.paused)return;
+  dt=Math.min(dt,.04);
+
+  var dir=(I.l?-1:0)+(I.r?1:0);
+  var acc=S.gnd?ACC:ACC*AIR;
+  var dec=S.gnd?DEC:DEC*AIR;
+
+  if(dir!==0){
+    S.vx+=dir*acc*dt;
+    if(S.vx>MAX)S.vx=MAX;if(S.vx<-MAX)S.vx=-MAX;
+    S.face=dir;
+  }else{
+    if(Math.abs(S.vx)>.5)S.vx-=Math.sign(S.vx)*dec*dt;
+    else S.vx=0;
+  }
+
+  var now=performance.now()/1000;
+  if(S.gnd)S.lgt=now;
+  var cg=now-S.lgt<COY;
+
+  if(I.jp){S.jb=JB;I.jp=false;}
+  S.jb-=dt;
+
+  if(S.jb>0&&(S.gnd||cg)){
+    S.vy=JF;S.gnd=false;S.jb=0;
+    applySq(.82,1.18);snd('j');
+  }
+
+  if(!I.jh&&S.vy>2)S.vy*=JC;
+
+  var gravMul=S.vy>0?1:1.35;
+  S.vy-=G*gravMul*dt;
+
+  S.py=S.y;
+  S.x+=S.vx*dt;
+  S.y+=S.vy*dt;
+
+  var gy=getPlatBelow(S.x,S.y);
+  if(S.y<=gy&&S.vy<=0){
+    if(!S.gnd&&S.py>gy-.4){
+      var imp=Math.min(Math.abs(S.vy)/12,1);
+      if(imp>.15){spawnDust(S.x,gy,imp);snd('l');}
+      applySq(1+imp*.22,1-imp*.18);
+    }
+    S.y=gy;S.vy=0;S.gnd=true;
+  }else if(S.y>gy+.05){S.gnd=false;}
+
+  // Solid AABB collision for floating platforms (sides + head bump)
+  var hw=.45,ht=2.0;
+  for(var pi=0;pi<plats.length;pi++){
+    var fp=plats[pi];
+    if(fp.tp!=='float')continue;
+    var pl=fp.l,pr=fp.r,ptop=fp.t,pbot=fp.cy-fp.h/2;
+    if(S.x+hw<=pl||S.x-hw>=pr)continue;
+    if(S.y>=ptop||S.y+ht<=pbot)continue;
+    var fromR=(S.x+hw)-pl;
+    var fromL=pr-(S.x-hw);
+    var fromT=(S.y+ht)-pbot;
+    var fromB=ptop-S.y;
+    var minH=Math.min(fromR,fromL);
+    var minV=Math.min(fromT,fromB);
+    if(minV<minH){
+      if(fromB<fromT){
+        S.y=ptop;S.vy=0;S.gnd=true;
+      }else{
+        S.y=pbot-ht;
+        if(S.vy>0)S.vy=-1.5;
+        snd('l');spawnDust(S.x,S.y+ht,.6);
+        applySq(1.18,.82);
+      }
+    }else{
+      if(fromL<fromR){S.x=pr+hw;}else{S.x=pl-hw;}
+      S.vx=0;
+    }
+  }
+
+  if(S.gnd)S.lastSafeX=S.x;
+  if(S.y<-6){loseLife();}
+
+  // Squash spring
+  var sk=15,dmp=.8;
+  S.svx+=(1-S.sx)*sk*dt;S.svy+=(1-S.sy)*sk*dt;
+  S.svx*=dmp;S.svy*=dmp;S.sx+=S.svx;S.sy+=S.svy;
+
+  // Air stretch
+  if(!S.gnd){
+    var str=1+Math.abs(S.vy)*.003;
+    if(str>1.15)str=1.15;
+    S.sy+=(str-S.sy)*.1;S.sx+=(1/str-S.sx)*.1;
+  }
+
+  S.at+=dt;
+  if(S.scan>0)S.scan-=dt;
+
+  // Collectibles
+  cauris.forEach(function(c){
+    if(!c.got&&Math.abs(S.x-c.x)<.6&&Math.abs(S.y+1-c.y)<.8){
+      c.got=true;c.m.visible=false;S.cc++;
+      spawnCollectEffect(c.x,c.y,P.gd);snd('c');
+    }
+  });
+  mems.forEach(function(m){
+    if(!m.got&&m.revealed&&Math.abs(S.x-m.x)<.7&&Math.abs(S.y+1-m.y)<.9){
+      m.got=true;m.m.visible=false;S.mc++;
+      spawnCollectEffect(m.x,m.y,P.gd);snd('m');
+      playGriot(m.type);
+      showGriot(m.griot); // auto griot — momento educativo
+      setTimeout(updateProgress,7500);
+    }
+  });
+
+  // Win
+  if(S.mc>=3&&!S.won){
+    S.won=true;snd('w');
+    if(bgAudio){
+      var fadeIv=setInterval(function(){
+        if(bgAudio.volume>.05){bgAudio.volume-=.03;}
+        else{bgAudio.volume=0;clearInterval(fadeIv);}
+      },80);
+    }
+    var perf=S.perfect&&S.hp===3;
+    showStage(perf?'🌟 <b>PERFEIÇÃO</b> — Tu és arqueóloga do Sankofa':'🌟 <b>Volta. E. Busca.</b> — Memórias do Rift recuperadas',5000);
+    setTimeout(function(){
+      document.getElementById('wc').textContent=S.cc;
+      document.getElementById('wh').textContent=S.hp;
+      var wt=document.getElementById('win-title');
+      var wm=document.getElementById('win-msg');
+      var wp=document.getElementById('win-perfect');
+      if(perf){
+        wt.textContent='🌟 PERFEIÇÃO!';
+        wt.classList.add('perf');
+        wm.textContent='Sem perder uma vida. És uma verdadeira arqueóloga do Sankofa.';
+        wp.style.display='block';
+        // Tocar audio Vovó especial
+        var va=new Audio('assets/vovo-perfect.mp3');
+        va.volume=.95;va.muted=MUTED;va.play().catch(function(){});
+        setupShare();
+      }
+      document.getElementById('win').classList.add('show');
+    },4500);
+  }
+
+  // Animate collectibles
+  var t=performance.now()/1000;
+  cauris.forEach(function(c){
+    if(!c.got){c.m.rotation.y=t*2;c.m.position.y=c.y+Math.sin(t*3+c.x)*.1;}
+  });
+  mems.forEach(function(m){
+    if(!m.got){m.m.rotation.y=t*1.5;m.m.rotation.x=t*.8;m.m.position.y=m.y+Math.sin(t*2+m.x)*.15;}
+  });
+
+  updateParts(dt);
+  updateLucinha();
+  updateNPCs(dt);
+  updateCamera(dt);
+  updateHUD();
+  updateBeacon();
+}
+
+function applySq(x,y){S.sx=x;S.sy=y;S.svx=0;S.svy=0;}
+
+// === ANIMATION (sprite 2D) ===
+function updateLucinha(){
+  if(!luci)return;
+  luci.position.set(S.x,S.y,0);
+
+  var st='idle';
+  if(!S.gnd)st=S.vy>0?'jump':'fall';
+  else if(Math.abs(S.vx)>.5)st='run';
+
+  // Squash/stretch + run bobbing
+  var t=S.at;
+  var bob=st==='run'?Math.abs(Math.sin(t*10))*.07:0;
+  var sx=S.sx*1.8*(S.face>0?1:-1);
+  var sy=S.sy*(2.6+bob);
+  luci.scale.set(sx,sy,1);
+}
+
+// === CAMERA ===
+function updateCamera(dt){
+  var tx=S.x+S.face*2.5;
+  var ty=Math.max(S.y+2.5,3.5);
+  S.cx+=(tx-S.cx)*.06;S.cy+=(ty-S.cy)*.06;
+  var cz=innerWidth<innerHeight?16:12;
+  cam.position.set(S.cx,S.cy,cz);
+  cam.lookAt(S.cx,S.cy-1.8,0);
+}
+
+// === HUD ===
+function updateHUD(){
+  document.getElementById('cc').textContent=S.cc;
+  document.getElementById('mc').textContent=S.mc+'/3';
+  var h=document.getElementById('hearts');
+  if(h){
+    h.textContent='❤'.repeat(Math.max(0,S.hp))+'♡'.repeat(Math.max(0,3-S.hp));
+    var p=h.parentElement;
+    if(p)p.classList.toggle('low',S.hp<=1);
+  }
+}
+
+// === LIFE / ENIGMA ===
+function resetCollectibles(){
+  // Restore all cauris
+  cauris.forEach(function(c){
+    if(c.got){c.got=false;c.m.visible=true;}
+  });
+  // Restore non-collected memories to hidden state (already-collected stay collected)
+  // But user wants ALL pieces back: reset everything
+  mems.forEach(function(m){
+    if(m.got){m.got=false;m.m.visible=true;}
+    m.revealed=false;
+    m.m.material.opacity=0;
+    m.m.material.emissiveIntensity=0;
+  });
+  S.cc=0;S.mc=0;
+  S.beaconOn=false;
+  document.getElementById('beacon').classList.remove('show');
+}
+
+function loseLife(){
+  S.hp--;
+  S.perfect=false;
+  snd('l');
+  document.getElementById('hud').style.transition='filter .3s';
+  document.getElementById('hud').style.filter='hue-rotate(-30deg) brightness(1.3)';
+  setTimeout(function(){document.getElementById('hud').style.filter='';},400);
+  resetCollectibles();
+  if(S.hp<=0){
+    showEnigma();
+  }else{
+    showStage('💔 Caíste! Peças voltaram. Restam <b>'+S.hp+' vida'+(S.hp===1?'':'s')+'</b>',3500);
+    S.x=0;S.y=5;S.vx=0;S.vy=0;S.lastSafeX=0;
+  }
+}
+
+var enigmaUsed=[];
+function setupShare(){
+  var btn=document.getElementById('share-btn');
+  if(!btn)return;
+  btn.onclick=function(){
+    var text='Recuperei todas as memórias do Rift sem perder uma vida! 🌟 Código RIFT2026. Joga Sankofa Kids: Memórias do Rift!';
+    var url=window.location.href;
+    if(navigator.share){
+      navigator.share({title:'Sankofa Kids: Rift Memories',text:text,url:url}).catch(function(){});
+    }else{
+      navigator.clipboard.writeText(text+' '+url).then(function(){
+        btn.textContent='✓ Copiado!';
+        setTimeout(function(){btn.textContent='📤 Compartilhar conquista';},2000);
+      });
+    }
+  };
+}
+
+function showEnigma(){
+  S.paused=true;
+  // Pick unused enigma
+  var avail=ENIGMAS.filter(function(_,i){return enigmaUsed.indexOf(i)<0;});
+  if(avail.length===0){enigmaUsed=[];avail=ENIGMAS.slice();}
+  var idx=Math.floor(Math.random()*avail.length);
+  var origIdx=ENIGMAS.indexOf(avail[idx]);
+  enigmaUsed.push(origIdx);
+  var en=avail[idx];
+  var el=document.getElementById('enigma');
+  el.querySelector('.e-question').textContent=en.q;
+  var opts=el.querySelector('.e-options');
+  opts.innerHTML='';
+  el.querySelector('.e-feedback').textContent='';
+  en.o.forEach(function(opt,i){
+    var btn=document.createElement('button');
+    btn.textContent=opt;
+    btn.onclick=function(){
+      // Disable all
+      Array.prototype.forEach.call(opts.children,function(b){b.disabled=true;});
+      if(i===en.c){
+        btn.classList.add('correct');
+        el.querySelector('.e-feedback').textContent='✦ Correto! '+en.e;
+        snd('c');
+        setTimeout(function(){
+          el.classList.remove('show');
+          S.hp=1;
+          S.x=0;S.y=5;S.vx=0;S.vy=0;S.lastSafeX=0;S.paused=false;
+          showStage('❤ <b>+1 vida</b> comprada! Recomeça do início.',3500);
+        },4500);
+      }else{
+        btn.classList.add('wrong');
+        el.querySelector('.e-feedback').textContent='Tenta de novo... '+en.e;
+        snd('l');
+        setTimeout(function(){showEnigma();},4500);
+      }
+    };
+    opts.appendChild(btn);
+  });
+  el.classList.add('show');
+}
+
+var toastTimer=null;
+function showToast(text){
+  var el=document.getElementById('toast');
+  if(!el)return;
+  el.textContent='✦ '+text;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){el.classList.remove('show');},2500);
+}
+
+var griotTimer=null;
+function showGriot(text){
+  var el=document.getElementById('griot');
+  if(!el)return;
+  el.querySelector('.g-text').textContent='"'+text+'"';
+  el.classList.add('show');
+  clearTimeout(griotTimer);
+  griotTimer=setTimeout(function(){el.classList.remove('show');},7000);
+  el.onclick=function(){clearTimeout(griotTimer);el.classList.remove('show');};
+}
+
+var stageTimer=null;
+function showStage(html,dur){
+  var el=document.getElementById('stage');
+  if(!el)return;
+  el.querySelector('.s-text').innerHTML=html;
+  el.classList.add('show');
+  clearTimeout(stageTimer);
+  stageTimer=setTimeout(function(){el.classList.remove('show');},dur||5000);
+}
+
+function updateProgress(){
+  var got=mems.filter(function(m){return m.got;}).length;
+  var revealed=mems.filter(function(m){return m.revealed&&!m.got;}).length;
+  var hidden=mems.filter(function(m){return !m.revealed;}).length;
+  if(got===0&&revealed===0){
+    showStage('Use o cajado <b>(B)</b> para revelar memórias escondidas',6000);
+  }else if(got===1){
+    showStage('1ª memória encontrada! Faltam <b>'+(3-got)+'</b>',5000);
+  }else if(got===2){
+    showStage('Quase lá! Só falta <b>1 memória</b>',5000);
+  }else if(got===3){
+    showStage('🌟 Todas as memórias do Rift recuperadas!',4000);
+  }
+}
+
+// === LOOP ===
+var lastT=0;
+function loop(t){
+  requestAnimationFrame(loop);
+  var dt=Math.min((t-lastT)/1000,.05);
+  lastT=t;
+  if(S.on)update(dt);
+  ren.render(scene,cam);
+}
+
+// === PWA INSTALL ===
+var deferredInstall=null;
+function isStandalone(){
+  return matchMedia('(display-mode:standalone)').matches||matchMedia('(display-mode:fullscreen)').matches||navigator.standalone===true;
+}
+function detectPlatform(){
+  var ua=navigator.userAgent;
+  var iOS=/iPad|iPhone|iPod/.test(ua)&&!window.MSStream;
+  var safari=iOS&&/Safari/.test(ua)&&!/CriOS|FxiOS|EdgiOS/.test(ua);
+  var android=/Android/.test(ua);
+  var chromeAndroid=android&&/Chrome/.test(ua);
+  return {iOS:iOS,safari:safari,android:android,chromeAndroid:chromeAndroid,mobile:iOS||android,desktop:!iOS&&!android};
+}
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();
+  deferredInstall=e;
+});
+window.addEventListener('appinstalled',function(){
+  deferredInstall=null;
+  var btn=document.getElementById('install');
+  if(btn)btn.style.display='none';
+  try{localStorage.setItem('sankofa_installed','1')}catch(e){}
+});
+function showInstallInstructions(){
+  var p=detectPlatform();
+  var title='INSTALAR APP',steps=[];
+  if(p.iOS){
+    title='INSTALAR NO IPHONE/IPAD';
+    steps=[
+      'Toca no botão <b>Partilhar</b> (caixa com seta ↑) em baixo no Safari',
+      'Desliza e toca em <b>"Adicionar ao Ecrã Principal"</b>',
+      'Toca <b>"Adicionar"</b> no canto superior direito',
+      'Pronto! Abre o jogo pelo ícone no ecrã'
+    ];
+  }else if(p.chromeAndroid){
+    title='INSTALAR NO ANDROID';
+    steps=[
+      'Toca no <b>menu ⋮</b> do Chrome (canto superior direito)',
+      'Toca em <b>"Instalar app"</b> ou <b>"Adicionar ao ecrã"</b>',
+      'Confirma <b>"Instalar"</b>',
+      'Pronto! Abre pelo ícone Sankofa no ecrã'
+    ];
+  }else{
+    title='INSTALAR APP';
+    steps=[
+      'Procura o ícone de <b>instalar ⬇</b> na barra de endereço do browser',
+      'OU abre o <b>menu do browser</b> (⋮ ou ≡)',
+      'Toca em <b>"Instalar Sankofa Rift"</b>',
+      'Pronto! Abre como app sem browser'
+    ];
+  }
+  document.getElementById('im-title').textContent=title;
+  var ol=document.getElementById('im-steps');
+  ol.innerHTML='';
+  steps.forEach(function(s){var li=document.createElement('li');li.innerHTML=s;ol.appendChild(li);});
+  document.getElementById('installModal').classList.add('show');
+}
+function setupInstall(){
+  var btn=document.getElementById('install');
+  var modal=document.getElementById('installModal');
+  var close=document.getElementById('im-close');
+  if(!btn)return;
+  // Hide ONLY if already running as standalone (installed + opened from icon)
+  if(isStandalone()){btn.style.display='none';return;}
+  // Force show — covers all platforms (Chrome prompt OR fallback modal)
+  btn.style.display='flex';
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(deferredInstall){
+      deferredInstall.prompt();
+      deferredInstall.userChoice.then(function(c){
+        if(c&&c.outcome==='accepted'){btn.style.display='none';}
+        deferredInstall=null;
+      });
+    }else{
+      showInstallInstructions();
+    }
+  });
+  if(close){close.addEventListener('click',function(){modal.classList.remove('show');});}
+  if(modal){modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('show');});}
+}
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+
+// === INIT ===
+function init(){
+  initScene();
+  luci=createLucinha();
+  scene.add(luci);
+  buildLevel();
+  buildBackground();
+  buildNPCs();
+  setupInput();
+  setupMobile();
+  setupMute();
+  setupInstall();
+  var ndClose=document.getElementById('nd-close');
+  if(ndClose)ndClose.addEventListener('click',closeNPC);
+
+  S.cx=0;S.cy=3.5;
+
+  // Click intro: rewind + unmute video for ~3s of Vovó voice, then start game
+  document.getElementById('intro').addEventListener('click',function(){
+    var v=document.getElementById('intro-vid');
+    if(v){v.muted=MUTED;v.volume=.9;v.currentTime=0;v.play().catch(function(){});}
+    setTimeout(function(){
+      if(v){v.pause();}
+      initAudio();
+      document.getElementById('intro').classList.add('out');
+      S.on=true;
+      // Tutorial: explica vidas + scan após 2s
+      setTimeout(function(){
+        showStage('Tens <b>3 vidas ❤❤❤</b> · Cuidado com o vácuo!',5000);
+      },1500);
+      setTimeout(function(){
+        showStage('Usa o cajado <b>(B)</b> para revelar memórias do Rift',6000);
+      },7000);
+      setTimeout(function(){
+        showStage('Encontra <b>Fred Fóssil</b> 🦴 à direita — ele dá dicas e recompensas!',6000);
+      },13500);
+    },3500);
+  });
+
+  requestAnimationFrame(loop);
+}
+
+init();
+})();

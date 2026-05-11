@@ -1,13 +1,16 @@
-const CACHE='sankofa-rift-v3';
+const CACHE='sankofa-rift-v6';
 const ASSETS=[
   './',
   'index.html',
+  'styles.css',
+  'game.js',
   'manifest.webmanifest',
   'assets/favicon.png',
   'assets/icon-192.png',
   'assets/icon-512.png',
   'assets/lucinha.png',
   'assets/vovo.png',
+  'assets/fred.png',
   'assets/bg-music.mp3',
   'assets/intro-clip.mp4',
   'assets/vovo-perfect.mp3',
