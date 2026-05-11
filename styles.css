@@ -1106,7 +1106,8 @@ input { font-family: var(--font-body); }
   background: var(--gold-dim); border-radius: 50%;
   width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
 }
-.install-banner-text strong { display: block; font-size: 1rem; color: var(--gold); margin-bottom: 4px; }
+.install-banner-text > strong { display: block; font-size: 1rem; color: var(--gold); margin-bottom: 4px; }
+.install-banner-text p strong { display: inline; color: var(--gold); }
 .install-banner-text p { font-size: .88rem; color: var(--text-dim); margin: 0; line-height: 1.4; }
 .install-banner-actions {
   grid-column: 1 / -1; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;
