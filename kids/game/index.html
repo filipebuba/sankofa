@@ -186,7 +186,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
   <div class="hi hi-mid"><span class="lives-lbl">VIDAS</span><span id="hearts">❤❤❤</span></div>
   <div id="hud-right">
     <div class="hi"><div class="ico ico-m">✦</div><span id="mc">0/3</span></div>
-    <button id="install" aria-label="Instalar app" title="Instalar como app" style="display:none">⬇</button>
+    <button id="install" aria-label="Instalar app" title="Instalar como app">⬇</button>
     <button id="mute" aria-label="Mutar/Desmutar música" title="Mutar música">🔊</button>
   </div>
 </div>
@@ -1182,12 +1182,10 @@ function setupInstall(){
   var modal=document.getElementById('installModal');
   var close=document.getElementById('im-close');
   if(!btn)return;
-  // Hide if already installed/standalone
+  // Hide ONLY if already running as standalone (installed + opened from icon)
   if(isStandalone()){btn.style.display='none';return;}
-  try{if(localStorage.getItem('sankofa_installed')==='1'&&!deferredInstall){/* show anyway in case uninstalled */}}catch(e){}
-  // Always show on mobile (Chrome heuristic may delay prompt; iOS has no prompt)
-  var p=detectPlatform();
-  if(p.mobile||p.desktop){btn.style.display='flex';}
+  // Force show — covers all platforms (Chrome prompt OR fallback modal)
+  btn.style.display='flex';
   btn.addEventListener('click',function(e){
     e.stopPropagation();
     if(deferredInstall){
