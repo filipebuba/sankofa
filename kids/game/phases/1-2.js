@@ -153,6 +153,15 @@ window.PHASE_1_2 = {
     perfect: { mems: 3, npcs: 2, allCauris: true, noDamage: true, code: 'SAARA8000' }
   },
 
+  strings: {
+    titleCard: 'Sopra a areia (B) e descobre as pinturas Tassili escondidas',
+    winTitle: '🌟 Saara Verde lembrado!',
+    winMsg: 'Lucinha trouxe de volta as memórias do Saara antes do deserto.',
+    winMsgPerfect: 'Sem perder uma vida. As águas antigas voltaram a falar contigo.',
+    stageWin: '🌟 <b>Saara Verde</b> — pinturas reveladas',
+    stageWinPerfect: '🌟 <b>PERFEIÇÃO</b> — Guardiã das águas antigas'
+  },
+
   progress: {
     memsTotal: 3,
     msg1: '1ª memória do Saara Verde! Faltam <b>{left}</b>',

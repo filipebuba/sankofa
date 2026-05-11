@@ -175,6 +175,15 @@ window.PHASE_1_3 = {
     perfect: { mems: 3, npcs: 3, allCauris: true, axeForged: true, code: 'BANTU3000' }
   },
 
+  strings: {
+    titleCard: 'Forja o machado (E na bigorna) · depois B para cortar cipós e árvores',
+    winTitle: '🌟 Forja Bantu!',
+    winMsg: 'Lucinha forjou o ferro, abriu caminho e seguiu o rio com os Bantu.',
+    winMsgPerfect: 'Sem perder uma vida. Ferreira, caminhante e guardiã da palavra.',
+    stageWin: '🌟 <b>Forja Bantu</b> — ferro, língua e caminho conectados',
+    stageWinPerfect: '🌟 <b>PERFEIÇÃO</b> — Mestra ferreira do Sankofa'
+  },
+
   progress: {
     memsTotal: 3,
     msg1: '1ª memória da Forja Bantu! Faltam <b>{left}</b>',

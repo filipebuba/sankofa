@@ -1352,17 +1352,23 @@ function update(dt){
         else{bgAudio.volume=0;clearInterval(fadeIv);}
       },80);
     }
-    showStage(perf ? '🌟 <b>PERFEIÇÃO</b> — Tu és arqueóloga do Sankofa' : '🌟 <b>Volta. E. Busca.</b> — Memórias recuperadas', 5000);
+    var STR = (PHASE.strings) || {};
+    var stagePerf = STR.stageWinPerfect || '🌟 <b>PERFEIÇÃO</b> — Tu és arqueóloga do Sankofa';
+    var stageNorm = STR.stageWin       || '🌟 <b>Volta. E. Busca.</b> — Memórias recuperadas';
+    showStage(perf ? stagePerf : stageNorm, 5000);
     setTimeout(function(){
       document.getElementById('wc').textContent=S.cc;
       document.getElementById('wh').textContent=S.hp;
       var wt=document.getElementById('win-title');
       var wm=document.getElementById('win-msg');
       var wp=document.getElementById('win-perfect');
+      // Base title + msg (overridable per phase)
+      if(wt && STR.winTitle && !perf) wt.textContent = STR.winTitle;
+      if(wm && STR.winMsg && !perf)  wm.textContent = STR.winMsg;
       if(perf){
-        wt.textContent='🌟 PERFEIÇÃO!';
+        wt.textContent = '🌟 PERFEIÇÃO!';
         wt.classList.add('perf');
-        wm.textContent='Sem perder uma vida. És uma verdadeira arqueóloga do Sankofa.';
+        wm.textContent = STR.winMsgPerfect || 'Sem perder uma vida. És uma verdadeira arqueóloga do Sankofa.';
         wp.style.display='block';
         var perfCode = (PHASE.win && PHASE.win.perfect && PHASE.win.perfect.code) || 'RIFT2026';
         var codeEl = wp.querySelector('.code-value');
@@ -1789,8 +1795,10 @@ function setupPhaseSelector(){
   var titleEl = document.getElementById('intro-title');
   if(titleEl && PHASE && PHASE.name) titleEl.textContent = PHASE.name.toUpperCase();
   var titleCard = document.getElementById('title-card');
-  if(titleCard && PHASE && PHASE.name){
-    titleCard.textContent = PHASE_ID+' · '+PHASE.name+' — usa o cajado (B) para revelar pistas antes dos enigmas';
+  if(titleCard && PHASE){
+    var tcStr = (PHASE.strings && PHASE.strings.titleCard)
+      || ((PHASE.name || '') + ' — usa o cajado (B) para revelar pistas');
+    titleCard.textContent = (PHASE.id ? PHASE.id + ' · ' : '') + tcStr;
   }
 }
 

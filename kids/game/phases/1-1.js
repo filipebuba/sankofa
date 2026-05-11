@@ -132,6 +132,15 @@ window.PHASE_1_1 = {
   win: {
     base:    { mems: 3, npcs: 0 },
     perfect: { mems: 3, npcs: 1, allCauris: true, noDamage: true, code: 'RIFT2026' }
+  },
+
+  strings: {
+    titleCard: 'Usa o cajado (B) para revelar memórias escondidas no Rift',
+    winTitle: '🌟 Parabéns!',
+    winMsg: 'Lucinha descobriu os segredos do vale do Rift!',
+    winMsgPerfect: 'Sem perder uma vida. És uma verdadeira arqueóloga do Sankofa.',
+    stageWin: '🌟 <b>Volta. E. Busca.</b> — Memórias do Rift recuperadas',
+    stageWinPerfect: '🌟 <b>PERFEIÇÃO</b> — Tu és arqueóloga do Sankofa'
   }
 };
 

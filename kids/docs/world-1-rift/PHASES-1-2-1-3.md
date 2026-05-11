@@ -288,7 +288,7 @@ Substituir `intro` por menu pós-clique com 3 botões:
 - [ ] `reward` switch em `showEnigma` (sempre +1 vida; spec define `'vida'|'passagem'|'cauris'|'ferramenta'`).
 - [ ] `S.hpCap` consistente — Pintora hardcoda `< 3`, Pescador define cap 5.
 - [x] ~~HUD label fase ("1.2 · SAARA VERDE")~~ — `#phase-label` pill top-center, fade-in após intro click via `showPhaseLabel()`. Lê `PHASE.id` + `PHASE.name` em uppercase.
-- [ ] Strings hardcoded em `index.html` (`#title-card`, `#win-msg`) ainda 1.1-only.
+- [x] ~~Strings hardcoded em `index.html` (`#title-card`, `#win-msg`)~~ — Agora vêm de `PHASE.strings { titleCard, winTitle, winMsg, winMsgPerfect, stageWin, stageWinPerfect }`. game.js setupPhaseSelector escreve title-card; bloco win consome strings com fallback genérico.
 - [ ] Mix dificuldade enigmas vs spec:
   - 1.1: atual ~50% obs / ~50% comp / 0% inf (spec pede 70/30/0).
   - 1.2: atual 25/50/25 (spec 30/50/20) — próximo.
