@@ -910,17 +910,38 @@ function initAudio(){
   });
   var griotMap = (PHASE.audio && PHASE.audio.griot) || {};
   Object.keys(griotMap).forEach(function(t){
-    griotAudios[t] = new Audio(griotMap[t]);
-    griotAudios[t].volume = .95;
-    griotAudios[t].load();
+    var src = griotMap[t];
+    var au = new Audio(src);
+    au.volume = .95;
+    au.addEventListener('error', function(){
+      console.warn('[griot] load error', t, src, au.error);
+    });
+    au.addEventListener('canplaythrough', function(){
+      console.log('[griot] ready', t);
+    });
+    au.load();
+    griotAudios[t] = au;
   });
   applyMute();
 }
 function playGriot(type){
-  var a=griotAudios[type];if(!a)return;
+  var a=griotAudios[type];
+  if(!a){
+    console.warn('[griot] no audio registered for type', type);
+    return;
+  }
   Object.values(griotAudios).forEach(function(o){o.pause();o.currentTime=0;});
-  if(bgAudio){bgAudio.volume=.12;}
-  a.currentTime=0;a.play().catch(function(){});
+  // Duck BG hard so griot voice is clearly audible.
+  if(bgAudio){bgAudio.volume=.05;}
+  a.currentTime=0;
+  a.volume = .98;
+  a.play().then(function(){
+    console.log('[griot] playing', type, 'dur', a.duration);
+  }).catch(function(err){
+    console.warn('[griot] play rejected', type, err && err.name, err && err.message);
+    showToast('⚠ Griot mudo: ' + type);
+    if(bgAudio) bgAudio.volume = .35;
+  });
   a.onended=function(){if(bgAudio)bgAudio.volume=.35;};
 }
 function snd(type){
