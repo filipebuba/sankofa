@@ -5,44 +5,64 @@
 var G=28,RUN=7,MAX=9,ACC=35,DEC=25,AIR=.55,JF=13,JC=.45,COY=.1,JB=.12;
 var CW=.22;
 
-// === PALETTE ===
-var P={sh:0x0c0a06,dk:0x2a1f14,ea:0x5c3d28,sk:0x8b5e3c,tr:0xb85a3a,gd:0xc9a84c,sa:0xd4b896,lt:0xe8d5b7,wh:0xf5efe0,gn:0x4a7a50,lf:0x6b8f3a,nt:0x2a4570,dp:0x7a3520};
+// === PHASE LOADER ===
+function loadPhaseId(){
+  var m = location.search.match(/[?&]phase=([\d.]+)/);
+  if(m) return m[1];
+  try{
+    var prog = JSON.parse(localStorage.getItem('sankofa_kids_progress') || '{}');
+    var phases = prog.phases || {};
+    // Last unlocked = furthest done +1; default '1.1'
+    var order = ['1.1','1.2','1.3'];
+    for(var i = order.length - 1; i >= 0; i--){
+      if(phases[order[i]] && phases[order[i]].done) return order[Math.min(i+1, order.length-1)];
+    }
+  }catch(e){}
+  return '1.1';
+}
+var PHASE_ID = loadPhaseId();
+var PHASE_KEY = 'PHASE_' + PHASE_ID.replace('.', '_');
+var PHASE = window[PHASE_KEY] || window.PHASE_1_1;
+if(!PHASE){throw new Error('Phase data not loaded: ' + PHASE_KEY);}
+
+// === PALETTE (from phase) ===
+var P = PHASE.palette;
 
 // === STATE ===
 var S={on:false,x:0,y:.5,vx:0,vy:0,gnd:false,face:1,lgt:0,jb:0,at:0,py:.5,
-  sx:1,sy:1,svx:0,svy:0,cc:0,mc:0,ls:0,won:false,cx:0,cy:0,scan:0,beaconOn:false,hp:3,paused:false,perfect:true};
+  sx:1,sy:1,svx:0,svy:0,cc:0,mc:0,ls:0,won:false,cx:0,cy:0,scan:0,beaconOn:false,hp:3,hpCap:3,paused:false,perfect:true};
 
-// === ENIGMAS (HGA Vol. I — Mundo 1) ===
-var ENIGMAS=[
-  {q:'Onde foi encontrada a Lúcia, a hominínea bípede mais famosa de África?',
-   o:['Vale do Rift, Etiópia','Monte Kilimanjaro, Tanzânia'],c:0,
-   e:'O Vale do Rift é uma cicatriz geográfica no leste de África — Etiópia, Quénia, Tanzânia. Os ossos da Lúcia foram encontrados em Hadar (Etiópia) em 1974.'},
-  {q:'Há quantos milhões de anos a Lúcia caminhou na savana?',
-   o:['3,2 milhões de anos','30 mil anos'],c:0,
-   e:'A Lúcia viveu há 3,2 milhões de anos. Mas antes dela houve outros bípedes ainda mais antigos: Sahelanthropus, Orrorin, Ardipithecus.'},
-  {q:'O Saara já foi verde com lagos e girafas. Foi o "Saara Verde" há quantos anos?',
-   o:['Entre 11 mil e 5 mil anos','100 anos atrás'],c:0,
-   e:'Entre 11.000 e 5.000 anos atrás o Saara era verde. As pinturas de Tassili n\'Ajjer mostram nadadores e hipopótamos onde hoje só há areia.'},
-  {q:'Qual foi a primeira tecnologia da humanidade?',
-   o:['Pedra lascada (chopper)','Fogo controlado'],c:0,
-   e:'O chopper — pedra lascada com pancadas — foi a primeira tecnologia, há mais de 2,5 milhões de anos. O fogo veio bem depois.'},
-  {q:'Como os ancestrais contavam histórias antes da escrita?',
-   o:['Pinturas rupestres + tradição oral','Apenas escrevendo em pedra'],c:0,
-   e:'Tradição oral (griot) + pinturas nas paredes (mãos sopradas com ocre) — assim os ancestrais guardavam a memória.'},
-];
+// === ENIGMAS (from phase, fallback to 1.1 if missing) ===
+var ENIGMAS = (PHASE.enigmas && PHASE.enigmas.length)
+  ? PHASE.enigmas
+  : ((window.PHASE_1_1 && window.PHASE_1_1.enigmas) || []);
 var I={l:false,r:false,jp:false,jh:false,sc:false,ec:false};
 
-// === NPCs (dificuldade crescente, desbloqueio sequencial) ===
-// unlock: número de NPCs anteriores que devem estar 'done' antes deste aparecer
-// role: descrição curta — explica papel da personagem ao jogador
-var NPCS=[
-  {x:18,scale:[1.8,2.4],emoji:'🧙🏿',avatar:'🧙🏿',name:'Velho Griot',diff:'difícil',unlock:0,
-   role:'Guardião das memórias antigas do Sankofa',
-   q:'O Saara já foi verde com lagos. Quando foi o "Saara Verde"?',
-   o:['Entre 11 mil e 5 mil anos atrás','100 anos atrás','3 milhões de anos atrás','Nunca foi verde'],c:0,
-   r:'+1 vida',rfn:function(){if(S.hp<3)S.hp++;},
-   ok:'Exato! Tassili n\'Ajjer mostra pinturas de hipopótamos no Saara.'}
-];
+function escapeHTML(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g,function(ch){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+  });
+}
+
+function shuffledOptions(options, correctIndex){
+  var mapped = (options || []).map(function(text,i){
+    return { text:text, correct:i === correctIndex };
+  });
+  for(var i=mapped.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=mapped[i];mapped[i]=mapped[j];mapped[j]=tmp;
+  }
+  return mapped;
+}
+
+// === NPCs (from phase) — rfn rebinds to closure S ===
+var NPCS = PHASE.npcs.map(function(n){
+  var origRfn = n.rfn;
+  var clone = {};
+  for(var k in n) if(Object.prototype.hasOwnProperty.call(n,k)) clone[k] = n[k];
+  clone.rfn = function(){ if(origRfn) origRfn(S); };
+  return clone;
+});
 
 function npcDonesCount(){var n=0;for(var i=0;i<NPCS.length;i++)if(NPCS[i].done)n++;return n;}
 function refreshNPCVisibility(){
@@ -204,18 +224,10 @@ function createLucinha(){
 
 // === LEVEL ===
 function buildLevel(){
-  // Ground segments
-  defPlat(2,0,14,1);    // start: -5 to 9
-  defPlat(14,0,6,1);    // 11 to 17
-  defPlat(24.5,0,9,1);  // 20 to 29
-  defPlat(34,0,8,1);    // 30 to 38
-
-  // Floating platforms
-  defPlat(10,2,2.8,.35,'float');
-  defPlat(19.5,2.5,2.5,.35,'float');
-  defPlat(22.5,4.2,2.5,.35,'float');
-  defPlat(27,5.8,2.2,.35,'float');
-  defPlat(31.5,3.2,3,.35,'float');
+  // Plats from phase
+  (PHASE.plats || []).forEach(function(p){
+    defPlat(p[0], p[1], p[2], p[3], p[4]);
+  });
 
   // Ground meshes
   plats.forEach(function(p){
@@ -235,12 +247,8 @@ function buildLevel(){
     }
   });
 
-  // Cauris
-  var cauriPositions=[
-    [1,1.2],[3,1.2],[5.5,1.2],[10,3.5],[13,1.2],[15,1.2],
-    [19.5,4],[22.5,5.7],[25,1.2],[27,7.3],[31.5,4.7],[35,1.2],[37,1.2]
-  ];
-  cauriPositions.forEach(function(c){
+  // Cauris from phase
+  (PHASE.cauris || []).forEach(function(c){
     var geo=new THREE.TorusGeometry(.15,.05,8,12);
     var mat=new THREE.MeshLambertMaterial({color:P.gd,emissive:P.gd,emissiveIntensity:.2,flatShading:true});
     var m=new THREE.Mesh(geo,mat);
@@ -248,34 +256,33 @@ function buildLevel(){
     scene.add(m);cauris.push({m:m,x:c[0],y:c[1],got:false});
   });
 
-  // Memory fragments — 3 tipos diferenciados (HGA Vol. I)
-  // 1: Fóssil de Lúcia (osso branco), 2: Chopper (pedra lascada), 3: Pintura rupestre (ocre)
-  var memDefs=[
-    {pos:[27,7.3],type:'fossil',col:P.wh,emCol:P.lt,label:'Fóssil de Lúcia',
-     griot:'A Lúcia caminhou aqui há 3 milhões de anos. Seus ossos contam a história dos primeiros que andaram em pé.'},
-    {pos:[31.5,4.7],type:'chopper',col:P.dk,emCol:P.ea,label:'Pedra-ferramenta (Chopper)',
-     griot:'Pedra contra pedra. Esta foi a primeira tecnologia da humanidade. Lascar pedra para cortar, raspar, criar.'},
-    {pos:[37,1.2],type:'rupestre',col:P.tr,emCol:P.gd,label:'Pintura rupestre',
-     griot:'Os ancestrais desenhavam nas paredes. Mãos sopradas com ocre. Histórias antes da escrita.'}
-  ];
-  memDefs.forEach(function(d){
+  // Memory fragments — types from phase
+  (PHASE.mems || []).forEach(function(d){
+    var style = memStyle(d.type);
     var geo;
-    if(d.type==='fossil'){
-      // Bone-like: elongated octahedron
-      geo=new THREE.OctahedronGeometry(.22,0);
-    }else if(d.type==='chopper'){
-      // Stone chip: irregular dodecahedron
-      geo=new THREE.DodecahedronGeometry(.22,0);
+    if(style.geo === 'octa'){
+      geo = new THREE.OctahedronGeometry(.22, 0);
+    }else if(style.geo === 'dodeca'){
+      geo = new THREE.DodecahedronGeometry(.22, 0);
     }else{
-      // Rock painting: flat tablet
-      geo=new THREE.BoxGeometry(.4,.32,.06);
+      geo = new THREE.BoxGeometry(.4, .32, .06);
     }
-    var mat=new THREE.MeshLambertMaterial({color:d.col,emissive:d.emCol,emissiveIntensity:.0,flatShading:true,transparent:true,opacity:.0});
-    var m=new THREE.Mesh(geo,mat);
-    m.position.set(d.pos[0],d.pos[1],0);
+    var mat = new THREE.MeshLambertMaterial({color:style.col, emissive:style.emCol, emissiveIntensity:.0, flatShading:true, transparent:true, opacity:.0});
+    var m = new THREE.Mesh(geo, mat);
+    m.position.set(d.pos[0], d.pos[1], 0);
     scene.add(m);
-    mems.push({m:m,x:d.pos[0],y:d.pos[1],got:false,revealed:false,type:d.type,label:d.label,griot:d.griot});
+    mems.push({m:m, x:d.pos[0], y:d.pos[1], got:false, revealed:false, type:d.type, label:d.label, griot:d.griot});
   });
+}
+
+// Map mem type -> {col, emCol, geo} — falls back to generic box.
+function memStyle(type){
+  var map = {
+    fossil:   { col: P.wh, emCol: P.lt, geo: 'octa' },
+    chopper:  { col: P.dk, emCol: P.ea, geo: 'dodeca' },
+    rupestre: { col: P.tr, emCol: P.gd, geo: 'box' }
+  };
+  return map[type] || { col: P.gd || 0xc9a84c, emCol: P.lt || 0xe8d5b7, geo: 'box' };
 }
 
 // === BACKGROUND ===
@@ -381,12 +388,14 @@ function toggleMute(){
 function initAudio(){
   if(actx)return;
   try{actx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}
-  bgAudio=new Audio('assets/bg-music.mp3');
+  var bgSrc = (PHASE.audio && PHASE.audio.bg) || 'assets/bg-music.mp3';
+  bgAudio = new Audio(bgSrc);
   bgAudio.loop=true;bgAudio.volume=.35;
   bgAudio.play().catch(function(){});
-  ['fossil','chopper','rupestre'].forEach(function(t){
-    griotAudios[t]=new Audio('assets/griot/'+t+'.mp3');
-    griotAudios[t].volume=.95;
+  var griotMap = (PHASE.audio && PHASE.audio.griot) || {};
+  Object.keys(griotMap).forEach(function(t){
+    griotAudios[t] = new Audio(griotMap[t]);
+    griotAudios[t].volume = .95;
     griotAudios[t].load();
   });
   applyMute();
@@ -497,19 +506,20 @@ function openNPC(n){
   var df=document.getElementById('nd-diff');
   df.textContent=n.diff.toUpperCase();
   df.className='nd-diff '+(n.diff==='médio'?'med':n.diff==='difícil'?'hard':'');
-  document.getElementById('nd-q').textContent=n.q;
+  document.getElementById('nd-q').innerHTML=(n.scene?'<span class="nd-scene">'+escapeHTML(n.scene)+'</span>':'')+escapeHTML(n.q);
   var opts=document.getElementById('nd-opts');opts.innerHTML='';
   var fb=document.getElementById('nd-fb');fb.textContent='';
-  n.o.forEach(function(opt,i){
+  shuffledOptions(n.o,n.c).forEach(function(opt){
     var b=document.createElement('button');
-    b.textContent=opt;
+    b.textContent=opt.text;
     b.onclick=function(){
       Array.prototype.forEach.call(opts.children,function(x){x.disabled=true;});
-      if(i===n.c){
+      if(opt.correct){
         b.classList.add('correct');
         fb.textContent='✦ '+n.ok+' Recompensa: '+n.r;
         snd('c');
         n.done=true;
+        S.winBlocked=false;
         n.rfn();
         refreshNPCVisibility();
         // Anuncia próximo NPC desbloqueado
@@ -792,16 +802,25 @@ function update(dt){
   });
 
   // Win
-  if(S.mc>=3&&!S.won){
+  var memsTotal = phaseMemsTotal();
+  if(S.mc >= memsTotal && !S.won){
+    if(!phaseCanWin()){
+      if(!S.winBlocked){
+        S.winBlocked=true;
+        showStage(missingWinText(),6000);
+      }
+      return;
+    }
     S.won=true;snd('w');
+    var perf = isPerfectRun();
+    markPhaseDone(perf);
     if(bgAudio){
       var fadeIv=setInterval(function(){
         if(bgAudio.volume>.05){bgAudio.volume-=.03;}
         else{bgAudio.volume=0;clearInterval(fadeIv);}
       },80);
     }
-    var perf=S.perfect&&S.hp===3;
-    showStage(perf?'🌟 <b>PERFEIÇÃO</b> — Tu és arqueóloga do Sankofa':'🌟 <b>Volta. E. Busca.</b> — Memórias do Rift recuperadas',5000);
+    showStage(perf ? '🌟 <b>PERFEIÇÃO</b> — Tu és arqueóloga do Sankofa' : '🌟 <b>Volta. E. Busca.</b> — Memórias recuperadas', 5000);
     setTimeout(function(){
       document.getElementById('wc').textContent=S.cc;
       document.getElementById('wh').textContent=S.hp;
@@ -813,7 +832,9 @@ function update(dt){
         wt.classList.add('perf');
         wm.textContent='Sem perder uma vida. És uma verdadeira arqueóloga do Sankofa.';
         wp.style.display='block';
-        // Tocar audio Vovó especial
+        var perfCode = (PHASE.win && PHASE.win.perfect && PHASE.win.perfect.code) || 'RIFT2026';
+        var codeEl = wp.querySelector('.code-value');
+        if(codeEl) codeEl.textContent = perfCode;
         var va=new Audio('assets/vovo-perfect.mp3');
         va.volume=.95;va.muted=MUTED;va.play().catch(function(){});
         setupShare();
@@ -869,12 +890,44 @@ function updateCamera(dt){
 }
 
 // === HUD ===
+function phaseMemsTotal(){
+  return (PHASE.progress && PHASE.progress.memsTotal) || (PHASE.mems ? PHASE.mems.length : 3) || 3;
+}
+
+function completedNPCs(){
+  return NPCS.filter(function(n){return n.done;}).length;
+}
+
+function phaseCanWin(){
+  var base = (PHASE.win && PHASE.win.base) || {};
+  return completedNPCs() >= (base.npcs || 0);
+}
+
+function missingWinText(){
+  var base = (PHASE.win && PHASE.win.base) || {};
+  var left = Math.max(0, (base.npcs || 0) - completedNPCs());
+  if(left>0) return 'As memórias estão prontas. Fala com mais <b>'+left+' guardião'+(left===1?'':'ões')+'</b> para fechar esta fase.';
+  return 'Há uma pista narrativa pendente antes de fechar esta fase.';
+}
+
+function isPerfectRun(){
+  var perfect = (PHASE.win && PHASE.win.perfect) || {};
+  if(!S.perfect) return false;
+  if(perfect.npcs && completedNPCs() < perfect.npcs) return false;
+  if(perfect.allCauris && S.cc < cauris.length) return false;
+  if(perfect.noDamage && !S.perfect) return false;
+  if(perfect.axeForged && !S.axe) return false;
+  return true;
+}
+
 function updateHUD(){
   document.getElementById('cc').textContent=S.cc;
-  document.getElementById('mc').textContent=S.mc+'/3';
+  document.getElementById('mc').textContent=S.mc+'/'+phaseMemsTotal();
   var h=document.getElementById('hearts');
   if(h){
+    var cap=S.hpCap||3;
     h.textContent='❤'.repeat(Math.max(0,S.hp))+'♡'.repeat(Math.max(0,3-S.hp));
+    h.textContent='❤'.repeat(Math.max(0,S.hp))+'♡'.repeat(Math.max(0,cap-S.hp));
     var p=h.parentElement;
     if(p)p.classList.toggle('low',S.hp<=1);
   }
@@ -916,11 +969,23 @@ function loseLife(){
 }
 
 var enigmaUsed=[];
+
+function markPhaseDone(perfect){
+  try{
+    var prog = JSON.parse(localStorage.getItem('sankofa_kids_progress') || '{}');
+    prog.phases = prog.phases || {};
+    var cur = prog.phases[PHASE_ID] || {};
+    prog.phases[PHASE_ID] = { done: true, perfect: perfect || cur.perfect || false };
+    localStorage.setItem('sankofa_kids_progress', JSON.stringify(prog));
+  }catch(e){}
+}
+
 function setupShare(){
   var btn=document.getElementById('share-btn');
   if(!btn)return;
   btn.onclick=function(){
-    var text='Recuperei todas as memórias do Rift sem perder uma vida! 🌟 Código RIFT2026. Joga Sankofa Kids: Memórias do Rift!';
+    var perfCode = (PHASE.win && PHASE.win.perfect && PHASE.win.perfect.code) || 'RIFT2026';
+    var text = 'Completei "' + PHASE.name + '" sem perder uma vida! 🌟 Código ' + perfCode + '. Joga Sankofa Kids!';
     var url=window.location.href;
     if(navigator.share){
       navigator.share({title:'Sankofa Kids: Rift Memories',text:text,url:url}).catch(function(){});
@@ -943,17 +1008,23 @@ function showEnigma(){
   enigmaUsed.push(origIdx);
   var en=avail[idx];
   var el=document.getElementById('enigma');
-  el.querySelector('.e-question').textContent=en.q;
+  var meta = [];
+  if(en.type) meta.push(en.type);
+  if(en.diff) meta.push(en.diff);
+  el.querySelector('.e-question').innerHTML =
+    (meta.length?'<div class="e-meta">'+escapeHTML(meta.join(' · '))+'</div>':'')+
+    (en.scene?'<div class="e-scene">'+escapeHTML(en.scene)+'</div>':'')+
+    '<div>'+escapeHTML(en.q)+'</div>';
   var opts=el.querySelector('.e-options');
   opts.innerHTML='';
   el.querySelector('.e-feedback').textContent='';
-  en.o.forEach(function(opt,i){
+  shuffledOptions(en.o,en.c).forEach(function(opt){
     var btn=document.createElement('button');
-    btn.textContent=opt;
+    btn.textContent=opt.text;
     btn.onclick=function(){
       // Disable all
       Array.prototype.forEach.call(opts.children,function(b){b.disabled=true;});
-      if(i===en.c){
+      if(opt.correct){
         btn.classList.add('correct');
         el.querySelector('.e-feedback').textContent='✦ Correto! '+en.e;
         snd('c');
@@ -1007,17 +1078,18 @@ function showStage(html,dur){
 }
 
 function updateProgress(){
-  var got=mems.filter(function(m){return m.got;}).length;
-  var revealed=mems.filter(function(m){return m.revealed&&!m.got;}).length;
-  var hidden=mems.filter(function(m){return !m.revealed;}).length;
-  if(got===0&&revealed===0){
-    showStage('Use o cajado <b>(B)</b> para revelar memórias escondidas',6000);
-  }else if(got===1){
-    showStage('1ª memória encontrada! Faltam <b>'+(3-got)+'</b>',5000);
-  }else if(got===2){
-    showStage('Quase lá! Só falta <b>1 memória</b>',5000);
-  }else if(got===3){
-    showStage('🌟 Todas as memórias do Rift recuperadas!',4000);
+  var pp = PHASE.progress || {memsTotal:3, msg1:'1ª memória! Faltam <b>{left}</b>', msg2:'Falta <b>1</b>', msg3:'🌟 Todas memórias!'};
+  var total = pp.memsTotal;
+  var got = mems.filter(function(m){return m.got;}).length;
+  var revealed = mems.filter(function(m){return m.revealed && !m.got;}).length;
+  if(got === 0 && revealed === 0){
+    showStage('Use o cajado <b>(B)</b> para revelar memórias escondidas', 6000);
+  }else if(got === 1){
+    showStage(pp.msg1.replace('{left}', total - got), 5000);
+  }else if(got === total - 1){
+    showStage(pp.msg2, 5000);
+  }else if(got === total){
+    showStage(pp.msg3, 4000);
   }
 }
 
@@ -1118,6 +1190,64 @@ if('serviceWorker' in navigator){
   });
 }
 
+// === PHASE SELECTOR ===
+var PHASE_ORDER = ['1.1','1.2','1.3'];
+
+function getProgress(){
+  try{
+    var p = JSON.parse(localStorage.getItem('sankofa_kids_progress') || '{}');
+    return p.phases || {};
+  }catch(e){ return {}; }
+}
+
+function isPhaseUnlocked(id, progress){
+  var phaseObj = window['PHASE_' + id.replace('.', '_')];
+  if(!phaseObj) return false;
+  if(!phaseObj.prevDone) return true;
+  return !!(progress[phaseObj.prevDone] && progress[phaseObj.prevDone].done);
+}
+
+function setupPhaseSelector(){
+  var host = document.getElementById('phase-select');
+  if(!host) return;
+  host.innerHTML = '';
+  var progress = getProgress();
+  PHASE_ORDER.forEach(function(id){
+    var data = window['PHASE_' + id.replace('.', '_')];
+    if(!data) return;
+    var prog = progress[id] || {};
+    var unlocked = isPhaseUnlocked(id, progress);
+    var current = id === PHASE_ID;
+    var card = document.createElement('div');
+    card.className = 'pc';
+    if(current) card.classList.add('current');
+    else if(prog.done) card.classList.add('done');
+    if(!unlocked) card.classList.add('locked');
+    var stateLabel;
+    if(!unlocked) stateLabel = '🔒 Bloqueado';
+    else if(current) stateLabel = '▶ Selecionado';
+    else if(prog.done) stateLabel = prog.perfect ? '🌟 Perfeito' : '✓ Concluído';
+    else stateLabel = '▶ Jogar';
+    card.innerHTML =
+      '<div class="pc-id">' + id + '</div>' +
+      '<div class="pc-name">' + data.name + '</div>' +
+      '<div class="pc-state">' + stateLabel + '</div>';
+    card.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(!unlocked || current) return;
+      location.search = '?phase=' + id;
+    });
+    host.appendChild(card);
+  });
+  // Update title to current phase
+  var titleEl = document.getElementById('intro-title');
+  if(titleEl && PHASE && PHASE.name) titleEl.textContent = PHASE.name.toUpperCase();
+  var titleCard = document.getElementById('title-card');
+  if(titleCard && PHASE && PHASE.name){
+    titleCard.textContent = PHASE_ID+' · '+PHASE.name+' — usa o cajado (B) para revelar pistas antes dos enigmas';
+  }
+}
+
 // === INIT ===
 function init(){
   initScene();
@@ -1130,6 +1260,7 @@ function init(){
   setupMobile();
   setupMute();
   setupInstall();
+  setupPhaseSelector();
   var ndClose=document.getElementById('nd-close');
   if(ndClose)ndClose.addEventListener('click',closeNPC);
 
@@ -1144,16 +1275,10 @@ function init(){
       initAudio();
       document.getElementById('intro').classList.add('out');
       S.on=true;
-      // Tutorial: explica vidas + scan após 2s
-      setTimeout(function(){
-        showStage('Tens <b>3 vidas ❤❤❤</b> · Cuidado com o vácuo!',5000);
-      },1500);
-      setTimeout(function(){
-        showStage('Usa o cajado <b>(B)</b> para revelar memórias do Rift',6000);
-      },7000);
-      setTimeout(function(){
-        showStage('Encontra o <b>Velho Griot</b> 🧙🏿 à direita — ele dá dicas e recompensas!',6000);
-      },13500);
+      // Tutorial from phase
+      (PHASE.tutorial || []).forEach(function(t){
+        setTimeout(function(){ showStage(t.html, t.ms); }, t.delay);
+      });
     },3500);
   });
 

@@ -41,6 +41,18 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
 #intro p{color:#5a5245;font-size:14px;animation:pulse 2s ease infinite}
 #intro .bird{font-size:48px;margin-bottom:16px;opacity:0;animation:fadeScale .8s ease .3s forwards}
 #intro #intro-vid{width:min(80vw,640px);max-height:50vh;margin-bottom:16px;border-radius:12px;box-shadow:0 8px 32px rgba(201,168,76,.3);object-fit:cover}
+#phase-select{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:0 0 14px;max-width:min(90vw,640px);padding:0 8px}
+#phase-select .pc{cursor:pointer;background:rgba(40,28,18,.85);border:2px solid #3a2a1a;border-radius:10px;padding:10px 14px;min-width:130px;text-align:center;color:#c9a84c;transition:transform .15s ease,border-color .2s ease,background .2s ease;user-select:none}
+#phase-select .pc:hover{transform:translateY(-2px);border-color:#c9a84c;background:rgba(60,40,24,.95)}
+#phase-select .pc .pc-id{font-size:11px;letter-spacing:.15em;color:#9a8e7a;margin-bottom:2px}
+#phase-select .pc .pc-name{font-size:14px;font-weight:700;letter-spacing:.05em}
+#phase-select .pc .pc-state{font-size:11px;margin-top:4px;color:#9a8e7a}
+#phase-select .pc.current{border-color:#ffd97a;background:rgba(80,56,28,.95);box-shadow:0 0 18px rgba(201,168,76,.4)}
+#phase-select .pc.current .pc-state{color:#ffd97a}
+#phase-select .pc.done{border-color:#4a7a50}
+#phase-select .pc.done .pc-state{color:#7abc7e}
+#phase-select .pc.locked{cursor:not-allowed;opacity:.45;filter:grayscale(.8)}
+#phase-select .pc.locked:hover{transform:none;border-color:#3a2a1a;background:rgba(40,28,18,.85)}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
 @keyframes fadeScale{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
 
@@ -102,6 +114,8 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
 #enigma .e-prompt{color:#c9a84c;font-size:15px;font-style:italic;text-align:center;margin-bottom:24px}
 #enigma .e-prompt b{color:#f5efe0;background:rgba(106,133,48,.4);padding:2px 8px;border-radius:4px}
 #enigma .e-question{color:#f5efe0;font-size:clamp(18px,4vw,26px);font-weight:700;text-align:center;max-width:680px;line-height:1.4;margin-bottom:30px}
+#enigma .e-meta{color:#c9a84c;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+#enigma .e-scene{color:#d4b896;font-size:clamp(15px,3vw,18px);font-style:italic;font-weight:500;margin:0 auto 14px;max-width:620px}
 #enigma .e-options{display:flex;flex-direction:column;gap:12px;width:min(420px,90vw)}
 #enigma .e-options button{padding:16px 24px;background:rgba(184,90,58,.2);color:#f5efe0;border:2px solid rgba(201,168,76,.4);border-radius:10px;font-family:Georgia,serif;font-size:17px;font-weight:700;cursor:pointer;transition:all .2s ease;text-align:left}
 #enigma .e-options button:hover,#enigma .e-options button:focus{background:rgba(201,168,76,.3);border-color:#c9a84c;transform:translateX(4px)}
@@ -144,6 +158,7 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
 #npcDialog .nd-diff.med{color:#d4b27a}
 #npcDialog .nd-diff.hard{color:#b85a3a}
 #npcDialog .nd-q{color:#f5efe0;font-size:clamp(15px,3.5vw,18px);font-weight:600;line-height:1.4;margin-bottom:16px}
+#npcDialog .nd-scene{display:block;color:#d4b896;font-size:13px;font-style:italic;font-weight:500;margin-bottom:8px}
 #npcDialog .nd-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 #npcDialog .nd-opts button{padding:12px 16px;background:rgba(184,90,58,.18);color:#f5efe0;border:1.5px solid rgba(201,168,76,.4);border-radius:10px;font-family:Georgia,serif;font-size:14px;font-weight:600;cursor:pointer;text-align:left;transition:all .15s}
 #npcDialog .nd-opts button:hover,#npcDialog .nd-opts button:focus{background:rgba(201,168,76,.25);border-color:#c9a84c}

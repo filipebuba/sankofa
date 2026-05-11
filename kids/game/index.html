@@ -7,6 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0c0a06">
+<script>
+  if (location.pathname.indexOf('/kids/game') === 0) {
+    document.write('<base href="/kids/game/">');
+  }
+</script>
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
@@ -19,9 +24,10 @@
 
 <div id="intro">
   <video id="intro-vid" src="assets/intro-clip.mp4" muted autoplay playsinline></video>
-  <h1>RIFT MEMORIES</h1>
+  <h1 id="intro-title">RIFT MEMORIES</h1>
   <h2>Sankofa Kids</h2>
-  <p>Toque para começar</p>
+  <div id="phase-select" aria-label="Escolher fase"></div>
+  <p id="intro-cta">Toque no ecrã para começar</p>
 </div>
 
 <div id="hud">
@@ -120,6 +126,9 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="phases/1-1.js"></script>
+<script src="phases/1-2.js"></script>
+<script src="phases/1-3.js"></script>
 <script src="game.js" defer></script>
 </body>
 </html>

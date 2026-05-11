@@ -1,10 +1,10 @@
 {
-  "id": "/?source=pwa",
+  "id": "./",
   "name": "Sankofa Kids: Memórias do Rift",
   "short_name": "Rift Memories",
   "description": "Jogo educativo de enigmas sobre o Vale do Rift — História Geral da África (UNESCO).",
-  "start_url": "/?source=pwa",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "display_override": ["fullscreen", "standalone"],
   "orientation": "any",

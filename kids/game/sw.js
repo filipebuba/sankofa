@@ -1,9 +1,12 @@
-const CACHE='sankofa-rift-v7';
+const CACHE='sankofa-rift-v9';
 const ASSETS=[
   './',
   'index.html',
   'styles.css',
   'game.js',
+  'phases/1-1.js',
+  'phases/1-2.js',
+  'phases/1-3.js',
   'manifest.webmanifest',
   'assets/favicon.png',
   'assets/icon-192.png',
@@ -29,7 +32,7 @@ self.addEventListener('install',e=>{
 self.addEventListener('activate',e=>{
   e.waitUntil(
     caches.keys().then(keys=>Promise.all(
-      keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))
+      keys.filter(k=>k.startsWith('sankofa-rift-')&&k!==CACHE).map(k=>caches.delete(k))
     ))
   );
   self.clients.claim();
