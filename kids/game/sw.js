@@ -1,4 +1,4 @@
-const CACHE='sankofa-rift-v11';
+const CACHE='sankofa-rift-v12';
 const ASSETS=[
   './',
   'index.html',

@@ -275,6 +275,149 @@ function buildLevel(){
   });
 }
 
+// === VINES (Phase 1.3 — cipos blocking trail, cut with axe + B) ===
+var vines=[];
+
+function buildVines(){
+  var defs = PHASE.vines || [];
+  defs.forEach(function(d){
+    var x = d[0], y = d[1];
+    var grp = new THREE.Group();
+    // Hanging vine — green cylinder
+    var stem = new THREE.Mesh(
+      new THREE.CylinderGeometry(.06, .06, 1.6, 6),
+      new THREE.MeshLambertMaterial({ color: P.fo || 0x5a8a3a, flatShading: true })
+    );
+    stem.position.y = .8;
+    grp.add(stem);
+    // Leaves (3 cones)
+    for(var i = 0; i < 3; i++){
+      var leaf = new THREE.Mesh(
+        new THREE.ConeGeometry(.18, .35, 5),
+        new THREE.MeshLambertMaterial({ color: P.lf || 0x6b9f4a, flatShading: true })
+      );
+      leaf.position.set(Math.cos(i*2.1)*.15, .4 + i*.45, Math.sin(i*2.1)*.1);
+      leaf.rotation.z = (i - 1) * .4;
+      grp.add(leaf);
+    }
+    grp.position.set(x, y - .8, 0);
+    scene.add(grp);
+    vines.push({ x: x, y: y, mesh: grp, cut: false });
+  });
+}
+
+function cutNearbyVine(){
+  if(!S.axe) return false;
+  for(var i = 0; i < vines.length; i++){
+    var v = vines[i];
+    if(v.cut) continue;
+    var dx = Math.abs(S.x - v.x);
+    var dy = Math.abs(S.y - v.y);
+    if(dx < 2.0 && dy < 2.5){
+      v.cut = true;
+      // Fade + drop animation
+      var t0 = performance.now();
+      var startY = v.mesh.position.y;
+      var anim = setInterval(function(){
+        var k = Math.min(1, (performance.now() - t0) / 600);
+        v.mesh.position.y = startY - k * 1.5;
+        v.mesh.rotation.z = k * 0.8;
+        v.mesh.children.forEach(function(c){
+          if(c.material) c.material.transparent = true;
+          if(c.material) c.material.opacity = 1 - k;
+        });
+        if(k >= 1){
+          clearInterval(anim);
+          v.mesh.visible = false;
+        }
+      }, 16);
+      S.cc += 2;
+      spawnDust(v.x, v.y - .5, 0.6);
+      snd('s');
+      showToast('🪓 Cipó cortado!');
+      return true;
+    }
+  }
+  return false;
+}
+
+// === BONUS MEMS (Phase 1.3 — bantu-arvore, chop tree with axe) ===
+var bonusMems=[];
+
+function buildBonusMems(){
+  var defs = PHASE.bonusMems || [];
+  defs.forEach(function(d){
+    if(d.requires !== 'axe') return;
+    var x = d.pos[0], y = d.pos[1];
+    var grp = new THREE.Group();
+    // Tree trunk
+    var trunk = new THREE.Mesh(
+      new THREE.CylinderGeometry(.18, .25, 2.4, 6),
+      new THREE.MeshLambertMaterial({ color: P.ea || 0x3d2818, flatShading: true })
+    );
+    trunk.position.y = 1.2;
+    grp.add(trunk);
+    // Canopy (large for visibility)
+    var canopy = new THREE.Mesh(
+      new THREE.SphereGeometry(.9, 8, 6),
+      new THREE.MeshLambertMaterial({ color: P.fo || 0x5a8a3a, emissive: P.gd || 0xc9a84c, emissiveIntensity: .08, flatShading: true })
+    );
+    canopy.position.y = 2.6;
+    grp.add(canopy);
+    // Gold glow ring (signals "chop here")
+    var ring = new THREE.Mesh(
+      new THREE.RingGeometry(.7, 1.0, 24),
+      new THREE.MeshBasicMaterial({ color: P.gd || 0xc9a84c, transparent: true, opacity: .5, side: THREE.DoubleSide })
+    );
+    ring.rotation.x = -Math.PI/2;
+    ring.position.y = .01;
+    grp.add(ring);
+    grp.position.set(x, y - 1.2, 0);
+    scene.add(grp);
+    bonusMems.push({ data: d, mesh: grp, ring: ring, x: x, y: y, chopped: false });
+  });
+}
+
+function updateBonusMems(){
+  var t = performance.now() / 1000;
+  bonusMems.forEach(function(bm){
+    if(bm.chopped) return;
+    if(bm.ring) bm.ring.material.opacity = .35 + Math.sin(t * 2.2) * .2;
+  });
+}
+
+function chopNearbyTree(){
+  if(!S.axe) return false;
+  for(var i = 0; i < bonusMems.length; i++){
+    var bm = bonusMems[i];
+    if(bm.chopped) continue;
+    if(Math.abs(S.x - bm.x) < 2.0){
+      bm.chopped = true;
+      // Fall animation
+      var t0 = performance.now();
+      var anim = setInterval(function(){
+        var k = Math.min(1, (performance.now() - t0) / 900);
+        bm.mesh.rotation.z = -k * Math.PI / 2 * .9;
+        if(k >= 1){
+          clearInterval(anim);
+          setTimeout(function(){
+            bm.mesh.children.forEach(function(c){
+              if(c.material){ c.material.transparent = true; c.material.opacity = 0.2; }
+            });
+          }, 400);
+        }
+      }, 16);
+      S.cc += bm.data.cauriBonus || 5;
+      spawnDust(bm.x, bm.y - 1, 1.0);
+      snd('m');
+      showToast('🌳 Árvore derrubada! +' + (bm.data.cauriBonus || 5) + ' cauris');
+      showGriot(bm.data.griot);
+      return true;
+    }
+  }
+  return false;
+}
+
 // === INTERACTABLES (Phase 1.3 — anvil + future) ===
 var interactables=[];
 
@@ -798,6 +941,11 @@ function triggerScan(){
   if(!S.on||S.scan>0)return;
   S.scan=1.0;
   snd('s');
+  // Phase 1.3: axe scan also cuts vine or chops tree (priority order).
+  if(S.axe){
+    if(cutNearbyVine()) return;
+    if(chopNearbyTree()) return;
+  }
   var revealed=0,closeFar=null,fd=99;
   mems.forEach(function(m){
     if(m.got)return;
@@ -1054,6 +1202,7 @@ function update(dt){
 
   updateParts(dt);
   updateInteractables();
+  updateBonusMems();
   updateLucinha();
   updateNPCs(dt);
   updateCamera(dt);
@@ -1457,6 +1606,8 @@ function init(){
   buildLevel();
   buildSandWalls();
   buildInteractables();
+  buildVines();
+  buildBonusMems();
   buildBackground();
   buildNPCs();
   setupForgeQTE();
