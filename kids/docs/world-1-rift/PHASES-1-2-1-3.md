@@ -285,7 +285,7 @@ Substituir `intro` por menu pós-clique com 3 botões:
 - [x] ~~**Crocodile** (1.2)~~ — sprite 🐊 patrol horizontal `range[0..1]` a `speed`; flip scale.x conforme direção; collision em ground level (S.y<1.2) com cooldown 1500ms causa `loseLife()`.
 - [ ] **Water-gap respawn** (1.2/1.3) — `waterGaps[]` precisa loop de detecção. Atualmente `S.y<-6` apanha quedas via void existente.
 - [ ] **Bonus mem** "Árvore Bantu" (1.3) — `bonusMems[]` ainda não construído.
-- [ ] `reward` switch em `showEnigma` (sempre +1 vida; spec define `'vida'|'passagem'|'cauris'|'ferramenta'`).
+- [x] ~~`reward` switch em `showEnigma`~~ — `applyEnigmaReward(reward)` aplica efeito por tipo: `'vida'` (default — hp=1, respawn origem), `'cauris'` (+8 cauris, respawn lastSafe), `'passagem'` (S.passageOpen=true + respawn lastSafe), `'ferramenta'` (S.axe=true + S.anvilUnlocked=true + respawn). Prompt do enigma muda dinamicamente conforme `en.reward`. Enigmas sem campo `reward` continuam a comprar vida.
 - [ ] `S.hpCap` consistente — Pintora hardcoda `< 3`, Pescador define cap 5.
 - [x] ~~HUD label fase ("1.2 · SAARA VERDE")~~ — `#phase-label` pill top-center, fade-in após intro click via `showPhaseLabel()`. Lê `PHASE.id` + `PHASE.name` em uppercase.
 - [x] ~~Strings hardcoded em `index.html` (`#title-card`, `#win-msg`)~~ — Agora vêm de `PHASE.strings { titleCard, winTitle, winMsg, winMsgPerfect, stageWin, stageWinPerfect }`. game.js setupPhaseSelector escreve title-card; bloco win consome strings com fallback genérico.

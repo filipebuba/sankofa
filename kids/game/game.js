@@ -1560,6 +1560,43 @@ function setupShare(){
   };
 }
 
+// Apply reward of a correctly-answered enigma. Defaults to 'vida'.
+// Spec: 'vida' | 'passagem' | 'cauris' | 'ferramenta'
+function applyEnigmaReward(reward){
+  switch(reward){
+    case 'cauris': {
+      var bonus = 8;
+      S.cc += bonus;
+      S.x = S.lastSafeX || 0; S.y = 5; S.vx = 0; S.vy = 0;
+      if(S.hp < 1) S.hp = 1;
+      showStage('🐚 <b>+' + bonus + ' cauris</b> ganhos! Volta para o teu lugar.', 3500);
+      break;
+    }
+    case 'passagem': {
+      S.passageOpen = true;
+      S.x = S.lastSafeX || 0; S.y = 5; S.vx = 0; S.vy = 0;
+      if(S.hp < 1) S.hp = 1;
+      showStage('🚪 <b>Passagem aberta!</b> O caminho seguinte está liberto.', 3500);
+      break;
+    }
+    case 'ferramenta': {
+      S.axe = true;
+      S.anvilUnlocked = true;
+      S.x = S.lastSafeX || 0; S.y = 5; S.vx = 0; S.vy = 0;
+      if(S.hp < 1) S.hp = 1;
+      showStage('🪓 <b>Ferramenta recebida!</b> Usa <b>B</b> com a nova ferramenta.', 4000);
+      break;
+    }
+    case 'vida':
+    default: {
+      S.hp = 1;
+      S.x = 0; S.y = 5; S.vx = 0; S.vy = 0; S.lastSafeX = 0;
+      showStage('❤ <b>+1 vida</b> comprada! Recomeça do início.', 3500);
+      break;
+    }
+  }
+}
+
 function showEnigma(){
   S.paused=true;
   // Pick unused enigma
@@ -1570,6 +1607,18 @@ function showEnigma(){
   enigmaUsed.push(origIdx);
   var en=avail[idx];
   var el=document.getElementById('enigma');
+  // Customize prompt by reward type
+  var prompt = el.querySelector('.e-prompt');
+  if(prompt){
+    var rewardMap = {
+      cauris:    'ganhar <b>cauris</b> e voltar ao jogo',
+      passagem:  'abrir <b>passagem</b> e continuar',
+      ferramenta:'receber <b>ferramenta</b> e seguir',
+      vida:      'comprar <b>1 vida</b> e voltar ao jogo'
+    };
+    var rewardKey = en.reward || 'vida';
+    prompt.innerHTML = 'Acerta o enigma para ' + (rewardMap[rewardKey] || rewardMap.vida);
+  }
   var meta = [];
   if(en.type) meta.push(en.type);
   if(en.diff) meta.push(en.diff);
@@ -1592,9 +1641,8 @@ function showEnigma(){
         snd('c');
         setTimeout(function(){
           el.classList.remove('show');
-          S.hp=1;
-          S.x=0;S.y=5;S.vx=0;S.vy=0;S.lastSafeX=0;S.paused=false;
-          showStage('❤ <b>+1 vida</b> comprada! Recomeça do início.',3500);
+          applyEnigmaReward(en.reward || 'vida');
+          S.paused=false;
         },4500);
       }else{
         btn.classList.add('wrong');
