@@ -1,4 +1,4 @@
-const CACHE='sankofa-rift-v22';
+const CACHE='sankofa-rift-v23';
 const ASSETS=[
   './',
   'index.html',
@@ -20,7 +20,13 @@ const ASSETS=[
   'assets/griot/chopper.mp3',
   'assets/griot/rupestre.mp3',
   'assets/world1-2/bg-music.mp3',
+  'assets/world1-2/griot/bovino.mp3',
+  'assets/world1-2/griot/mao.mp3',
+  'assets/world1-2/griot/caca.mp3',
   'assets/world1-3/bg-music.mp3',
+  'assets/world1-3/griot/forno.mp3',
+  'assets/world1-3/griot/enxada.mp3',
+  'assets/world1-3/griot/canoa.mp3',
   'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
 ];
 

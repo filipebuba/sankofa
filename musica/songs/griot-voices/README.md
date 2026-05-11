@@ -145,20 +145,20 @@ em `game.js`. Nenhuma mudança de código necessária.
 
 ## Checklist
 
-### Fase 1.1 (opcional — substituir existentes)
+### Fase 1.1 (re-gravado 2026-05-11 — definitivo)
 - [x] `fossil.mp3` (Lúcia bípede)
 - [x] `chopper.mp3` (pedra lascada)
 - [x] `rupestre.mp3` (pintura ocre)
 
-### Fase 1.2
-- [ ] `bovino.mp3` (lago/boi)
-- [ ] `mao.mp3` (assinatura ocre)
-- [ ] `caca.mp3` (peritos bioma)
+### Fase 1.2 (2026-05-11 — definitivo)
+- [x] `bovino.mp3` (lago/boi)
+- [x] `mao.mp3` (assinatura ocre)
+- [x] `caca.mp3` (peritos bioma)
 
-### Fase 1.3
-- [ ] `forno.mp3` (forja)
-- [ ] `enxada.mp3` (agricultura)
-- [ ] `canoa.mp3` (migração Bantu)
+### Fase 1.3 (2026-05-11 — definitivo)
+- [x] `forno.mp3` (forja)
+- [x] `enxada.mp3` (agricultura)
+- [x] `canoa.mp3` (migração Bantu)
 
 Após gravar, copiar para
 `kids/game/assets/world1-X/griot/<type>.mp3` e bump SW cache.
