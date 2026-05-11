@@ -7,6 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0c0a06">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>Sankofa Kids: Rift Memories</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -29,6 +34,14 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
   .hi-mid{font-size:17px;padding:4px 10px;gap:5px}
   .hi-mid .lives-lbl{display:none}
 }
+
+#mute,#install{width:36px;height:36px;border-radius:50%;background:rgba(12,10,6,.55);border:1.5px solid rgba(201,168,76,.45);color:#c9a84c;font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;-webkit-user-select:none;user-select:none;touch-action:manipulation;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);transition:transform .15s ease,background .2s ease;padding:0;flex-shrink:0;font-family:inherit}
+#mute:active,#install:active{transform:scale(.9)}
+#mute.muted{color:#9a8e7a;background:rgba(12,10,6,.85);border-color:rgba(154,142,122,.5)}
+#install{background:rgba(106,133,48,.35);border-color:rgba(106,133,48,.65);color:#c5e090;animation:installPulse 2.4s ease infinite}
+@keyframes installPulse{0%,100%{box-shadow:0 0 0 0 rgba(106,133,48,.5)}50%{box-shadow:0 0 0 6px rgba(106,133,48,0)}}
+#hud-right{display:flex;align-items:center;gap:10px;pointer-events:auto}
+@media(max-width:480px){#mute,#install{width:30px;height:30px;font-size:14px}#hud-right{gap:6px}}
 @keyframes hShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 
 #title-card{position:fixed;bottom:54px;left:50%;transform:translateX(-50%);color:#f5efe0;font-size:15px;text-align:center;pointer-events:none;z-index:10;font-style:italic;text-shadow:0 2px 4px rgba(12,10,6,.95),0 0 12px rgba(12,10,6,.7);background:rgba(12,10,6,.55);padding:6px 16px;border-radius:8px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);max-width:90vw}
@@ -137,6 +150,15 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
   #griot .g-text,#toast,#stage .s-text{font-size:12px}
 }
 
+#installModal{position:fixed;inset:0;background:rgba(12,10,6,.92);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:250;padding:24px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#installModal.show{display:flex}
+#installModal .im-box{background:rgba(31,20,8,.95);border:2px solid #c9a84c;border-radius:16px;padding:24px;max-width:min(420px,92vw);text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#installModal h3{color:#c9a84c;font-size:18px;margin-bottom:14px;letter-spacing:.05em}
+#installModal ol{text-align:left;color:#ede5d5;font-size:14px;line-height:1.7;padding-left:20px;margin-bottom:18px}
+#installModal ol b{color:#c9a84c}
+#installModal .im-icon{font-size:42px;margin-bottom:8px}
+#installModal button{padding:10px 22px;background:#c9a84c;color:#0c0a06;border:none;border-radius:8px;font-family:Georgia,serif;font-weight:700;cursor:pointer;font-size:14px}
+
 #rotate{position:fixed;inset:0;background:#0c0a06;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:300;color:#c9a84c;text-align:center;padding:20px}
 #rotate.show{display:flex}
 #rotate .r-icon{font-size:64px;margin-bottom:20px;animation:rotIco 2s ease-in-out infinite}
@@ -162,7 +184,11 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
 <div id="hud">
   <div class="hi"><div class="ico ico-c">🐚</div><span id="cc">0</span></div>
   <div class="hi hi-mid"><span class="lives-lbl">VIDAS</span><span id="hearts">❤❤❤</span></div>
-  <div class="hi"><div class="ico ico-m">✦</div><span id="mc">0/3</span></div>
+  <div id="hud-right">
+    <div class="hi"><div class="ico ico-m">✦</div><span id="mc">0/3</span></div>
+    <button id="install" aria-label="Instalar app" title="Instalar como app">⬇</button>
+    <button id="mute" aria-label="Mutar/Desmutar música" title="Mutar música">🔊</button>
+  </div>
 </div>
 
 <div id="enigma">
@@ -182,6 +208,15 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
     <button class="tb tb-act" id="be" aria-label="Ouvir griot">🎙</button>
     <button class="tb tb-act" id="bs" aria-label="Escanear">✦</button>
     <button class="tb tb-jump" id="bj" aria-label="Saltar">↑</button>
+  </div>
+</div>
+
+<div id="installModal">
+  <div class="im-box">
+    <div class="im-icon">📲</div>
+    <h3 id="im-title">INSTALAR NO TELEMÓVEL</h3>
+    <ol id="im-steps"></ol>
+    <button id="im-close">OK, percebi</button>
   </div>
 </div>
 
@@ -485,6 +520,19 @@ function updateParts(dt){
 
 // === AUDIO ===
 var actx=null,bgAudio=null,griotAudios={};
+var MUTED=false;
+try{MUTED=localStorage.getItem('sankofa_muted')==='1'}catch(e){}
+function applyMute(){
+  if(bgAudio)bgAudio.muted=MUTED;
+  Object.values(griotAudios).forEach(function(a){a.muted=MUTED;});
+  var btn=document.getElementById('mute');
+  if(btn){btn.textContent=MUTED?'🔇':'🔊';btn.classList.toggle('muted',MUTED);btn.title=MUTED?'Desmutar música':'Mutar música';}
+}
+function toggleMute(){
+  MUTED=!MUTED;
+  try{localStorage.setItem('sankofa_muted',MUTED?'1':'0')}catch(e){}
+  applyMute();
+}
 function initAudio(){
   if(actx)return;
   try{actx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}
@@ -496,6 +544,7 @@ function initAudio(){
     griotAudios[t].volume=.95;
     griotAudios[t].load();
   });
+  applyMute();
 }
 function playGriot(type){
   var a=griotAudios[type];if(!a)return;
@@ -505,7 +554,7 @@ function playGriot(type){
   a.onended=function(){if(bgAudio)bgAudio.volume=.35;};
 }
 function snd(type){
-  if(!actx)return;var t=actx.currentTime;
+  if(!actx||MUTED)return;var t=actx.currentTime;
   function mk(f,w,v,d,fe){
     var o=actx.createOscillator(),g=actx.createGain();
     o.connect(g);g.connect(actx.destination);o.type=w;
@@ -521,6 +570,14 @@ function snd(type){
     case'g':mk(220,'triangle',.08,.6,330);setTimeout(function(){mk(165,'sine',.05,.8,247)},200);break;
     case'w':mk(523,'sine',.1,.3,null);setTimeout(function(){mk(659,'sine',.08,.3,null)},150);setTimeout(function(){mk(784,'sine',.1,.45,null)},300);break;
   }
+}
+
+// === MUTE BUTTON ===
+function setupMute(){
+  var btn=document.getElementById('mute');
+  if(!btn)return;
+  applyMute();
+  btn.addEventListener('click',function(e){e.stopPropagation();toggleMute();});
 }
 
 // === MOBILE ===
@@ -558,8 +615,12 @@ function setupInput(){
     function down(e){
       e.preventDefault();
       el.classList.add('down');
-      I[key]=true;
-      if(key==='jh'){if(!I.jh)I.jp=true;I.jh=true;}
+      if(key==='jh'){
+        if(!I.jh)I.jp=true;
+        I.jh=true;
+      }else{
+        I[key]=true;
+      }
       if(onPress)onPress();
     }
     function up(e){
@@ -567,10 +628,12 @@ function setupInput(){
       el.classList.remove('down');
       I[key]=false;
     }
-    el.addEventListener('pointerdown',down);
-    el.addEventListener('pointerup',up);
-    el.addEventListener('pointercancel',up);
-    el.addEventListener('pointerleave',function(e){if(I[key])up(e);});
+    el.addEventListener('touchstart',down,{passive:false});
+    el.addEventListener('touchend',up,{passive:false});
+    el.addEventListener('touchcancel',up,{passive:false});
+    el.addEventListener('mousedown',down);
+    el.addEventListener('mouseup',up);
+    el.addEventListener('mouseleave',function(e){if(I[key]||I.jh)up(e);});
     el.addEventListener('contextmenu',function(e){e.preventDefault();});
   }
   tBtn('bl','l');
@@ -842,7 +905,7 @@ function update(dt){
         wp.style.display='block';
         // Tocar audio Vovó especial
         var va=new Audio('assets/vovo-perfect.mp3');
-        va.volume=.95;va.play().catch(function(){});
+        va.volume=.95;va.muted=MUTED;va.play().catch(function(){});
         setupShare();
       }
       document.getElementById('win').classList.add('show');
@@ -1057,6 +1120,93 @@ function loop(t){
   ren.render(scene,cam);
 }
 
+// === PWA INSTALL ===
+var deferredInstall=null;
+function isStandalone(){
+  return matchMedia('(display-mode:standalone)').matches||matchMedia('(display-mode:fullscreen)').matches||navigator.standalone===true;
+}
+function detectPlatform(){
+  var ua=navigator.userAgent;
+  var iOS=/iPad|iPhone|iPod/.test(ua)&&!window.MSStream;
+  var safari=iOS&&/Safari/.test(ua)&&!/CriOS|FxiOS|EdgiOS/.test(ua);
+  var android=/Android/.test(ua);
+  var chromeAndroid=android&&/Chrome/.test(ua);
+  return {iOS:iOS,safari:safari,android:android,chromeAndroid:chromeAndroid,mobile:iOS||android,desktop:!iOS&&!android};
+}
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();
+  deferredInstall=e;
+});
+window.addEventListener('appinstalled',function(){
+  deferredInstall=null;
+  var btn=document.getElementById('install');
+  if(btn)btn.style.display='none';
+  try{localStorage.setItem('sankofa_installed','1')}catch(e){}
+});
+function showInstallInstructions(){
+  var p=detectPlatform();
+  var title='INSTALAR APP',steps=[];
+  if(p.iOS){
+    title='INSTALAR NO IPHONE/IPAD';
+    steps=[
+      'Toca no botão <b>Partilhar</b> (caixa com seta ↑) em baixo no Safari',
+      'Desliza e toca em <b>"Adicionar ao Ecrã Principal"</b>',
+      'Toca <b>"Adicionar"</b> no canto superior direito',
+      'Pronto! Abre o jogo pelo ícone no ecrã'
+    ];
+  }else if(p.chromeAndroid){
+    title='INSTALAR NO ANDROID';
+    steps=[
+      'Toca no <b>menu ⋮</b> do Chrome (canto superior direito)',
+      'Toca em <b>"Instalar app"</b> ou <b>"Adicionar ao ecrã"</b>',
+      'Confirma <b>"Instalar"</b>',
+      'Pronto! Abre pelo ícone Sankofa no ecrã'
+    ];
+  }else{
+    title='INSTALAR APP';
+    steps=[
+      'Procura o ícone de <b>instalar ⬇</b> na barra de endereço do browser',
+      'OU abre o <b>menu do browser</b> (⋮ ou ≡)',
+      'Toca em <b>"Instalar Sankofa Rift"</b>',
+      'Pronto! Abre como app sem browser'
+    ];
+  }
+  document.getElementById('im-title').textContent=title;
+  var ol=document.getElementById('im-steps');
+  ol.innerHTML='';
+  steps.forEach(function(s){var li=document.createElement('li');li.innerHTML=s;ol.appendChild(li);});
+  document.getElementById('installModal').classList.add('show');
+}
+function setupInstall(){
+  var btn=document.getElementById('install');
+  var modal=document.getElementById('installModal');
+  var close=document.getElementById('im-close');
+  if(!btn)return;
+  // Hide ONLY if already running as standalone (installed + opened from icon)
+  if(isStandalone()){btn.style.display='none';return;}
+  // Force show — covers all platforms (Chrome prompt OR fallback modal)
+  btn.style.display='flex';
+  btn.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(deferredInstall){
+      deferredInstall.prompt();
+      deferredInstall.userChoice.then(function(c){
+        if(c&&c.outcome==='accepted'){btn.style.display='none';}
+        deferredInstall=null;
+      });
+    }else{
+      showInstallInstructions();
+    }
+  });
+  if(close){close.addEventListener('click',function(){modal.classList.remove('show');});}
+  if(modal){modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('show');});}
+}
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+
 // === INIT ===
 function init(){
   initScene();
@@ -1066,13 +1216,15 @@ function init(){
   buildBackground();
   setupInput();
   setupMobile();
+  setupMute();
+  setupInstall();
 
   S.cx=0;S.cy=3.5;
 
   // Click intro: rewind + unmute video for ~3s of Vovó voice, then start game
   document.getElementById('intro').addEventListener('click',function(){
     var v=document.getElementById('intro-vid');
-    if(v){v.muted=false;v.volume=.9;v.currentTime=0;v.play().catch(function(){});}
+    if(v){v.muted=MUTED;v.volume=.9;v.currentTime=0;v.play().catch(function(){});}
     setTimeout(function(){
       if(v){v.pause();}
       initAudio();
