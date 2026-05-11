@@ -744,6 +744,35 @@ function update(dt){
     S.y=gy;S.vy=0;S.gnd=true;
   }else if(S.y>gy+.05){S.gnd=false;}
 
+  // Solid AABB collision for floating platforms (sides + head bump)
+  var hw=.35,ht=1.6;
+  for(var pi=0;pi<plats.length;pi++){
+    var fp=plats[pi];
+    if(fp.tp!=='float')continue;
+    var pl=fp.l,pr=fp.r,ptop=fp.t,pbot=fp.cy-fp.h/2;
+    if(S.x+hw<=pl||S.x-hw>=pr)continue;
+    if(S.y>=ptop||S.y+ht<=pbot)continue;
+    var fromR=(S.x+hw)-pl;
+    var fromL=pr-(S.x-hw);
+    var fromT=(S.y+ht)-pbot;
+    var fromB=ptop-S.y;
+    var minH=Math.min(fromR,fromL);
+    var minV=Math.min(fromT,fromB);
+    if(minV<minH){
+      if(fromB<fromT){
+        S.y=ptop;S.vy=0;S.gnd=true;
+      }else{
+        S.y=pbot-ht;
+        if(S.vy>0)S.vy=-1.5;
+        snd('l');spawnDust(S.x,S.y+ht,.6);
+        applySq(1.18,.82);
+      }
+    }else{
+      if(fromL<fromR){S.x=pr+hw;}else{S.x=pl-hw;}
+      S.vx=0;
+    }
+  }
+
   if(S.gnd)S.lastSafeX=S.x;
   if(S.y<-6){loseLife();}
 
