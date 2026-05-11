@@ -1742,6 +1742,17 @@ function isPhaseUnlocked(id, progress){
   return !!(progress[phaseObj.prevDone] && progress[phaseObj.prevDone].done);
 }
 
+function setupPhaseLabel(){
+  var el = document.getElementById('phase-label');
+  if(!el || !PHASE) return;
+  el.innerHTML = '<span class="pl-id">' + escapeHTML(PHASE.id) + '</span>' + escapeHTML((PHASE.name || '').toUpperCase());
+}
+
+function showPhaseLabel(){
+  var el = document.getElementById('phase-label');
+  if(el) el.classList.add('show');
+}
+
 function setupPhaseSelector(){
   var host = document.getElementById('phase-select');
   if(!host) return;
@@ -1803,6 +1814,7 @@ function init(){
   setupMute();
   setupInstall();
   setupPhaseSelector();
+  setupPhaseLabel();
   var ndClose=document.getElementById('nd-close');
   if(ndClose)ndClose.addEventListener('click',closeNPC);
 
@@ -1817,6 +1829,7 @@ function init(){
       initAudio();
       document.getElementById('intro').classList.add('out');
       S.on=true;
+      showPhaseLabel();
       // Tutorial from phase
       (PHASE.tutorial || []).forEach(function(t){
         setTimeout(function(){ showStage(t.html, t.ms); }, t.delay);

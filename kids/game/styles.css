@@ -91,6 +91,13 @@ canvas{display:block;width:100vw;height:100vh;height:100dvh}
 #toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(31,20,8,.92);color:#c9a84c;padding:18px 30px;border-radius:12px;border:2px solid #c9a84c;font-size:18px;font-weight:700;text-align:center;z-index:50;opacity:0;pointer-events:none;transition:opacity .4s ease;text-shadow:0 1px 3px rgba(0,0,0,.6);max-width:80vw}
 #toast.show{opacity:1}
 
+#phase-label{position:fixed;top:max(58px,calc(env(safe-area-inset-top) + 50px));left:50%;transform:translateX(-50%);background:rgba(12,10,6,.55);border:1px solid rgba(201,168,76,.4);color:#c9a84c;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-shadow:0 1px 2px rgba(0,0,0,.7);z-index:9;pointer-events:none;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .6s ease;white-space:nowrap;max-width:80vw;overflow:hidden;text-overflow:ellipsis}
+#phase-label.show{opacity:.9}
+#phase-label .pl-id{color:#9a8e7a;margin-right:6px}
+@media(max-width:480px){
+  #phase-label{font-size:10px;padding:2px 8px;letter-spacing:.12em;top:max(48px,calc(env(safe-area-inset-top) + 38px))}
+}
+
 #forgeQTE{position:fixed;inset:0;background:rgba(12,10,6,.85);display:none;align-items:center;justify-content:center;z-index:210;padding:24px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 #forgeQTE.show{display:flex}
 #forgeQTE .fq-box{background:rgba(31,20,8,.96);border:2px solid #c9a84c;border-radius:14px;padding:24px 28px;max-width:520px;width:90vw;text-align:center;box-shadow:0 8px 32px rgba(201,168,76,.4);position:relative}

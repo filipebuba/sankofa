@@ -287,7 +287,7 @@ Substituir `intro` por menu pós-clique com 3 botões:
 - [ ] **Bonus mem** "Árvore Bantu" (1.3) — `bonusMems[]` ainda não construído.
 - [ ] `reward` switch em `showEnigma` (sempre +1 vida; spec define `'vida'|'passagem'|'cauris'|'ferramenta'`).
 - [ ] `S.hpCap` consistente — Pintora hardcoda `< 3`, Pescador define cap 5.
-- [ ] HUD label fase ("1.2 · SAARA VERDE").
+- [x] ~~HUD label fase ("1.2 · SAARA VERDE")~~ — `#phase-label` pill top-center, fade-in após intro click via `showPhaseLabel()`. Lê `PHASE.id` + `PHASE.name` em uppercase.
 - [ ] Strings hardcoded em `index.html` (`#title-card`, `#win-msg`) ainda 1.1-only.
 - [ ] Mix dificuldade enigmas vs spec:
   - 1.1: atual ~50% obs / ~50% comp / 0% inf (spec pede 70/30/0).
