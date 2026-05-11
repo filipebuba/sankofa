@@ -137,27 +137,133 @@ function emojiTexture(emoji,size){
   return tex;
 }
 
+// === NPC PORTRAIT (procedural fallback when PNG missing) ===
+// Renders a vertical 2:3 canvas with:
+// - radial gradient backdrop tinted by paletteHex
+// - body silhouette (rounded shape)
+// - emoji head centered
+// - name banner at the bottom
+// Output is a CanvasTexture sized 512x768.
+function npcPortraitTexture(emoji, name, paletteHex){
+  var W = 512, H = 768;
+  var canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  var ctx = canvas.getContext('2d');
+
+  // Convert palette int -> css hex (e.g. 0xc9a84c -> #c9a84c)
+  function toCss(n){ return '#' + n.toString(16).padStart(6, '0'); }
+  var col = toCss((paletteHex !== undefined ? paletteHex : 0xc9a84c) & 0xffffff);
+
+  // 1) Radial gradient backdrop (transparent edges)
+  var grd = ctx.createRadialGradient(W/2, H*0.45, 60, W/2, H*0.45, W*0.55);
+  grd.addColorStop(0.00, col);
+  grd.addColorStop(0.55, col + 'cc');
+  grd.addColorStop(1.00, '#00000000');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+
+  // 2) Body silhouette — rounded torso below head
+  ctx.fillStyle = '#1a120a';
+  ctx.strokeStyle = '#0c0a06';
+  ctx.lineWidth = 6;
+  var bodyTop = H * 0.42;
+  var bodyBot = H * 0.92;
+  var bodyW   = W * 0.62;
+  var bodyX   = (W - bodyW) / 2;
+  ctx.beginPath();
+  // Shoulders curve
+  ctx.moveTo(bodyX, bodyTop + 80);
+  ctx.quadraticCurveTo(W/2, bodyTop - 20, bodyX + bodyW, bodyTop + 80);
+  // Right side down
+  ctx.lineTo(bodyX + bodyW, bodyBot);
+  // Bottom curve
+  ctx.quadraticCurveTo(W/2, bodyBot + 30, bodyX, bodyBot);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // 3) Inner robe accent (lighter tone strip)
+  ctx.fillStyle = col + '55';
+  ctx.beginPath();
+  ctx.moveTo(W/2 - 8, bodyTop + 80);
+  ctx.lineTo(W/2 - 8, bodyBot);
+  ctx.lineTo(W/2 + 8, bodyBot);
+  ctx.lineTo(W/2 + 8, bodyTop + 80);
+  ctx.closePath();
+  ctx.fill();
+
+  // 4) Head circle (dark) + emoji glyph
+  var headR = W * 0.20;
+  var headY = H * 0.30;
+  ctx.fillStyle = '#2a1f14';
+  ctx.beginPath();
+  ctx.arc(W/2, headY, headR + 6, 0, Math.PI * 2);
+  ctx.fill();
+  // Emoji
+  ctx.font = Math.floor(headR * 1.55) + 'px Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(emoji || '👤', W/2, headY + headR * 0.08);
+
+  // 5) Name banner near the bottom
+  if(name){
+    var bannerH = 56;
+    var bannerY = H - bannerH - 24;
+    ctx.fillStyle = 'rgba(12,10,6,0.85)';
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 3;
+    var bx = W * 0.10, bw = W * 0.80;
+    // Rounded rect
+    var r = 14;
+    ctx.beginPath();
+    ctx.moveTo(bx + r, bannerY);
+    ctx.lineTo(bx + bw - r, bannerY);
+    ctx.quadraticCurveTo(bx + bw, bannerY, bx + bw, bannerY + r);
+    ctx.lineTo(bx + bw, bannerY + bannerH - r);
+    ctx.quadraticCurveTo(bx + bw, bannerY + bannerH, bx + bw - r, bannerY + bannerH);
+    ctx.lineTo(bx + r, bannerY + bannerH);
+    ctx.quadraticCurveTo(bx, bannerY + bannerH, bx, bannerY + bannerH - r);
+    ctx.lineTo(bx, bannerY + r);
+    ctx.quadraticCurveTo(bx, bannerY, bx + r, bannerY);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = col;
+    ctx.font = '700 28px Georgia, serif';
+    ctx.fillText(name, W/2, bannerY + bannerH/2 + 2);
+  }
+
+  var tex = new THREE.CanvasTexture(canvas);
+  tex.minFilter = THREE.LinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.anisotropy = 4;
+  return tex;
+}
+
 // === NPCs build + glow ===
 function buildNPCs(){
   NPCS.forEach(function(n){
     var tex;
     var fallbackEmoji = n.avatar || n.emoji || '👤';
+    // Tint backdrop with phase gold by default; phase palette wins if defined.
+    var paletteHex = (n.tint !== undefined ? n.tint : (P.gd || 0xc9a84c));
     if(n.img){
-      // Try png; on 404/load error, swap to emoji texture in-place.
+      // Try png; on 404/load error, swap to procedural portrait.
       tex = new THREE.TextureLoader().load(
         n.img,
         function(){ /* loaded ok */ },
         undefined,
         function(){
-          console.warn('[npc] img load failed, fallback emoji', n.img);
-          var fb = emojiTexture(fallbackEmoji);
+          console.warn('[npc] img load failed, fallback portrait', n.img);
+          var fb = npcPortraitTexture(fallbackEmoji, n.name, paletteHex);
           mat.map = fb;
           mat.needsUpdate = true;
         }
       );
       tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.LinearFilter;
     }else{
-      tex = emojiTexture(n.emoji || fallbackEmoji);
+      // No img path: prefer rich portrait fallback over bare emoji.
+      tex = npcPortraitTexture(n.emoji || fallbackEmoji, n.name, paletteHex);
     }
     var mat=new THREE.SpriteMaterial({map:tex,transparent:true,alphaTest:.05});
     var spr=new THREE.Sprite(mat);

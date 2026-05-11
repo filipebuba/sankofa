@@ -294,8 +294,9 @@ Substituir `intro` por menu pós-clique com 3 botões:
   - 1.2: atual 25/50/25 (spec 30/50/20) — próximo, drift mínimo.
   - 1.3: atual 25/25/50 (spec 20/40/40) — inferência dominante (apropriado tema causal Bantu).
 - [x] ~~Rewards variados em enigmas (validação prática switch)~~ — 1.1 chopper enigma `reward:'cauris'`; 1.2 bovino obs `reward:'cauris'` + migração comp `reward:'passagem'`; 1.3 forja obs `reward:'ferramenta'` + ferramentas inf `reward:'passagem'`. Restantes ficam `vida` default.
-- [ ] Assets 1.2 (4 sprite + 4 pintura + 3 griot + ~~bg-music~~). Sprites NPC: ver `NPC-ASSETS.md`. Griot voices: ver `musica/songs/griot-voices/README.md`. Fallback emoji automático em `buildNPCs()` (img 404 → emoji texture sem crash).
-- [ ] Assets 1.3 (3 NPC + bigorna + forno/enxada/canoa + cipó + parallax + ~~bg-music~~). Idem.
+- [~] Assets 1.2 — ~~bg-music~~ + ~~griot voices~~ + sprites NPC (procedural portrait fallback OK, Midjourney prompts em `NPC-MIDJOURNEY-PROMPTS.md` quando quiseres upgrade).
+- [~] Assets 1.3 — idem. Bigorna/cipó/canoa já têm mesh procedural in-engine.
+- [x] ~~NPC sprite fallback visual~~ — `npcPortraitTexture()` em game.js renderiza canvas 512×768 (gradient backdrop tintado pelo `tint` do NPC + silhueta corpo + emoji grande + banner nome). Cada NPC tem `tint` próprio: Velho Griot dourado, Pastor índigo tuareg, Pintora terracota, Ferreiro brasa, Linguista verde-floresta, Pescador azul-rio.
 
 ### Notas técnicas
 

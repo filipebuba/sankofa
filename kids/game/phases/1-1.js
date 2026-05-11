@@ -71,7 +71,7 @@ window.PHASE_1_1 = {
 
   npcs: [
     {
-      x: 18, scale: [1.8, 2.4],
+      x: 18, scale: [1.8, 2.4], tint: 0xc9a84c,
       emoji: '🧙🏿', avatar: '🧙🏿',
       name: 'Velho Griot', diff: 'difícil', unlock: 0,
       role: 'Guardião das memórias antigas do Sankofa',

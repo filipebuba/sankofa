@@ -96,7 +96,7 @@ window.PHASE_1_2 = {
 
   npcs: [
     {
-      x: 10, scale: [1.7, 2.2],
+      x: 10, scale: [1.7, 2.2], tint: 0x2a4570,
       img: 'assets/world1-2/pastor.png', avatar: '🧔🏾',
       name: 'Pastor Saariano', diff: 'fácil', unlock: 0,
       role: 'Levei vacas onde hoje é só areia.',
@@ -107,7 +107,7 @@ window.PHASE_1_2 = {
       ok: 'Verde! Pastores criavam gado antes do clima secar.'
     },
     {
-      x: 30, scale: [1.7, 2.3],
+      x: 30, scale: [1.7, 2.3], tint: 0xb85a3a,
       img: 'assets/world1-2/pintora.png', avatar: '👩🏿‍🎨',
       name: 'Pintora Tassili', diff: 'médio', unlock: 1,
       role: 'Mãos no ocre, histórias na pedra.',
