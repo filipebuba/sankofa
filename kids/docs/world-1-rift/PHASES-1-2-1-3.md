@@ -275,7 +275,7 @@ Substituir `intro` por menu pós-clique com 3 botões:
 
 ### Pendente
 
-- [ ] Mecânica **soprar areia** (1.2) — `sandWalls[]` definido mas não consumido.
+- [x] ~~Mecânica **soprar areia** (1.2)~~ — `buildSandWalls()` cria placas sand color em z:+0.3; `triggerScan` chama `clearSandWall(type)` quando revela mem do mesmo type; fade 800ms + bonus +3 cauris + dust. Posições alinhadas com mems em phase data.
 - [ ] Mecânica **forja QTE** (1.3) — `interactables[].type='anvil'` pendente.
 - [ ] Mecânica **corte cipó** (1.3) — `vines[]` pendente, requer `S.axe`.
 - [ ] **Canoa móvel** (1.3) — `movingPlats[]` pendente.

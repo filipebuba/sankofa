@@ -275,6 +275,54 @@ function buildLevel(){
   });
 }
 
+// === SAND WALLS (Phase 1.2 mechanic) ===
+// Sand-covered rock walls hiding rupestre paintings.
+// Scan within range fades sand AND reveals matching mem.
+var sandWalls=[];
+
+function buildSandWalls(){
+  var defs = PHASE.sandWalls || [];
+  defs.forEach(function(d){
+    var x = d[0], y = d[1], type = d[2];
+    // Sand plate ~1.4 wide × 1.4 tall, slightly behind mem on z-axis
+    var geo = new THREE.PlaneGeometry(1.6, 1.6);
+    var sandColor = P.sa || 0xd4b896;
+    var mat = new THREE.MeshLambertMaterial({
+      color: sandColor,
+      transparent: true,
+      opacity: 0.92,
+      side: THREE.DoubleSide,
+      flatShading: true
+    });
+    var m = new THREE.Mesh(geo, mat);
+    m.position.set(x, y, 0.3);
+    scene.add(m);
+    sandWalls.push({ m: m, x: x, y: y, type: type, cleared: false });
+  });
+}
+
+function clearSandWall(type){
+  var sw = null;
+  for(var i = 0; i < sandWalls.length; i++){
+    if(sandWalls[i].type === type && !sandWalls[i].cleared){ sw = sandWalls[i]; break; }
+  }
+  if(!sw) return;
+  sw.cleared = true;
+  var t0 = performance.now();
+  var anim = setInterval(function(){
+    var k = Math.min(1, (performance.now() - t0) / 800);
+    sw.m.material.opacity = 0.92 * (1 - k);
+    if(k >= 1){
+      clearInterval(anim);
+      sw.m.visible = false;
+    }
+  }, 16);
+  // Bonus cauris reward + dust particles
+  S.cc += 3;
+  spawnDust(sw.x, sw.y, 0.8);
+  snd('s');
+}
+
 // Map mem type -> {col, emCol, geo} — falls back to generic box.
 function memStyle(type){
   var map = {
@@ -617,6 +665,8 @@ function triggerScan(){
         if(k>=1)clearInterval(anim);
       },16);
       revealed++;
+      // Phase 1.2: clear matching sand wall + bonus cauris
+      clearSandWall(m.type);
       var vh=m.y-S.y>1.5?' (lá em cima ↑)':'';
       showToast('✦ '+m.label+' revelado!'+vh);
     }else if(!m.revealed){
@@ -1254,6 +1304,7 @@ function init(){
   luci=createLucinha();
   scene.add(luci);
   buildLevel();
+  buildSandWalls();
   buildBackground();
   buildNPCs();
   setupInput();

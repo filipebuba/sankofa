@@ -75,10 +75,11 @@ window.PHASE_1_2 = {
   ],
 
   // Paredes com areia — soprar revela pintura. [x, y, type]
+  // Posições alinhadas com mems do mesmo type para fade sincronizado.
   sandWalls: [
-    [15, 3, 'bovino'],
-    [24, 5, 'mao'],
-    [34, 6, 'caca']
+    [13, 3.0, 'bovino'],
+    [24, 5.0, 'mao'],
+    [38, 6.5, 'caca']
   ],
 
   hazards: [
