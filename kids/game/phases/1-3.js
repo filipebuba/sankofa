@@ -145,6 +145,7 @@ window.PHASE_1_3 = {
       scene: 'Lucinha vê uma fornalha: argila, carvão, ar soprado e pedra-ferro brilhando.',
       q: 'O que a forja transforma?',
       o: ['Pedra-ferro em ferramenta de metal', 'Água em areia', 'Pintura em animal vivo', 'Som em pedra'], c: 0,
+      reward: 'ferramenta',
       e: 'A metalurgia transforma minério em ferro útil para ferramentas, armas agrícolas e objetos.' },
     { diff: 'médio', type: 'comparação',
       scene: 'Com uma pedra lascada, Lucinha corta pouco. Com ferro, abre cipó e madeira.',
@@ -160,6 +161,7 @@ window.PHASE_1_3 = {
       scene: 'Uma enxada abre terra, o machado faz canoa, a canoa atravessa rio.',
       q: 'Qual consequência histórica essas ferramentas tornam possível?',
       o: ['Ficar preso na aldeia original', 'Apagar memórias orais', 'Viajar, cultivar e formar novas comunidades', 'Transformar deserto em gelo'], c: 2,
+      reward: 'passagem',
       e: 'Tecnologia não é só objeto: ela muda caminhos, trabalho, alimentação e formas de viver.' }
   ],
 

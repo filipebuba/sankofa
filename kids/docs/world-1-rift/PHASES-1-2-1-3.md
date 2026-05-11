@@ -289,10 +289,11 @@ Substituir `intro` por menu pós-clique com 3 botões:
 - [ ] `S.hpCap` consistente — Pintora hardcoda `< 3`, Pescador define cap 5.
 - [x] ~~HUD label fase ("1.2 · SAARA VERDE")~~ — `#phase-label` pill top-center, fade-in após intro click via `showPhaseLabel()`. Lê `PHASE.id` + `PHASE.name` em uppercase.
 - [x] ~~Strings hardcoded em `index.html` (`#title-card`, `#win-msg`)~~ — Agora vêm de `PHASE.strings { titleCard, winTitle, winMsg, winMsgPerfect, stageWin, stageWinPerfect }`. game.js setupPhaseSelector escreve title-card; bloco win consome strings com fallback genérico.
-- [ ] Mix dificuldade enigmas vs spec:
-  - 1.1: atual ~50% obs / ~50% comp / 0% inf (spec pede 70/30/0).
-  - 1.2: atual 25/50/25 (spec 30/50/20) — próximo.
-  - 1.3: atual 25/25/50 (spec 20/40/40).
+- [~] Mix dificuldade enigmas vs spec (drift residual, aceitável):
+  - 1.1: atual 50/50/0 (spec 70/30/0) — 0% inferência alcançado; ratio obs/comp residual.
+  - 1.2: atual 25/50/25 (spec 30/50/20) — próximo, drift mínimo.
+  - 1.3: atual 25/25/50 (spec 20/40/40) — inferência dominante (apropriado tema causal Bantu).
+- [x] ~~Rewards variados em enigmas (validação prática switch)~~ — 1.1 chopper enigma `reward:'cauris'`; 1.2 bovino obs `reward:'cauris'` + migração comp `reward:'passagem'`; 1.3 forja obs `reward:'ferramenta'` + ferramentas inf `reward:'passagem'`. Restantes ficam `vida` default.
 - [ ] Assets 1.2 (4 sprite + 4 pintura + 3 griot + ~~bg-music~~). Sprites NPC: ver `NPC-ASSETS.md`. Griot voices: ver `musica/songs/griot-voices/README.md`. Fallback emoji automático em `buildNPCs()` (img 404 → emoji texture sem crash).
 - [ ] Assets 1.3 (3 NPC + bigorna + forno/enxada/canoa + cipó + parallax + ~~bg-music~~). Idem.
 
