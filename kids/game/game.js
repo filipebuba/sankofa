@@ -418,6 +418,112 @@ function chopNearbyTree(){
   return false;
 }
 
+// === MOVING PLATS (Phase 1.3 — canoe oscillating x) ===
+var movingPlats=[];
+
+function buildMovingPlats(){
+  var defs = PHASE.movingPlats || [];
+  defs.forEach(function(d){
+    // Push as float plat into plats[] so AABB collision works.
+    var p = {
+      cx: d.cx, cy: d.cy, w: d.w, h: d.h,
+      tp: 'float',
+      l: d.cx - d.w/2,
+      r: d.cx + d.w/2,
+      t: d.cy + d.h/2
+    };
+    plats.push(p);
+    // Canoe mesh: shallow boat = thin box + tapered nose
+    var grp = new THREE.Group();
+    var hull = new THREE.Mesh(
+      new THREE.BoxGeometry(d.w, d.h, .9),
+      new THREE.MeshLambertMaterial({ color: P.ea || 0x3d2818, flatShading: true })
+    );
+    hull.position.y = 0;
+    grp.add(hull);
+    // Top deck (lighter)
+    var deck = new THREE.Mesh(
+      new THREE.BoxGeometry(d.w * .9, .08, .7),
+      new THREE.MeshLambertMaterial({ color: P.sk || 0x5a4030, flatShading: true })
+    );
+    deck.position.y = d.h/2 + .04;
+    grp.add(deck);
+    grp.position.set(d.cx, d.cy - d.h/2, 0);
+    scene.add(grp);
+    movingPlats.push({ data: d, plat: p, mesh: grp, t0: performance.now() });
+  });
+}
+
+function updateMovingPlats(){
+  movingPlats.forEach(function(mp){
+    var d = mp.data;
+    var range = d.range[1] - d.range[0];
+    var center = (d.range[0] + d.range[1]) / 2;
+    var halfRange = range / 2;
+    var t = (performance.now() - mp.t0) / 1000;
+    if(d.axis === 'x'){
+      var newX = center + Math.sin(t * d.speed) * halfRange;
+      var oldX = mp.plat.cx;
+      var delta = newX - oldX;
+      mp.mesh.position.x = newX;
+      // Sync plat AABB
+      mp.plat.cx = newX;
+      mp.plat.l = newX - mp.plat.w/2;
+      mp.plat.r = newX + mp.plat.w/2;
+      // Sticky: player riding the plat moves with it
+      var hw = .45;
+      if(S.gnd && Math.abs(S.y - mp.plat.t) < .15 &&
+         S.x + hw > mp.plat.l - delta && S.x - hw < mp.plat.r - delta){
+        S.x += delta;
+      }
+    }
+  });
+}
+
+// === HAZARDS (Phase 1.3 — snake + future) ===
+var hazardEntities=[];
+
+function buildHazards(){
+  var defs = PHASE.hazards || [];
+  defs.forEach(function(d){
+    if(d.type === 'snake'){
+      var tex = emojiTexture('🐍');
+      var mat = new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: .05 });
+      var spr = new THREE.Sprite(mat);
+      spr.scale.set(1.0, 1.0, 1);
+      spr.center.set(.5, .5);
+      var startY = d.cycle ? d.cycle[0] : 1;
+      spr.position.set(d.x, startY, 0);
+      scene.add(spr);
+      hazardEntities.push({ data: d, mesh: spr, t0: performance.now() });
+    }
+  });
+}
+
+function updateHazards(){
+  hazardEntities.forEach(function(h){
+    var d = h.data;
+    if(d.type === 'snake'){
+      var cycleArr = d.cycle || [1, 3];
+      var yLow = cycleArr[0], yHigh = cycleArr[1];
+      var range = yHigh - yLow;
+      var center = (yLow + yHigh) / 2;
+      var t = (performance.now() - h.t0) / 1000;
+      var newY = center + Math.sin(t * (d.speed || 1.0)) * range/2;
+      h.mesh.position.y = newY;
+      // Collision: player AABB vs snake sprite
+      var hw = .4, ht = 1.5;
+      if(Math.abs(S.x - d.x) < .6 + hw &&
+         Math.abs(S.y + .8 - newY) < .5 + ht/2){
+        if(!h.hitCooldown || performance.now() - h.hitCooldown > 1500){
+          h.hitCooldown = performance.now();
+          loseLife();
+        }
+      }
+    }
+  });
+}
+
 // === INTERACTABLES (Phase 1.3 — anvil + future) ===
 var interactables=[];
 
@@ -1041,6 +1147,9 @@ function update(dt){
   if(!S.on||S.won||S.paused)return;
   dt=Math.min(dt,.04);
 
+  // Move moving platforms BEFORE physics so AABB collision sees current pos.
+  updateMovingPlats();
+
   var dir=(I.l?-1:0)+(I.r?1:0);
   var acc=S.gnd?ACC:ACC*AIR;
   var dec=S.gnd?DEC:DEC*AIR;
@@ -1203,6 +1312,7 @@ function update(dt){
   updateParts(dt);
   updateInteractables();
   updateBonusMems();
+  updateHazards();
   updateLucinha();
   updateNPCs(dt);
   updateCamera(dt);
@@ -1608,6 +1718,8 @@ function init(){
   buildInteractables();
   buildVines();
   buildBonusMems();
+  buildMovingPlats();
+  buildHazards();
   buildBackground();
   buildNPCs();
   setupForgeQTE();

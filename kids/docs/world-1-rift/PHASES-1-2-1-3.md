@@ -279,9 +279,10 @@ Substituir `intro` por menu pós-clique com 3 botões:
 - [x] ~~Mecânica **forja QTE** (1.3)~~ — `buildInteractables()` cria mesh bigorna (base+top+horn+ring pulsante); `triggerInteract` perto da bigorna abre `#forgeQTE` overlay (3 toques no ritmo, marker slide 1.2s, zona central 20%); 3 hits → `S.axe=true` + showStage; bloqueado se Ferreiro Nok ainda não falado (`S.anvilUnlocked`).
 - [x] ~~Mecânica **corte cipó** (1.3)~~ — `buildVines()` cria cipó mesh (stem + 3 leaves); `triggerScan` com `S.axe` chama `cutNearbyVine()` (fade + drop + rotação 600ms + 2 cauris).
 - [x] ~~**Bonus mem** "Árvore Bantu" (1.3)~~ — `buildBonusMems()` cria árvore mesh (trunk + canopy + anel dourado pulsante) para `bonusMems[]` com `requires:'axe'`; `chopNearbyTree()` derruba (rotação fall + opacity) + cauris bonus + griot.
-- [ ] **Canoa móvel** (1.3) — `movingPlats[]` pendente.
-- [ ] **Hazards** novos: hippo/croc (1.2), snake vertical (1.3).
-- [ ] **Water-gap respawn** (1.2/1.3) — `waterGaps[]` precisa loop de detecção.
+- [x] ~~**Canoa móvel** (1.3)~~ — `buildMovingPlats()` cria mesh canoa (hull + deck) + push em `plats[]` para AABB collision; `updateMovingPlats()` oscila no eixo `range[0..1]` sin com `speed`; sticky platform shift player.x pelo delta quando S.gnd em cima.
+- [x] ~~**Snake hazard** (1.3)~~ — `buildHazards()` cria sprite 🐍 oscilando y; collision com cooldown 1500ms causa `loseLife()`.
+- [ ] **Hazards** restantes: hippo/croc (1.2).
+- [ ] **Water-gap respawn** (1.2/1.3) — `waterGaps[]` precisa loop de detecção. Atualmente `S.y<-6` apanha quedas via void existente.
 - [ ] **Bonus mem** "Árvore Bantu" (1.3) — `bonusMems[]` ainda não construído.
 - [ ] `reward` switch em `showEnigma` (sempre +1 vida; spec define `'vida'|'passagem'|'cauris'|'ferramenta'`).
 - [ ] `S.hpCap` consistente — Pintora hardcoda `< 3`, Pescador define cap 5.
