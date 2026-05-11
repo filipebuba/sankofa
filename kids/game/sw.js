@@ -1,4 +1,4 @@
-const CACHE='sankofa-rift-v13';
+const CACHE='sankofa-rift-v14';
 const ASSETS=[
   './',
   'index.html',
@@ -19,6 +19,8 @@ const ASSETS=[
   'assets/griot/fossil.mp3',
   'assets/griot/chopper.mp3',
   'assets/griot/rupestre.mp3',
+  'assets/world1-2/bg-music.mp3',
+  'assets/world1-3/bg-music.mp3',
   'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
 ];
 
