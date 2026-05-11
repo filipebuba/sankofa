@@ -654,6 +654,7 @@ function updateHazards(){
          Math.abs(S.y + .8 - newY) < .5 + ht/2){
         if(!h.hitCooldown || now - h.hitCooldown > 1500){
           h.hitCooldown = now;
+          S.deathCause = 'snake';
           loseLife();
         }
       }
@@ -701,6 +702,7 @@ function updateHazards(){
       if(Math.abs(S.x - x) < .7 + hw && S.y < 1.2){
         if(!h.hitCooldown || now - h.hitCooldown > 1500){
           h.hitCooldown = now;
+          S.deathCause = 'croc';
           loseLife();
         }
       }
@@ -1438,7 +1440,7 @@ function update(dt){
   }
 
   if(S.gnd)S.lastSafeX=S.x;
-  if(S.y<-6){loseLife();}
+  if(S.y<-6){ S.deathCause='queda'; loseLife(); }
 
   // Squash spring
   var sk=15,dmp=.8;
@@ -1632,20 +1634,55 @@ function resetCollectibles(){
   document.getElementById('beacon').classList.remove('show');
 }
 
-function loseLife(){
-  S.hp--;
-  S.perfect=false;
-  snd('l');
-  document.getElementById('hud').style.transition='filter .3s';
-  document.getElementById('hud').style.filter='hue-rotate(-30deg) brightness(1.3)';
-  setTimeout(function(){document.getElementById('hud').style.filter='';},400);
-  resetCollectibles();
-  if(S.hp<=0){
-    showEnigma();
-  }else{
-    showStage('💔 Caíste! Peças voltaram. Restam <b>'+S.hp+' vida'+(S.hp===1?'':'s')+'</b>',3500);
-    S.x=0;S.y=5;S.vx=0;S.vy=0;S.lastSafeX=0;
+function deathLabel(cause){
+  switch(cause){
+    case 'snake': return '🐍 <b>A cobra picou-te</b>';
+    case 'croc':  return '🐊 <b>O crocodilo apanhou-te</b>';
+    case 'hippo': return '🦛 <b>O hipopótamo afastou-te</b>';
+    case 'water': return '🌊 <b>Caíste na água</b>';
+    case 'queda':
+    default:      return '💀 <b>Caíste no vazio</b>';
   }
+}
+
+function loseLife(){
+  if(S.dying) return; // re-entry guard
+  S.dying = true;
+  S.hp--;
+  S.perfect = false;
+  snd('l');
+  // HUD flash
+  var hud = document.getElementById('hud');
+  if(hud){
+    hud.style.transition = 'filter .3s';
+    hud.style.filter = 'hue-rotate(-30deg) brightness(1.3)';
+    setTimeout(function(){ hud.style.filter = ''; }, 400);
+  }
+  // Pause physics by flagging paused; render keeps running.
+  S.vx = 0; S.vy = 0;
+  S.paused = true;
+  // Tip Lucinha sideways: rotate sprite material in screen plane.
+  if(luci && luci.material){
+    luci.material.rotation = (S.face > 0 ? -1 : 1) * Math.PI / 2;
+  }
+  // Death banner with cause
+  var cause = S.deathCause || 'queda';
+  showStage(deathLabel(cause) + '...', 1700);
+  // After short pause, proceed to recovery / enigma.
+  setTimeout(function(){
+    if(luci && luci.material) luci.material.rotation = 0;
+    S.dying = false;
+    S.deathCause = null;
+    resetCollectibles();
+    if(S.hp <= 0){
+      // showEnigma sets S.paused internally; keep paused until enigma resolved.
+      showEnigma();
+    }else{
+      S.paused = false;
+      showStage('💔 Caíste! Peças voltaram. Restam <b>' + S.hp + ' vida' + (S.hp === 1 ? '' : 's') + '</b>', 3500);
+      S.x = 0; S.y = 5; S.vx = 0; S.vy = 0; S.lastSafeX = 0;
+    }
+  }, 1900);
 }
 
 var enigmaUsed=[];
