@@ -13,7 +13,7 @@ function loadPhaseId(){
     var prog = JSON.parse(localStorage.getItem('sankofa_kids_progress') || '{}');
     var phases = prog.phases || {};
     // Last unlocked = furthest done +1; default '1.1'
-    var order = ['1.1','1.2','1.3','2.1'];
+    var order = ['1.1','1.2','1.3','2.1','2.2','2.3'];
     for(var i = order.length - 1; i >= 0; i--){
       if(phases[order[i]] && phases[order[i]].done) return order[Math.min(i+1, order.length-1)];
     }
@@ -1956,7 +1956,7 @@ if('serviceWorker' in navigator){
 }
 
 // === PHASE SELECTOR ===
-var PHASE_ORDER = ['1.1','1.2','1.3','2.1'];
+var PHASE_ORDER = ['1.1','1.2','1.3','2.1','2.2','2.3'];
 
 function getProgress(){
   try{

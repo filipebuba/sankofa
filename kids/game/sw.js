@@ -1,4 +1,4 @@
-const CACHE='sankofa-rift-v26';
+const CACHE='sankofa-rift-v27';
 const ASSETS=[
   './',
   'index.html',
@@ -8,6 +8,8 @@ const ASSETS=[
   'phases/1-2.js',
   'phases/1-3.js',
   'phases/2-1.js',
+  'phases/2-2.js',
+  'phases/2-3.js',
   'manifest.webmanifest',
   'assets/favicon.png',
   'assets/icon-192.png',
