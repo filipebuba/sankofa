@@ -1,0 +1,17 @@
+GIMP Palette
+Name: Sankofa Kids
+Columns: 7
+#
+168 105  61	sky-earth — Céu terra (gradiente topo)
+217 185  90	ochre — Ocre (gradiente base + acentos)
+106 133  48	savana — Savana / capim
+201 168  76	gold — Ouro — Vovó Sankofa
+184  90  58	terracotta — Terracota — acentos quentes
+237 229 213	bone-white — Branco osso — texto, dentes
+ 31  20   8	line-black — Linha preta — outline
+ 58  32  16	skin-1 — Sombra mais escura
+ 90  53  32	skin-2 — Sombra média
+125  85  53	skin-3 — Tom base escuro
+160 117  80	skin-4 — Tom base médio
+191 146 104	skin-5 — Highlight médio
+217 176 122	skin-6 — Highlight claro

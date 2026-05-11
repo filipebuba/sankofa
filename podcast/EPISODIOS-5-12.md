@@ -40,8 +40,8 @@
 
 > "Em 1973 o Reino do Benin solicitou pela primeira vez a devolução formal. Foi negada. Em 2007 a Comissão Pro-Restituição Bronze do Benin foi criada. Hoje, em 2026, ainda há bronzes em museus que se recusam até a confirmar quantos têm. O British Museum tem mais de 700. O Smithsonian, mais de 100. O Museu Etnológico de Berlim devolveu 21 em 2022. É processo longo."
 
-### Código cauris
-`BRONZE100` (100 cauris pelo apelo de devolução)
+### Desafio no jogo
+Jogar Mundo 5: Florestas e Reinos. Código de cauris só entra quando o resgate existir no app.
 
 ---
 
@@ -82,8 +82,8 @@
 
 > "Há mais de 6 mil quilombos contemporâneos no Brasil reconhecidos pela Fundação Cultural Palmares. Mais de 1.300 com título de terra. Eles continuam — em 2026 — em luta por demarcação. Palmares não foi 'um momento'. É um movimento contínuo."
 
-### Código cauris
-`ZUMBI95` (95 cauris)
+### Desafio no jogo
+Jogar Mundo 6: Resistência. Código de cauris só entra quando o resgate existir no app.
 
 ---
 
@@ -122,8 +122,8 @@
 
 > "A capoeira foi proibida no Brasil até 1937. Praticar capoeira na rua dava cadeia. Quem pegavam batiam. Foi Mestre Bimba (Manoel dos Reis Machado) que conseguiu — após décadas de luta — descriminalização e reconhecimento como esporte nacional. Hoje a capoeira é Patrimônio Imaterial da Humanidade pela UNESCO desde 2014."
 
-### Código cauris
-`AXE110` (110 cauris)
+### Desafio no jogo
+Jogar Mundo 7: O Encontro Forçado. Código de cauris só entra quando o resgate existir no app.
 
 ---
 
@@ -162,10 +162,10 @@
 
 ### Drop curiosidade
 
-> "Em 2025, 27 países africanos lançaram a Zona de Livre Comércio Continental Africana (AfCFTA). Maior área de livre comércio do mundo desde a OMC. 1,3 bilhão de pessoas. Decisão tomada na União Africana. Agenda 2063: 'A África que queremos'. O futuro não é palpite — é plano em curso."
+> "A Zona de Livre Comércio Continental Africana (AfCFTA) não nasceu em 2025. O acordo foi assinado em 2018, entrou em vigor em 2019 e o comércio começou oficialmente em 2021. Em 2026, a história é outra: implementação, adesão real, redução de barreiras, logística, moeda, juventude e indústria. É a maior área de livre comércio do mundo em número de países participantes, conectando um mercado potencial de mais de 1,3 bilhão de pessoas. Agenda 2063: 'A África que queremos'. O futuro não é palpite — é plano em disputa e em construção."
 
-### Código cauris
-`CABRAL120` (120 cauris)
+### Desafio no jogo
+Jogar Mundo 8: Luta e Liberdade. Código de cauris só entra quando o resgate existir no app.
 
 ---
 
@@ -193,8 +193,8 @@
 | 18–21| Tereza de Benguela   | Mato Grosso         | Chefiou Quilombo do Quariterê 20 anos                   |
 | 21–25| Conclusão            |                     | Por que essas mulheres só agora?                        |
 
-### Código cauris
-`MULHERES88` (88 cauris)
+### Desafio no jogo
+Revisitar os enigmas de mulheres guerreiras nos mundos 2, 5, 6 e 7. Código de cauris só entra quando o resgate existir no app.
 
 ---
 
@@ -229,23 +229,25 @@
 
 ---
 
-# Convidados confirmados / em negociação (lista de Wishlist)
+# Convidados-alvo por prioridade editorial
 
-| Convidado(a)              | Especialidade                       | Status              |
+> Nenhum nome abaixo está confirmado. A lista separa quem é realista para a fase 1, quem é difícil mas possível, e quem deve entrar apenas como legado/leitura/arquivo.
+
+| Convidado(a)              | Especialidade                       | Prioridade          |
 |---------------------------|-------------------------------------|---------------------|
-| Renato Noguera (UFRRJ)    | Afrocentricidade                    | Wishlist — abordar via DM |
-| Kabengele Munanga (USP)   | Mestiçagem, identidade              | Wishlist            |
-| Sueli Carneiro (Geledés)  | Feminismo negro                     | Wishlist            |
-| Djamila Ribeiro           | Lugar de fala                       | Wishlist            |
-| Conceição Evaristo        | Escrevivências                      | Wishlist            |
-| Achille Mbembe (Camarões) | Necropolítica                       | Convite remoto      |
-| Boaventura de Sousa Santos| Epistemologias do Sul               | Convite remoto      |
-| Mãe Beata de Yemonjá      | Candomblé como saber                | Wishlist            |
-| Bárbara Carine (UFBA)     | Educação, infâncias afroreferenciadas| Wishlist           |
-| Dyhorrani Beira (autora)  | Literatura YA afrocentrada          | Wishlist            |
-| Marcelo D2                | Música popular/diaspora             | Wishlist            |
-| Joel Zito Araújo          | Cinema afro-brasileiro              | Wishlist            |
-| Spirito Santo             | Sociologia do esporte (capoeira)   | Wishlist            |
+| Pesquisador(a) local / professor(a) de escola | História da África e Lei 10.639 | Realista agora |
+| Liderança quilombola local | Quilombo contemporâneo              | Realista agora      |
+| Iyalorixá / babalorixá local | Candomblé como saber comunitário  | Realista agora      |
+| Bárbara Carine (UFBA)     | Educação, infâncias afroreferenciadas| Difícil, possível  |
+| Renato Noguera (UFRRJ)    | Afrocentricidade                    | Difícil, possível   |
+| Joel Zito Araújo          | Cinema afro-brasileiro              | Difícil, possível   |
+| Marcelo D2                | Música popular/diáspora             | Difícil, possível   |
+| Kabengele Munanga (USP)   | Mestiçagem, identidade              | Sonho de longo prazo |
+| Sueli Carneiro (Geledés)  | Feminismo negro                     | Sonho de longo prazo |
+| Djamila Ribeiro           | Lugar de fala                       | Sonho de longo prazo |
+| Conceição Evaristo        | Escrevivências                      | Sonho de longo prazo |
+| Achille Mbembe (Camarões) | Necropolítica                       | Sonho de longo prazo |
+| Mãe Beata de Yemonjá      | Candomblé como saber                | Legado / in memoriam |
 
 ---
 
@@ -253,10 +255,10 @@
 
 | Trimestre  | Episódios                                           |
 |------------|------------------------------------------------------|
-| Q1 2027    | Trailer + Eps 1-12 (já roteirizados)                |
-| Q2 2027    | Eps 13-25 (Mundo 3 expandido + Mundo 4 expandido)  |
-| Q3 2027    | Eps 26-38 (especiais + entrevistas longas)          |
-| Q4 2027    | Eps 39-50 (encerramento ano + balanço Sankofa)     |
+| Q1 2027    | Trailer curto + Eps 1-3, quinzenal                 |
+| Q2 2027    | Eps 4-6 + 1 entrevista comunitária                  |
+| Q3 2027    | Eps 7-8 + especial Mulheres da Resistência          |
+| Q4 2027    | Balanço, reedições, cortes curtos e planejamento S2 |
 
 ---
 

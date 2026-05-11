@@ -1,0 +1,33 @@
+# Secrets
+.env
+.env.local
+
+# Python virtualenv (TTS tools)
+.venv-tts/
+__pycache__/
+*.pyc
+
+# Generated audio (regenerable from scripts + stems)
+audio/voice/ep*-stems/
+audio/voice/ep*-stems-v2/
+audio/voice/ep*-stems-v3/
+audio/voice/ep*-narracao-completa.mp3
+audio/voice/ep*-narracao.wav
+audio/voice/tests/
+
+# Suno-generated music sources (kept externally — too large for git)
+audio/music/ep*.mp3
+
+# Final mixed masters (regenerable from sources + scripts)
+audio/masters/*.mp3
+audio/masters/*.wav
+
+# Rendered video exports (regenerable)
+exports/youtube-16x9/*.mp4
+exports/reels-9x16/*.mp4
+exports/tiktok-9x16/*.mp4
+
+# Misc
+*.log
+.DS_Store
+Thumbs.db

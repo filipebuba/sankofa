@@ -3,20 +3,20 @@ window.SANKOFA_ENIGMAS = [
     id: "w1e1",
     world: 1,
     title: "O Berço",
-    intro: "Uma cicatriz na terra. 3,2 milhões de anos. O primeiro passo da humanidade.",
-    context: "No leste da África, um vale enorme corta a paisagem. É aqui que os cientistas encontraram os fósseis mais antigos da humanidade. Um esqueleto com apenas 1,1 metro de altura — apelidado de <strong>Lucy</strong> — já caminhava sobre duas pernas há mais de 3 milhões de anos.",
+    intro: "Uma cicatriz na terra. Milhões de anos. Os primeiros passos rumo a nós.",
+    context: "No leste da África, um vale enorme corta a paisagem. É aqui que os cientistas encontraram alguns dos fósseis hominíneos mais célebres. Um esqueleto com apenas 1,1 metro de altura — apelidado de <strong>Lucy</strong> (<em>Australopithecus afarensis</em>) — já caminhava sobre duas pernas há cerca de 3,2 milhões de anos. Antes dela houve Sahelanthropus, Orrorin e Ardipithecus, hominíneos bípedes ainda mais antigos. Foi com o <strong>Homo erectus</strong>, há cerca de 2 milhões de anos, que apareceu o caminhar de longa distância parecido com o nosso.",
     question: "Que lugar é este?",
     options: ["Monte Kilimanjaro", "Vale do Rift"],
     correct: 1,
-    explanation: "O Grande Vale do Rift, no leste da África, é o berço da humanidade. Os fósseis de Lucy foram descobertos em 1974 na Etiópia. O nome veio porque os cientistas ouviam \"Lucy in the Sky with Diamonds\" dos Beatles naquela noite.",
+    explanation: "O Grande Vale do Rift, no leste da África, é considerado o berço dos primeiros hominíneos. Os fósseis de Lucy foram descobertos em 1974 na Etiópia. O nome veio porque os cientistas ouviam \"Lucy in the Sky with Diamonds\" dos Beatles naquela noite. Lucy é a hominínea bípede mais famosa, mas não foi a primeira: as pegadas de Laetoli (3,6 Ma) e fósseis ainda mais antigos (Ardipithecus 4,4 Ma; Sahelanthropus c. 7 Ma) mostram que o bipedismo é muito anterior ao género Homo.",
     hints: [
       "É uma enorme cicatriz geográfica no leste do continente.",
       "Estende-se por Etiópia, Quénia e Tanzânia.",
       "O nome do fóssil veio de uma música dos Beatles."
     ],
     fragment: { pattern: "fp-rift", name: "Vale do Rift" },
-    curiosity: "Lucy tinha 1,1m de altura e 3,2 milhões de anos. Mas não era a mais antiga — em 2000, encontraram \"Selam\", com 3,3 milhões de anos.",
-    source: "HGA UNESCO, Volume I"
+    curiosity: "Lucy não foi a primeira nem a mais antiga: Sahelanthropus tchadensis (Chade, ~7 Ma), Orrorin (~6 Ma) e Ardipithecus (~4,4 Ma) já tinham postura bípede. Em 2000, na mesma região da Lucy, encontraram \"Selam\", com 3,3 milhões de anos.",
+    source: "HGA UNESCO, Volume I (Ki-Zerbo, cap. 19 — Coppens & Balout)"
   },
   {
     id: "w1e2",
