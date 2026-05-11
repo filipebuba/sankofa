@@ -281,7 +281,8 @@ Substituir `intro` por menu pós-clique com 3 botões:
 - [x] ~~**Bonus mem** "Árvore Bantu" (1.3)~~ — `buildBonusMems()` cria árvore mesh (trunk + canopy + anel dourado pulsante) para `bonusMems[]` com `requires:'axe'`; `chopNearbyTree()` derruba (rotação fall + opacity) + cauris bonus + griot.
 - [x] ~~**Canoa móvel** (1.3)~~ — `buildMovingPlats()` cria mesh canoa (hull + deck) + push em `plats[]` para AABB collision; `updateMovingPlats()` oscila no eixo `range[0..1]` sin com `speed`; sticky platform shift player.x pelo delta quando S.gnd em cima.
 - [x] ~~**Snake hazard** (1.3)~~ — `buildHazards()` cria sprite 🐍 oscilando y; collision com cooldown 1500ms causa `loseLife()`.
-- [ ] **Hazards** restantes: hippo/croc (1.2).
+- [x] ~~**Hippo** (1.2)~~ — sprite 🦛 com cycle visible/submerged (default 4000ms each); blocking AABB empurra player de volta + toast hint. Mergulha → opacity .25 + y:-0.6.
+- [x] ~~**Crocodile** (1.2)~~ — sprite 🐊 patrol horizontal `range[0..1]` a `speed`; flip scale.x conforme direção; collision em ground level (S.y<1.2) com cooldown 1500ms causa `loseLife()`.
 - [ ] **Water-gap respawn** (1.2/1.3) — `waterGaps[]` precisa loop de detecção. Atualmente `S.y<-6` apanha quedas via void existente.
 - [ ] **Bonus mem** "Árvore Bantu" (1.3) — `bonusMems[]` ainda não construído.
 - [ ] `reward` switch em `showEnigma` (sempre +1 vida; spec define `'vida'|'passagem'|'cauris'|'ferramenta'`).

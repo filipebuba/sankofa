@@ -496,11 +496,31 @@ function buildHazards(){
       spr.position.set(d.x, startY, 0);
       scene.add(spr);
       hazardEntities.push({ data: d, mesh: spr, t0: performance.now() });
+    } else if(d.type === 'hippo'){
+      var tex = emojiTexture('🦛');
+      var mat = new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: .05 });
+      var spr = new THREE.Sprite(mat);
+      spr.scale.set(1.8, 1.4, 1);
+      spr.center.set(.5, 0);
+      spr.position.set(d.x, 0, 0);
+      scene.add(spr);
+      hazardEntities.push({ data: d, mesh: spr, t0: performance.now(), submerged: false });
+    } else if(d.type === 'crocodile' || d.type === 'croc'){
+      var tex = emojiTexture('🐊');
+      var mat = new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: .05 });
+      var spr = new THREE.Sprite(mat);
+      spr.scale.set(1.4, 1.0, 1);
+      spr.center.set(.5, 0);
+      var startX = (d.range && d.range[0]) || d.x;
+      spr.position.set(startX, 0.05, 0);
+      scene.add(spr);
+      hazardEntities.push({ data: d, mesh: spr, t0: performance.now(), dir: 1 });
     }
   });
 }
 
 function updateHazards(){
+  var now = performance.now();
   hazardEntities.forEach(function(h){
     var d = h.data;
     if(d.type === 'snake'){
@@ -508,15 +528,61 @@ function updateHazards(){
       var yLow = cycleArr[0], yHigh = cycleArr[1];
       var range = yHigh - yLow;
       var center = (yLow + yHigh) / 2;
-      var t = (performance.now() - h.t0) / 1000;
+      var t = (now - h.t0) / 1000;
       var newY = center + Math.sin(t * (d.speed || 1.0)) * range/2;
       h.mesh.position.y = newY;
-      // Collision: player AABB vs snake sprite
       var hw = .4, ht = 1.5;
       if(Math.abs(S.x - d.x) < .6 + hw &&
          Math.abs(S.y + .8 - newY) < .5 + ht/2){
-        if(!h.hitCooldown || performance.now() - h.hitCooldown > 1500){
-          h.hitCooldown = performance.now();
+        if(!h.hitCooldown || now - h.hitCooldown > 1500){
+          h.hitCooldown = now;
+          loseLife();
+        }
+      }
+    }
+    else if(d.type === 'hippo'){
+      // Cycle: visible (blocking) for cycleMs ms, then submerged for same duration.
+      var cycleMs = d.cycle || 4000;
+      var phase = ((now - h.t0) % (cycleMs * 2)) / cycleMs;
+      var submerged = phase >= 1;
+      if(submerged !== h.submerged){
+        h.submerged = submerged;
+        h.mesh.material.opacity = submerged ? .25 : 1;
+        h.mesh.position.y = submerged ? -0.6 : 0;
+      }
+      // Blocking AABB push when visible
+      if(!submerged && d.blocking){
+        var hw = .45;
+        var blockHalfW = .9;
+        var dx = S.x - d.x;
+        if(Math.abs(dx) < blockHalfW + hw && S.y < 1.8){
+          // Push player to outside edge they came from
+          if(dx >= 0) S.x = d.x + blockHalfW + hw + .01;
+          else        S.x = d.x - blockHalfW - hw - .01;
+          if(S.vx * Math.sign(dx) < 0) S.vx = 0; // stop into-wall velocity
+          // First-time hint
+          if(!h.hintShown){
+            h.hintShown = true;
+            showToast('🦛 Hipopótamo a banhar-se. Espera ele mergulhar.');
+          }
+        }
+      }
+    }
+    else if(d.type === 'crocodile' || d.type === 'croc'){
+      var rangeArr = d.range || [d.x - 2, d.x + 2];
+      var speed = d.speed || 1.5;
+      // Patrol back-and-forth
+      var x = h.mesh.position.x + h.dir * speed * (1/60);
+      if(x >= rangeArr[1]){ x = rangeArr[1]; h.dir = -1; }
+      else if(x <= rangeArr[0]){ x = rangeArr[0]; h.dir = 1; }
+      h.mesh.position.x = x;
+      // Flip sprite by negative scale x (mirrors)
+      h.mesh.scale.x = (h.dir > 0 ? 1 : -1) * Math.abs(h.mesh.scale.x);
+      // Collision (ground level)
+      var hw = .45;
+      if(Math.abs(S.x - x) < .7 + hw && S.y < 1.2){
+        if(!h.hitCooldown || now - h.hitCooldown > 1500){
+          h.hitCooldown = now;
           loseLife();
         }
       }
