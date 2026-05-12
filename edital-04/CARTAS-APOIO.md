@@ -418,9 +418,9 @@ Prof(a). Dr(a). [Nome]
 
 | Dia      | Ação                                                       |
 |----------|------------------------------------------------------------|
-| **Hoje (06/05)** | Envia 5 e-mails simultaneamente, antes do fim do dia |
-| 09/05    | Faz 1º follow-up (3 dias depois) para os que não responderem |
-| 14/05    | Faz 2º follow-up — última chance                            |
+| **Hoje (12/05)** | Envia 5 e-mails simultaneamente, antes do fim do dia |
+| 15/05    | Faz 1º follow-up (3 dias depois) para os que não responderem |
+| 19/05    | Faz 2º follow-up — última chance                            |
 | 20/05    | Confirma recebimento das cartas que chegaram                |
 | 22/05    | **Deadline interno** para receber todas as cartas           |
 | 27/05    | Submete o edital                                            |
