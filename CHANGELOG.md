@@ -4,6 +4,39 @@ Todas as mudanças notáveis do Sankofa. Formato baseado em [Keep a Changelog](h
 
 ## [Unreleased]
 
+### Sankofa Kids — Phase Architecture (branch `dev`)
+
+#### Adicionado
+
+- **Phase data layer** em `kids/game/phases/{1-1,1-2,1-3}.js` —
+  cada fase expõe `window.PHASE_X_Y` com palette, plats, cauris, mems,
+  npcs, enigmas, audio, tutorial, win, progress.
+- **Phase loader** em `game.js` — lê `?phase=` query → localStorage
+  `sankofa_kids_progress` → fallback `1.1`.
+- **`markPhaseDone(perfect)`** persiste win + perfect em localStorage.
+- **Selector UI** no `#intro` (`#phase-select` cards) com estados
+  current/done/locked/available. Click em card unlocked recarrega com
+  `?phase=X.Y`.
+- **Specs Fase 1.2 (Saara Verde)** + **Fase 1.3 (Forja Bantu)** em
+  `kids/docs/world-1-rift/PHASES-1-2-1-3.md`.
+- **Renderer enigma game-first**: `scene` + `diff` + `type` em overlay
+  (`.e-meta`, `.e-scene`); idem NPC dialog (`.nd-scene`).
+- **`shuffledOptions(o, c)`** randomiza alternativas em runtime
+  (enigma + NPC) — cumpre spec "não usar sempre A".
+- **`escapeHTML()`** protege texto user-supplied em renderers.
+- **4+ alternativas** suportadas em enigmas/NPCs.
+
+#### Removido
+
+- NPCs **Fred Fóssil** (🦴) e **Macaco Curioso** (🐒) da fase 1.1.
+  Velho Griot fica único NPC com `unlock:0`, movido x:32 → x:18.
+
+#### Corrigido
+
+- **Sub-app `/kids/game/` redirecionando para app principal em produção**:
+  root `sw.js` agora ignora paths `/kids/*` no fetch handler
+  (cache `v1.5.14-dev` → `v1.5.15-dev`). Sub-app gere próprio SW.
+
 ### Pedagogia — Caderno de Revisão (branch `dev`)
 
 #### Adicionado

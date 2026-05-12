@@ -8,7 +8,7 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.5.14-dev";
+const VERSION = "v1.5.15-dev";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 
@@ -104,6 +104,10 @@ self.addEventListener("fetch", function (event) {
   // Ignora requests de extensões (chrome-extension://, moz-extension://, etc).
   // Cache.put() rejeita schemes não-HTTP.
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
+
+  // Sub-apps (Sankofa Kids etc) têm o próprio SW e fallback.
+  // Não interceptar — evita servir /index.html principal no lugar do sub-app.
+  if (url.origin === self.location.origin && url.pathname.startsWith("/kids/")) return;
 
   // Nunca cachear chamadas Supabase
   if (isSupabase(url)) return;

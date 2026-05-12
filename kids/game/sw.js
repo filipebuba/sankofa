@@ -1,7 +1,15 @@
-const CACHE='sankofa-rift-v3';
+const CACHE='sankofa-rift-v28';
 const ASSETS=[
   './',
   'index.html',
+  'styles.css',
+  'game.js',
+  'phases/1-1.js',
+  'phases/1-2.js',
+  'phases/1-3.js',
+  'phases/2-1.js',
+  'phases/2-2.js',
+  'phases/2-3.js',
   'manifest.webmanifest',
   'assets/favicon.png',
   'assets/icon-192.png',
@@ -14,6 +22,27 @@ const ASSETS=[
   'assets/griot/fossil.mp3',
   'assets/griot/chopper.mp3',
   'assets/griot/rupestre.mp3',
+  'assets/world1-2/bg-music.mp3',
+  'assets/world1-2/griot/bovino.mp3',
+  'assets/world1-2/griot/mao.mp3',
+  'assets/world1-2/griot/caca.mp3',
+  'assets/world1-2/pastor.jpg',
+  'assets/world1-2/pintora.png',
+  'assets/world1-3/bg-music.mp3',
+  'assets/world1-3/griot/forno.mp3',
+  'assets/world1-3/griot/enxada.mp3',
+  'assets/world1-3/griot/canoa.mp3',
+  'assets/world1-3/ferreiro.jpg',
+  'assets/world1-3/linguista.jpg',
+  'assets/world1-3/pescador.jpg',
+  'assets/world2-1/faraonubia.jpg',
+  'assets/world2-1/sacerdotisa.jpg',
+  'assets/world2-2/kandake.jpg',
+  'assets/world2-2/ferreiro-meroe.jpg',
+  'assets/world2-2/escriba-meroe.jpg',
+  'assets/world2-3/mercador.jpg',
+  'assets/world2-3/ezana.jpg',
+  'assets/world2-3/monge.jpg',
   'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
 ];
 
@@ -27,7 +56,7 @@ self.addEventListener('install',e=>{
 self.addEventListener('activate',e=>{
   e.waitUntil(
     caches.keys().then(keys=>Promise.all(
-      keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))
+      keys.filter(k=>k.startsWith('sankofa-rift-')&&k!==CACHE).map(k=>caches.delete(k))
     ))
   );
   self.clients.claim();
@@ -35,6 +64,9 @@ self.addEventListener('activate',e=>{
 
 self.addEventListener('fetch',e=>{
   if(e.request.method!=='GET')return;
+  const url=new URL(e.request.url);
+  const isHTML=(e.request.mode==='navigate')||
+               (e.request.headers.get('accept')||'').indexOf('text/html')!==-1;
   e.respondWith(
     caches.match(e.request).then(hit=>{
       if(hit)return hit;
@@ -43,7 +75,13 @@ self.addEventListener('fetch',e=>{
         const clone=res.clone();
         caches.open(CACHE).then(c=>c.put(e.request,clone)).catch(()=>{});
         return res;
-      }).catch(()=>caches.match('index.html'));
+      }).catch(()=>{
+        // Only fallback to index.html for HTML requests — otherwise return
+        // a 504 so non-HTML resources (audio, images, JS) fail explicitly
+        // instead of being silently replaced by the HTML shell.
+        if(isHTML)return caches.match('index.html');
+        return new Response('',{status:504,statusText:'Network error'});
+      });
     })
   );
 });
