@@ -374,7 +374,28 @@ function buildLevel(){
     var mat=new THREE.MeshLambertMaterial({color:P.gd,emissive:P.gd,emissiveIntensity:.2,flatShading:true});
     var m=new THREE.Mesh(geo,mat);
     m.position.set(c[0],c[1],0);m.rotation.x=Math.PI/4;
-    scene.add(m);cauris.push({m:m,x:c[0],y:c[1],got:false});
+    scene.add(m);
+    // Visual hint: faint vertical beam from nearest plat top up to elevated cauri,
+    // so player reads "this cauri sits on this plat" instead of "treasure floating in air".
+    var cx=c[0], cy=c[1];
+    if(cy > 1.6){
+      var nearestTop=-99;
+      for(var pi=0; pi<plats.length; pi++){
+        var p2=plats[pi];
+        if(Math.abs(p2.cx - cx) < (p2.w/2 + 0.4) && p2.t < cy){
+          if(p2.t > nearestTop) nearestTop = p2.t;
+        }
+      }
+      var gap = cy - nearestTop;
+      if(nearestTop > -1 && gap > 0.35 && gap < 2.4){
+        var bGeo = new THREE.CylinderGeometry(.045, .045, gap, 6);
+        var bMat = new THREE.MeshBasicMaterial({color: P.gd || 0xc9a84c, transparent:true, opacity:.22});
+        var beam = new THREE.Mesh(bGeo, bMat);
+        beam.position.set(cx, nearestTop + gap/2, -.06);
+        scene.add(beam);
+      }
+    }
+    cauris.push({m:m,x:c[0],y:c[1],got:false});
   });
 
   // Memory fragments — types from phase
@@ -1562,16 +1583,23 @@ function buildBackground(){
     scene.add(m);
   });
 
-  // Acacia trees
-  var treePositions=[[-3,-6],[8,-8],[16,-7],[26,-9],[35,-6],[44,-8]];
+  // Acacia trees — pushed further back; canopy as cone cluster, not flat disc,
+  // so it cannot be mistaken for a platform.
+  var treePositions=[[-3,-12],[8,-14],[16,-13],[26,-15],[35,-12],[44,-14]];
   treePositions.forEach(function(tp){
     var grp=new THREE.Group();
-    var trunk=new THREE.Mesh(new THREE.CylinderGeometry(.08,.12,2.2,6),
+    var trunk=new THREE.Mesh(new THREE.CylinderGeometry(.10,.18,2.4,6),
       new THREE.MeshLambertMaterial({color:P.ea,flatShading:true}));
-    trunk.position.y=1.1;grp.add(trunk);
-    var canopy=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.2,.25,8),
-      new THREE.MeshLambertMaterial({color:P.gn,flatShading:true}));
-    canopy.position.y=2.5;grp.add(canopy);
+    trunk.position.y=1.2;grp.add(trunk);
+    // Canopy = 3 overlapping cones (irregular tree silhouette)
+    var cMat=new THREE.MeshLambertMaterial({color:P.gn,flatShading:true});
+    var cMatDark=new THREE.MeshLambertMaterial({color:P.lf||P.gn,flatShading:true});
+    var c1=new THREE.Mesh(new THREE.ConeGeometry(1.1,1.6,8),cMat);
+    c1.position.y=3.0;grp.add(c1);
+    var c2=new THREE.Mesh(new THREE.ConeGeometry(.9,1.4,8),cMatDark);
+    c2.position.set(.45,2.7,.2);grp.add(c2);
+    var c3=new THREE.Mesh(new THREE.ConeGeometry(.85,1.3,8),cMat);
+    c3.position.set(-.4,2.6,-.2);grp.add(c3);
     grp.position.set(tp[0],0,tp[1]);
     grp.userData.parallax=.3;grp.userData.origX=tp[0];
     scene.add(grp);
