@@ -351,18 +351,21 @@ function buildLevel(){
   plats.forEach(function(p){
     var h2=p.h;var geo=new THREE.BoxGeometry(p.w,h2,5);
     var col=p.tp==='float'?P.tr:P.ea;
-    var mat=new THREE.MeshLambertMaterial({color:col,flatShading:true});
+    var isRiver=p.tp==='riverPlat';
+    var mat=new THREE.MeshLambertMaterial({color:col,flatShading:true,transparent:isRiver,opacity:1});
     var m=new THREE.Mesh(geo,mat);
     m.position.set(p.cx,p.cy-h2/2,0);m.receiveShadow=true;m.castShadow=true;
     scene.add(m);
 
     if(p.tp!=='float'){
       var topGeo=new THREE.BoxGeometry(p.w,.12,5);
-      var topMat=new THREE.MeshLambertMaterial({color:P.sk,flatShading:true});
+      var topMat=new THREE.MeshLambertMaterial({color:P.sk,flatShading:true,transparent:isRiver,opacity:1});
       var top=new THREE.Mesh(topGeo,topMat);
       top.position.set(p.cx,p.cy+.06,0);top.receiveShadow=true;
       scene.add(top);
+      if(isRiver) p.topMesh=top;
     }
+    if(isRiver) p.mesh=m;
   });
 
   // Cauris from phase
@@ -968,29 +971,57 @@ function setupForgeQTE(){
 // ============================================================
 
 // --- FLOOD (Phase 2.1: Cheias do Kemet) ---
-var flood = { active:false, t:0, state:'low', waterMesh:null, lastHit:0 };
+// Two-layer water (deep + surface) with eased rise/fall and HIGH-state
+// sinusoidal oscillation. RiverPlats fade opacity in sync with submersion.
+var flood = {
+  active:false, t:0, state:'low',
+  deepMesh:null, surfaceMesh:null,
+  baseLowY:-1.0, baseHighY:1.0,
+  lastHit:0
+};
+
+function easeInOutCubic(t){
+  return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+}
 
 function buildFlood(){
   if(!PHASE.waterCycle) return;
   flood.active = true;
   flood.t = 0;
   flood.state = 'low';
-  var geo = new THREE.BoxGeometry(80, 1.0, 5);
-  var mat = new THREE.MeshLambertMaterial({
-    color: P.wt || 0x2a5a9a,
+
+  // Deep water (darker, lower body)
+  var deepGeo = new THREE.BoxGeometry(80, 2.4, 5);
+  var deepMat = new THREE.MeshLambertMaterial({
+    color: P.dp || 0x0e3270,
     transparent: true,
-    opacity: .72,
+    opacity: .85,
     flatShading: true
   });
-  flood.waterMesh = new THREE.Mesh(geo, mat);
-  flood.waterMesh.position.set(30, -1.0, 0);
-  scene.add(flood.waterMesh);
+  flood.deepMesh = new THREE.Mesh(deepGeo, deepMat);
+  flood.deepMesh.position.set(30, flood.baseLowY - .8, 0);
+  scene.add(flood.deepMesh);
+
+  // Surface (lighter, sits on top, oscillates)
+  var surfGeo = new THREE.BoxGeometry(80, .35, 5);
+  var surfMat = new THREE.MeshLambertMaterial({
+    color: P.wt || P.nt || 0x2a5a9a,
+    emissive: P.wt || 0x2a5a9a,
+    emissiveIntensity: .12,
+    transparent: true,
+    opacity: .78,
+    flatShading: true
+  });
+  flood.surfaceMesh = new THREE.Mesh(surfGeo, surfMat);
+  flood.surfaceMesh.position.set(30, flood.baseLowY + .4, 0);
+  scene.add(flood.surfaceMesh);
 }
 
 function updateFlood(dt){
   if(!flood.active) return;
   var W = PHASE.waterCycle;
   flood.t = (flood.t + dt*1000) % W.cycleMs;
+
   var ns;
   if(flood.t < W.warningStartMs) ns = 'low';
   else if(flood.t < W.risingStartMs) ns = 'warning';
@@ -1001,40 +1032,76 @@ function updateFlood(dt){
   if(ns !== flood.state){
     flood.state = ns;
     if(ns === 'warning') showToast('⚠ Cheia a aproximar!');
+    if(ns === 'rising'){
+      // Foam particles along riverPlats at the moment water starts rising
+      for(var i=0;i<plats.length;i++){
+        var p = plats[i];
+        if(p.tp !== 'riverPlat') continue;
+        spawnDust(p.cx, p.t + .1, .5);
+      }
+    }
   }
 
-  var targetY;
+  // Eased water level
+  var loY = flood.baseLowY, hiY = flood.baseHighY;
+  var levelY;
   switch(flood.state){
-    case 'low':     targetY = -1.0; break;
-    case 'warning': targetY = -0.85; break;
-    case 'rising':
+    case 'low':     levelY = loY; break;
+    case 'warning': levelY = loY + .15; break;
+    case 'rising': {
       var rp = (flood.t - W.risingStartMs) / Math.max(1, W.highStartMs - W.risingStartMs);
-      targetY = -0.85 + rp * 1.85;
+      levelY = loY + easeInOutCubic(rp) * (hiY - loY);
       break;
-    case 'high':    targetY = 1.0; break;
-    case 'falling':
+    }
+    case 'high':    levelY = hiY; break;
+    case 'falling': {
       var fp = (flood.t - W.fallingStartMs) / Math.max(1, W.cycleMs - W.fallingStartMs);
-      targetY = 1.0 - fp * 2.0;
+      levelY = hiY - easeInOutCubic(fp) * (hiY - loY);
       break;
-    default: targetY = -1.0;
-  }
-  flood.waterMesh.position.y = targetY;
-
-  var submerged = (flood.state === 'high' || flood.state === 'rising');
-  for(var i = 0; i < plats.length; i++){
-    var p = plats[i];
-    if(p.tp !== 'riverPlat') continue;
-    p.submerged = submerged;
+    }
+    default: levelY = loY;
   }
 
-  if(submerged && !S.dying && !S.won){
+  // Surface oscillates only during HIGH; subtle ripple during rising/falling.
+  var ts = performance.now()/1000;
+  var wave = 0;
+  if(flood.state === 'high'){
+    wave = Math.sin(ts * 2.2) * .12 + Math.sin(ts * 5.3) * .04;
+  } else if(flood.state === 'rising' || flood.state === 'falling'){
+    wave = Math.sin(ts * 3.0) * .05;
+  }
+  flood.surfaceMesh.position.y = levelY + .4 + wave;
+  flood.deepMesh.position.y = levelY - .8;
+
+  // Compute submersion ratio per riverPlat based on actual surface vs plat top
+  var surfaceY = flood.surfaceMesh.position.y;
+  for(var k = 0; k < plats.length; k++){
+    var pl = plats[k];
+    if(pl.tp !== 'riverPlat') continue;
+    // 0 = fully exposed, 1 = fully submerged
+    var ratio = Math.max(0, Math.min(1, (surfaceY - pl.t) / .8));
+    pl.submerged = ratio > .55;
+    if(pl.mesh && pl.mesh.material){
+      pl.mesh.material.opacity = 1 - ratio * .7;
+    }
+    if(pl.topMesh && pl.topMesh.material){
+      pl.topMesh.material.opacity = 1 - ratio * .85;
+    }
+  }
+
+  // Damage when player stands on submerged riverPlat
+  if(!S.dying && !S.won){
     for(var j = 0; j < plats.length; j++){
-      var pl = plats[j];
-      if(pl.tp !== 'riverPlat') continue;
-      if(S.x >= pl.l - .3 && S.x <= pl.r + .3 && S.y < pl.t + .8 && S.y > pl.cy - .5){
+      var pj = plats[j];
+      if(pj.tp !== 'riverPlat' || !pj.submerged) continue;
+      if(S.x >= pj.l - .3 && S.x <= pj.r + .3 && S.y < pj.t + .9 && S.y > pj.cy - .5){
         var nowMs = performance.now();
         if(nowMs - flood.lastHit > 1800){
           flood.lastHit = nowMs;
+          // Splash particle burst
+          spawnDust(S.x, pj.t, 1.2);
+          spawnDust(S.x - .3, pj.t + .3, .8);
+          spawnDust(S.x + .3, pj.t + .3, .8);
           S.deathCause = 'water';
           loseLife();
         }
