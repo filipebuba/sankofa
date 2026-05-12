@@ -351,18 +351,21 @@ function buildLevel(){
   plats.forEach(function(p){
     var h2=p.h;var geo=new THREE.BoxGeometry(p.w,h2,5);
     var col=p.tp==='float'?P.tr:P.ea;
-    var mat=new THREE.MeshLambertMaterial({color:col,flatShading:true});
+    var isRiver=p.tp==='riverPlat';
+    var mat=new THREE.MeshLambertMaterial({color:col,flatShading:true,transparent:isRiver,opacity:1});
     var m=new THREE.Mesh(geo,mat);
     m.position.set(p.cx,p.cy-h2/2,0);m.receiveShadow=true;m.castShadow=true;
     scene.add(m);
 
     if(p.tp!=='float'){
       var topGeo=new THREE.BoxGeometry(p.w,.12,5);
-      var topMat=new THREE.MeshLambertMaterial({color:P.sk,flatShading:true});
+      var topMat=new THREE.MeshLambertMaterial({color:P.sk,flatShading:true,transparent:isRiver,opacity:1});
       var top=new THREE.Mesh(topGeo,topMat);
       top.position.set(p.cx,p.cy+.06,0);top.receiveShadow=true;
       scene.add(top);
+      if(isRiver) p.topMesh=top;
     }
+    if(isRiver) p.mesh=m;
   });
 
   // Cauris from phase
@@ -633,6 +636,39 @@ function buildHazards(){
       spr.position.set(startX, 0.05, 0);
       scene.add(spr);
       hazardEntities.push({ data: d, mesh: spr, t0: performance.now(), dir: 1 });
+    } else if(d.type === 'sombra'){
+      var tex = emojiTexture('👤', 64);
+      var mat = new THREE.SpriteMaterial({ map: tex, transparent: true, color: 0x223344, opacity: .85 });
+      var spr = new THREE.Sprite(mat);
+      spr.scale.set(1.4, 1.7, 1);
+      spr.center.set(.5, 0);
+      spr.position.set(d.x, 0.05, 0);
+      scene.add(spr);
+      hazardEntities.push({ data: d, mesh: spr, t0: performance.now(), dir: 1 });
+    } else if(d.type === 'fallingRock'){
+      var tex = emojiTexture('🪨', 64);
+      var mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+      var spr = new THREE.Sprite(mat);
+      spr.scale.set(.9, .9, 1);
+      spr.position.set(d.x, d.y, 0);
+      scene.add(spr);
+      var shadGeo = new THREE.RingGeometry(.32, .55, 14);
+      var shadMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0, side: THREE.DoubleSide });
+      var shadow = new THREE.Mesh(shadGeo, shadMat);
+      shadow.rotation.x = -Math.PI/2;
+      shadow.position.set(d.x, (d.dropY || 0.05) + .02, 0);
+      scene.add(shadow);
+      hazardEntities.push({ data: d, mesh: spr, shadow: shadow, t0: performance.now(), state: 'idle', startY: d.y });
+    } else if(d.type === 'gelada'){
+      var tex = emojiTexture('🐒', 64);
+      var mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+      var spr = new THREE.Sprite(mat);
+      spr.scale.set(1.2, 1.2, 1);
+      spr.center.set(.5, 0);
+      var sx = (d.range && d.range[0]) || d.x;
+      spr.position.set(sx, 0.05, 0);
+      scene.add(spr);
+      hazardEntities.push({ data: d, mesh: spr, t0: performance.now(), dir: 1 });
     }
   });
 }
@@ -703,6 +739,82 @@ function updateHazards(){
         if(!h.hitCooldown || now - h.hitCooldown > 1500){
           h.hitCooldown = now;
           S.deathCause = 'croc';
+          loseLife();
+        }
+      }
+    }
+    else if(d.type === 'sombra'){
+      var sRange = d.range || [d.x - 4, d.x + 4];
+      var sSpeed = d.speed || 1.0;
+      var sx = h.mesh.position.x + h.dir * sSpeed * (1/60);
+      var litNear = d.repelledByLight && isNearLitTorch(sx, h.mesh.position.y, 3.5);
+      if(litNear){
+        h.mesh.material.opacity = .3;
+        sx = h.mesh.position.x - h.dir * sSpeed * 1.5 * (1/60);
+      } else {
+        h.mesh.material.opacity = .85;
+      }
+      if(sx >= sRange[1]){ sx = sRange[1]; h.dir = -1; }
+      else if(sx <= sRange[0]){ sx = sRange[0]; h.dir = 1; }
+      h.mesh.position.x = sx;
+      if(!litNear && Math.abs(S.x - sx) < .6 && S.y < 1.8){
+        if(!h.hitCooldown || now - h.hitCooldown > 1500){
+          h.hitCooldown = now;
+          S.deathCause = 'sombra';
+          loseLife();
+        }
+      }
+    }
+    else if(d.type === 'fallingRock'){
+      var cycleMs = d.cycleMs || 5000;
+      var warningMs = d.warningMs || 1000;
+      var elapsed = (now - h.t0) % cycleMs;
+      var dropY = (d.dropY != null) ? d.dropY : 0.05;
+      var rockHw = .45;
+      if(elapsed < cycleMs - warningMs){
+        if(h.state !== 'idle'){
+          h.state = 'idle';
+          h.mesh.position.y = h.startY;
+          h.shadow.material.opacity = 0;
+        }
+      } else if(elapsed < cycleMs - warningMs/2){
+        h.state = 'warning';
+        var k = (elapsed - (cycleMs - warningMs)) / Math.max(1, warningMs/2);
+        h.shadow.material.opacity = .25 + k * .45;
+      } else {
+        if(h.state !== 'falling'){
+          h.state = 'falling';
+          h.fallStart = now;
+        }
+        var ft = (now - h.fallStart) / 300;
+        if(ft >= 1){
+          h.mesh.position.y = dropY;
+          h.shadow.material.opacity = 0;
+          if(Math.abs(S.x - d.x) < .65 + rockHw && Math.abs(S.y - dropY) < 1.1){
+            if(!h.hitCooldown || now - h.hitCooldown > 2000){
+              h.hitCooldown = now;
+              S.deathCause = 'pedra';
+              loseLife();
+            }
+          }
+        } else {
+          h.mesh.position.y = h.startY - (h.startY - dropY) * ft;
+          h.shadow.material.opacity = .55;
+        }
+      }
+    }
+    else if(d.type === 'gelada'){
+      var gRange = d.range || [d.x - 2, d.x + 2];
+      var gSpeed = d.speed || 1.2;
+      var gx = h.mesh.position.x + h.dir * gSpeed * (1/60);
+      if(gx >= gRange[1]){ gx = gRange[1]; h.dir = -1; }
+      else if(gx <= gRange[0]){ gx = gRange[0]; h.dir = 1; }
+      h.mesh.position.x = gx;
+      h.mesh.scale.x = (h.dir > 0 ? 1 : -1) * Math.abs(h.mesh.scale.x);
+      if(Math.abs(S.x - gx) < .65 && S.y < 1.5){
+        if(!h.hitCooldown || now - h.hitCooldown > 1500){
+          h.hitCooldown = now;
+          S.deathCause = 'gelada';
           loseLife();
         }
       }
@@ -852,6 +964,530 @@ function setupForgeQTE(){
   var cancel = el.querySelector('.fq-cancel');
   if(tap) tap.addEventListener('click', function(e){ e.stopPropagation(); forgeQTETap(); });
   if(cancel) cancel.addEventListener('click', function(e){ e.stopPropagation(); closeForgeQTE(false); });
+}
+
+// ============================================================
+// === MUNDO 2 MECHANICS ===
+// ============================================================
+
+// --- FLOOD (Phase 2.1: Cheias do Kemet) ---
+// Two-layer water (deep + surface) with eased rise/fall and HIGH-state
+// sinusoidal oscillation. RiverPlats fade opacity in sync with submersion.
+var flood = {
+  active:false, t:0, state:'low',
+  deepMesh:null, surfaceMesh:null,
+  baseLowY:-1.0, baseHighY:1.0,
+  lastHit:0
+};
+
+function easeInOutCubic(t){
+  return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+}
+
+function buildFlood(){
+  if(!PHASE.waterCycle) return;
+  flood.active = true;
+  flood.t = 0;
+  flood.state = 'low';
+
+  // Deep water (darker, lower body)
+  var deepGeo = new THREE.BoxGeometry(80, 2.4, 5);
+  var deepMat = new THREE.MeshLambertMaterial({
+    color: P.dp || 0x0e3270,
+    transparent: true,
+    opacity: .85,
+    flatShading: true
+  });
+  flood.deepMesh = new THREE.Mesh(deepGeo, deepMat);
+  flood.deepMesh.position.set(30, flood.baseLowY - .8, 0);
+  scene.add(flood.deepMesh);
+
+  // Surface (lighter, sits on top, oscillates)
+  var surfGeo = new THREE.BoxGeometry(80, .35, 5);
+  var surfMat = new THREE.MeshLambertMaterial({
+    color: P.wt || P.nt || 0x2a5a9a,
+    emissive: P.wt || 0x2a5a9a,
+    emissiveIntensity: .12,
+    transparent: true,
+    opacity: .78,
+    flatShading: true
+  });
+  flood.surfaceMesh = new THREE.Mesh(surfGeo, surfMat);
+  flood.surfaceMesh.position.set(30, flood.baseLowY + .4, 0);
+  scene.add(flood.surfaceMesh);
+}
+
+function updateFlood(dt){
+  if(!flood.active) return;
+  var W = PHASE.waterCycle;
+  flood.t = (flood.t + dt*1000) % W.cycleMs;
+
+  var ns;
+  if(flood.t < W.warningStartMs) ns = 'low';
+  else if(flood.t < W.risingStartMs) ns = 'warning';
+  else if(flood.t < W.highStartMs)   ns = 'rising';
+  else if(flood.t < W.fallingStartMs)ns = 'high';
+  else ns = 'falling';
+
+  if(ns !== flood.state){
+    flood.state = ns;
+    if(ns === 'warning') showToast('⚠ Cheia a aproximar!');
+    if(ns === 'rising'){
+      // Foam particles along riverPlats at the moment water starts rising
+      for(var i=0;i<plats.length;i++){
+        var p = plats[i];
+        if(p.tp !== 'riverPlat') continue;
+        spawnDust(p.cx, p.t + .1, .5);
+      }
+    }
+  }
+
+  // Eased water level
+  var loY = flood.baseLowY, hiY = flood.baseHighY;
+  var levelY;
+  switch(flood.state){
+    case 'low':     levelY = loY; break;
+    case 'warning': levelY = loY + .15; break;
+    case 'rising': {
+      var rp = (flood.t - W.risingStartMs) / Math.max(1, W.highStartMs - W.risingStartMs);
+      levelY = loY + easeInOutCubic(rp) * (hiY - loY);
+      break;
+    }
+    case 'high':    levelY = hiY; break;
+    case 'falling': {
+      var fp = (flood.t - W.fallingStartMs) / Math.max(1, W.cycleMs - W.fallingStartMs);
+      levelY = hiY - easeInOutCubic(fp) * (hiY - loY);
+      break;
+    }
+    default: levelY = loY;
+  }
+
+  // Surface oscillates only during HIGH; subtle ripple during rising/falling.
+  var ts = performance.now()/1000;
+  var wave = 0;
+  if(flood.state === 'high'){
+    wave = Math.sin(ts * 2.2) * .12 + Math.sin(ts * 5.3) * .04;
+  } else if(flood.state === 'rising' || flood.state === 'falling'){
+    wave = Math.sin(ts * 3.0) * .05;
+  }
+  flood.surfaceMesh.position.y = levelY + .4 + wave;
+  flood.deepMesh.position.y = levelY - .8;
+
+  // Compute submersion ratio per riverPlat based on actual surface vs plat top
+  var surfaceY = flood.surfaceMesh.position.y;
+  for(var k = 0; k < plats.length; k++){
+    var pl = plats[k];
+    if(pl.tp !== 'riverPlat') continue;
+    // 0 = fully exposed, 1 = fully submerged
+    var ratio = Math.max(0, Math.min(1, (surfaceY - pl.t) / .8));
+    pl.submerged = ratio > .55;
+    if(pl.mesh && pl.mesh.material){
+      pl.mesh.material.opacity = 1 - ratio * .7;
+    }
+    if(pl.topMesh && pl.topMesh.material){
+      pl.topMesh.material.opacity = 1 - ratio * .85;
+    }
+  }
+
+  // Damage when player stands on submerged riverPlat
+  if(!S.dying && !S.won){
+    for(var j = 0; j < plats.length; j++){
+      var pj = plats[j];
+      if(pj.tp !== 'riverPlat' || !pj.submerged) continue;
+      if(S.x >= pj.l - .3 && S.x <= pj.r + .3 && S.y < pj.t + .9 && S.y > pj.cy - .5){
+        var nowMs = performance.now();
+        if(nowMs - flood.lastHit > 1800){
+          flood.lastHit = nowMs;
+          // Splash particle burst
+          spawnDust(S.x, pj.t, 1.2);
+          spawnDust(S.x - .3, pj.t + .3, .8);
+          spawnDust(S.x + .3, pj.t + .3, .8);
+          S.deathCause = 'water';
+          loseLife();
+        }
+        break;
+      }
+    }
+  }
+}
+
+// --- HIEROGLYPH CARTOUCHES (Phase 2.1) ---
+var hieroglyphs = [];
+
+function buildHieroglyphs(){
+  (PHASE.hieroglyphs || []).forEach(function(h){
+    var grp = new THREE.Group();
+    var frame = new THREE.Mesh(
+      new THREE.BoxGeometry(1.4, 1.8, .18),
+      new THREE.MeshLambertMaterial({ color: P.dk || 0x2a1f0a, flatShading: true })
+    );
+    grp.add(frame);
+    var ys = [.5, 0, -.5];
+    (h.symbols || []).slice(0, 3).forEach(function(g, i){
+      var tex = emojiTexture(g, 64);
+      var mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+      var spr = new THREE.Sprite(mat);
+      spr.scale.set(.6, .6, 1);
+      spr.position.set(0, ys[i] || 0, .12);
+      grp.add(spr);
+    });
+    var ring = new THREE.Mesh(
+      new THREE.RingGeometry(.7, 1.0, 18),
+      new THREE.MeshBasicMaterial({ color: P.gd || 0xffd97a, transparent: true, opacity: .5, side: THREE.DoubleSide })
+    );
+    ring.rotation.x = -Math.PI/2;
+    ring.position.y = -1.0;
+    grp.add(ring);
+    grp.position.set(h.x, h.y, 0);
+    scene.add(grp);
+    hieroglyphs.push({ data: h, mesh: grp, ring: ring, used: false });
+  });
+}
+
+function updateHieroglyphs(){
+  if(!hieroglyphs.length) return;
+  var t = performance.now()/1000;
+  hieroglyphs.forEach(function(h){
+    if(h.ring) h.ring.material.opacity = h.used ? .15 : (.45 + Math.sin(t*2.5)*.18);
+  });
+}
+
+function nearestHieroglyph(){
+  for(var i = 0; i < hieroglyphs.length; i++){
+    var h = hieroglyphs[i];
+    if(h.used) continue;
+    if(Math.abs(S.x - h.data.x) < 2.0 && Math.abs(S.y - h.data.y) < 3.5) return h;
+  }
+  return null;
+}
+
+function openHieroglyph(h){
+  if(h.used) return;
+  S.paused = true;
+  var el = document.getElementById('enigma');
+  if(!el) return;
+  var d = h.data;
+  var intro = el.querySelector('.e-intro');
+  var prompt = el.querySelector('.e-prompt');
+  var qEl = el.querySelector('.e-question');
+  var optsEl = el.querySelector('.e-options');
+  var fbEl = el.querySelector('.e-feedback');
+  if(intro) intro.innerHTML = '𓂀 <b>CARTOUCHE EGÍPCIO</b> 𓂀';
+  if(prompt) prompt.innerHTML = escapeHTML(d.scene || 'Examina os símbolos do cartouche.');
+  if(qEl) qEl.innerHTML = escapeHTML(d.q || '');
+  if(fbEl) fbEl.innerHTML = '';
+  var opts = shuffledOptions(d.o, d.c);
+  var attempts = d.attempts || 3;
+  var hintsArr = d.hints || [];
+  var attemptsUsed = 0;
+  var hintsRevealed = 0;
+  optsEl.innerHTML = '';
+  opts.forEach(function(o, i){
+    var btn = document.createElement('button');
+    btn.textContent = String.fromCharCode(65 + i) + '. ' + o.text;
+    btn.addEventListener('click', function(){
+      if(btn.disabled) return;
+      if(o.correct){
+        btn.classList.add('correct');
+        Array.prototype.forEach.call(optsEl.querySelectorAll('button'), function(b){ b.disabled = true; });
+        if(fbEl) fbEl.innerHTML = '<b>✓ ' + escapeHTML(d.e || '') + '</b>';
+        h.used = true;
+        snd('w');
+        setTimeout(function(){
+          el.classList.remove('show');
+          S.paused = false;
+          applyEnigmaReward(d.reward || 'passagem');
+        }, 2400);
+      } else {
+        btn.classList.add('wrong');
+        btn.disabled = true;
+        attemptsUsed++;
+        snd('l');
+        if(attemptsUsed >= attempts){
+          Array.prototype.forEach.call(optsEl.querySelectorAll('button'), function(b){
+            b.disabled = true;
+            var idx = Array.prototype.indexOf.call(optsEl.children, b);
+            if(opts[idx] && opts[idx].correct) b.classList.add('correct');
+          });
+          if(fbEl) fbEl.innerHTML = '<b>Resposta revelada:</b><br>' + escapeHTML(d.e || '');
+          h.used = true;
+          setTimeout(function(){
+            el.classList.remove('show');
+            S.paused = false;
+            if(d.nonBlocking) applyEnigmaReward(d.reward || 'passagem');
+          }, 3500);
+        } else if(hintsRevealed < hintsArr.length){
+          if(fbEl) fbEl.innerHTML = '💡 ' + escapeHTML(hintsArr[hintsRevealed]) +
+            ' &nbsp;(Tentativa ' + (attemptsUsed + 1) + '/' + attempts + ')';
+          hintsRevealed++;
+        } else {
+          if(fbEl) fbEl.innerHTML = '✗ Tenta novamente. &nbsp;(Tentativa ' + (attemptsUsed + 1) + '/' + attempts + ')';
+        }
+      }
+    });
+    optsEl.appendChild(btn);
+  });
+  el.classList.add('show');
+}
+
+// --- TORCHES + FOG (Phase 2.2: Pirâmides de Meroé) ---
+var torches = [];
+
+function buildTorches(){
+  if(PHASE.fog && PHASE.fog.type === 'exp2'){
+    scene.fog = new THREE.FogExp2(PHASE.fog.color || 0x000000, PHASE.fog.density || 0.1);
+  }
+  (PHASE.torches || []).forEach(function(t){
+    var grp = new THREE.Group();
+    var stick = new THREE.Mesh(
+      new THREE.CylinderGeometry(.07, .09, .9, 6),
+      new THREE.MeshLambertMaterial({ color: P.dk || 0x2a1f0a, flatShading: true })
+    );
+    stick.position.y = -.45;
+    grp.add(stick);
+    var tex = emojiTexture('🔥', 64);
+    var fmat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+    var flame = new THREE.Sprite(fmat);
+    flame.scale.set(.75, .95, 1);
+    flame.position.y = .25;
+    grp.add(flame);
+    var light = new THREE.PointLight(P.tc || 0xff8a3a, 1.6, 7.0, 2);
+    light.position.y = .25;
+    grp.add(light);
+    grp.position.set(t.x, t.y, 0);
+    scene.add(grp);
+    var lit = !!t.defaultLit;
+    flame.visible = lit;
+    light.visible = lit;
+    torches.push({
+      data: t, mesh: grp, flame: flame, light: light,
+      lit: lit, life: lit ? (t.lifetime || 8000) : 0
+    });
+  });
+}
+
+function updateTorches(dt){
+  if(!torches.length) return;
+  var dtms = dt * 1000;
+  var ts = performance.now() / 1000;
+  torches.forEach(function(tc){
+    if(!tc.lit) return;
+    tc.life -= dtms;
+    if(tc.life <= 0){
+      tc.lit = false;
+      tc.flame.visible = false;
+      tc.light.visible = false;
+      return;
+    }
+    var f = .9 + Math.sin(ts * 8 + tc.data.x) * .14;
+    tc.light.intensity = 1.6 * f;
+    var s = .72 + Math.sin(ts * 6 + tc.data.x) * .06;
+    tc.flame.scale.set(s, s * 1.3, 1);
+    if(tc.life < 2000){
+      var blink = (Math.floor(performance.now() / 200) % 2) === 0;
+      tc.flame.visible = blink;
+    } else {
+      tc.flame.visible = true;
+    }
+  });
+}
+
+function relightNearbyTorch(){
+  for(var i = 0; i < torches.length; i++){
+    var tc = torches[i];
+    if(tc.lit) continue;
+    if(Math.abs(S.x - tc.data.x) < 1.8 && Math.abs(S.y - tc.data.y) < 2.5){
+      tc.lit = true;
+      tc.life = tc.data.lifetime || 8000;
+      tc.flame.visible = true;
+      tc.light.visible = true;
+      showToast('🔥 Tocha acesa!');
+      snd('c');
+      return true;
+    }
+  }
+  return false;
+}
+
+function isNearLitTorch(x, y, radius){
+  radius = radius || 4.0;
+  for(var i = 0; i < torches.length; i++){
+    var tc = torches[i];
+    if(!tc.lit) continue;
+    var dx = x - tc.data.x;
+    var dy = y - tc.data.y;
+    if(dx*dx + dy*dy < radius * radius) return true;
+  }
+  return false;
+}
+
+// --- PUSH BLOCKS (Phase 2.2) ---
+var pushBlocks = [];
+
+function buildPushBlocks(){
+  (PHASE.pushBlocks || []).forEach(function(b){
+    var w = b.w || 1.2, ht = b.h || 1.2;
+    var geo = new THREE.BoxGeometry(w, ht, .7);
+    var mat = new THREE.MeshLambertMaterial({ color: P.sa || 0x6a3a2a, flatShading: true });
+    var m = new THREE.Mesh(geo, mat);
+    m.position.set(b.x, b.y + ht/2, 0);
+    m.castShadow = true;
+    m.receiveShadow = true;
+    scene.add(m);
+    pushBlocks.push({ data: b, mesh: m, x: b.x });
+  });
+}
+
+function updatePushBlocks(dt){
+  if(!pushBlocks.length) return;
+  var pushSpeed = 1.8;
+  pushBlocks.forEach(function(b){
+    var bw = (b.data.w || 1.2) / 2;
+    var bh = b.data.h || 1.2;
+    var dx = S.x - b.x;
+    if(Math.abs(dx) < bw + .45 && S.y < bh + .2){
+      var pushing = (dx > 0 && I.l) || (dx < 0 && I.r);
+      if(pushing){
+        var newX = b.x + Math.sign(-dx) * pushSpeed * dt;
+        var minX = (b.data.minX != null) ? b.data.minX : -999;
+        var maxX = (b.data.maxX != null) ? b.data.maxX : 999;
+        if(newX < minX) newX = minX;
+        if(newX > maxX) newX = maxX;
+        b.x = newX;
+        b.mesh.position.x = newX;
+      }
+      if(dx > 0) S.x = b.x + bw + .46;
+      else if(dx < 0) S.x = b.x - bw - .46;
+      S.vx = 0;
+    }
+  });
+}
+
+// --- CLIMB ANCHORS + WIND (Phase 2.3: Estelas de Aksum) ---
+var climbAnchors = [];
+var lastSafeAnchor = null;
+var wind = { t: 0, force: 0, indicator: false, warningShown: false, lastDir: 1 };
+
+function buildClimbAnchors(){
+  var baseX = (PHASE.climbBaseX != null) ? PHASE.climbBaseX : 22;
+  (PHASE.climbAnchors || []).forEach(function(a){
+    var geo = new THREE.RingGeometry(.45, .65, 18);
+    var mat = new THREE.MeshBasicMaterial({
+      color: P.gd || 0xffd97a,
+      transparent: true,
+      opacity: .55,
+      side: THREE.DoubleSide
+    });
+    var ring = new THREE.Mesh(geo, mat);
+    ring.position.set(baseX, a.y, 0);
+    ring.rotation.x = -Math.PI/2;
+    scene.add(ring);
+    climbAnchors.push({ data: a, mesh: ring, activated: !!a.activated, x: baseX });
+  });
+}
+
+function updateClimbAnchors(){
+  if(!climbAnchors.length) return;
+  var t = performance.now() / 1000;
+  climbAnchors.forEach(function(a){
+    if(!a.activated && S.y >= a.data.y - .3 && S.y <= a.data.y + 1.5 && Math.abs(S.x - a.x) < 4){
+      a.activated = true;
+      a.mesh.material.opacity = 1;
+      a.mesh.material.color.setHex(P.gn || 0x4a8060);
+      lastSafeAnchor = a;
+      showToast('⚓ Âncora ' + (climbAnchors.indexOf(a) + 1) + ' ativada!');
+      snd('c');
+    } else if(a.activated && (!lastSafeAnchor || lastSafeAnchor.data.y < a.data.y)){
+      lastSafeAnchor = a;
+    }
+    if(a.activated){
+      var s = 1 + Math.sin(t * 2 + a.data.y) * .06;
+      a.mesh.scale.set(s, s, 1);
+    }
+  });
+}
+
+function updateWind(dt){
+  if(!PHASE.wind || !PHASE.wind.enabled) return;
+  var W = PHASE.wind;
+  if(S.y < (W.activeAboveY || 6)) return;
+  wind.t = (wind.t + dt * 1000) % W.cycleMs;
+  var seg = null;
+  for(var i = 0; i < W.pattern.length; i++){
+    var p = W.pattern[i];
+    if(wind.t >= p.startMs && wind.t < p.startMs + p.durationMs){ seg = p; break; }
+  }
+  if(!seg) return;
+  wind.force = seg.force || 0;
+  wind.indicator = !!seg.indicator;
+  var dir = (Math.floor(performance.now() / W.cycleMs) % 2 === 0) ? 1 : -1;
+  if(wind.force > 0.6 && !wind.warningShown && wind.indicator){
+    wind.warningShown = true;
+    showToast('💨 Vento forte a aproximar!');
+    setTimeout(function(){ wind.warningShown = false; }, 2200);
+  }
+  if(wind.force > 0){
+    S.vx += wind.force * dir * dt * 4;
+  }
+}
+
+function climbResetCheck(){
+  if(!climbAnchors.length || !lastSafeAnchor) return false;
+  if(S.y < lastSafeAnchor.data.y - 4 && !S.gnd && S.vy < 0){
+    if(S.cc > 0) S.cc -= 1;
+    S.x = lastSafeAnchor.x;
+    S.y = lastSafeAnchor.data.y + 1.5;
+    S.vx = 0; S.vy = 0;
+    showToast('🪨 Voltaste à âncora ⚓ — -1 cauri');
+    snd('l');
+    return true;
+  }
+  return false;
+}
+
+// --- AKSUM COINS (Phase 2.3) ---
+var aksumCoins = [];
+
+function buildAksumCoins(){
+  S.aksumCoins = 0;
+  (PHASE.aksumCoins || []).forEach(function(c){
+    var geo = new THREE.CylinderGeometry(.18, .18, .05, 18);
+    var mat = new THREE.MeshLambertMaterial({
+      color: P.gd || 0xd4a040,
+      emissive: P.gd || 0xd4a040,
+      emissiveIntensity: .35,
+      flatShading: true
+    });
+    var m = new THREE.Mesh(geo, mat);
+    m.position.set(c.x, c.y, 0);
+    m.rotation.x = Math.PI / 2;
+    scene.add(m);
+    aksumCoins.push({ data: c, mesh: m, got: false });
+  });
+}
+
+function updateAksumCoins(){
+  if(!aksumCoins.length) return;
+  var t = performance.now() / 1000;
+  aksumCoins.forEach(function(c){
+    if(c.got) return;
+    c.mesh.rotation.z = t * 3;
+    c.mesh.position.y = c.data.y + Math.sin(t * 2 + c.data.x) * .12;
+    if(Math.abs(S.x - c.data.x) < .8 && Math.abs(S.y + .8 - c.data.y) < 1.3){
+      c.got = true;
+      c.mesh.visible = false;
+      S.aksumCoins++;
+      spawnCollectEffect(c.data.x, c.data.y, P.gd || 0xd4a040);
+      snd('c');
+      showToast('🪙 Moeda Aksum ' + S.aksumCoins + '/' + aksumCoins.length);
+      if(S.aksumCoins >= aksumCoins.length && PHASE.aksumCoinReward){
+        setTimeout(function(){
+          showStage('🪙 <b>Selo régio de Ezana!</b>', 2500);
+          applyEnigmaReward(PHASE.aksumCoinReward);
+        }, 600);
+      }
+    }
+  });
 }
 
 // === SAND WALLS (Phase 1.2 mechanic) ===
@@ -1215,6 +1851,9 @@ function triggerInteract(){
   // Anvil nearby? (Phase 1.3)
   var anvil = nearestAnvil();
   if(anvil){ openForgeQTE(anvil); return; }
+  // Hieroglyph cartouche nearby? (Phase 2.1)
+  var hg = nearestHieroglyph();
+  if(hg){ openHieroglyph(hg); return; }
   // NPC nearby?
   var n=null,nd=99;
   for(var i=0;i<NPCS.length;i++){
@@ -1268,6 +1907,8 @@ function triggerScan(){
     if(cutNearbyVine()) return;
     if(chopNearbyTree()) return;
   }
+  // Phase 2.2: B relight torches when near unlit torch.
+  if(relightNearbyTorch()) return;
   var revealed=0,closeFar=null,fd=99;
   mems.forEach(function(m){
     if(m.got)return;
@@ -1535,6 +2176,14 @@ function update(dt){
   updateInteractables();
   updateBonusMems();
   updateHazards();
+  updateFlood(dt);
+  updateTorches(dt);
+  updatePushBlocks(dt);
+  updateHieroglyphs();
+  updateClimbAnchors();
+  updateWind(dt);
+  if(climbResetCheck()){ /* respawned to anchor */ }
+  updateAksumCoins();
   updateLucinha();
   updateNPCs(dt);
   updateCamera(dt);
@@ -1636,12 +2285,15 @@ function resetCollectibles(){
 
 function deathLabel(cause){
   switch(cause){
-    case 'snake': return '🐍 <b>A cobra picou-te</b>';
-    case 'croc':  return '🐊 <b>O crocodilo apanhou-te</b>';
-    case 'hippo': return '🦛 <b>O hipopótamo afastou-te</b>';
-    case 'water': return '🌊 <b>Caíste na água</b>';
+    case 'snake':  return '🐍 <b>A cobra picou-te</b>';
+    case 'croc':   return '🐊 <b>O crocodilo apanhou-te</b>';
+    case 'hippo':  return '🦛 <b>O hipopótamo afastou-te</b>';
+    case 'water':  return '🌊 <b>A cheia do Nilo apanhou-te</b>';
+    case 'sombra': return '👤 <b>A Sombra do Ferro tocou-te</b>';
+    case 'pedra':  return '🪨 <b>Uma pedra caiu sobre ti</b>';
+    case 'gelada': return '🐒 <b>O macaco-gelada atacou-te</b>';
     case 'queda':
-    default:      return '💀 <b>Caíste no vazio</b>';
+    default:       return '💀 <b>Caíste no vazio</b>';
   }
 }
 
@@ -2038,6 +2690,12 @@ function init(){
   buildBonusMems();
   buildMovingPlats();
   buildHazards();
+  buildFlood();
+  buildTorches();
+  buildPushBlocks();
+  buildHieroglyphs();
+  buildClimbAnchors();
+  buildAksumCoins();
   buildBackground();
   buildNPCs();
   setupForgeQTE();
