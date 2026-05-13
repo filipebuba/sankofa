@@ -89,8 +89,10 @@
     if (!available()) return false;
     var t = clean(text);
     if (!t) return false;
-    stop();
-    window.speechSynthesis.speak(_make(t, opts));
+    if (available()) window.speechSynthesis.cancel();
+    playSting().then(function () {
+      window.speechSynthesis.speak(_make(t, opts));
+    });
     return true;
   }
 
@@ -101,16 +103,56 @@
     if (!Array.isArray(parts)) return false;
     var clean_parts = parts.map(clean).filter(function (p) { return p && p.length; });
     if (!clean_parts.length) return false;
-    stop();
-    clean_parts.forEach(function (p) {
-      window.speechSynthesis.speak(_make(p, opts));
+    if (available()) window.speechSynthesis.cancel();
+    playSting().then(function () {
+      clean_parts.forEach(function (p) {
+        window.speechSynthesis.speak(_make(p, opts));
+      });
     });
     return true;
   }
 
   function stop() {
     if (available()) window.speechSynthesis.cancel();
+    stopSting();
   }
+
+  /* ---------------- STING (griot intro, once per session) ---------------- */
+  var STING_SRC = "assets/audio/sting-intro.mp3";
+  var stingEl = null;
+  var stingPlayed = false;
+
+  function ensureSting() {
+    if (stingEl) return stingEl;
+    stingEl = new Audio();
+    stingEl.src = STING_SRC;
+    stingEl.preload = "none";
+    stingEl.volume = 0.85;
+    return stingEl;
+  }
+
+  function stopSting() {
+    if (stingEl) { try { stingEl.pause(); stingEl.currentTime = 0; } catch (e) {} }
+  }
+
+  // Play sting once per session. Returns Promise that resolves on end (or immediately if skipped).
+  function playSting() {
+    if (stingPlayed) return Promise.resolve();
+    stingPlayed = true;
+    var el = ensureSting();
+    return new Promise(function (resolve) {
+      var done = false;
+      function finish() { if (done) return; done = true; resolve(); }
+      el.addEventListener("ended", finish, { once: true });
+      el.addEventListener("error", finish, { once: true });
+      var p = el.play();
+      if (p && typeof p.catch === "function") p.catch(finish);
+      // Safety timeout — if 'ended' never fires, resolve after 30s anyway.
+      setTimeout(finish, 30000);
+    });
+  }
+
+  function resetStingForSession() { stingPlayed = false; stopSting(); }
 
   // Carrega vozes (alguns browsers populam async)
   if (available() && window.speechSynthesis.onvoiceschanged !== undefined) {
@@ -124,6 +166,8 @@
     toggle: toggle,
     speak: speak,
     speakSequence: speakSequence,
-    stop: stop
+    stop: stop,
+    playSting: playSting,
+    resetStingForSession: resetStingForSession
   };
 })();
