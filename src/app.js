@@ -694,10 +694,16 @@
     var a = document.getElementById("app");
     a.classList.add("fade-out");
     setTimeout(function () {
-      render();
-      a.classList.remove("fade-out");
-      window.scrollTo(0, 0);
-      applyAudioState();
+      try {
+        render();
+      } catch (err) {
+        console.error("[sankofa] render failed", err);
+        a.innerHTML = '<div class="feedback wrong">Falha ao abrir esta tela. Volte ao mapa e tente novamente.</div>';
+      } finally {
+        a.classList.remove("fade-out");
+        window.scrollTo(0, 0);
+        applyAudioState();
+      }
     }, 280);
   }
 
@@ -782,6 +788,7 @@
   /* ---------------- RENDER ---------------- */
   function render() {
     var app = document.getElementById("app");
+    if (!app) return;
     var ctx = royaltyCtx();
     updateProfileBtn();
     switch (S.screen) {
@@ -3471,5 +3478,11 @@
     }
   }
 
-  init();
+  try {
+    init();
+  } catch (err) {
+    console.error("[sankofa] init failed", err);
+    var app = document.getElementById("app");
+    if (app) app.innerHTML = '<div class="feedback wrong">Falha ao iniciar Sankofa: ' + escapeHtml((err && err.message) || String(err)) + '</div>';
+  }
 })();
