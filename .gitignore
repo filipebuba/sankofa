@@ -39,3 +39,8 @@ test/
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
+
+# Piper TTS — modelos pesados não vão pro git, mas mp3s gerados sim
+.tmp-piper/
+models/piper/*.onnx
+models/piper/*.onnx.json

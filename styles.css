@@ -781,6 +781,7 @@ input { font-family: var(--font-body); }
 .en-num { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 1rem; flex-shrink: 0; }
 .en-num.available { background: var(--gold); color: var(--bg); }
 .en-num.solved { background: var(--green); color: var(--bg); }
+.en-num.review { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(192, 64, 64, .35); }
 .en-num.locked { background: var(--surface3); color: var(--text-muted); }
 .enigma-item .en-info { flex: 1; }
 .enigma-item .en-title { font-weight: 600; font-size: .95rem; }
@@ -791,6 +792,25 @@ input { font-family: var(--font-body); }
 .result .points-earned { font-family: var(--font-display); font-size: 3rem; font-weight: 900; color: var(--gold); animation: fadeScale .5s var(--ease); }
 .result .fragment-preview { width: 140px; height: 140px; border-radius: var(--radius-lg); border: 3px solid var(--gold); animation: fragmentReveal .8s var(--ease) .3s both; overflow: hidden; }
 .result .explanation { font-size: .92rem; color: var(--text-dim); line-height: 1.7; text-align: left; background: var(--surface); padding: 18px; border-radius: var(--radius); border-left: 3px solid var(--gold); }
+
+.world-summary { display: flex; flex-direction: column; gap: 16px; }
+.world-summary-head { text-align: center; }
+.world-summary-eyebrow { color: var(--gold); font-size: .76rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.world-summary-head h2 { font-size: 1.45rem; margin: 4px 0; }
+.world-summary-head p { color: var(--text-dim); font-size: .86rem; margin: 0; }
+.world-summary-grid { display: flex; flex-direction: column; gap: 10px; }
+.world-summary-item { display: flex; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--surface3); border-radius: var(--radius); padding: 12px 14px; cursor: pointer; transition: all .2s; }
+.world-summary-item:hover { border-color: var(--gold); transform: translateX(2px); }
+.world-summary-item.ok { border-left: 3px solid var(--green); }
+.world-summary-item.todo { border-left: 3px solid var(--danger); }
+.world-summary-item.fresh { border-left: 3px solid var(--gold); }
+.world-summary-mark { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; background: var(--surface2); color: var(--text); flex-shrink: 0; }
+.world-summary-item.ok .world-summary-mark { background: var(--green); color: var(--bg); }
+.world-summary-item.todo .world-summary-mark { background: var(--danger-dim); color: var(--danger); }
+.world-summary-info { min-width: 0; flex: 1; }
+.world-summary-label { font-size: .72rem; color: var(--text-muted); margin-bottom: 2px; }
+.world-summary-title { font-weight: 700; font-size: .92rem; line-height: 1.25; }
+.world-summary-actions { display: flex; flex-direction: column; gap: 8px; }
 
 .world-milestone {
   width: 100%;
@@ -1632,7 +1652,7 @@ input { font-family: var(--font-body); }
 .tournament-item.wip    .tour-status { color: var(--terra); }
 
 /* ============================================================
-   Mestria de Mundos (Pedagogia: 70% abre, 100% mestria)
+   Mestria de Mundos (Pedagogia: pendencias revisadas abrem o proximo mundo)
    ============================================================ */
 
 .world-card {

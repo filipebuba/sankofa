@@ -15,7 +15,7 @@
   function STORAGE_KEY() { return PROFILES ? PROFILES.storageKey() : "sankofa_v5"; }
 
   // Pedagogia: avança liberal, recompensa mestria.
-  var WORLD_UNLOCK_THRESHOLD = 0.70;        // 70% resolvidos = próximo mundo abre
+  var WORLD_UNLOCK_THRESHOLD = 1.00;        // 100% resolvidos = próximo mundo abre
   var WORLD_PERFECT_FIRST_TRY = 0.80;       // 80%+ em 1ª tentativa = mestria perfeita
   var REWARD_MASTERY = 100;                 // cauris bônus por 100% num mundo
   var REWARD_MASTERY_PERFECT = 250;         // cauris bônus por mestria perfeita
@@ -78,6 +78,7 @@
     return null;
   }
   function isSolved(id) { return S.solved.indexOf(id) !== -1; }
+  function isAttempted(id) { return (S.attempts && (S.attempts[id] || 0) > 0) || isSolved(id); }
   function getEnigma(id) {
     for (var i = 0; i < ENIGMAS.length; i++) if (ENIGMAS[i].id === id) return ENIGMAS[i];
     return null;
@@ -87,13 +88,16 @@
     return null;
   }
   function getWorldProgress(wid) {
-    var total = 0, done = 0, firstTry = 0;
+    var total = 0, done = 0, firstTry = 0, attempted = 0, pending = 0;
     for (var i = 0; i < ENIGMAS.length; i++) {
       if (ENIGMAS[i].world === wid) {
         total++;
+        if (isAttempted(ENIGMAS[i].id)) attempted++;
         if (isSolved(ENIGMAS[i].id)) {
           done++;
           if ((S.attempts[ENIGMAS[i].id] || 0) === 1) firstTry++;
+        } else if (isAttempted(ENIGMAS[i].id)) {
+          pending++;
         }
       }
     }
@@ -102,6 +106,9 @@
     return {
       total: total,
       done: done,
+      attempted: attempted,
+      pending: pending,
+      allAttempted: total > 0 && attempted === total,
       firstTry: firstTry,
       pct: Math.round(ratio * 100),
       ratio: ratio,
@@ -118,7 +125,7 @@
     return out;
   }
 
-  // Mundo 1 sempre destravado. Demais: previous world ≥ WORLD_UNLOCK_THRESHOLD (default 70%)
+  // Mundo 1 sempre destravado. Demais: mundo anterior completo.
   // OR data.unlocked=true.
   // Pendências do Caderno num mundo (errored + skipped que ainda não foram resolvidos).
   function getWorldKarma(wid) {
@@ -147,17 +154,22 @@
     var w = getWorld(wid);
     if (w && w.unlocked) return true;
     var prev = getWorldProgress(wid - 1);
-    return prev.unlocked;
+    return prev.mastered;
   }
 
   // First unsolved enigma for a given world (in order, gated by predecessor solved).
   function nextInWorld(wid) {
     var we = worldEnigmas(wid);
     for (var i = 0; i < we.length; i++) {
-      if (!isSolved(we[i].id)) {
-        var prev = (i === 0) || isSolved(we[i - 1].id);
-        return prev ? we[i] : null;
-      }
+      if (!isAttempted(we[i].id)) return we[i];
+    }
+    return null;
+  }
+
+  function firstPendingInWorld(wid) {
+    var we = worldEnigmas(wid);
+    for (var i = 0; i < we.length; i++) {
+      if (isAttempted(we[i].id) && !isSolved(we[i].id)) return we[i];
     }
     return null;
   }
@@ -173,6 +185,8 @@
     for (var j = 0; j < order.length; j++) {
       var n = nextInWorld(order[j]);
       if (n) return { world: order[j], enigma: n };
+      var pending = firstPendingInWorld(order[j]);
+      if (pending) return { world: order[j], enigma: pending };
     }
     return null;
   }
@@ -775,6 +789,7 @@
       case "register": app.innerHTML = rRegister(); break;
       case "map": app.innerHTML = rMap(); break;
       case "world": app.innerHTML = rWorld(); break;
+      case "world-summary": app.innerHTML = rWorldSummary(); break;
       case "enigma":
         app.innerHTML = rEnigma();
         enigmaStartTime = Date.now();
@@ -964,13 +979,12 @@
           label + '</div></div>';
       } else {
         var prevP = getWorldProgress(w.id - 1);
-        var threshold = Math.ceil(prevP.total * WORLD_UNLOCK_THRESHOLD);
         var prevK = w.id > 1 ? getWorldKarma(w.id - 1) : { level: "ok", pending: 0 };
         var karmaHint = "";
         if (prevK.level === "block") karmaHint = " · 🌳 anciãos pedem revisão";
         else if (prevK.level === "warn") karmaHint = " · 🌿 caderno cheio";
         var hint = prevP.total
-          ? t("map.lock_hint", { threshold: threshold, total: prevP.total, world: (w.id - 1), done: prevP.done }) + karmaHint
+          ? "Resolve os pendentes do Mundo " + (w.id - 1) + " (" + prevP.done + "/" + prevP.total + ")" + karmaHint
           : t("map.coming_soon");
         html += '<div class="world-card locked" title="' + hint + '">' +
           '<div class="world-art"' + artStyle + '></div>' +
@@ -1019,6 +1033,10 @@
     var nxtW = nextInWorld(wid);
     if (p.done === p.total && p.total > 0) {
       html += '<div style="text-align:center;margin-bottom:14px"><button class="btn btn-gold btn-sm" data-act="open-mosaic" data-w="' + wid + '">Ver Mosaico Completo</button></div>';
+    } else if (p.allAttempted) {
+      html += '<button class="btn btn-gold btn-block" data-act="open-world-summary" data-w="' + wid + '" style="margin-bottom:14px">' +
+        'Ver balanço do mundo' +
+        '</button>';
     } else if (nxtW) {
       html += '<button class="btn btn-gold btn-block" data-act="continue-next" data-w="' + wid + '" style="margin-bottom:14px">' +
         (p.done === 0 ? "Começar" : "Continuar") + ' → ' + nxtW.title +
@@ -1029,15 +1047,15 @@
     for (var j = 0; j < we.length; j++) {
       var e = we[j];
       var s = isSolved(e.id);
-      var prev = (j === 0) || isSolved(we[j - 1].id);
-      var av = !s && prev;
+      var attempted = isAttempted(e.id);
+      var av = isWorldUnlocked(wid);
       var pts = S.attempts[e.id] === 1 ? 100 : (S.attempts[e.id] === 2 ? 50 : 25);
       pts = Math.max(0, pts - (S.hintsUsed[e.id] || 0) * 10);
       html += '<div class="enigma-item"' + (av || s ? ' data-act="open-enigma" data-e="' + e.id + '"' : '') +
         ' style="' + (av || s ? '' : 'opacity:.5;cursor:default') + '">';
-      html += '<div class="en-num ' + (s ? 'solved' : (av ? 'available' : 'locked')) + '">' + (s ? '✓' : (j + 1)) + '</div>';
+      html += '<div class="en-num ' + (s ? 'solved' : (attempted ? 'review' : (av ? 'available' : 'locked'))) + '">' + (s ? '✓' : (j + 1)) + '</div>';
       html += '<div class="en-info"><div class="en-title">' + e.title + '</div>';
-      html += '<div class="en-sub">' + (s ? 'Recolhido' : (av ? 'Disponível' : 'Resolve o anterior')) + '</div></div>';
+      html += '<div class="en-sub">' + (s ? 'Recolhido' : (attempted ? 'A revisar' : (av ? 'Disponível' : 'Bloqueado'))) + '</div></div>';
       if (s) html += '<span class="en-pts">+' + pts + '</span>';
       html += '</div>';
     }
@@ -1145,6 +1163,8 @@
       var p = getWorldProgress(e.world);
       if (p.done === p.total) {
         primary = '<button class="btn btn-gold btn-block" data-act="open-mosaic" data-w="' + e.world + '">Ver Mosaico do Mundo</button>';
+      } else if (p.allAttempted) {
+        primary = '<button class="btn btn-gold btn-block" data-act="open-world-summary" data-w="' + e.world + '">Ver balanço do mundo</button>';
       } else {
         primary = '<button class="btn btn-gold btn-block" data-act="open-world" data-w="' + e.world + '">Voltar ao Mundo</button>';
       }
@@ -1270,6 +1290,54 @@
       html += '<h3 style="color:var(--gold)">Mosaico Completo!</h3>';
       html += '<p style="color:var(--text-dim);font-size:.88rem;margin-top:4px">A história foi restaurada.</p></div>';
     }
+    return html;
+  }
+
+  function rWorldSummary() {
+    var wid = S.screenData.world || 1;
+    var we = worldEnigmas(wid);
+    var p = getWorldProgress(wid);
+    var w = getWorld(wid);
+    var nextW = getWorld(wid + 1);
+    var pending = firstPendingInWorld(wid);
+
+    var html = '<button class="btn btn-ghost btn-sm" data-act="open-world" data-w="' + wid + '" style="margin-bottom:14px">← Mundo ' + wid + '</button>';
+    html += '<div class="world-summary">';
+    html += '<div class="world-summary-head">';
+    html += '<div class="world-summary-eyebrow">Balanço do mundo</div>';
+    html += '<h2>' + (w ? w.name : "Mundo " + wid) + '</h2>';
+    html += '<p>' + p.done + ' acertadas · ' + p.pending + ' a revisar · ' + p.total + ' enigmas vistos</p>';
+    html += '</div>';
+
+    html += '<div class="world-summary-grid">';
+    for (var i = 0; i < we.length; i++) {
+      var e = we[i];
+      var solved = isSolved(e.id);
+      var tried = isAttempted(e.id);
+      var klass = solved ? "ok" : (tried ? "todo" : "fresh");
+      var label = solved ? "Acertada" : (tried ? "Não acertada" : "Não vista");
+      html += '<div class="world-summary-item ' + klass + '" data-act="open-enigma" data-e="' + e.id + '">';
+      html += '<div class="world-summary-mark">' + (solved ? "✓" : (tried ? "!" : (i + 1))) + '</div>';
+      html += '<div class="world-summary-info">';
+      html += '<div class="world-summary-label">' + label + '</div>';
+      html += '<div class="world-summary-title">' + e.title + '</div>';
+      html += '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    html += '<div class="world-summary-actions">';
+    if (pending) {
+      html += '<button class="btn btn-gold btn-block" data-act="replay-enigma" data-e="' + pending.id + '">Retentar pendentes</button>';
+      html += '<button class="btn btn-outline btn-block btn-sm" data-act="go-review">Abrir Caderno de Revisão</button>';
+    } else if (nextW) {
+      html += '<button class="btn btn-gold btn-block" data-act="open-world" data-w="' + nextW.id + '">Ativar Mundo ' + nextW.id + ' →</button>';
+      html += '<button class="btn btn-outline btn-block btn-sm" data-act="open-mosaic" data-w="' + wid + '">Ver Mosaico Completo</button>';
+    } else {
+      html += '<button class="btn btn-gold btn-block" data-act="open-mosaic" data-w="' + wid + '">Ver Mosaico Completo</button>';
+    }
+    html += '</div>';
+    html += '</div>';
     return html;
   }
 
@@ -1783,7 +1851,7 @@
 
     html += '<h3>Mestria de mundo</h3>';
     html += '<ul>';
-    html += '<li>O próximo mundo abre quando resolves <strong>70%</strong> do anterior.</li>';
+    html += '<li>O próximo mundo abre quando atravessas o mundo e resolves os pendentes.</li>';
     html += '<li><strong>100% completo:</strong> +100 cauris (Mestre do Mundo 👑).</li>';
     html += '<li><strong>100% com 80%+ na 1ª tentativa:</strong> +250 cauris (Mestre Perfeito 🏛️).</li>';
     html += '</ul>';
@@ -2258,10 +2326,10 @@
       case "resume": handleResume(); break;
       case "continue-next":
         var nw = parseInt(el.getAttribute("data-w"), 10);
-        if (!isWorldUnlocked(nw)) { sfx("wrong"); showToast("🔒", "Mundo bloqueado", "Resolva 70% do mundo anterior."); break; }
+        if (!isWorldUnlocked(nw)) { sfx("wrong"); showToast("🔒", "Mundo bloqueado", "Resolva os pendentes do mundo anterior."); break; }
         var nxt = nextInWorld(nw);
         if (nxt) { sfx("select"); enigmaLocked = false; S.lastWorldPlayed = nw; save(); goTo("enigma", { enigma: nxt.id }); }
-        else { sfx("fragment"); goTo("mosaic", { world: nw }); }
+        else { sfx("fragment"); goTo("world-summary", { world: nw }); }
         break;
       case "go-map": sfx("navigate"); goTo("map"); break;
       case "go-profile": sfx("click"); goTo("profile"); break;
@@ -2271,9 +2339,8 @@
         var wId = parseInt(el.getAttribute("data-w"), 10);
         if (!isWorldUnlocked(wId)) {
           var prevPx = getWorldProgress(wId - 1);
-          var needX = Math.ceil(prevPx.total * WORLD_UNLOCK_THRESHOLD);
           sfx("wrong");
-          showToast("🔒", "Mundo bloqueado", "Resolva " + needX + "/" + prevPx.total + " do Mundo " + (wId - 1) + " (faltam " + Math.max(0, needX - prevPx.done) + ").");
+          showToast("🔒", "Mundo bloqueado", "Resolva os " + Math.max(0, prevPx.total - prevPx.done) + " pendentes do Mundo " + (wId - 1) + ".");
           break;
         }
         // Karma gate: se mundo anterior tem muito pendente no Caderno, mostra tela dos Anciãos
@@ -2296,6 +2363,7 @@
         sfx("select"); enigmaLocked = false;
         goTo("enigma", { enigma: eId });
         break;
+      case "open-world-summary": sfx("navigate"); goTo("world-summary", { world: parseInt(el.getAttribute("data-w"), 10) }); break;
       case "open-mosaic": sfx("fragment"); goTo("mosaic", { world: parseInt(el.getAttribute("data-w"), 10) }); break;
       case "pick": handlePick(parseInt(el.getAttribute("data-i"), 10), el); break;
       case "skip-enigma": handleSkipEnigma(el.getAttribute("data-e")); break;
@@ -2399,7 +2467,7 @@
         var ten = getEnigma(teid);
         if (!ten) break;
         if (!isWorldUnlocked(ten.world)) {
-          showToast("🔒", "Mundo bloqueado", "Resolva 70% do Mundo " + (ten.world - 1) + " primeiro.");
+          showToast("🔒", "Mundo bloqueado", "Resolva os pendentes do Mundo " + (ten.world - 1) + " primeiro.");
           break;
         }
         sfx("select"); enigmaLocked = false;
@@ -2504,8 +2572,9 @@
       var label = ordinals[i] ? "Opção " + ordinals[i] : "Opção " + (i + 1);
       parts.push(label + ". " + o + ".");
     });
-    if (window.SankofaTTS.speakSequence) window.SankofaTTS.speakSequence(parts);
-    else window.SankofaTTS.speak(parts.join(". "));
+    var ttsOpts = { enigmaId: eid };
+    if (window.SankofaTTS.speakSequence) window.SankofaTTS.speakSequence(parts, ttsOpts);
+    else window.SankofaTTS.speak(parts.join(". "), ttsOpts);
   }
 
   function speakContext(eid) {
@@ -2930,7 +2999,7 @@
       checkTitleUp();
 
       // Marcos pedagógicos no mundo atual:
-      //   1. Atingiu 70% → desbloqueia próximo mundo (toast 1×)
+      //   1. Resolveu 100% → desbloqueia próximo mundo (toast 1×)
       //   2. Atingiu 100% → mestria + 100 cauris (toast 1×)
       //   3. Mestria perfeita → +250 cauris + título (toast 1×)
       if (newSolved) {
@@ -3015,7 +3084,7 @@
       selectedEl.classList.add("wrong");
       sfx("wrong");
       var fb2 = document.getElementById("fb");
-      if (fb2) fb2.innerHTML = '<div class="feedback wrong">✗ Não é esta. Tenta de novo!</div>';
+      if (fb2) fb2.innerHTML = '<div class="feedback wrong">✗ Não é esta. Ficou no Caderno; vamos seguir.</div>';
 
       // Caderno de Revisão — registra erro persistente
       S.errored = S.errored || [];
@@ -3045,11 +3114,16 @@
       });
       save();
       setTimeout(function () {
-        selectedEl.classList.remove("wrong", "selected");
         enigmaLocked = false;
-        // Atualiza rodapé dinâmico (histórico de erros, botão pular, contador)
-        updateEnigmaDynamic(eid);
-      }, 1000);
+        var nextWrong = nextInWorld(e.world);
+        if (nextWrong) {
+          S.lastWorldPlayed = e.world;
+          save();
+          goTo("enigma", { enigma: nextWrong.id });
+        } else {
+          goTo("world-summary", { world: e.world });
+        }
+      }, 1100);
     }
   }
 
