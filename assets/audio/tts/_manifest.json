@@ -1,0 +1,499 @@
+{
+  "w1e1": {
+    "hash": "417bbd7359be",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 140845,
+    "chars": 182
+  },
+  "w1e2": {
+    "hash": "79f9b9de0ad5",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 197008,
+    "chars": 221
+  },
+  "w1e3": {
+    "hash": "0696da77f6ef",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 259963,
+    "chars": 205
+  },
+  "w1e4": {
+    "hash": "c0e11d8ea981",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 153384,
+    "chars": 193
+  },
+  "w1e5": {
+    "hash": "fe992f2a5a43",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 201710,
+    "chars": 221
+  },
+  "w1e6": {
+    "hash": "3120de7e9cc8",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 248208,
+    "chars": 210
+  },
+  "w1e7": {
+    "hash": "5b5794362964",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 161482,
+    "chars": 229
+  },
+  "w1e8": {
+    "hash": "7c3aef563e37",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 203539,
+    "chars": 223
+  },
+  "w1e9": {
+    "hash": "41e912c6a892",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 272241,
+    "chars": 253
+  },
+  "w1e10": {
+    "hash": "ad0d30a82b07",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 155212,
+    "chars": 212
+  },
+  "w1e11": {
+    "hash": "6e93355ca75c",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 194657,
+    "chars": 216
+  },
+  "w1e12": {
+    "hash": "54ea7779b69b",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 246641,
+    "chars": 226
+  },
+  "w1e13": {
+    "hash": "292415fa81dc",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 168274,
+    "chars": 227
+  },
+  "w1e14": {
+    "hash": "b17962df54c3",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 210331,
+    "chars": 239
+  },
+  "w1e15": {
+    "hash": "efc8b035f051",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 253172,
+    "chars": 212
+  },
+  "w2e1": {
+    "hash": "89281ec8995f",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 198053,
+    "chars": 286
+  },
+  "w2e2": {
+    "hash": "5f1b15e40345",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 233580,
+    "chars": 276
+  },
+  "w2e3": {
+    "hash": "4ab3cb579ccf",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 342249,
+    "chars": 319
+  },
+  "w2e4": {
+    "hash": "5876b098032e",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 203800,
+    "chars": 304
+  },
+  "w2e5": {
+    "hash": "a3ddbadf564f",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 302804,
+    "chars": 375
+  },
+  "w2e6": {
+    "hash": "be12aa3fa6eb",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 331016,
+    "chars": 288
+  },
+  "w2e7": {
+    "hash": "5425388ae9df",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 267278,
+    "chars": 374
+  },
+  "w2e8": {
+    "hash": "ce387dd3eacc",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 307506,
+    "chars": 378
+  },
+  "w3e1": {
+    "hash": "69b7b7db5cd8",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 340159,
+    "chars": 271
+  },
+  "w3e2": {
+    "hash": "0235e522be52",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 189955,
+    "chars": 262
+  },
+  "w3e3": {
+    "hash": "5169c0a219cc",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 291310,
+    "chars": 324
+  },
+  "w3e4": {
+    "hash": "c267100d8bc6",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 316127,
+    "chars": 303
+  },
+  "w3e5": {
+    "hash": "cd4d533a6641",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 242723,
+    "chars": 359
+  },
+  "w3e6": {
+    "hash": "e07dabb44861",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 234886,
+    "chars": 244
+  },
+  "w3e7": {
+    "hash": "379f599db0d8",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 327621,
+    "chars": 291
+  },
+  "w3e8": {
+    "hash": "3b7772bfc836",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 163310,
+    "chars": 221
+  },
+  "w4e1": {
+    "hash": "d17de678a3d1",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 269629,
+    "chars": 285
+  },
+  "w4e2": {
+    "hash": "178d21471000",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 409645,
+    "chars": 343
+  },
+  "w4e3": {
+    "hash": "778479c1532a",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 232796,
+    "chars": 309
+  },
+  "w4e4": {
+    "hash": "b3c3d9130479",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 259702,
+    "chars": 270
+  },
+  "w4e5": {
+    "hash": "711737483f71",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 347996,
+    "chars": 292
+  },
+  "w4e6": {
+    "hash": "d345b2700836",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 225221,
+    "chars": 299
+  },
+  "w4e7": {
+    "hash": "9ef5bd5810bf",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 322135,
+    "chars": 363
+  },
+  "w4e8": {
+    "hash": "6df2fd9588b6",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 420355,
+    "chars": 407
+  },
+  "w5e1": {
+    "hash": "256a572a5227",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 200927,
+    "chars": 284
+  },
+  "w5e2": {
+    "hash": "d3cb637f9ea9",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 302282,
+    "chars": 362
+  },
+  "w5e3": {
+    "hash": "8e69d326394a",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 321874,
+    "chars": 259
+  },
+  "w5e4": {
+    "hash": "128f17893a25",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 212943,
+    "chars": 295
+  },
+  "w5e5": {
+    "hash": "92581bbaf3a3",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 272763,
+    "chars": 294
+  },
+  "w5e6": {
+    "hash": "9f400767f9da",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 363670,
+    "chars": 276
+  },
+  "w5e7": {
+    "hash": "38a976b367d7",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 228616,
+    "chars": 297
+  },
+  "w5e8": {
+    "hash": "96fd3394f565",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 255000,
+    "chars": 289
+  },
+  "w6e1": {
+    "hash": "bb66956656d4",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 394494,
+    "chars": 299
+  },
+  "w6e2": {
+    "hash": "f11093d661d0",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 274070,
+    "chars": 306
+  },
+  "w6e3": {
+    "hash": "b219f61fe22f",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 247947,
+    "chars": 283
+  },
+  "w6e4": {
+    "hash": "523a0eae5035",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 361319,
+    "chars": 289
+  },
+  "w6e5": {
+    "hash": "aff29932ede4",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 257351,
+    "chars": 280
+  },
+  "w6e6": {
+    "hash": "e7216c7bc72b",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 266755,
+    "chars": 306
+  },
+  "w6e7": {
+    "hash": "5e1effc37f08",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 335980,
+    "chars": 262
+  },
+  "w6e8": {
+    "hash": "f63dee05cc05",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 254739,
+    "chars": 307
+  },
+  "w7e1": {
+    "hash": "5594fe8da61f",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 299408,
+    "chars": 348
+  },
+  "w7e2": {
+    "hash": "b1d960d6dc25",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 375425,
+    "chars": 311
+  },
+  "w7e3": {
+    "hash": "44115049f36d",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 194919,
+    "chars": 261
+  },
+  "w7e4": {
+    "hash": "7a2a83eb5320",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 326314,
+    "chars": 382
+  },
+  "w7e5": {
+    "hash": "9d3b6624a73c",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 378821,
+    "chars": 314
+  },
+  "w7e6": {
+    "hash": "4eba96312f96",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 234886,
+    "chars": 270
+  },
+  "w7e7": {
+    "hash": "1a95c3773ced",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 271980,
+    "chars": 283
+  },
+  "w7e8": {
+    "hash": "15dcc3ed7c3d",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 375425,
+    "chars": 313
+  },
+  "w8e1": {
+    "hash": "6377a05f5b12",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 242461,
+    "chars": 338
+  },
+  "w8e2": {
+    "hash": "fa8d7b2c1c64",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 257090,
+    "chars": 275
+  },
+  "w8e3": {
+    "hash": "3362ece49085",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 350347,
+    "chars": 272
+  },
+  "w8e4": {
+    "hash": "8ef349977094",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 259180,
+    "chars": 268
+  },
+  "w8e5": {
+    "hash": "1da3a048a94b",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 273808,
+    "chars": 300
+  },
+  "w8e6": {
+    "hash": "df87bf26ed6a",
+    "engine": "edge",
+    "voice": "pt-BR-AntonioNeural",
+    "bytes": 365237,
+    "chars": 282
+  },
+  "w8e7": {
+    "hash": "4d6c858e83bd",
+    "engine": "piper",
+    "model": "pt_BR-faber-medium",
+    "bytes": 210070,
+    "chars": 234
+  },
+  "w8e8": {
+    "hash": "e15ae33a73ef",
+    "engine": "edge",
+    "voice": "pt-BR-FranciscaNeural",
+    "bytes": 271196,
+    "chars": 255
+  }
+}
