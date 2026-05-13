@@ -6,6 +6,7 @@
   var TITLES = window.SANKOFA_TITLES || [];
   var HOUSES = window.SANKOFA_HOUSES || [];
   var AUDIO = window.SankofaAudio;
+  var BGM = window.SankofaBgMusic;
   var ROYALTY = window.SankofaRoyalty;
   var PROFILES = window.SankofaProfiles;
   var LEAGUE = window.SankofaLeague;
@@ -29,7 +30,7 @@
     name: "", points: 0, solved: [], firstTries: 0, noHintSolves: 0, fastSolves: 0,
     hintsUsed: {}, attempts: {}, contextsRead: 0, achievements: [],
     streak: 0, lastPlayDate: null, dailyDone: 0, dailyDate: null,
-    screen: "landing", screenData: {}, soundOn: true, ambientOn: false, ctxReadThis: {},
+    screen: "landing", screenData: {}, soundOn: true, ambientOn: false, bgMusicOn: false, ctxReadThis: {},
     lastLevel: 1, lastWorldPlayed: null,
     cauris: 0, lastTitleRank: 1, house: null, goods: {},
     // Tracking de toasts e marcos para não dispará-los repetidos
@@ -466,6 +467,8 @@
     if (themeLabel) themeLabel.textContent = t("menu.theme");
     var ambientLabel = document.getElementById("ambient-label");
     if (ambientLabel) ambientLabel.textContent = t("menu.ambient");
+    var bgmLabel = document.getElementById("bgmusic-label");
+    if (bgmLabel) bgmLabel.textContent = t("menu.bgmusic");
     var soundLabel = document.getElementById("sound-label");
     if (soundLabel) soundLabel.textContent = t("menu.sound");
     var hp = document.getElementById("help-privacy-label");
@@ -590,10 +593,18 @@
   function sfx(name) { if (S.soundOn && AUDIO) AUDIO.play(name); }
 
   function applyAudioState() {
-    if (!AUDIO) return;
-    AUDIO.setMuted(!S.soundOn);
-    if (S.soundOn && S.ambientOn && S.screen === "landing") AUDIO.startAmbient();
-    else AUDIO.stopAmbient();
+    if (AUDIO) {
+      AUDIO.setMuted(!S.soundOn);
+      if (S.soundOn && S.ambientOn && !S.bgMusicOn && S.screen === "landing") AUDIO.startAmbient();
+      else AUDIO.stopAmbient();
+    }
+    if (BGM) {
+      if (S.soundOn && S.bgMusicOn) {
+        if (!BGM.isEnabled() || !BGM.isPlaying()) BGM.enable();
+      } else if (BGM.isEnabled()) {
+        BGM.disable();
+      }
+    }
   }
 
   /* ---------------- UI HELPERS ---------------- */
@@ -615,6 +626,25 @@
     }
     var aState = document.getElementById("ambient-state");
     if (aState) aState.textContent = (!!S.ambientOn && !!S.soundOn) ? t("menu.on") : t("menu.off");
+
+    var m = document.getElementById("bgmusic-toggle");
+    if (m) {
+      var mIcon = m.querySelector(".topbar-icon, .menu-row-icon");
+      if (mIcon) mIcon.textContent = "🎵";
+      m.classList.toggle("active", !!S.bgMusicOn && !!S.soundOn);
+    }
+    var mState = document.getElementById("bgmusic-state");
+    if (mState) mState.textContent = (!!S.bgMusicOn && !!S.soundOn) ? t("menu.on") : t("menu.off");
+
+    var mq = document.getElementById("mute-quick");
+    if (mq) {
+      mq.setAttribute("aria-pressed", S.soundOn ? "false" : "true");
+      mq.classList.toggle("muted", !S.soundOn);
+      var mqIcon = document.getElementById("mute-quick-icon");
+      if (mqIcon) mqIcon.textContent = S.soundOn ? "🔊" : "🔇";
+      mq.setAttribute("title", S.soundOn ? "Silenciar tudo" : "Reativar som");
+      mq.setAttribute("aria-label", S.soundOn ? "Silenciar tudo" : "Reativar som");
+    }
   }
 
   function updateProfileBtn() {
@@ -3293,7 +3323,7 @@
     var sb = document.getElementById("sound-toggle");
     if (sb) sb.addEventListener("click", function () {
       S.soundOn = !S.soundOn;
-      if (!S.soundOn) S.ambientOn = false;
+      if (!S.soundOn) { S.ambientOn = false; S.bgMusicOn = false; }
       save();
       applyAudioState();
       updateSoundBtn();
@@ -3305,6 +3335,7 @@
     if (ab) ab.addEventListener("click", function () {
       if (!S.soundOn) return;
       S.ambientOn = !S.ambientOn;
+      if (S.ambientOn) S.bgMusicOn = false;
       save();
       applyAudioState();
       updateSoundBtn();
@@ -3312,9 +3343,32 @@
       closeMenuDrawer();
     });
 
+    var mq = document.getElementById("mute-quick");
+    if (mq) mq.addEventListener("click", function () {
+      S.soundOn = !S.soundOn;
+      if (!S.soundOn) { S.ambientOn = false; S.bgMusicOn = false; }
+      save();
+      applyAudioState();
+      updateSoundBtn();
+      if (S.soundOn) sfx("click");
+    });
+
+    var mb = document.getElementById("bgmusic-toggle");
+    if (mb) mb.addEventListener("click", function () {
+      if (!S.soundOn) return;
+      S.bgMusicOn = !S.bgMusicOn;
+      if (S.bgMusicOn) S.ambientOn = false;
+      save();
+      applyAudioState();
+      updateSoundBtn();
+      if (BGM) BGM.unlock();
+      closeMenuDrawer();
+    });
+
     document.addEventListener("keydown", handleKey);
     document.addEventListener("click", function unlockOnce() {
       if (AUDIO) AUDIO.unlock();
+      if (BGM && S.bgMusicOn && S.soundOn) BGM.enable();
       document.removeEventListener("click", unlockOnce);
     }, { once: true });
 
