@@ -8,7 +8,7 @@
     - Fonts : cache-first
     - Supabase REST: network-only (nunca cachear, dados ao vivo)
 */
-const VERSION = "v1.5.15-dev";
+const VERSION = "v1.5.16-dev";
 const PRECACHE = "sankofa-precache-" + VERSION;
 const RUNTIME = "sankofa-runtime-" + VERSION;
 
@@ -19,6 +19,7 @@ const APP_SHELL = [
   "/manifest.webmanifest",
 
   "/src/audio.js",
+  "/src/bg-music.js?v=1.5.12-dev",
   "/src/profiles.js",
   "/src/profile-modal.js",
   "/src/share.js?v=1.5.12-dev",

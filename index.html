@@ -49,6 +49,10 @@
       </button>
     </div>
     <div class="topbar-right">
+      <button class="topbar-btn mute-quick" id="mute-quick" type="button"
+              title="Silenciar tudo" aria-label="Silenciar tudo" aria-pressed="false">
+        <span class="topbar-icon" id="mute-quick-icon" aria-hidden="true">🔊</span>
+      </button>
       <button class="install-btn" id="install-btn" type="button" title="Instalar como app" aria-label="Instalar como app" style="display:none">
         <span aria-hidden="true">⬇</span><span class="install-btn-text">Instalar</span>
       </button>
@@ -89,6 +93,12 @@
       <span class="menu-row-icon topbar-icon" aria-hidden="true">🥁</span>
       <span class="menu-row-text" id="ambient-label">Tambor ambiente</span>
       <span class="menu-row-state" id="ambient-state">Desligado</span>
+    </button>
+    <button class="menu-row bgmusic-toggle" id="bgmusic-toggle" type="button" role="menuitem"
+            title="Música de fundo" aria-label="Ativar música de fundo">
+      <span class="menu-row-icon topbar-icon" aria-hidden="true">🎵</span>
+      <span class="menu-row-text" id="bgmusic-label">Música</span>
+      <span class="menu-row-state" id="bgmusic-state">Desligado</span>
     </button>
     <button class="menu-row sound-toggle" id="sound-toggle" type="button" role="menuitem"
             title="Som on/off" aria-label="Ativar ou desativar som">
@@ -154,6 +164,7 @@
   <script src="data/i18n.js?v=1.5.12-dev"></script>
   <script src="src/i18n.js?v=1.5.12-dev"></script>
   <script src="src/audio.js"></script>
+  <script src="src/bg-music.js?v=1.5.12-dev"></script>
   <script src="src/profiles.js"></script>
   <script src="src/profile-modal.js"></script>
   <script src="src/share.js?v=1.5.12-dev"></script>

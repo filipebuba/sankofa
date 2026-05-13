@@ -905,8 +905,11 @@ input { font-family: var(--font-body); }
 
 /* Estados específicos */
 .sound-toggle.muted { opacity: .55; }
+.mute-quick.muted { opacity: .55; color: var(--text-muted); }
 .ambient-toggle.active { color: var(--terra); border-color: var(--terra); animation: pulse 1.6s var(--ease) infinite; }
 .ambient-toggle.active .topbar-label { color: var(--terra); }
+.bgmusic-toggle.active { color: var(--gold); border-color: var(--gold); }
+.bgmusic-toggle.active .menu-row-state { color: var(--gold); }
 
 .profile-btn { background: var(--surface2); }
 .profile-btn-avatar {
