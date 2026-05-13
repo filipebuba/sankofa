@@ -117,16 +117,15 @@
     stopSting();
   }
 
-  /* ---------------- STING (griot intro, once per session) ---------------- */
+  /* ---------------- STING (griot intro, every utterance) ---------------- */
   var STING_SRC = "assets/audio/sting-intro.mp3";
   var stingEl = null;
-  var stingPlayed = false;
 
   function ensureSting() {
     if (stingEl) return stingEl;
     stingEl = new Audio();
     stingEl.src = STING_SRC;
-    stingEl.preload = "none";
+    stingEl.preload = "auto";
     stingEl.volume = 0.85;
     return stingEl;
   }
@@ -135,11 +134,10 @@
     if (stingEl) { try { stingEl.pause(); stingEl.currentTime = 0; } catch (e) {} }
   }
 
-  // Play sting once per session. Returns Promise that resolves on end (or immediately if skipped).
+  // Play sting. Resets to start each call. Returns Promise resolved on end or on safety timeout.
   function playSting() {
-    if (stingPlayed) return Promise.resolve();
-    stingPlayed = true;
     var el = ensureSting();
+    try { el.currentTime = 0; } catch (e) {}
     return new Promise(function (resolve) {
       var done = false;
       function finish() { if (done) return; done = true; resolve(); }
@@ -147,12 +145,12 @@
       el.addEventListener("error", finish, { once: true });
       var p = el.play();
       if (p && typeof p.catch === "function") p.catch(finish);
-      // Safety timeout — if 'ended' never fires, resolve after 30s anyway.
-      setTimeout(finish, 30000);
+      // Safety timeout — sting is ~3.4s, give 6s headroom.
+      setTimeout(finish, 6000);
     });
   }
 
-  function resetStingForSession() { stingPlayed = false; stopSting(); }
+  function resetStingForSession() { stopSting(); }
 
   // Carrega vozes (alguns browsers populam async)
   if (available() && window.speechSynthesis.onvoiceschanged !== undefined) {
